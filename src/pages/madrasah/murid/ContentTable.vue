@@ -45,12 +45,12 @@
 				<q-td
 					key="alamat"
 					:props="props"
-					:title="props.row.alamat_pendek"
+					:title="props.row.alamat_lengkap"
 				>
 					{{
-						props.row.alamat_pendek.length > 30
-							? props.row.alamat_pendek.substr(0, 30) + '&mldr;'
-							: props.row.alamat_pendek
+						props.row.alamat.length > 30
+							? props.row.alamat.substr(0, 30) + '&mldr;'
+							: props.row.alamat
 					}}
 				</q-td>
 				<q-td key="pendidikan" :props="props">
@@ -92,27 +92,21 @@ function rowClick(row) {
 }
 
 onMounted(async () => {
-	if (params.th_ajaran_h && params.tingkat_id && params.kelas) {
+	if (params.th_ajaran_h && params.tingkat_id) {
+		if (!params.kelas) delete params.kelas;
 		const data = await apiGet({
 			endPoint: 'kelas',
-			params: {
-				th_ajaran_h: params.th_ajaran_h,
-				tingkat_id: params.tingkat_id,
-				kelas: params.kelas,
-			},
+			params,
 			loading: spinner,
 		});
-		murid.value = data.murid;
-	} else if (params.th_ajaran_h && params.tingkat_id) {
-		const data = await apiGet({
-			endPoint: 'kelas',
-			params: {
-				th_ajaran_h: params.th_ajaran_h,
-				tingkat_id: params.tingkat_id,
-			},
-			loading: spinner,
+		const map = data.murid.map((m) => {
+			return {
+				...m,
+				alamat: `${m.desa} ${m.kecamatan} ${m.kabupaten}`,
+				alamat_lengkap: `${m.jl} ${m.desa} ${m.kecamatan} ${m.kabupaten} ${m.provinsi}`,
+			};
 		});
-		murid.value = data.murid;
+		murid.value = map;
 	} else {
 		murid.value = [];
 	}
@@ -144,13 +138,7 @@ const columns = [
 		name: 'alamat',
 		label: 'Alamat',
 		align: 'left',
-		field: 'alamat_pendek',
-		// field: (row) =>
-		// 	`${
-		// 		row.alamat_pendek.length > 20
-		// 			? row.alamat_pendek.substr(0, 20) + '&mldr;'
-		// 			: row.alamat_pendek
-		// 	}`,
+		field: 'alamat',
 		sortable: true,
 		classes: 'alamat',
 	},

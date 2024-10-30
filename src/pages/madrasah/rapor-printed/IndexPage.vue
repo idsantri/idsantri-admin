@@ -1,0 +1,178 @@
+<template lang="">
+	<q-page class="q-pa-sm">
+		<q-card style="max-width: 1000px">
+			<q-card-section
+				class="q-pa-sm bg-green-8 text-green-11 text-subtitle1 flex"
+			>
+				Rapor (Printed)
+				<q-space />
+				<q-btn
+					no-caps
+					label="Kembali"
+					icon="reply"
+					dense
+					class="q-px-md"
+					outline
+					@click="$router.go(-1)"
+				/>
+			</q-card-section>
+			<q-table
+				class="q-ma-sm"
+				:rows="rapor"
+				:loading="loading"
+				:columns="columns"
+				:rows-per-page-options="[10, 25, 50, 100, 0]"
+				row-key="name"
+				:filter="filter"
+			>
+				<template v-slot:top>
+					<div class="text-green-10">
+						<div class="text-subtitle1">
+							Daftar Rapor yang Sudah Dicetak
+						</div>
+						<div
+							class="text-caption text-italic"
+							style="line-height: 1rem"
+						>
+							Hapus data berikut agar DATA RAPOR (Nilai Mapel,
+							Nilai Ahwal, dan Absensi) tidak terkunci!
+						</div>
+						<div
+							class="text-overline q-mb-sm"
+							style="line-height: 1.5rem"
+						>
+							(Akses Admin)
+						</div>
+					</div>
+					<q-space />
+					<q-input
+						outlined
+						dense
+						debounce="300"
+						color="primary"
+						placeholder="Cari"
+						v-model="filter"
+					>
+						<template v-slot:append>
+							<q-icon name="search" />
+						</template>
+					</q-input>
+				</template>
+
+				<template v-slot:header="props">
+					<q-tr :props="props">
+						<q-th
+							v-for="col in props.cols"
+							:key="col.name"
+							:props="props"
+						>
+							{{ col.label }}
+						</q-th>
+						<q-th class="text-center">
+							<q-btn
+								icon="delete"
+								color="negative"
+								dense
+								flat
+								disable
+								title="Hapus"
+							/>
+						</q-th>
+					</q-tr>
+				</template>
+				<template v-slot:body="props">
+					<q-tr :props="props">
+						<q-td
+							v-for="col in props.cols"
+							:key="col.name"
+							:props="props"
+						>
+							{{ col.value }}
+						</q-td>
+						<q-td class="text-center">
+							<q-btn
+								icon="delete"
+								color="negative"
+								dense
+								flat
+								@click="deleteRow(props.row.id)"
+							/>
+						</q-td>
+					</q-tr>
+				</template>
+			</q-table>
+		</q-card>
+	</q-page>
+</template>
+<script setup>
+import apiDelete from 'src/api/api-delete';
+import apiGet from 'src/api/api-get';
+import { onMounted, ref } from 'vue';
+
+const rapor = ref([]);
+const loading = ref(false);
+const filter = ref('');
+
+async function getData() {
+	const data = await apiGet({
+		endPoint: 'rapor/setting',
+		loading,
+	});
+	Object.assign(rapor.value, data.rapor_setting);
+}
+
+onMounted(async () => {
+	await getData();
+});
+
+async function deleteRow(id) {
+	const del = await apiDelete({ endPoint: `rapor/${id}`, loading });
+	if (del) await getData();
+}
+
+const columns = [
+	{
+		name: 'th_ajaran_h',
+		label: 'Th Ajaran H',
+		align: 'left',
+		field: 'th_ajaran_h',
+		sortable: true,
+	},
+	{
+		name: 'tingkat',
+		label: 'Tingkat',
+		align: 'left',
+		field: 'tingkat',
+		sortable: true,
+	},
+	{
+		name: 'kelas',
+		label: 'Kelas',
+		align: 'left',
+		field: 'kelas',
+		sortable: true,
+	},
+	{
+		name: 'rapor_ke',
+		label: 'Ke',
+		align: 'left',
+		field: 'rapor_ke',
+		sortable: true,
+	},
+	{
+		name: 'tgl_rapor',
+		label: 'Tanggal',
+		align: 'left',
+		field: 'tgl_rapor',
+		sortable: true,
+	},
+	{
+		name: 'model_ujian',
+		label: 'Model',
+		align: 'left',
+		field: 'model_ujian',
+		sortable: true,
+	},
+];
+</script>
+<style lang=""></style>

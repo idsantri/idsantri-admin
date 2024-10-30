@@ -46,7 +46,16 @@ export default configure((/* ctx */) => {
 			// 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
 			'roboto-font', // optional, you are not bound to it
-			'material-icons', // optional, you are not bound to it
+
+			// ICONS
+			'material-icons', // NONE
+			'material-icons-outlined', // o_
+			// 'material-icons-round', // r_
+			// 'material-icons-sharp', // s_
+			'material-symbols-outlined', // sym_o_
+			// 'material-symbols-rounded', // sym_r_
+			// 'material-symbols-sharp', // sym_s_
+			// 'bootstrap-icons',
 		],
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-build
@@ -105,7 +114,6 @@ export default configure((/* ctx */) => {
 					/* look at QuasarConfOptions from the API card */
 				},
 			},
-
 			// iconSet: 'material-icons', // Quasar icon set
 			lang: 'id', // Quasar language pack
 
