@@ -77,15 +77,14 @@
 							{{ props.row.domisili }}
 						</q-td>
 						<q-td
-							key="alamat_pendek"
+							key="alamat"
 							:props="props"
-							:title="props.row.alamat_pendek"
+							:title="props.row.alamat"
 						>
 							{{
-								props.row.alamat_pendek.length > 30
-									? props.row.alamat_pendek.substr(0, 30) +
-										'&mldr;'
-									: props.row.alamat_pendek
+								props.row.alamat.length > 30
+									? props.row.alamat.substr(0, 30) + '&mldr;'
+									: props.row.alamat
 							}}
 						</q-td>
 					</q-tr>
@@ -164,14 +163,13 @@ onMounted(async () => {
 	if (params.th_ajaran_h && params.tingkat_id && params.kelas) {
 		const data = await apiGet({
 			endPoint: 'kelas',
-			params: {
-				th_ajaran_h: params.th_ajaran_h,
-				tingkat_id: params.tingkat_id,
-				kelas: params.kelas,
-			},
+			params,
 			loading,
 		});
-		murid.value = data.murid;
+		const map = data.murid.map((m) => {
+			return { ...m, alamat: `${m.desa} ${m.kecamatan} ${m.kabupaten}` };
+		});
+		murid.value = map;
 	} else {
 		murid.value = [];
 	}
@@ -217,10 +215,10 @@ const columns = [
 		sortable: true,
 	},
 	{
-		name: 'alamat_pendek',
+		name: 'alamat',
 		label: 'Alamat',
 		align: 'left',
-		field: 'alamat_pendek',
+		field: 'alamat',
 		sortable: true,
 		classes: 'alamat',
 	},
