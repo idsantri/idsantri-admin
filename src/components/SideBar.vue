@@ -12,8 +12,6 @@
 		</q-item>
 		<q-separator dark />
 
-		<!-- KATEGORI -->
-
 		<!-- SEKRETARIAT -->
 		<q-separator dark />
 		<q-expansion-item
@@ -45,7 +43,7 @@
 		>
 			<q-item clickable v-ripple to="/makhadiyah/mutasi">
 				<q-item-section avatar>
-					<q-icon color="green-1" name="room_preferences" />
+					<q-icon color="green-1" name="sym_o_follow_the_signs" />
 					<!-- <q-icon color="green-1" name="digital_out_of_home" /> -->
 				</q-item-section>
 				<q-item-section>
@@ -131,6 +129,16 @@
 				<q-item-section>
 					<q-item-label>Aparatur Madrasah</q-item-label>
 					<q-item-label caption>Data Aparatur Madrasah</q-item-label>
+				</q-item-section>
+			</q-item>
+
+			<q-item clickable v-ripple to="/madrasah/rapor-printed">
+				<q-item-section avatar>
+					<q-icon color="green-1" name="sym_o_print_lock" />
+				</q-item-section>
+				<q-item-section>
+					<q-item-label>Rapor</q-item-label>
+					<q-item-label caption>Rapor Tercetak</q-item-label>
 				</q-item-section>
 			</q-item>
 		</q-expansion-item>

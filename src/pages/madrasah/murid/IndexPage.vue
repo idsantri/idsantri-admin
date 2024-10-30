@@ -13,11 +13,12 @@
 				<q-space />
 				<q-btn
 					dense=""
-					icon="download"
+					icon="sym_o_download"
 					label="Excel"
 					no-caps=""
 					class="bg-green-11 text-green-10 q-px-md"
 					@click="downloadExcel"
+					title="Download Excel"
 				/>
 
 				<q-btn-dropdown

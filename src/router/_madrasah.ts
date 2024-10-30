@@ -5,6 +5,8 @@ export default [
 		path: '',
 		redirect: () => '/madrasah/murid',
 	},
+
+	// madrasah/murid
 	{
 		path: 'murid',
 		component: () => import('src/pages/madrasah/murid/IndexPage.vue'),
@@ -16,12 +18,15 @@ export default [
 			},
 		],
 	},
+
+	// madrasah/kelas/kenaikan
 	{
 		path: 'kelas/kenaikan',
 		component: () =>
 			import('src/pages/madrasah/kelas/kenaikan/KenaikanKelas.vue'),
 	},
 
+	// madrasah/kelas/:id
 	{
 		path: 'kelas/:id',
 		component: () => import('src/pages/madrasah/kelas/KelasIndex.vue'),
@@ -45,6 +50,7 @@ export default [
 		],
 	},
 
+	// madrasah/tingkat
 	{
 		path: 'tingkat',
 		component: () => import('src/pages/madrasah/tingkat/IndexTingkat.vue'),
@@ -59,6 +65,7 @@ export default [
 		],
 	},
 
+	// madrasah/aparatur
 	{
 		path: 'aparatur',
 		component: () =>
@@ -98,7 +105,7 @@ export default [
 		],
 	},
 
-	// madrasah/nilai-mapel
+	// madrasah/nilai-ahwal
 	{
 		path: 'nilai-ahwal',
 		children: [
@@ -116,6 +123,7 @@ export default [
 		component: () => import('src/pages/madrasah/mapel/MapelIndex.vue'),
 	},
 
+	// madrasah/absensi
 	{
 		path: 'absensi',
 		component: () => import('src/pages/madrasah/absensi/AbsensiIndex.vue'),
@@ -160,5 +168,12 @@ export default [
 				name: 'Laporan',
 			},
 		],
+	},
+
+	// madrasah/rapor-print
+	{
+		path: 'rapor-printed',
+		component: () =>
+			import('src/pages/madrasah/rapor-printed/IndexPage.vue'),
 	},
 ];
