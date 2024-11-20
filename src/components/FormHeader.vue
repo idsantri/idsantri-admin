@@ -9,15 +9,21 @@
 				</span>
 			</q-toolbar-title>
 			<slot></slot>
-			<span
+			<q-chip
 				v-if="!slot"
-				class="text-white text-italic text-weight-light text-subtitle2"
+				outline
+				square
+				color="green-11"
+				text-color="white"
+				class="text-italic text-weight-light no-margin"
+				:ripple="false"
+				icon="sym_o_bookmark"
 			>
-				status:
-				<span class="text-weight-medium">
+				input:&nbsp;
+				<span style="font-weight: 500 !important">
 					{{ isNew ? 'baru' : 'edit' }}
 				</span>
-			</span>
+			</q-chip>
 		</q-toolbar>
 	</q-card-section>
 </template>
@@ -45,4 +51,4 @@ onMounted(() => {
 	checkSlotUsage();
 });
 </script>
-<style lang=""></style>
+<style lang="scss"></style>
