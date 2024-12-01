@@ -17,7 +17,7 @@
 				text-color="white"
 				class="text-italic text-weight-light no-margin"
 				:ripple="false"
-				icon="sym_o_bookmark"
+				:icon="isNew ? 'sym_o_new_releases' : 'sym_o_stylus'"
 			>
 				input:&nbsp;
 				<span style="font-weight: 500 !important">
