@@ -24,7 +24,6 @@
 					icon="pivot_table_chart"
 					label="Pivot"
 					no-caps
-					disable
 				/>
 			</q-tabs>
 
@@ -37,11 +36,7 @@
 					<export-advanced class="" />
 				</q-tab-panel>
 				<q-tab-panel class="no-padding" name="pivot">
-					<p
-						class="text-center q-pa-xl text-negative text-subtitle2 no-margin"
-					>
-						Belum Selesai
-					</p>
+					<ExportPivot class="" />
 				</q-tab-panel>
 			</q-tab-panels>
 		</q-card>
@@ -51,6 +46,7 @@
 import { ref } from 'vue';
 import ExportByDate from './ExportByDate';
 import ExportAdvanced from './ExportAdvanced';
+import ExportPivot from './ExportPivot.vue';
 
 const tab = ref('by-date');
 </script>

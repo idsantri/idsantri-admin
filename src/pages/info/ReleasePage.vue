@@ -57,6 +57,13 @@ import config from 'src/config';
 
 const releases = [
 	{
+		ver: '1.2.4',
+		date: 'Desember 2024',
+		release: {
+			'Fitur Baru': ['Ekspor iuran pivot', 'Styling'],
+		},
+	},
+	{
 		ver: '1.2.3',
 		date: 'Oktober 2024',
 		release: {
