@@ -1,16 +1,28 @@
 import axios from 'axios';
 import config from 'src/config';
 import { notifyError } from 'src/utils/notify';
+import getToken from './get-token';
 
 const url =
-	process.env.NODE_ENV == 'development'
+	process.env.NODE_ENV === 'development'
 		? 'http://localhost:8000'
 		: config.BASE_API;
 
-const api = axios.create({ baseURL: url + config.END_API });
-api.defaults.withCredentials = true;
+const api = axios.create({
+	baseURL: url + config.END_API,
+	withCredentials: true,
+});
 
-// Tambahkan interceptor untuk menangani kesalahan
+// Add token to request headers
+api.interceptors.request.use((config) => {
+	const token = getToken();
+	if (token) {
+		config.headers.Authorization = `Bearer ${token}`;
+	}
+	return config;
+});
+
+// response
 api.interceptors.response.use(
 	(response) => response,
 	(error) => {

@@ -1,5 +1,4 @@
 import api from '.';
-import getToken from './get-token';
 import apiError from './api-error';
 import { DownloadParams } from './api-interface';
 import { notifyConfirm } from 'src/utils/notify';
@@ -18,7 +17,6 @@ async function apiDownload({
 	}
 
 	if (loading && typeof loading.value === 'boolean') loading.value = true;
-	api.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`;
 	try {
 		const response = await api.request({
 			url: endPoint,
