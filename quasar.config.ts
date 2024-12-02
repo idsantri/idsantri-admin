@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 import { configure } from 'quasar/wrappers';
-// import config from 'src/config';
+import config from 'src/config';
 // import * as path from 'path';
 
 export default configure((/* ctx */) => {
@@ -30,7 +30,7 @@ export default configure((/* ctx */) => {
 		// app boot file (/src/boot)
 		// --> boot files are part of "main.js"
 		// https://v2.quasar.dev/quasar-cli-webpack/boot-files
-		boot: ['axios'],
+		boot: ['axios', 'registerGlobalComponents'],
 
 		// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-css
 		css: ['app.scss'],
@@ -177,7 +177,12 @@ export default configure((/* ctx */) => {
 			workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
 			// swFilename: 'sw.js',
 			// manifestFilename: 'manifest.json'
-			// extendManifestJson (json) {},
+			extendManifestJson: (manifest) => {
+				manifest.name = config.PWA_NAME;
+				manifest.short_name = config.PWA_SHORT_NAME;
+				manifest.description = config.PWA_DESCRIPTION;
+				return manifest;
+			},
 			// useCredentialsForManifestTag: true,
 			// injectPwaMetaTags: false,
 			// extendPWACustomSWConf (esbuildConf) {},
