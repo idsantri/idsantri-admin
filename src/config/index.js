@@ -1,9 +1,12 @@
 const config = {
-	INS_DESC: 'Pondok Pesantren',
-	INS_NAME: 'Syaichona Moh Cholil',
-	INS_SHORT: 'Syaichona',
-	BASE_API: 'https://syaichona.idsantri.my.id',
+	INS_DESC: 'Demo Lokal',
+	INS_NAME: 'Pondok Pesantren',
+	INS_SHORT: 'Demo Aplikasi (lokal)',
+	BASE_API: 'http://localhost:8000',
 	END_API: '/admin',
-	DEV: false,
+	DEV: true,
+	PWA_NAME: 'ID Santri (Admin)',
+	PWA_SHORT_NAME: 'ID Santri',
+	PWA_DESCRIPTION: 'Aplikasi ID Santri (Admin)',
 };
 export default config;
