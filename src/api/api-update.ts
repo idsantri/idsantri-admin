@@ -1,5 +1,4 @@
 import api from '.';
-import getToken from './get-token';
 import apiError from './api-error';
 import { UpdateParams } from './api-interface';
 import { notifySuccess, notifyConfirm } from 'src/utils/notify';
@@ -20,7 +19,6 @@ async function apiUpdate({
 		}
 	}
 	try {
-		api.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`;
 		if (loading && typeof loading.value === 'boolean') loading.value = true;
 		const response = await api.put(endPoint, data, { params });
 		if (notify) notifySuccess(response.data.message);
