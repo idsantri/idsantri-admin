@@ -1,8 +1,8 @@
 {
   "id": "idsantri-app",
-  "name": "ID Santri",
+  "name": "ID Santri (Admin)",
   "short_name": "ID Santri",
-  "description": "Aplikasi ID Santri",
+  "description": "Aplikasi ID Santri (Admin)",
   "display": "standalone",
   "start_url": "/",
   "orientation": "portrait",
