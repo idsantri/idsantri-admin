@@ -2,9 +2,7 @@
 /public/icons merge=ours
 /public/logo*.png merge=ours
 /public/favicon.ico merge=ours
-
 /src/config merge=ours
-/src-pwa/manifest.json merge=ours
 
 
 
