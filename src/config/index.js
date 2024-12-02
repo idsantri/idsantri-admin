@@ -1,7 +1,7 @@
 const config = {
-	INS_DESC: 'Madrasah &',
+	INS_DESC: 'Demo Lokal',
 	INS_NAME: 'Pondok Pesantren',
-	INS_SHORT: 'Demo Aplikasi',
+	INS_SHORT: 'Demo Aplikasi (lokal)',
 	BASE_API: 'http://localhost:8000',
 	END_API: '/admin',
 	DEV: true,
