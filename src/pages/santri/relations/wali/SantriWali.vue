@@ -22,7 +22,7 @@ onMounted(async () => {
 		endPoint: `santri/${santriId}/wali`,
 		loading: spinner,
 	});
-
+	if (!wali) return;
 	dataObj.value = {
 		'ID Wali': wali.id,
 		Nama: `${wali.nama} (${wali?.sex?.toUpperCase()})`,

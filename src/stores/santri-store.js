@@ -33,19 +33,12 @@ export default defineStore('santri', {
 				anak_ke: null,
 				wali_id: null,
 				wali_status: null,
+				data_akhir: '',
+				image_url: '',
 			},
 			wali: { id: null, nama: null, sex: null },
 			ortu: { id: null, ayah: null, ibu: null, jumlah_anak: null },
 			isNew: true,
-			data_akhir: {
-				id: null,
-				status: null,
-				kelas: null,
-				domisili: null,
-				tingkat: null,
-				tingkat_alias: null,
-				data_akhir: '',
-			},
 		};
 	},
 	actions: {
@@ -69,13 +62,6 @@ export default defineStore('santri', {
 			for (const key in this.ortu) {
 				if (key in payload) {
 					this.ortu[key] = payload[key];
-				}
-			}
-		},
-		setDataAkhir(payload) {
-			for (const key in this.data_akhir) {
-				if (key in payload) {
-					this.data_akhir[key] = payload[key];
 				}
 			}
 		},

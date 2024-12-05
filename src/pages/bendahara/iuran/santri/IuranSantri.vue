@@ -166,6 +166,7 @@ async function loadData() {
 		endPoint: `iuran/santri/${params.id}`,
 		loading,
 	});
+	if (!data.santri) return;
 	santri.value = data.santri;
 	santri.value.santri_id = data.santri.id;
 	iuran.value = data.iuran_total;

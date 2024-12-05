@@ -185,6 +185,7 @@ async function fetchData() {
 		endPoint: `kelas/${id}`,
 		loading: spinner,
 	});
+	if (!data.kelas) return;
 	kelas.value = data.kelas;
 }
 onMounted(async () => {

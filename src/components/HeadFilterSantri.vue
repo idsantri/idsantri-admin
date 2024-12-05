@@ -90,7 +90,7 @@ onMounted(async () => {
 			display: `
 			➡️ ${id.value}
 			| <strong>${data.santri.nama}</strong>
-			| ${data.santri.data_akhir.data_akhir}
+			| ${data.santri.data_akhir}
 			`,
 		};
 		emit('dataFilter', dataEmit);

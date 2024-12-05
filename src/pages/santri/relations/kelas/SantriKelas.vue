@@ -43,6 +43,7 @@ async function loadData() {
 		endPoint: `santri/${santriId}/kelas`,
 		loading: spinner,
 	});
+	if (!data.kelas) return;
 	dataArr.value = data.kelas;
 	dataMap.value = data.kelas
 		.map((v) => ({

@@ -148,6 +148,7 @@ async function getRiwayat(id) {
 		params: { santri_id: id },
 		loading,
 	});
+	if (!data.izin_pesantren) return;
 	riwayatIzin.value = data.izin_pesantren;
 	santri.value = {
 		santri_id: data.santri.id,
