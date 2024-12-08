@@ -135,7 +135,7 @@
 import { ref, onMounted, computed, toRefs } from 'vue';
 import SideBar from 'components/SideBar.vue';
 import config from 'src/config';
-import ModalsMain from 'components/ModalsMain.vue';
+import ModalsMain from './comp/ModalsMain.vue';
 const leftDrawerOpen = ref(false);
 const toggleLeftDrawer = () => (leftDrawerOpen.value = !leftDrawerOpen.value);
 import loadingStore from 'stores/loading-store';
