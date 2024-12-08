@@ -5,6 +5,16 @@
 				<q-card class="my-card q-pa-lg bg-green-5 text-green-1">
 					<q-card-section class="no-padding q-mb-md">
 						<q-btn
+							icon="install_mobile"
+							round
+							class="absolute-top-left text-green-11 bg-green-10"
+							glossy
+							v-if="!isPwaInstalled && isMobile"
+							@click="installPwa"
+							title="Install aplikasi untuk mendapatkan pengalaman yang lebih baik"
+						/>
+						<logo-circle :size="100" class="q-mx-auto" />
+						<q-btn
 							icon="info"
 							round
 							class="absolute-top-right text-green-11 bg-green-10"
@@ -16,7 +26,6 @@
 							@click="modalInfo = true"
 							title="Klik untuk mendapatkan info login"
 						/>
-						<logo-circle :size="100" class="q-mx-auto" />
 
 						<div class="container-title">
 							<h1 class="title text-green-10">ID Santri</h1>
@@ -70,7 +79,7 @@
 										Password
 									</th>
 									<th class="text-left text-overline">
-										Dekskripsi
+										Deskripsi
 									</th>
 								</tr>
 							</thead>
@@ -168,6 +177,37 @@ const login = [
 		description: 'Akses Panitia Ujian',
 	},
 ];
+
+/**
+ * -----------------------------------------
+ * PWA
+ * -----------------------------------------
+ */
+const deferredPrompt = ref(null);
+window.addEventListener('beforeinstallprompt', (e) => {
+	e.preventDefault();
+	deferredPrompt.value = e;
+});
+
+const isPwaInstalled = ref(
+	window.matchMedia('(display-mode: standalone)').matches,
+);
+const isMobile = ref(window.matchMedia('(max-width: 1024px)').matches);
+
+const installPwa = () => {
+	if (deferredPrompt.value) {
+		deferredPrompt.value.prompt();
+		deferredPrompt.value.userChoice.then((choiceResult) => {
+			if (choiceResult.outcome === 'accepted') {
+				console.log('User accepted the A2HS prompt');
+			} else {
+				console.log('User dismissed the A2HS prompt');
+			}
+		});
+		// reset
+		deferredPrompt.value = null;
+	}
+};
 </script>
 
 <style scoped>

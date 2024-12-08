@@ -44,6 +44,7 @@ async function loadData() {
 		endPoint: `santri/${santriId}/domisili`,
 		loading: spinner,
 	});
+	if (!data.domisili) return;
 	dataArr.value = data.domisili;
 	dataMap.value = data.domisili.map((v) => ({
 		Tanggal: formatDateShort(v.date_m) + ' | ' + m2hFormat(v.date_m),

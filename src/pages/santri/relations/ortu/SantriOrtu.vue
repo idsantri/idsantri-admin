@@ -22,7 +22,7 @@ onMounted(async () => {
 		endPoint: `santri/${santriId}/ortu`,
 		loading: spinner,
 	});
-
+	if (!ortu) return;
 	dataObj.value = {
 		'ID Ortu': ortu.id,
 		Ayah: ortu.ayah,

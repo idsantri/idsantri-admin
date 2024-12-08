@@ -140,6 +140,7 @@ async function getRiwayat(id) {
 		params: { santri_id: id },
 		loading,
 	});
+	if (!data.indisipliner) return;
 	riwayatIndsipliner.value = data.indisipliner;
 	santri.value = {
 		santri_id: data.santri.id,

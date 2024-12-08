@@ -51,7 +51,7 @@
 							:data="identity"
 							:loading="loading"
 							:loadingImage="loadingImage"
-							:image="santri?.image || '/user-default.png'"
+							:image="santri?.image_url || '/user-default.png'"
 						>
 							<template #button>
 								<q-btn
@@ -111,6 +111,9 @@ function pathIuran() {
 }
 
 const santri = reactive({});
+const wali = reactive({});
+const ortu = reactive({});
+
 const route = useRoute();
 const santriId = route.params.id;
 
@@ -128,13 +131,19 @@ async function loadImage() {
 		loading: loadingImage,
 	});
 	// console.log(img.image_url);
-	santri.image = img.image_url;
+	santri.image_url = img.image_url;
+}
+
+async function getSantri() {
+	const data = await apiGet({ endPoint: `santri/${santriId}`, loading });
+	if (!data.santri) return;
+	Object.assign(santri, data.santri);
+	Object.assign(wali, data.wali);
+	Object.assign(ortu, data.ortu);
 }
 
 onMounted(async () => {
-	const data = await apiGet({ endPoint: `santri/${santriId}`, loading });
-	Object.assign(santri, data.santri);
-	// console.log(data.santri);
+	await getSantri();
 	// register
 	register.value = {
 		ID: santri.id,
@@ -161,15 +170,14 @@ onMounted(async () => {
 		Kelahiran: `${santri.tmp_lahir || '-'}, ${formatDateFull(
 			santri.tgl_lahir,
 		)}`,
-		'Data Akhir': santri?.data_akhir?.data_akhir || '-',
+		'Data Akhir': santri.data_akhir || '-',
 	};
 
 	santriStore().setSantri(santri);
-	santriStore().setOrtu(santri?.ortu);
-	santriStore().setWali(santri?.wali);
-	santriStore().setDataAkhir(santri?.data_akhir);
+	santriStore().setOrtu(ortu);
+	santriStore().setWali(wali);
 
-	await loadImage();
+	// await loadImage();
 });
 
 /**

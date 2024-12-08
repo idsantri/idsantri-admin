@@ -1,5 +1,4 @@
 import api from '.';
-import getToken from './get-token';
 import apiError from './api-error';
 import { ListsCustomParams, ListsParams } from './api-interface';
 
@@ -10,8 +9,6 @@ async function getLists({
 	sort = null,
 	url = '',
 }: ListsParams): Promise<object | false> {
-	api.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`;
-
 	if (loadingArray) loadingArray.value[key] = true;
 	if (loading && typeof loading.value === 'boolean') loading.value = true;
 
@@ -64,8 +61,6 @@ async function getListsCustom({
 	params,
 	sort = null,
 }: ListsCustomParams): Promise<object | false> {
-	api.defaults.headers.common['Authorization'] = `Bearer ${getToken()}`;
-
 	if (loadingArray) loadingArray.value[key] = true;
 	if (loading && typeof loading.value === 'boolean') loading.value = true;
 

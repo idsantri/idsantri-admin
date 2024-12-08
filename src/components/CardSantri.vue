@@ -6,19 +6,14 @@
 					Identitas Santri
 				</q-toolbar-title>
 			</q-toolbar>
-			<div v-if="loading" class="q-pa-md">
-				<q-spinner-cube
-					color="green-12"
-					size="8em"
-					class="flex q-mx-auto"
-				/>
-			</div>
-			<q-list v-else dense>
+
+			<q-list dense>
 				<q-item>
 					<q-item-section avatar>
-						<q-avatar class="d-flex">
+						<q-skeleton v-if="loading" type="QAvatar" />
+						<q-avatar v-else class="d-flex">
 							<q-img
-								:src="santri?.image || '/user-default.png'"
+								:src="santri?.image_url || '/user-default.png'"
 								:ratio="1"
 								cover
 							/>
@@ -28,17 +23,32 @@
 					<q-item-section>
 						<q-item-label overline> Santri </q-item-label>
 						<q-item-label>
-							{{ santri?.nama }} ({{ santri?.sex }})
+							<q-skeleton v-if="loading" type="text" />
+							<div v-else>
+								{{ santri.nama }} ({{ santri.sex }})
+							</div>
 						</q-item-label>
 						<q-item-label caption lines="1">
-							{{ santri?.alamat_pendek }}
+							<q-skeleton v-if="loading" type="text" />
+							<div v-else>
+								{{ santri?.alamat_pendek || '-' }}
+							</div>
 						</q-item-label>
 						<q-item-label caption lines="1" class="text-italic">
-							{{ santri?.data_akhir?.data_akhir }}
+							<q-skeleton v-if="loading" type="text" />
+							<div v-else>
+								{{ santri?.data_akhir || '-' }}
+							</div>
 						</q-item-label>
 					</q-item-section>
 					<q-item-section avatar>
+						<q-skeleton
+							v-if="loading"
+							type="QBtn"
+							class="full-width"
+						/>
 						<q-btn
+							v-else
 							outline
 							color="green"
 							:to="`/santri/${santri?.id}`"
@@ -59,12 +69,21 @@
 					<q-item-section>
 						<q-item-label overline> Wali </q-item-label>
 						<q-item-label>
-							{{ santri?.wali?.nama }} ({{ santri?.wali?.sex }};
-							{{ santri?.wali_status }})
+							<q-skeleton v-if="loading" type="text" />
+							<div v-else>
+								{{ wali?.nama }} ({{ wali?.sex }};
+								{{ santri?.wali_status }})
+							</div>
 						</q-item-label>
 					</q-item-section>
 					<q-item-section avatar>
+						<q-skeleton
+							v-if="loading"
+							type="QBtn"
+							class="full-width"
+						/>
 						<q-btn
+							v-else
 							outline
 							color="green"
 							:to="`/wali/${santri?.wali_id}`"
@@ -84,12 +103,22 @@
 					<q-item-section>
 						<q-item-label overline> Orang Tua </q-item-label>
 						<q-item-label>
-							{{ santri?.ortu?.ayah }} |
-							{{ santri?.ortu?.ibu }}
+							<q-skeleton v-if="loading" type="text" />
+							<div v-else>
+								{{ ortu?.ayah }} |
+								{{ ortu?.ibu }}
+							</div>
 						</q-item-label>
 					</q-item-section>
 					<q-item-section avatar>
+						<q-skeleton
+							v-if="loading"
+							type="QBtn"
+							class="full-width"
+						/>
+
 						<q-btn
+							v-else
 							outline
 							color="green"
 							:to="`/ortu/${santri?.ortu_id}`"
@@ -117,18 +146,22 @@ const emit = defineEmits(['successGet']);
 
 const loading = ref(false);
 const santri = ref({});
-
+const ortu = ref({});
+const wali = ref({});
 async function fetchData() {
 	const data = await apiGet({
 		endPoint: `santri/${props.id}`,
 		loading,
 	});
+	if (!data.santri) return;
 	santri.value = data.santri;
+	wali.value = data.wali;
+	ortu.value = data.ortu;
 	// console.log(santri.value);
-	const img = await apiGet({
-		endPoint: `images/santri/${santri.value.id}`,
-	});
-	santri.value.image = img.image_url;
+	// const img = await apiGet({
+	// 	endPoint: `images/santri/${santri.value.id}`,
+	// });
+	// santri.value.image = img.image_url;
 	emit('successGet', santri.value);
 }
 
