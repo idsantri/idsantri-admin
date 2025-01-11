@@ -17,7 +17,7 @@
 					ID Santri: {{ config.INS_SHORT }}
 				</q-toolbar-title>
 
-				<toolbar-button />
+				<ToolbarButton />
 			</q-toolbar>
 		</q-header>
 
@@ -85,11 +85,11 @@
 
 <script setup>
 import { ref, toRefs } from 'vue';
-import SideBar from 'components/SideBar.vue';
+import loadingStore from 'stores/loading-store';
 import config from 'src/config';
+import SideBar from './comp/SideBar.vue';
 import ModalsMain from './comp/ModalsMain.vue';
 import ToolbarButton from './comp/ToolbarButton.vue';
-import loadingStore from 'stores/loading-store';
 
 const leftDrawerOpen = ref(false);
 const toggleLeftDrawer = () => (leftDrawerOpen.value = !leftDrawerOpen.value);

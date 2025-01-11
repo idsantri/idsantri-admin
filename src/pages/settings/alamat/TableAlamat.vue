@@ -28,6 +28,8 @@
 						v-model="props.selected"
 						dense
 						@update:model-value="$emit('onSelect', selected[0])"
+						checked-icon="sym_o_check_circle"
+						unchecked-icon="sym_o_radio_button_unchecked"
 					/>
 				</td>
 				<q-td v-for="col in props.cols" :key="col.name" :props="props">

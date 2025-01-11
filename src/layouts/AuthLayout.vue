@@ -26,7 +26,11 @@
 								@click="clickIos"
 							/>
 						</div>
-						<logo-circle :size="100" class="q-mx-auto" />
+						<logo-circle
+							:size="100"
+							:border="3"
+							class="q-mx-auto"
+						/>
 						<q-btn
 							icon="info"
 							round

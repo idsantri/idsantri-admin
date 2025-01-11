@@ -52,4 +52,9 @@ export default [
 		component: () => import('src/pages/settings/alamat/IndexAlamat.vue'),
 		meta: { title: 'Setting: Alamat' },
 	},
+	{
+		path: 'app-wali',
+		component: () => import('src/pages/settings/app-wali/IndexPage.vue'),
+		meta: { title: 'Setting: App Wali' },
+	},
 ];

@@ -2,8 +2,8 @@
 	<q-page class="q-pa-sm">
 		<q-card>
 			<q-card-section>
-				<div class="text-subtitle1">ID Santri</div>
-				<div class="text-body1">{{ config.INS_SHORT }}</div>
+				<div class="text-subtitle2 text-weight-bold">ID Santri</div>
+				<div class="text-subtitle1">{{ config.INS_SHORT }}</div>
 				<div class="text-caption">
 					{{ config.INS_DESC }} {{ config.INS_NAME }}
 				</div>
@@ -56,6 +56,13 @@
 import config from 'src/config';
 
 const releases = [
+	{
+		ver: '1.2.5',
+		date: 'Januari 2025',
+		release: {
+			'Fitur Baru': ['Setting App Wali Santri'],
+		},
+	},
 	{
 		ver: '1.2.4',
 		date: 'Desember 2024',
