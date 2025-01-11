@@ -91,7 +91,7 @@
 						</q-td>
 						<q-td class="text-center">
 							<q-btn
-								icon="delete"
+								icon="sym_o_delete"
 								color="negative"
 								dense
 								flat

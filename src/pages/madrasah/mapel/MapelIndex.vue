@@ -49,13 +49,13 @@
 					</thead>
 					<tbody>
 						<tr v-if="loading">
-							<td colspan="5">
+							<td colspan="7">
 								<q-skeleton height="50px" />
 							</td>
 						</tr>
 						<tr v-else-if="mapel.length == 0">
 							<td
-								colspan="5"
+								colspan="7"
 								class="text-center text-green-10 text-italic"
 							>
 								&mdash; Tidak ada data untuk ditampilkan &mdash;

@@ -1,10 +1,14 @@
 <template lang="">
 	<div
 		class="container-logo"
-		:style="{ width: `${size}px`, height: `${size}px` }"
+		:style="{
+			width: `${size}px`,
+			height: `${size}px`,
+			borderWidth: `${border}px`,
+		}"
 	>
 		<div>
-			<img src="icons/icon-256x256.png" alt="logo/lambang" />
+			<img src="/icons/icon-256x256.png" alt="logo/lambang" />
 		</div>
 	</div>
 </template>
@@ -14,14 +18,19 @@ defineProps({
 		type: Number,
 		default: 100,
 	},
+	border: {
+		type: Number,
+		default: 4,
+	},
 });
 </script>
 <style lang="scss">
 .container-logo {
 	overflow: hidden;
+	background-color: transparent;
 	border-radius: 50%;
-	background-color: #b9f6ca;
-	padding: 4px;
+	border-style: solid;
+	border-color: #b9f6ca;
 
 	div {
 		background-color: transparent;

@@ -26,7 +26,11 @@
 								@click="clickIos"
 							/>
 						</div>
-						<logo-circle :size="100" class="q-mx-auto" />
+						<logo-circle
+							:size="100"
+							:border="3"
+							class="q-mx-auto"
+						/>
 						<q-btn
 							icon="info"
 							round
@@ -91,8 +95,8 @@
 import { ref } from 'vue';
 import config from 'src/config';
 import LogoCircle from 'components/LogoCircle.vue';
-import InfoIos from './Auth_InfoIos.vue';
-import InfoLogin from './Auth_InfoLogin.vue';
+import InfoIos from './comp/InfoIos.vue';
+import InfoLogin from './comp/InfoLogin.vue';
 
 const title = ref('Autentikasi');
 const handleTitle = (value) => (title.value = value);
