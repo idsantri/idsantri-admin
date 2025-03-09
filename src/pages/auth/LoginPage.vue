@@ -76,11 +76,11 @@
 import { onMounted, onUpdated, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
-import authState from 'stores/auth-store';
 import api from 'src/api';
 import config from 'src/config';
 import { toArray } from 'src/utils/array-object';
 import { notifyAlert, notifySuccess } from 'src/utils/notify';
+import useAuthStore from 'stores/auth-store';
 
 const router = useRouter();
 const login = ref('');
@@ -90,48 +90,33 @@ const showSpinner = ref(false);
 const emit = defineEmits(['title', 'errors']);
 emit('title', 'Login');
 emit('errors', []);
+const auth = useAuthStore();
 
 const props = defineProps({
 	credential: { type: Object },
 });
 
-const submitLogin = async () => {
-	// #CARA 1
-	// const formEl = new FormData(e.target);
-	// console.log(formEl);
-	// const formData = {};
-	// for (const [key, value] of formEl) {
-	// 	formData[key] = value;
-	// }
-	// console.log(formData);
+const submitLogin = async (e) => {
+	const formData = new FormData(e.target);
+	const formObject = Object.fromEntries(formData.entries());
 
-	// #CARA 2
-	// const formData = new FormData(e.target);
-	// const formObject = Object.fromEntries(formData.entries());
-	// console.log(formObject);
-
-	// return;
+	emit('errors', []);
 
 	emit('errors', []);
 	try {
 		showSpinner.value = true;
-		const response = await api.post('login', {
-			login: login.value,
-			password: password.value,
-		});
-		authState().token = response.data.token;
-		authState().user = response.data.user;
-		authState().roles = response.data.roles;
-		authState().permissions = response.data.permissions;
+		const response = await api.post('login', formObject);
+		const responseData = response.data;
+		const data = responseData.data;
+		auth.setUser(data);
 
-		notifySuccess(response.data.message);
-
-		const isConfirmed = response.data.user.confirmed_at;
-		if (!isConfirmed) {
-			router.push('/profile');
-		} else {
-			router.push('/');
+		notifySuccess(responseData.message);
+		const { user } = data;
+		if (!user.confirmed_at) {
+			return router.push('/profile');
 		}
+
+		return router.push('/');
 	} catch (error) {
 		// console.log('e', error);
 		emit(

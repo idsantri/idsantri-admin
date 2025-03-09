@@ -42,6 +42,7 @@
 		<q-page-container :key="componentKey">
 			<suspense>
 				<template #default>
+					<!-- ROUTER -->
 					<router-view :key="$route.fullPath" />
 				</template>
 				<template #fallback>

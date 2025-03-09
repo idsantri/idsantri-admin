@@ -1,6 +1,6 @@
 <template>
 	<my-upload
-		field="image"
+		:field="fieldImage"
 		langType="en"
 		:langExt="translate"
 		no-circle
@@ -36,6 +36,7 @@ const props = defineProps({
 	url: { default: null },
 	// headers: { default: null },
 	imgFormat: { type: String, default: 'png' },
+	fieldImage: { type: String, default: 'image' },
 });
 const emit = defineEmits(['updateUploader', 'successUpload']);
 

@@ -30,7 +30,7 @@
 						label="Edit"
 						@click="editSantri"
 					/>
-					<drop-down-print />
+					<drop-down-print :santri="santri" />
 				</div>
 			</q-card-section>
 			<q-card-section class="no-padding">

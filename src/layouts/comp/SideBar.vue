@@ -251,7 +251,7 @@ const menuSetting = [
 		icon: 'sym_o_settings_applications',
 		label: 'App Wali',
 		caption: 'Aplikasi Wali Santri',
-		disable: false,
+		disable: true,
 	},
 ];
 </script>
