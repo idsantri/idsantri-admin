@@ -128,7 +128,7 @@ async function downloadKeterangan() {
 
 async function downloadIdCard() {
 	await apiDownload({
-		endPoint: `reports/santri/card/download?id=${route.params.id}`,
+		endPoint: `reports/santri/id-card/download?id=${route.params.id}`,
 		loading: loadingMain,
 		fileName: 'card-' + route.params.id + ' ~ ' + props.santri.nama,
 		confirm: true,
