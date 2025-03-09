@@ -11,6 +11,7 @@ async function apiUpdate({
 	loading,
 	notify = true,
 	params,
+	config,
 }: UpdateParams): Promise<object | false> {
 	if (confirm) {
 		const isConfirmed = await notifyConfirm(message, true);
@@ -20,9 +21,13 @@ async function apiUpdate({
 	}
 	try {
 		if (loading && typeof loading.value === 'boolean') loading.value = true;
-		const response = await api.put(endPoint, data, { params });
+
+		const configApi = { ...config };
+		if (params) configApi.params = params;
+		const response = await api.put(endPoint, data, configApi);
+
 		if (notify) notifySuccess(response.data.message);
-		return response.data;
+		return response.data.data;
 	} catch (error) {
 		apiError(error);
 		return false;

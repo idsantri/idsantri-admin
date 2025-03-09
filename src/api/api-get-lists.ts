@@ -17,7 +17,7 @@ async function getLists({
 
 	try {
 		const { data } = await api.get(endPoint);
-		const result = data[snakeCase] as { val0: string }[];
+		const result = data.data[snakeCase] as { val0: string }[];
 
 		if (sort === 'asc' || sort === true) {
 			result.sort((a, b) =>
@@ -67,7 +67,7 @@ async function getListsCustom({
 	try {
 		const { data } = await api.get(url, { params });
 		// lists.value[key] = data[key];
-		const result = data[key].filter((el: object) => el != null);
+		const result = data.data[key].filter((el: object) => el != null);
 		if (!hasObject(result)) {
 			if (sort === 'asc' || sort === true) {
 				result.sort((a: string, b: string) =>

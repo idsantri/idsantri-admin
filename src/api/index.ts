@@ -19,12 +19,16 @@ api.interceptors.request.use((config) => {
 	if (token) {
 		config.headers.Authorization = `Bearer ${token}`;
 	}
+	// console.log('🚀 ~ api.interceptors.request.use ~ config:', config);
 	return config;
 });
 
 // response
 api.interceptors.response.use(
-	(response) => response,
+	(response) => {
+		// console.log('🚀 ~ response:', response);
+		return response;
+	},
 	(error) => {
 		// Tangani kesalahan jaringan atau koneksi di sini
 		if (!error.response) {

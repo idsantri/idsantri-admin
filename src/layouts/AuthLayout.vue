@@ -69,6 +69,7 @@
 					</q-banner>
 
 					<q-card-section class="no-padding no-margin">
+						<!-- ROUTER -->
 						<router-view
 							@title="handleTitle"
 							@errors="handleErrors"

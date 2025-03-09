@@ -145,6 +145,10 @@ function closeModal() {
 
 const onSubmit = async () => {
 	const data = JSON.parse(JSON.stringify(santri));
+	delete data.image_url;
+	delete data.data_akhir;
+	// console.log(data);
+	// return;
 	let response = null;
 	if (isNew) {
 		response = await apiPost({

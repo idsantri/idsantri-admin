@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios';
 import { Ref } from 'vue';
 
 interface Params {
@@ -5,6 +6,7 @@ interface Params {
 	loading?: Ref<boolean>;
 	params?: object;
 	notify?: boolean;
+	config?: AxiosRequestConfig;
 }
 
 interface GetParams extends Params {}
