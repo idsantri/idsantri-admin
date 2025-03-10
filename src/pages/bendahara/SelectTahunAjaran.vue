@@ -29,7 +29,7 @@ onMounted(async () => {
 		const data = await getListsCustom({
 			loadingArray: loading,
 			key: 'th_ajaran',
-			url: 'iuran/lists',
+			url: 'iuran-old/lists',
 			sort: false,
 		});
 		const result = data.sort(

@@ -37,6 +37,7 @@
 						Data Iuran
 						<q-space />
 						<q-btn-dropdown
+							disable
 							split
 							dense
 							label="Tambah"
@@ -85,7 +86,7 @@
 										<q-route-tab
 											:name="th"
 											:label="th"
-											:to="`/bendahara/iuran/santri/${params.id}/${th}`"
+											:to="`/bendahara/iuran-old/santri/${params.id}/${th}`"
 										/>
 									</div>
 								</q-tabs>
@@ -135,8 +136,8 @@ import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import CardHeadSantri from 'src/components/CardHeadSantri.vue';
-import IuranSantriByTh from 'src/pages/bendahara/iuran/santri/IuranSantriByTh.vue';
-import IuranSantriCrud from 'src/pages/bendahara/iuran/santri/IuranSantriCrud.vue';
+import IuranSantriByTh from 'src/pages/bendahara/iuran-old/santri/IuranSantriByTh.vue';
+import IuranSantriCrud from 'src/pages/bendahara/iuran-old/santri/IuranSantriCrud.vue';
 import IuranSantriCrudPaket from './IuranSantriCrudPaket.vue';
 import DropdownButton from './DropdownButton.vue';
 
@@ -156,14 +157,14 @@ function successSubmit(val) {
 		keyIuran.value++;
 	} else {
 		router.push(
-			`/bendahara/iuran/santri/${val.santri_id}/${val.th_ajaran_h}`,
+			`/bendahara/iuran-old/santri/${val.santri_id}/${val.th_ajaran_h}`,
 		);
 	}
 }
 
 async function loadData() {
 	const data = await apiGet({
-		endPoint: `iuran/santri/${params.id}`,
+		endPoint: `iuran-old/santri/${params.id}`,
 		loading,
 	});
 	if (!data.santri) return;

@@ -80,6 +80,7 @@
 								color="green-8"
 								unelevated=""
 								@click="editIuran(item)"
+								disable
 							/>
 						</div>
 					</q-item-section>
@@ -137,8 +138,8 @@ import apiGet from 'src/api/api-get';
 import apiUpdate from 'src/api/api-update';
 import { formatDateShort } from 'src/utils/format-date';
 import { formatHijri, m2h } from 'src/utils/hijri';
-import IuranSantriCrud from 'src/pages/bendahara/iuran/santri/IuranSantriCrud.vue';
-import DropDownPrint from 'src/pages/bendahara/iuran/santri/DropDownPrint.vue';
+import IuranSantriCrud from 'src/pages/bendahara/iuran-old/santri/IuranSantriCrud.vue';
+import DropDownPrint from 'src/pages/bendahara/iuran-old/santri/DropDownPrint.vue';
 import 'src/utils/rupiah';
 
 const route = useRoute();
@@ -154,7 +155,7 @@ const dataIuran = ref({});
 async function loadData() {
 	if (thAjaranH.value && santriId.value) {
 		const data = await apiGet({
-			endPoint: `iuran/santri/${santriId.value}`,
+			endPoint: `iuran-old/santri/${santriId.value}`,
 			params: { th_ajaran_h: thAjaranH.value },
 			loading,
 		});
@@ -172,7 +173,7 @@ onMounted(async () => {
 
 async function toggleUpdate(val, evt, item, index) {
 	const updated = await apiUpdate({
-		endPoint: `iuran/${item.id}/set-check`,
+		endPoint: `iuran-old/${item.id}/set-check`,
 		data: {
 			check: val,
 		},

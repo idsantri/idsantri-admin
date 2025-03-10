@@ -21,8 +21,8 @@
 					emit-value
 					map-options
 					v-model="input.iuran"
-					:options="lists['iuran']"
-					:loading="loading['iuran']"
+					:options="lists['iuran-old']"
+					:loading="loading['iuran-old']"
 					clearable=""
 					behavior="menu"
 				/>
@@ -89,7 +89,7 @@ async function fetchList(th_ajaran_h, listKey) {
 		const data = await getListsCustom({
 			loadingArray: loading,
 			key: listKey,
-			url: 'iuran/lists',
+			url: 'iuran-old/lists',
 			params: { th_ajaran_h, key: listKey },
 			sort: true,
 		});
@@ -101,7 +101,7 @@ async function fetchList(th_ajaran_h, listKey) {
 async function onSubmit() {
 	const params = JSON.parse(JSON.stringify(input.value));
 	const data = await apiGet({
-		endPoint: 'export/iuran',
+		endPoint: 'export/iuran-old',
 		loading: loadingMain,
 		params,
 	});
@@ -120,7 +120,7 @@ watch(
 	async (newValue, oldValue) => {
 		if (newValue && newValue != oldValue) {
 			input.value.iuran = '';
-			await fetchList(newValue, 'iuran');
+			await fetchList(newValue, 'iuran-old');
 
 			input.value.kasir = '';
 			await fetchList(newValue, 'kasir');

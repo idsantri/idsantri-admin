@@ -1,6 +1,6 @@
 <template lang="">
 	<q-btn
-		to="/bendahara/iuran/export"
+		to="/bendahara/iuran-old/export"
 		outline
 		dense
 		no-caps
@@ -17,30 +17,30 @@
 	>
 		<q-list>
 			<q-item
-				v-if="showButton(`bendahara/iuran/q/th-ajaran`)"
+				v-if="showButton(`bendahara/iuran-old/q/th-ajaran`)"
 				clickable
 				v-close-popup
-				to="/bendahara/iuran/q/th-ajaran"
+				to="/bendahara/iuran-old/q/th-ajaran"
 			>
 				<q-item-section>
 					<q-item-label>Tahun Ajaran</q-item-label>
 				</q-item-section>
 			</q-item>
 			<q-item
-				v-if="showButton(`bendahara/iuran/q/tanggal`)"
+				v-if="showButton(`bendahara/iuran-old/q/tanggal`)"
 				clickable
 				v-close-popup
-				to="/bendahara/iuran/q/tanggal"
+				to="/bendahara/iuran-old/q/tanggal"
 			>
 				<q-item-section>
 					<q-item-label>Tanggal</q-item-label>
 				</q-item-section>
 			</q-item>
 			<q-item
-				v-if="showButton(`bendahara/iuran/q/santri`)"
+				v-if="showButton(`bendahara/iuran-old/q/santri`)"
 				clickable
 				v-close-popup
-				to="/bendahara/iuran/q/santri"
+				to="/bendahara/iuran-old/q/santri"
 			>
 				<q-item-section>
 					<q-item-label>Santri</q-item-label>

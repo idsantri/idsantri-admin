@@ -151,14 +151,14 @@ const data = [
 		protected: false,
 		sort: 'desc',
 	},
-	{
-		url: 'iuran',
-		label: 'Iuran',
-		style: 'double',
-		column: 2,
-		protected: false,
-		sort: 'asc',
-	},
+	// {
+	// 	url: 'iuran-old',
+	// 	label: 'iuran-old',
+	// 	style: 'double',
+	// 	column: 2,
+	// 	protected: false,
+	// 	sort: 'asc',
+	// },
 	{
 		url: 'tingkat-pendidikan',
 		label: 'Tingkat Pendidikan',

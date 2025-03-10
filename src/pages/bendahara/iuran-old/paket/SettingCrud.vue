@@ -122,7 +122,7 @@ const iuran = ref([]);
 
 onMounted(async () => {
 	Object.assign(input.value, props.data);
-	iuran.value = listsStore().getByStateName('iuran');
+	iuran.value = listsStore().getByStateName('iuran-old');
 });
 
 const setNominal = (val) => {

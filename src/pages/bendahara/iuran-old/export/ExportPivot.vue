@@ -57,7 +57,7 @@ async function onSubmit() {
 		return notifyError('Tentukan tahun ajaran dan status!');
 	// console.log(params);
 	const { url } = await apiGet({
-		endPoint: 'export/iuran-pivot',
+		endPoint: 'export/iuran-old-pivot',
 		loading: loadingMain,
 		params,
 	});

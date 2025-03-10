@@ -10,7 +10,7 @@
 			</q-item-section>
 		</q-item>
 
-		<!-- <q-item clickable v-close-popup to="/bendahara/iuran/atur-paket">
+		<!-- <q-item clickable v-close-popup to="/bendahara/iuran-old/atur-paket">
 			<q-item-section avatar>
 				<q-icon name="settings" color="green" />
 			</q-item-section>

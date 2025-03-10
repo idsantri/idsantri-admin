@@ -6,6 +6,7 @@
 		no-caps
 		class="text-green-10 q-px-md"
 		dense
+		disable
 	>
 		<q-list>
 			<q-item v-close-popup>
