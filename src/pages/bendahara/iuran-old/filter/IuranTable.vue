@@ -22,6 +22,7 @@
 				color="green-11 q-px-md"
 				class="text-green-10"
 				@click="crudShow = true"
+				disable
 			/>
 		</q-card-section>
 		<q-table
@@ -38,7 +39,7 @@
 			@row-click="
 				(evt, row, index) =>
 					$router.push(
-						`/bendahara/iuran/santri/${row.santri_id}/${row.th_ajaran_h}`,
+						`/bendahara/iuran-old/santri/${row.santri_id}/${row.th_ajaran_h}`,
 					)
 			"
 		>
@@ -77,7 +78,7 @@
 			@success-submit="
 				(val) =>
 					$router.push(
-						`/bendahara/iuran/santri/${val.santri_id}/${val.th_ajaran_h}`,
+						`/bendahara/iuran-old/santri/${val.santri_id}/${val.th_ajaran_h}`,
 					)
 			"
 		/>
@@ -86,7 +87,7 @@
 <script setup>
 import { ref } from 'vue';
 import { formatDateShort } from 'src/utils/format-date';
-import IuranSantriCrud from 'src/pages/bendahara/iuran/santri/IuranSantriCrud.vue';
+import IuranSantriCrud from 'src/pages/bendahara/iuran-old/santri/IuranSantriCrud.vue';
 import 'src/utils/rupiah';
 import { digitSeparator } from 'src/utils/format-number';
 

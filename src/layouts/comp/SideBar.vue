@@ -20,13 +20,15 @@
 		</ExpansionItem>
 
 		<!-- BENDAHARA -->
-		<ExpansionItem label="Bendahara" caption="Iuran">
-			<MenuItem
-				v-for="item in menuBendahara"
-				:key="item.to"
-				:item="item"
-			/>
-		</ExpansionItem>
+		<div class="bg-light-green-7">
+			<ExpansionItem label="Bendahara" caption="Iuran">
+				<MenuItem
+					v-for="item in menuBendahara"
+					:key="item.to"
+					:item="item"
+				/>
+			</ExpansionItem>
+		</div>
 
 		<!-- MAKHADIYAH -->
 		<ExpansionItem label="Makhadiyah" caption="Kedaerahan">
@@ -89,9 +91,9 @@ const MenuSekretariat = [
 
 const menuBendahara = [
 	{
-		to: '/bendahara',
+		to: '/bendahara/iuran-old/q',
 		icon: 'payments',
-		label: 'Iuran',
+		label: 'Iuran (gaya lama)',
 		caption: 'Iuran Santri dan Murid',
 		disable: false,
 	},

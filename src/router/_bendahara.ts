@@ -1,48 +1,53 @@
 export default [
 	{
 		path: '',
-		redirect: () => '/bendahara/iuran/q/th-ajaran',
+		redirect: () => '/bendahara/iuran-old/q/th-ajaran',
 	},
 	{
-		path: 'iuran/export',
+		path: 'iuran-old/export',
 		component: () =>
-			import('src/pages/bendahara/iuran/export/ExportIndex.vue'),
+			import('src/pages/bendahara/iuran-old/export/ExportIndex.vue'),
 	},
 	{
-		path: 'iuran/santri/:id/:thAjaranH?',
+		path: 'iuran-old/santri/:id/:thAjaranH?',
 		component: () =>
-			import('src/pages/bendahara/iuran/santri/IuranSantri.vue'),
+			import('src/pages/bendahara/iuran-old/santri/IuranSantri.vue'),
+	},
+
+	{
+		path: 'iuran-old',
+		redirect: () => '/bendahara/iuran-old/q',
 	},
 	{
-		path: 'iuran/q',
-		redirect: () => '/bendahara/iuran/q/th-ajaran',
+		path: 'iuran-old/q',
+		redirect: () => '/bendahara/iuran-old/q/th-ajaran',
 		children: [
 			{
 				path: 'th-ajaran/:thAjaranH?',
 				component: () =>
 					import(
-						'src/pages/bendahara/iuran/filter/IuranByThAjaran.vue'
+						'src/pages/bendahara/iuran-old/filter/IuranByThAjaran.vue'
 					),
 			},
 			{
 				path: 'santri/:id?',
 				component: () =>
 					import(
-						'src/pages/bendahara/iuran/filter/IuranBySantri.vue'
+						'src/pages/bendahara/iuran-old/filter/IuranBySantri.vue'
 					),
 			},
 			{
 				path: 'tanggal/:startDate?/:endDate?',
 				component: () =>
 					import(
-						'src/pages/bendahara/iuran/filter/IuranByTanggal.vue'
+						'src/pages/bendahara/iuran-old/filter/IuranByTanggal.vue'
 					),
 			},
 		],
 	},
 	{
-		path: 'iuran/atur-paket',
+		path: 'iuran-old/atur-paket',
 		component: () =>
-			import('src/pages/bendahara/iuran/paket/SettingPaket.vue'),
+			import('src/pages/bendahara/iuran-old/paket/SettingPaket.vue'),
 	},
 ];

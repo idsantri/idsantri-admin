@@ -138,7 +138,7 @@ const iuran = ref([]);
 onMounted(async () => {
 	Object.assign(input.value, props.data);
 	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
-	iuran.value = listsStore().getByStateName('iuran');
+	iuran.value = listsStore().getByStateName('iuran-old');
 });
 
 const setNominal = (val) => {
@@ -161,13 +161,13 @@ const submit = async () => {
 	let response = null;
 	if (props.isNew) {
 		response = await apiPost({
-			endPoint: 'iuran',
+			endPoint: 'iuran-old',
 			data,
 			loading: loadingCrud,
 		});
 	} else {
 		response = await apiUpdate({
-			endPoint: `iuran/${input.value.id}`,
+			endPoint: `iuran-old/${input.value.id}`,
 			data,
 			confirm: true,
 			notify: true,
@@ -183,7 +183,7 @@ const submit = async () => {
 
 const del = async (id) => {
 	const result = await apiDelete({
-		endPoint: `iuran/${id}`,
+		endPoint: `iuran-old/${id}`,
 		loading: loadingCrud,
 	});
 	if (result) {

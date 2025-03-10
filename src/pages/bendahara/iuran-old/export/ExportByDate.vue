@@ -73,7 +73,7 @@ async function onSubmit() {
 		);
 	}
 	const data = await apiGet({
-		endPoint: 'export/iuran',
+		endPoint: 'export/iuran-old',
 		loading: loadingMain,
 		params,
 	});

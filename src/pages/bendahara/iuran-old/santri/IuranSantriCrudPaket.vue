@@ -44,7 +44,7 @@
 						<q-btn
 							no-caps
 							icon="settings"
-							to="/bendahara/iuran/atur-paket"
+							to="/bendahara/iuran-old/atur-paket"
 							v-close-popup
 							outline=""
 							dense
@@ -177,7 +177,7 @@ onMounted(async () => {
 
 	Object.assign(input.value, props.data);
 	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
-	iuran.value = listsStore().getByStateName('iuran');
+	iuran.value = listsStore().getByStateName('iuran-old');
 });
 
 async function getData() {
@@ -225,7 +225,7 @@ const submit = async () => {
 	// return;
 
 	const response = await apiPost({
-		endPoint: 'iuran/paket',
+		endPoint: 'iuran-old/paket',
 		data,
 		loading: loadingCrud,
 	});
