@@ -3,6 +3,9 @@ export default [
 		path: '',
 		redirect: () => '/bendahara/iuran-old/q/th-ajaran',
 	},
+	/**
+	 * @deprecated
+	 */
 	{
 		path: 'iuran-old/export',
 		component: () =>

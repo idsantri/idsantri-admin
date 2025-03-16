@@ -1,7 +1,7 @@
 import { format, isValid } from 'date-fns';
 import { id } from 'date-fns/locale';
 
-function formatDate(date, formatString) {
+function formatDate(date, formatString = 'yyyy-MM-dd HH:mm:ss') {
 	try {
 		const parsedDate = new Date(date);
 

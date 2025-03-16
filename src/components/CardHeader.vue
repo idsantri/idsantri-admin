@@ -8,7 +8,7 @@
 			<slot name="action"></slot>
 			<q-btn
 				no-caps
-				label="Kembali"
+				:label="$q.screen.lt.sm ? '' : 'Kembali'"
 				icon="reply"
 				dense
 				class="q-px-md"

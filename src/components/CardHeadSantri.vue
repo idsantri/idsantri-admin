@@ -50,6 +50,12 @@
 	</q-card>
 </template>
 <script setup>
+/**
+ * @deprecated
+ * TODO: DELETE IT
+ * ganti dengan CardSantriSimple
+ */
+
 defineProps({
 	data: Object,
 	loading: Boolean,

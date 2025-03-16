@@ -11,7 +11,7 @@
 				no-caps=""
 				icon="download"
 				dense
-				to="/sekretariat/export"
+				to="/santri/export"
 			/>
 			<div class="q-px-sm"></div>
 			<q-tabs shrink stretch class="text-green-11">
