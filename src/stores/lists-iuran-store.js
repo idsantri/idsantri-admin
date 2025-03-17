@@ -1,3 +1,6 @@
+// TODO: untuk iuran-old. belum diterapkan yang baru
+// DELETE
+
 import { defineStore } from 'pinia';
 export default defineStore('lists-iuran', {
 	state: () => {

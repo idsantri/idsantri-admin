@@ -23,7 +23,7 @@
 									Total Tagihan
 								</td>
 								<td class="text-right">
-									{{ sumNominal().toRupiah() }}
+									{{ sumNominal(iuran).toRupiah() }}
 								</td>
 							</tr>
 							<tr>
@@ -31,7 +31,7 @@
 									Total Pembayaran
 								</td>
 								<td class="text-right">
-									{{ sumNominalLunas().toRupiah() }}
+									{{ sumLunas(iuran).toRupiah() }}
 								</td>
 							</tr>
 							<tr>
@@ -39,11 +39,7 @@
 									Sisa Tagihan
 								</td>
 								<td class="text-right text-weight-bold">
-									{{
-										(
-											sumNominal() - sumNominalLunas()
-										).toRupiah()
-									}}
+									{{ sumNotLunas(iuran).toRupiah() }}
 								</td>
 							</tr>
 						</table>
@@ -183,6 +179,7 @@ import apiUpdate from 'src/api/api-update';
 import { formatDate } from 'src/utils/format-date';
 import IuranCrud from 'src/components/forms/IuranCrud.vue';
 import { deleteById, replaceById } from 'src/utils/array-object';
+import { sumNominal, sumLunas, sumNotLunas } from '../../utils';
 
 const { params } = useRoute();
 const thAjaranH = ref(params.thAjaranH);
@@ -202,6 +199,7 @@ const onCreate = (res) => {
 	iuran.value.push(res);
 	assignIuran();
 };
+
 const onUpdate = (res) => {
 	replaceById(iuran.value, res.id, res);
 	assignIuran();
@@ -214,20 +212,6 @@ function editIuran(item) {
 	crud.value = true;
 }
 
-function sumNominalLunas() {
-	return iuran.value.reduce((total, item) => {
-		// Check if the item is "lunas" (payment completed)
-		if (item.lunas !== null) {
-			// Add the nominal value to our running total
-			return total + item.nominal;
-		}
-		// If not "lunas", just return the current total without adding
-		return total;
-	}, 0); // Start with 0 as initial value
-}
-function sumNominal() {
-	return iuran.value.reduce((total, item) => total + item.nominal, 0);
-}
 async function loadData() {
 	if (thAjaranH.value && santriId.value) {
 		const data = await apiGet({
