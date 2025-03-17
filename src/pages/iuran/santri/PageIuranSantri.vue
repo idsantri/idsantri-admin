@@ -57,9 +57,9 @@ import { useRoute, useRouter } from 'vue-router';
 import { provide, ref } from 'vue';
 import TabThAjaran from './views/TabThAjaran.vue';
 import ButtonAdd from './views/ButtonAdd.vue';
-import IuranCrud from 'src/components/cruds/IuranCrud.vue';
-import HeadFilterSantri from 'src/components/HeadFilterSantri.vue';
-import CardSantriSimple from 'src/components/CardSantriSimple.vue';
+import IuranCrud from 'src/components/forms/IuranCrud.vue';
+import HeadFilterSantri from 'src/components/filters/FilterSantri.vue';
+import CardSantriSimple from 'src/components/santri/CardSantriSimple.vue';
 
 const { params } = useRoute();
 const router = useRouter();

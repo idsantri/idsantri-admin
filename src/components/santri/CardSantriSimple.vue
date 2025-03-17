@@ -16,7 +16,7 @@
 		</q-card-section>
 
 		<q-card-section class="q-pa-sm">
-			<div v-if="isLoading">
+			<div v-if="loading">
 				<q-spinner-cube
 					color="green-12"
 					size="4em"
@@ -64,7 +64,7 @@
 <script setup>
 import apiGet from 'src/api/api-get';
 import santriStore from 'src/stores/santri-store';
-import { onMounted, ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 const emit = defineEmits(['loaded']);
 const props = defineProps({
@@ -88,13 +88,13 @@ const props = defineProps({
 	},
 });
 
-const isLoading = ref(false);
+const loading = ref(false);
 const santri = ref({});
 
 const loadData = async () => {
 	const data = await apiGet({
 		endPoint: 'santri/' + props.id,
-		loading: isLoading,
+		loading: loading,
 	});
 	if (data) {
 		santri.value = data.santri;
@@ -107,13 +107,15 @@ const loadData = async () => {
 	}
 };
 
-onMounted(async () => {
-	const stored = santriStore().getSantri;
-	if (stored.id == props.id) {
-		santri.value = stored;
-		emit('loaded', santri.value);
-	} else {
-		await loadData();
+watchEffect(async () => {
+	if (props.id) {
+		const stored = santriStore().getSantri;
+		if (stored.id == props.id) {
+			santri.value = stored;
+			emit('loaded', santri.value);
+		} else {
+			await loadData();
+		}
 	}
 });
 </script>

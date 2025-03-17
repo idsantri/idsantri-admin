@@ -53,7 +53,7 @@ import { onMounted, reactive, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import { formatDateFull } from '../../utils/format-date';
 import CardColumn from '../../components/CardColumn.vue';
-import CardListSantri from 'src/components/CardListSantri.vue';
+import CardListSantri from 'src/components/santri/CardSantriLists.vue';
 import waliStore from 'src/stores/wali-store';
 import { formatAlamatLengkap } from 'src/utils/format-text';
 import dialogStore from 'src/stores/dialog-store';

@@ -151,7 +151,7 @@
 import { onMounted, ref } from 'vue';
 import listsStore from 'src/stores/lists-store';
 import apiPost from 'src/api/api-post';
-import FormHeader from 'src/components/FormHeader.vue';
+import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import apiGet from 'src/api/api-get';

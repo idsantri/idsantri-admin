@@ -118,8 +118,8 @@ import apiDelete from 'src/api/api-delete';
 import apiPost from 'src/api/api-post';
 import apiUpdate from 'src/api/api-update';
 import { forceRerender } from 'src/utils/buttons-click';
-import CarouselAlamat from 'src/components/CarouselAlamat.vue';
-import FormHeader from 'src/components/FormHeader.vue';
+import CarouselAlamat from 'src/components/alamat/CarouselAlamat.vue';
+import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputRegister from './SantriModalCrudRegister.vue';
 import InputIdentity from './SantriModalCrudIdentity.vue';
 import InputPendidikanAkhir from './SantriModalCrudPendidikanAkhir.vue';
@@ -147,6 +147,9 @@ const onSubmit = async () => {
 	const data = JSON.parse(JSON.stringify(santri));
 	delete data.image_url;
 	delete data.data_akhir;
+	delete data.alamat_lengkap;
+	delete data.alamat_pendek;
+
 	// console.log(data);
 	// return;
 	let response = null;

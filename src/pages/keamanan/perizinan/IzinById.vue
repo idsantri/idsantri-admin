@@ -31,7 +31,7 @@
 						</q-toolbar>
 					</q-card-section>
 					<q-card-section class="q-pa-sm" v-if="izin">
-						<card-head-santri :data="izin" :loading="loading" />
+						<CardSantriSimple :id="izin.santri_id" />
 						<q-card bordered flat class="q-mt-sm">
 							<q-card-section
 								class="q-pa-sm text-subtitle1 bg-green-11 flex"
@@ -47,8 +47,16 @@
 									@click="showKembali = true"
 								/>
 							</q-card-section>
+
 							<q-card-section class="q-pa-sm">
-								<table class="full-width">
+								<div v-if="loading">
+									<q-spinner-cube
+										color="green-12"
+										size="8em"
+										class="flex q-ma-lg q-mx-auto"
+									/>
+								</div>
+								<table v-else class="full-width">
 									<tr>
 										<td class="text-italic">Sifat:</td>
 										<td>{{ izin.sifat }}</td>
@@ -151,7 +159,7 @@
 			</div>
 
 			<div class="col-xs-12 col-sm-6">
-				<IzinRiwayat class="q-ma-sm" :santri_id="santri_id" />
+				<IzinRiwayat class="q-ma-sm" :santri_id="izin.santri_id" />
 			</div>
 		</div>
 		<q-dialog v-model="crudShow">
@@ -184,9 +192,9 @@ import { formatDateFull } from 'src/utils/format-date';
 import { bacaHijri, m2h } from 'src/utils/hijri';
 import IzinCrud from 'src/pages/keamanan/perizinan/IzinCrud.vue';
 import IzinKembali from 'src/pages/keamanan/perizinan/IzinKembali.vue';
-import CardHeadSantri from 'src/components/CardHeadSantri.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
 import IzinRiwayat from './IzinRiwayat.vue';
+import CardSantriSimple from 'src/components/santri/CardSantriSimple.vue';
 
 const showViewer = ref(false);
 const urlReport = ref('');
@@ -195,7 +203,6 @@ const izin = ref({});
 const loading = ref(false);
 const crudShow = ref(false);
 const showKembali = ref(false);
-const santri_id = ref();
 
 function print() {
 	urlReport.value = `reports/izin-pesantren/view?id=${izin.value.id}`;
@@ -204,19 +211,12 @@ function print() {
 }
 
 async function loadData() {
-	santri_id.value = null;
 	const data = await apiGet({
 		endPoint: `izin-pesantren/${route.params.id}`,
 		loading,
 	});
-	izin.value = data.izin_pesantren;
-	// console.log(izin.value);
-	if (izin.value) {
-		santri_id.value = izin.value.santri_id;
-		const img = await apiGet({
-			endPoint: `images/santri/${izin.value.santri_id}`,
-		});
-		izin.value.image = img.image_url;
+	if (data) {
+		izin.value = data.izin_pesantren;
 	}
 }
 

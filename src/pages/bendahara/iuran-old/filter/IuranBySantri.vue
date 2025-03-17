@@ -19,7 +19,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
-import FilterSantri from 'src/components/HeadFilterSantri.vue';
+import FilterSantri from 'src/components/filters/FilterSantri.vue';
 import DropDownMenu from './DropDownMenu.vue';
 import IuranTable from './IuranTable.vue';
 import { notifyWarning } from 'src/utils/notify';

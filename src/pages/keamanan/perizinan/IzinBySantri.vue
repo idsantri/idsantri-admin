@@ -15,7 +15,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import IzinRiwayat from './IzinRiwayat.vue';
-import CardSantri from 'components/CardSantri.vue';
+import CardSantri from 'components/santri/CardSantri.vue';
 
 const { params } = useRoute();
 const santri_id = ref(params.santri_id);

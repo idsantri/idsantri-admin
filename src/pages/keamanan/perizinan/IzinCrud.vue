@@ -143,7 +143,7 @@ import apiDelete from 'src/api/api-delete';
 import { isDate, formatDateFull } from 'src/utils/format-date';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
-import FormHeader from 'src/components/FormHeader.vue';
+import FormHeader from 'src/components/forms/FormHeader.vue';
 
 const props = defineProps({
 	data: Object,

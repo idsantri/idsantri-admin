@@ -181,7 +181,7 @@ import apiGet from 'src/api/api-get';
 import 'src/utils/rupiah';
 import apiUpdate from 'src/api/api-update';
 import { formatDate } from 'src/utils/format-date';
-import IuranCrud from 'src/components/cruds/IuranCrud.vue';
+import IuranCrud from 'src/components/forms/IuranCrud.vue';
 import { deleteById, replaceById } from 'src/utils/array-object';
 
 const { params } = useRoute();

@@ -252,7 +252,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import FilterKelas from 'src/components/HeadFilterKelas.vue';
+import FilterKelas from 'src/components/filters/FilterKelas.vue';
 import apiGet from 'src/api/api-get';
 import { titleCase } from 'src/utils/format-text';
 import { notifySuccess } from 'src/utils/notify';

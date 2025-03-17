@@ -9,11 +9,11 @@
 			<q-card-section class="no-padding">
 				<div class="row" style="max-width: 1400px">
 					<div class="col-12 col-md-6 q-pa-sm">
-						<q-card>
+						<q-card bordered flat>
 							<!-- santri -->
 							<CardSantri class="" :id="kelas?.santri_id" />
-							<q-separator />
-
+						</q-card>
+						<q-card class="q-mt-sm" bordered flat>
 							<!-- kelas -->
 							<q-card-section class="q-pa-sm">
 								<q-toolbar class="bg-green-1">
@@ -102,34 +102,32 @@
 
 					<!-- router view -->
 					<div class="col-12 col-md-6 q-pa-sm" :key="keyRoute">
-						<q-card>
+						<q-card bordered flat>
+							<q-tabs
+								no-caps
+								outside-arrows
+								mobile-arrows
+								class="bg-green-7 text-green-3"
+								indicator-color="green-11"
+								active-color="green-11"
+							>
+								<q-route-tab
+									name="riwayat"
+									label="Riwayat"
+									:to="`/madrasah/kelas/${kelas.id}/riwayat`"
+								/>
+								<q-route-tab
+									name="izin"
+									label="Izin"
+									:to="`/madrasah/kelas/${kelas.id}/izin`"
+								/>
+								<q-route-tab
+									name="nilai"
+									label="Nilai Mapel"
+									:to="`/madrasah/kelas/${kelas.id}/nilai-mapel`"
+								/>
+							</q-tabs>
 							<q-card-section class="q-pa-sm">
-								<q-tabs
-									no-caps
-									outside-arrows
-									mobile-arrows
-									class="bg-green-7 text-green-3"
-									indicator-color="green-11"
-									active-color="green-11"
-								>
-									<q-route-tab
-										name="riwayat"
-										label="Riwayat"
-										:to="`/madrasah/kelas/${kelas.id}/riwayat`"
-									/>
-									<q-route-tab
-										name="izin"
-										label="Izin"
-										:to="`/madrasah/kelas/${kelas.id}/izin`"
-									/>
-									<q-route-tab
-										name="nilai"
-										label="Nilai Mapel"
-										:to="`/madrasah/kelas/${kelas.id}/nilai-mapel`"
-									/>
-								</q-tabs>
-							</q-card-section>
-							<q-card-section class="q-px-sm q-pb-sm q-pt-none">
 								<router-view />
 							</q-card-section>
 						</q-card>
@@ -154,7 +152,7 @@ import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import apiUpdate from 'src/api/api-update';
 import SantriKelasCrud from 'src/pages/santri/relations/kelas/SantriKelasCrud.vue';
-import CardSantri from 'src/components/CardSantri.vue';
+import CardSantri from 'src/components/santri/CardSantri.vue';
 
 const keyRoute = ref(0);
 const route = useRoute();

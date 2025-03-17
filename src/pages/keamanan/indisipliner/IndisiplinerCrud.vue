@@ -161,7 +161,7 @@ import { isDate, formatDateFull } from 'src/utils/format-date';
 import apiPost from 'src/api/api-post';
 import apiUpdate from 'src/api/api-update';
 import apiDelete from 'src/api/api-delete';
-import FormHeader from 'src/components/FormHeader.vue';
+import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectTatibSantri from 'src/components/inputs/InputSelectTatibSantri.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';

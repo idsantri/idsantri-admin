@@ -191,9 +191,9 @@ import loadingStore from 'src/stores/loading-store';
 import apiDelete from 'src/api/api-delete';
 import apiUpdate from 'src/api/api-update';
 import apiPost from 'src/api/api-post';
-import CarouselAlamat from 'src/components/CarouselAlamat.vue';
+import CarouselAlamat from 'src/components/alamat/CarouselAlamat.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
-import FormHeader from 'src/components/FormHeader.vue';
+import FormHeader from 'src/components/forms/FormHeader.vue';
 
 const loadingState = loadingStore();
 const { loadingMain } = toRefs(loadingState);
