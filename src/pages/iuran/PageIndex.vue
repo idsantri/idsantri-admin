@@ -33,7 +33,7 @@
 										: ''
 								"
 							/>
-							<q-route-tab
+							<!-- <q-route-tab
 								name="tanggal"
 								label="Tanggal"
 								to="/iuran/tanggal"
@@ -42,7 +42,8 @@
 										? 'bg-green-10'
 										: ''
 								"
-							/>
+								disable
+							/> -->
 						</q-tabs>
 					</q-card>
 				</template>

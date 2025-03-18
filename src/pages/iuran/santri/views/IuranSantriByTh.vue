@@ -10,16 +10,19 @@
 		<div v-if="iuran.length > 0">
 			<q-list>
 				<q-item class="q-pa-sm bg-green-11">
-					<q-item-section>
-						<table>
+					<q-item-section class="flex">
+						<table
+							class=""
+							style="min-width: 300px; max-width: 400px"
+						>
 							<tr>
-								<td class="text-caption text-italic">
+								<td class="text-caption text-italic q-pr-md">
 									Tahun Ajaran
 								</td>
 								<td class="text-right">{{ thAjaranH }}</td>
 							</tr>
 							<tr>
-								<td class="text-caption text-italic">
+								<td class="text-caption text-italic q-pr-md">
 									Total Tagihan
 								</td>
 								<td class="text-right">
@@ -27,7 +30,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="text-caption text-italic">
+								<td class="text-caption text-italic q-pr-md">
 									Total Pembayaran
 								</td>
 								<td class="text-right">
@@ -35,7 +38,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="text-caption text-italic">
+								<td class="text-caption text-italic q-pr-md">
 									Sisa Tagihan
 								</td>
 								<td class="text-right text-weight-bold">
@@ -242,7 +245,7 @@ async function toggleCetak(val, evt, item, index) {
 }
 
 async function toggleLunas(val, evt, item, index) {
-	const endPoint = `iuran/${item.id}/${val ? 'set-lunas' : 'set-not-lunas'}`;
+	const endPoint = `iuran/${item.id}/${val ? 'lunas' : 'not-lunas'}`;
 	const updated = await apiUpdate({
 		endPoint,
 		message: `Iuran ${val ? 'lunas' : 'TIDAK lunas'}`,
