@@ -145,6 +145,26 @@
 					</q-item>
 					<q-separator />
 				</div>
+				<q-item class="q-pa-sm bg-green-8">
+					<q-item-section class="text-green-11">
+						<q-item-label overline class="text-green-1"
+							>TOTAL CETAK</q-item-label
+						>
+						<q-item-label class="text-body1">
+							{{ sumCetak(iuran).toRupiah() }}
+						</q-item-label>
+					</q-item-section>
+					<q-item-section side class="">
+						<div class="flex flex-center">
+							<DropDownPrint
+								:data="{
+									santri_id: santriId,
+									th_ajaran_h: thAjaranH,
+								}"
+							/>
+						</div>
+					</q-item-section>
+				</q-item>
 			</q-list>
 		</div>
 		<div v-else class="q-ma-lg">
@@ -182,7 +202,8 @@ import apiUpdate from 'src/api/api-update';
 import { formatDate } from 'src/utils/format-date';
 import IuranCrud from 'src/components/forms/IuranCrud.vue';
 import { deleteById, replaceById } from 'src/utils/array-object';
-import { sumNominal, sumLunas, sumNotLunas } from '../../utils';
+import { sumNominal, sumLunas, sumNotLunas, sumCetak } from '../../utils';
+import DropDownPrint from './DropDownPrint.vue';
 
 const { params } = useRoute();
 const thAjaranH = ref(params.thAjaranH);
