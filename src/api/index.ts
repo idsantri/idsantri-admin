@@ -19,6 +19,8 @@ api.interceptors.request.use((config) => {
 	if (token) {
 		config.headers.Authorization = `Bearer ${token}`;
 	}
+	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	config.headers['X-Timezone'] = timezone;
 	// console.log('🚀 ~ api.interceptors.request.use ~ config:', config);
 	return config;
 });

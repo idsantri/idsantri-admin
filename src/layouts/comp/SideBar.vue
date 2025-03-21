@@ -20,7 +20,7 @@
 		</ExpansionItem>
 
 		<!-- BENDAHARA -->
-		<div class="bg-light-green-7">
+		<!-- <div class="bg-light-green-7">
 			<ExpansionItem label="Bendahara" caption="Iuran">
 				<MenuItem
 					v-for="item in menuBendahara"
@@ -28,7 +28,7 @@
 					:item="item"
 				/>
 			</ExpansionItem>
-		</div>
+		</div> -->
 
 		<!-- MAKHADIYAH -->
 		<ExpansionItem label="Makhadiyah" caption="Kedaerahan">
@@ -82,22 +82,29 @@ import MenuItem from './MenuItem.vue';
 const MenuSekretariat = [
 	{
 		to: '/cari/santri',
-		icon: 'home_work',
-		label: 'Sekretariat',
-		caption: 'Kesantrian',
+		icon: 'search',
+		label: 'Kesantrian',
+		caption: 'Pencarian',
 		disable: false,
 	},
-];
-
-const menuBendahara = [
 	{
-		to: '/bendahara/iuran-old/q',
+		to: '/iuran',
 		icon: 'payments',
-		label: 'Iuran (gaya lama)',
+		label: 'Iuran',
 		caption: 'Iuran Santri dan Murid',
 		disable: false,
 	},
 ];
+
+// const menuBendahara = [
+// 	{
+// 		to: '/bendahara/iuran-old/q',
+// 		icon: 'payments',
+// 		label: 'Iuran (gaya lama)',
+// 		caption: 'Iuran Santri dan Murid',
+// 		disable: false,
+// 	},
+// ];
 
 const menuMakhadiyah = [
 	{

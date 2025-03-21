@@ -148,7 +148,7 @@
 </template>
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
-import FormHeader from 'src/components/FormHeader.vue';
+import FormHeader from 'src/components/forms/FormHeader.vue';
 import santriStore from 'src/stores/santri-store';
 import { notifyError } from 'src/utils/notify';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';

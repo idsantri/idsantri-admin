@@ -100,7 +100,7 @@ import { forceRerender } from 'src/utils/buttons-click';
 import InputIdentity from './OrtuModalCrudIdentity.vue';
 import InputAyah from './OrtuModalCrudAyah.vue';
 import InputIbu from './OrtuModalCrudIbu.vue';
-import FormHeader from 'src/components/FormHeader.vue';
+import FormHeader from 'src/components/forms/FormHeader.vue';
 
 const router = useRouter();
 const { ortu } = reactive(ortuStore());

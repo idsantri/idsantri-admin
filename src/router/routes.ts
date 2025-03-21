@@ -13,6 +13,7 @@ import _wali from './_wali';
 import _madrasah from './_madrasah';
 import _info from './_info';
 import _makhadiyah from './_makhadiyah';
+import _iuran from './_iuran';
 
 const routes: RouteRecordRaw[] = [
 	// layout auth
@@ -58,6 +59,11 @@ const routes: RouteRecordRaw[] = [
 				path: 'sekretariat',
 				meta: { title: 'Sekretariat' },
 				children: _sekretariat,
+			},
+			{
+				path: 'iuran',
+				meta: { title: 'Iuran dan Tagihan' },
+				children: _iuran,
 			},
 			{
 				path: 'madrasah',

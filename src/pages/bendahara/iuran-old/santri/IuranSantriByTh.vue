@@ -140,7 +140,6 @@ import { formatDateShort } from 'src/utils/format-date';
 import { formatHijri, m2h } from 'src/utils/hijri';
 import IuranSantriCrud from 'src/pages/bendahara/iuran-old/santri/IuranSantriCrud.vue';
 import DropDownPrint from 'src/pages/bendahara/iuran-old/santri/DropDownPrint.vue';
-import 'src/utils/rupiah';
 
 const route = useRoute();
 const thAjaranH = ref(route.params.thAjaranH);

@@ -55,10 +55,10 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import listsMadrasahStore from 'src/stores/lists-madrasah-store';
-import SelectTahunAjaran from 'components/SelectTahunAjaran.vue';
-import SelectTingkat from 'components/SelectTingkat.vue';
-import SelectKelas from 'components/SelectKelas.vue';
-import SelectUjianKe from 'components/SelectUjianKe.vue';
+import SelectTahunAjaran from './SelectTahunAjaran.vue';
+import SelectTingkat from './SelectTingkat.vue';
+import SelectKelas from './SelectKelas.vue';
+import SelectUjianKe from './SelectUjianKe.vue';
 import SelectBulanUjianSetting from './SelectBulanUjianSetting.vue';
 import SelectBulanUjianList from './SelectBulanUjianList.vue';
 

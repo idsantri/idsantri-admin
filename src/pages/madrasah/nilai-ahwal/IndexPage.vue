@@ -191,7 +191,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import apiPost from 'src/api/api-post';
-import FilterKelas from 'components/HeadFilterKelas.vue';
+import FilterKelas from 'components/filters/FilterKelas.vue';
 
 const textFilter = ref('');
 const { params } = useRoute();

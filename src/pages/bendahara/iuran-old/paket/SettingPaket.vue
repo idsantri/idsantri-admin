@@ -148,7 +148,6 @@
 import { onMounted, ref } from 'vue';
 import apiGet from 'src/api/api-get';
 import SettingCrud from './SettingCrud.vue';
-import 'src/utils/rupiah';
 
 const loading = ref(false);
 const iuranPaket = ref([]);

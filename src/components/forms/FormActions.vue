@@ -20,7 +20,7 @@
 			v-close-popup
 			class="bg-green-11"
 			no-caps=""
-			id="btn-close-crud"
+			id="btn-close-form"
 		/>
 		<q-btn
 			type="submit"

@@ -1,12 +1,14 @@
 <template lang="">
 	<q-card>
-		<q-card-section class="q-pa-sm">
+		<q-card-section class="no-padding">
 			<q-toolbar class="bg-green-1">
 				<q-toolbar-title class="text-subtitle1">
 					Identitas Santri
 				</q-toolbar-title>
+				<q-btn icon="sync" outline @click="loadData" />
 			</q-toolbar>
-
+		</q-card-section>
+		<q-card-section class="q-py-sm q-px-none">
 			<q-list dense>
 				<q-item>
 					<q-item-section avatar>
@@ -134,46 +136,68 @@
 	</q-card>
 </template>
 <script setup>
-import { onMounted, onUpdated, ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 import apiGet from 'src/api/api-get';
+import santriStore from 'src/stores/santri-store';
 
+const emit = defineEmits(['loaded']);
 const props = defineProps({
 	id: {
+		type: [Number, String],
 		required: true,
+		validator(value) {
+			// Cek jika number langsung
+			if (typeof value === 'number') {
+				return !isNaN(value);
+			}
+
+			// Cek jika string yang bisa dikonversi ke number
+			if (typeof value === 'string') {
+				const num = Number(value);
+				return !isNaN(num);
+			}
+
+			return false;
+		},
 	},
 });
-const emit = defineEmits(['successGet']);
 
 const loading = ref(false);
 const santri = ref({});
 const ortu = ref({});
 const wali = ref({});
-async function fetchData() {
+
+const loadData = async () => {
 	const data = await apiGet({
-		endPoint: `santri/${props.id}`,
-		loading,
+		endPoint: 'santri/' + props.id,
+		loading: loading,
 	});
-	if (!data.santri) return;
-	santri.value = data.santri;
-	wali.value = data.wali;
-	ortu.value = data.ortu;
-	// console.log(santri.value);
-	// const img = await apiGet({
-	// 	endPoint: `images/santri/${santri.value.id}`,
-	// });
-	// santri.value.image = img.image_url;
-	emit('successGet', santri.value);
-}
+	if (data) {
+		santri.value = data.santri;
+		wali.value = data.wali;
+		ortu.value = data.ortu;
+		emit('loaded', santri.value);
 
-onMounted(async () => {
-	if (props.id) {
-		await fetchData();
+		//store
+		santriStore().setSantri(data.santri);
+		santriStore().setOrtu(data.ortu);
+		santriStore().setWali(data.wali);
 	}
-});
+};
 
-onUpdated(async () => {
+watchEffect(async () => {
 	if (props.id) {
-		await fetchData();
+		const santriState = santriStore().getSantri;
+		const waliState = santriStore().getWali;
+		const ortuState = santriStore().getOrtu;
+		if (santriState.id == props.id) {
+			santri.value = santriState;
+			ortu.value = ortuState;
+			wali.value = waliState;
+			emit('loaded', santri.value);
+		} else {
+			await loadData();
+		}
 	}
 });
 </script>

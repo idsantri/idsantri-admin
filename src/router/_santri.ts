@@ -6,7 +6,7 @@ export default [
 		redirect: 'cari/santri',
 	},
 	{
-		path: ':id',
+		path: ':id(\\d+)',
 		component: () => import('src/pages/santri/SantriDetail.vue'),
 		children: [
 			{
@@ -66,5 +66,9 @@ export default [
 			// 	],
 			// },
 		],
+	},
+	{
+		path: 'export',
+		component: () => import('src/pages/santri/ExportPage.vue'),
 	},
 ];

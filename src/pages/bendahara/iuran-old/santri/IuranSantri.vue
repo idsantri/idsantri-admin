@@ -29,7 +29,6 @@
 				</q-toolbar>
 			</q-card-section>
 			<q-card-section class="q-pa-sm">
-				<card-head-santri :data="santri" :loading="loading" />
 				<q-card bordered flat class="q-mt-sm">
 					<q-card-section
 						class="q-pa-sm text-subtitle1 bg-green-11 flex"
@@ -135,7 +134,6 @@
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiGet from 'src/api/api-get';
-import CardHeadSantri from 'src/components/CardHeadSantri.vue';
 import IuranSantriByTh from 'src/pages/bendahara/iuran-old/santri/IuranSantriByTh.vue';
 import IuranSantriCrud from 'src/pages/bendahara/iuran-old/santri/IuranSantriCrud.vue';
 import IuranSantriCrudPaket from './IuranSantriCrudPaket.vue';

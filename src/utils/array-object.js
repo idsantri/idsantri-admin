@@ -26,4 +26,37 @@ function buildTextError(message) {
 	}
 	return result;
 }
-export { toArray, getObjectById, isPrimitiveArray, buildTextError };
+
+function deleteById(arr, id) {
+	// Cari index dari objek dengan id yang sesuai
+	const index = arr.findIndex((item) => item.id == id);
+
+	// Jika objek ditemukan, hapus dari array
+	if (index !== -1) {
+		arr.splice(index, 1);
+	}
+
+	// Kembalikan array yang sudah diubah
+	return arr;
+}
+
+function replaceById(arr, id, newObj) {
+	// Cari index dari objek dengan id yang sesuai
+	const index = arr.findIndex((item) => item.id === id);
+
+	// Jika objek ditemukan, ganti dengan objek baru
+	if (index !== -1) {
+		arr[index] = newObj;
+	}
+
+	// Kembalikan array yang sudah diubah
+	return arr;
+}
+export {
+	toArray,
+	getObjectById,
+	isPrimitiveArray,
+	buildTextError,
+	deleteById,
+	replaceById,
+};

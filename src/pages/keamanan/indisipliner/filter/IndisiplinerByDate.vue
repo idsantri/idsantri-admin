@@ -76,7 +76,7 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import { formatDateShort, isDate } from 'src/utils/format-date';
-import FilterTanggal from 'src/components/HeadFilterTanggal';
+import FilterTanggal from 'src/components/filters/FilterTanggal.vue';
 import IndisiplinerCrud from 'src/pages/keamanan/indisipliner/IndisiplinerCrud.vue';
 import DropDownMenu from './DropDownMenu.vue';
 

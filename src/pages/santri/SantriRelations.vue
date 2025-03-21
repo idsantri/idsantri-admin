@@ -66,7 +66,7 @@
 				<q-list>
 					<q-item
 						v-close-popup
-						:to="'/bendahara/iuran/santri/' + props.santriId"
+						:to="'/iuran/santri/' + props.santriId"
 					>
 						<q-item-section>
 							<q-item-label>Iuran</q-item-label>

@@ -14,7 +14,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import CardSantri from 'components/CardSantri.vue';
+import CardSantri from 'components/santri/CardSantri.vue';
 import IndisiplinerRiwayat from './IndisiplinerRiwayat.vue';
 
 const { params } = useRoute();

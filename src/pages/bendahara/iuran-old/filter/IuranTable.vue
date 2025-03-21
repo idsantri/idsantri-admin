@@ -88,7 +88,6 @@
 import { ref } from 'vue';
 import { formatDateShort } from 'src/utils/format-date';
 import IuranSantriCrud from 'src/pages/bendahara/iuran-old/santri/IuranSantriCrud.vue';
-import 'src/utils/rupiah';
 import { digitSeparator } from 'src/utils/format-number';
 
 const props = defineProps({
