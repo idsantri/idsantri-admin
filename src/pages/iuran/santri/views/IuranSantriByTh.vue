@@ -77,10 +77,10 @@
 										:true-value="true"
 										:false-value="false"
 										@update:model-value="
-											(val, evt) =>
+											(value, event) =>
 												toggleLunas(
-													val,
-													evt,
+													value,
+													event,
 													item,
 													index,
 												)
@@ -177,13 +177,10 @@
 			</div>
 		</div>
 	</div>
-	<!-- <pre>
-		{{ iuran }}
-	</pre
-	> -->
+
+	<!-- edit -->
 	<q-dialog v-model="crud">
-		<!-- edit -->
-		<IuranCrud
+		<IuranForm
 			:data="dataIuran"
 			@success-delete="(id) => onDelete(id)"
 			@success-create="(res) => onCreate(res)"
@@ -192,18 +189,26 @@
 			:disable-th-ajaran="true"
 		/>
 	</q-dialog>
+
+	<!-- Lunas -->
+	<q-dialog v-model="crudLunas">
+		<IuranLunasForm
+			:data="dataIuran"
+			@success-update="(res) => onUpdate(res)"
+		/>
+	</q-dialog>
 </template>
 <script setup>
 import { inject, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
-import 'src/utils/rupiah';
 import apiUpdate from 'src/api/api-update';
 import { formatDate } from 'src/utils/format-date';
-import IuranCrud from 'src/components/forms/IuranCrud.vue';
+import IuranForm from 'src/components/forms/IuranForm.vue';
 import { deleteById, replaceById } from 'src/utils/array-object';
 import { sumNominal, sumLunas, sumNotLunas, sumCetak } from '../../utils';
 import DropDownPrint from './DropDownPrint.vue';
+import IuranLunasForm from 'src/components/forms/IuranLunasForm.vue';
 
 const { params } = useRoute();
 const thAjaranH = ref(params.thAjaranH);
@@ -213,6 +218,7 @@ const iuran = ref([]);
 const crud = ref(false);
 const dataIuran = ref({});
 const santri = inject('santri');
+const crudLunas = ref(false);
 
 const onDelete = (id) => {
 	deleteById(iuran.value, id);
@@ -266,10 +272,12 @@ async function toggleCetak(val, evt, item, index) {
 }
 
 async function toggleLunas(val, evt, item, index) {
-	const endPoint = `iuran/${item.id}/${val ? 'lunas' : 'not-lunas'}`;
+	if (val) {
+		return setLunas(item, index);
+	}
 	const updated = await apiUpdate({
-		endPoint,
-		message: `Iuran ${val ? 'lunas' : 'TIDAK lunas'}`,
+		endPoint: `iuran/${item.id}/not-lunas`,
+		message: 'Iuran/tagihan TIDAK lunas?',
 		loading: loading,
 	});
 	if (updated) {
@@ -278,6 +286,15 @@ async function toggleLunas(val, evt, item, index) {
 	} else {
 		iuran.value[index].isLunas = val == true ? false : true;
 	}
+}
+
+async function setLunas(item, index) {
+	dataIuran.value = item;
+	dataIuran.value.nama = santri.value.nama;
+	dataIuran.value.data_akhir = santri.value.data_akhir;
+
+	crudLunas.value = true;
+	iuran.value[index].isLunas = false;
 }
 
 function assignIuran() {

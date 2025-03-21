@@ -118,7 +118,6 @@ import FormHeader from 'src/components/forms/FormActions.vue';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
-import 'src/utils/rupiah';
 
 const props = defineProps({
 	data: { type: Object, required: false, default: () => {} },

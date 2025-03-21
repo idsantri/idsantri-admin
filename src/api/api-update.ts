@@ -7,18 +7,20 @@ async function apiUpdate({
 	endPoint,
 	data,
 	confirm = true,
-	message = 'Update data ini?',
+	message,
 	loading,
 	notify = true,
 	params,
 	config,
 }: UpdateParams): Promise<object | false> {
-	if (confirm) {
-		const isConfirmed = await notifyConfirm(message, true);
+	if (message || confirm) {
+		const confirmMessage = message || 'Update data ini?';
+		const isConfirmed = await notifyConfirm(confirmMessage, true);
 		if (!isConfirmed) {
 			return false;
 		}
 	}
+
 	try {
 		if (loading && typeof loading.value === 'boolean') loading.value = true;
 

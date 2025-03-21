@@ -36,7 +36,7 @@
 				@click="tabKey++"
 				class="q-px-sm q-mr-sm"
 			/>
-			<ButtonAdd @on-add="onAdd" />
+			<ButtonAdd @on-add="onAdd" @show-paket="showPaket" />
 		</q-card-section>
 		<q-card-section class="no-padding">
 			<TabThAjaran :key="tabKey" />
@@ -44,22 +44,26 @@
 	</q-card>
 	<q-dialog v-model="crud">
 		<!-- edit -->
-		<IuranCrud
+		<IuranForm
 			:data="dataIuran"
 			@success-create="onCreate"
 			:disable-santri-id="true"
 		/>
 	</q-dialog>
+	<q-dialog v-model="crudPaket">
+		<!-- edit -->
+		<IuranPaketSantriForm :data="dataIuran" @success-submit="tabKey++" />
+	</q-dialog>
 </template>
 <script setup>
-import 'src/utils/rupiah.js';
 import { useRoute, useRouter } from 'vue-router';
 import { provide, ref } from 'vue';
 import TabThAjaran from './views/TabThAjaran.vue';
 import ButtonAdd from './views/ButtonAdd.vue';
-import IuranCrud from 'src/components/forms/IuranCrud.vue';
+import IuranForm from 'src/components/forms/IuranForm.vue';
 import HeadFilterSantri from 'src/components/filters/FilterSantri.vue';
 import CardSantriSimple from 'src/components/santri/CardSantriSimple.vue';
+import IuranPaketSantriForm from 'src/components/forms/IuranPaketSantriForm.vue';
 
 const { params } = useRoute();
 const router = useRouter();
@@ -67,17 +71,26 @@ const dataFilter = ref({});
 const tabKey = ref(0);
 const dataIuran = ref({});
 const crud = ref(false);
+const crudPaket = ref(false);
 const santri = ref({});
 provide('santri', santri);
 
-function onAdd() {
+function makeDataIuran() {
 	dataIuran.value = {
 		santri_id: santri.value.id,
 		nama: santri.value.nama,
 		data_akhir: santri.value.data_akhir,
 		th_ajaran_h: params.thAjaranH || '',
 	};
+}
+function onAdd() {
+	makeDataIuran();
 	crud.value = true;
+}
+
+function showPaket() {
+	makeDataIuran();
+	crudPaket.value = true;
 }
 
 const onCreate = (res) => {

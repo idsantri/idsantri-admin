@@ -1,6 +1,6 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
-		<q-form @submit.prevent="submit">
+		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Iuran" :is-new="input.id ? false : true" />
 			<q-card-section>
 				<div v-if="loadingCrud">
@@ -49,17 +49,19 @@
 					url="metode-pembayaran"
 					label="Via"
 					class="q-mt-sm"
+					v-show="input.id && input.lunas"
 				/>
-				<InputSelectArray
-					v-model="input.keterangan"
-					url="keterangan-iuran"
+				<q-input
 					label="Keterangan"
+					v-model="input.keterangan"
+					dense
+					outlined=""
 					class="q-mt-sm"
 				/>
 			</q-card-section>
 			<FormActions
 				:btn-delete="input.id ? true : false"
-				@on-delete="deleteIuran"
+				@on-delete="onDelete"
 			/>
 		</q-form>
 		<!-- <pre>{{ props.santri }}</pre> -->
@@ -75,7 +77,6 @@ import FormHeader from './FormHeader.vue';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
-import 'src/utils/rupiah';
 import FormActions from './FormActions.vue';
 
 const props = defineProps({
@@ -100,7 +101,7 @@ onMounted(async () => {
 	Object.assign(input.value, props.data);
 	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
 	iuran.value = listsStore().getByStateName('iuran');
-	// console.log('🚀 ~ onMounted ~ props.data:', props.data);
+	console.log('🚀 ~ onMounted ~ props.data:', props.data);
 });
 
 const setNominal = (val) => {
@@ -110,7 +111,7 @@ const setNominal = (val) => {
 	}
 };
 
-const submit = async () => {
+const onSubmit = async () => {
 	const data = {
 		santri_id: input.value.santri_id,
 		th_ajaran_h: input.value.th_ajaran_h,
@@ -147,7 +148,7 @@ const submit = async () => {
 	}
 };
 
-const deleteIuran = async () => {
+const onDelete = async () => {
 	const id = input.value.id;
 	const result = await apiDelete({
 		endPoint: `iuran/${id}`,

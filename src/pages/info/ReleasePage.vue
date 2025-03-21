@@ -1,6 +1,7 @@
 <template>
 	<q-page class="q-pa-sm">
 		<q-card>
+			<CardHeader :show-reload="false" title="Releases" />
 			<q-card-section>
 				<div class="text-subtitle2 text-weight-bold">ID Santri</div>
 				<div class="text-subtitle1">{{ config.INS_SHORT }}</div>
@@ -53,14 +54,16 @@
 	</q-page>
 </template>
 <script setup>
+import CardHeader from 'src/components/CardHeader.vue';
 import config from 'src/config';
 
 const releases = [
 	{
-		ver: '1.2.5',
-		date: 'Januari 2025',
+		ver: '1.3.0',
+		date: 'Maret 2025',
 		release: {
-			'Fitur Baru': ['Setting App Wali Santri'],
+			Iuran: ['Fitur Tagihan', 'Item iuran/tagihan harus unik'],
+			Print: ['Cetak ID Card'],
 		},
 	},
 	{

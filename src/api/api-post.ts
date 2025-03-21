@@ -7,18 +7,20 @@ async function apiPost({
 	endPoint,
 	data,
 	confirm = false,
-	message = 'Simpan data?',
+	message,
 	loading,
 	notify = true,
 	config,
 	params,
 }: PostParams): Promise<object | false> {
-	if (confirm) {
-		const isConfirmed = await notifyConfirm(message, true);
+	if (message || confirm) {
+		const confirmMessage = message || 'Simpan data?';
+		const isConfirmed = await notifyConfirm(confirmMessage, true);
 		if (!isConfirmed) {
 			return false;
 		}
 	}
+
 	try {
 		if (loading && typeof loading.value === 'boolean') loading.value = true;
 

@@ -155,7 +155,6 @@ import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import apiGet from 'src/api/api-get';
-import 'src/utils/rupiah';
 
 const props = defineProps({
 	data: { type: Object, required: false, default: () => {} },

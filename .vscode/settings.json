@@ -12,5 +12,5 @@
 	"[vue]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
-	"cSpell.words": ["pinia"]
+	"cSpell.words": ["ditelusuri", "pinia"]
 }

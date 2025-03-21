@@ -1,31 +1,8 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card class="" style="max-width: 800px">
-			<q-card-section class="bg-green-8 text-green-11 q-pa-sm">
-				<div class="flex items-center">
-					<div class="text-subtitle1">Pengaturan Paket Iuran</div>
-					<q-space />
+			<CardHeader title="Pengaturan Paket Iuran" @onReload="getData" />
 
-					<q-btn
-						dense
-						outline
-						flat
-						icon="reply"
-						class="q-px-sm q-mr-md"
-						@click="$router.go(-1)"
-						title="Kembali"
-					/>
-					<q-btn
-						icon="sync"
-						no-caps
-						@click="getData"
-						dense
-						flat
-						class="q-px-sm"
-						title="Muat ulang"
-					/>
-				</div>
-			</q-card-section>
 			<q-card-section class="q-pa-sm flex justify-between">
 				<q-select
 					label="Pilih nama paket"
@@ -57,8 +34,6 @@
 							<th class="text-left">Nama Paket</th>
 							<th class="text-left">Iuran</th>
 							<th class="text-right">Nominal</th>
-							<th class="text-right">Qty</th>
-							<th class="text-right">Total</th>
 							<th class="text-center">Edit</th>
 						</tr>
 					</thead>
@@ -98,17 +73,9 @@
 						>
 							<td class="text-center">{{ item.urut }}</td>
 							<td class="text-left">{{ item.paket }}</td>
-							<td class="text-left">{{ item.iuran }}</td>
+							<td class="text-left">{{ item.item }}</td>
 							<td class="text-right">
 								{{ item.nominal.toRupiah() }}
-							</td>
-							<td class="text-right">{{ item.qty }}</td>
-							<td class="text-right">
-								{{
-									(
-										Number(item.qty) * Number(item.nominal)
-									).toRupiah()
-								}}
 							</td>
 							<td class="text-center">
 								<q-btn
@@ -122,7 +89,7 @@
 					</tbody>
 					<tfoot>
 						<tr class="bg-green-1">
-							<td class="text-right text-italic" colspan="5">
+							<td class="text-right text-italic" colspan="3">
 								Total
 							</td>
 							<td class="text-right text-bold">
@@ -136,7 +103,7 @@
 		</q-card>
 		<q-dialog v-model="crudShow">
 			<!-- add new -->
-			<SettingCrud
+			<IuranPaketForm
 				:data="dataPaket"
 				@success-submit="getData()"
 				@success-delete="getData()"
@@ -147,7 +114,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import apiGet from 'src/api/api-get';
-import SettingCrud from './SettingCrud.vue';
+import IuranPaketForm from 'src/components/forms/IuranPaketForm.vue';
+import CardHeader from 'src/components/CardHeader.vue';
 
 const loading = ref(false);
 const iuranPaket = ref([]);
@@ -177,7 +145,7 @@ function filterPaket() {
 
 function calculateTotal() {
 	return filterPaket().reduce(function (acc, obj) {
-		return acc + Number(obj.nominal) * Number(obj.qty);
+		return acc + Number(obj.nominal);
 	}, 0);
 }
 

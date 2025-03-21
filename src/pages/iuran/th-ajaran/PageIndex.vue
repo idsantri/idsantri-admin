@@ -86,7 +86,6 @@
 import apiGet from 'src/api/api-get';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import 'src/utils/rupiah';
 import { sumLunas, sumNominal, sumNotLunas } from '../utils';
 import { formatDate } from 'src/utils/format-date';
 import FilterThAjaran from 'src/components/filters/FilterTahunAjaran.vue';
