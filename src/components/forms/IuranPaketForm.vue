@@ -33,7 +33,7 @@
 				<InputSelectArray
 					v-model="input.item"
 					url="iuran"
-					label="Iuran"
+					label="Nama Iuran"
 					class="q-mt-sm"
 					@update:model-value="setNominal"
 				/>

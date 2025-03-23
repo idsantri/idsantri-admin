@@ -27,6 +27,14 @@
 					outlined=""
 					class="q-mt-sm"
 				/>
+				<q-input
+					disable
+					label="Nama Iuran"
+					v-model="input.item"
+					dense
+					outlined=""
+					class="q-mt-sm"
+				/>
 				<InputCurrency
 					disable
 					dense
@@ -68,7 +76,7 @@ const loadingCrud = ref(false);
 
 onMounted(async () => {
 	Object.assign(input.value, props.data);
-	console.log('🚀 ~ onMounted ~ props.data:', props.data);
+	// console.log('🚀 ~ onMounted ~ props.data:', props.data);
 });
 
 const onSubmit = async () => {

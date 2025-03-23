@@ -30,7 +30,7 @@
 				<InputSelectArray
 					v-model="input.item"
 					url="iuran"
-					label="Iuran"
+					label="Nama Iuran"
 					class="q-mt-sm"
 					@update:model-value="setNominal"
 				/>
@@ -101,7 +101,7 @@ onMounted(async () => {
 	Object.assign(input.value, props.data);
 	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
 	iuran.value = listsStore().getByStateName('iuran');
-	console.log('🚀 ~ onMounted ~ props.data:', props.data);
+	// console.log('🚀 ~ onMounted ~ props.data:', props.data);
 });
 
 const setNominal = (val) => {
