@@ -153,7 +153,7 @@ const data = [
 	},
 	{
 		url: 'iuran',
-		label: 'iuran',
+		label: 'Iuran',
 		style: 'double',
 		column: 2,
 		protected: false,

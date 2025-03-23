@@ -13,7 +13,7 @@
 					<q-item-section class="flex">
 						<table
 							class=""
-							style="min-width: 300px; max-width: 400px"
+							style="min-width: 250px; max-width: 300px"
 						>
 							<tr>
 								<td class="text-caption text-italic q-pr-md">
@@ -124,11 +124,18 @@
 							</div>
 						</q-item-section>
 					</q-item>
-					<q-item v-if="item.show" class="q-pa-sm -q-mt-lg">
+					<q-item v-if="item.show" class="q-px-sm q-pb-sm q-pt-none">
 						<q-item-section>
 							<q-item-label>
-								<em>Tanggal bayar:</em>&nbsp;
-								{{ item.lunas ? formatDate(item.lunas) : '-' }}
+								<em>Lunas:</em>&nbsp;
+								{{
+									item.lunas
+										? formatDate(
+												item.lunas,
+												"'hari' EEEE, 'tanggal' dd MMMM yyyy, 'pukul' HH:mm",
+											)
+										: '-'
+								}}
 							</q-item-label>
 							<q-item-label caption>
 								<em>Kasir:</em>&nbsp;<strong>{{
@@ -147,11 +154,11 @@
 				</div>
 				<q-item class="q-pa-sm bg-green-8">
 					<q-item-section class="text-green-11">
-						<q-item-label overline class="text-green-1"
-							>TOTAL CETAK</q-item-label
-						>
-						<q-item-label class="text-body1">
-							{{ sumCetak(iuran).toRupiah() }}
+						<q-item-label overline class="text-green-1">
+							TOTAL CETAK
+							<span class="text-subtitle1 text-weight-bold">
+								{{ sumCetak(iuran).toRupiah() }}
+							</span>
 						</q-item-label>
 					</q-item-section>
 					<q-item-section side class="">
@@ -182,9 +189,9 @@
 	<q-dialog v-model="crud">
 		<IuranForm
 			:data="dataIuran"
-			@success-delete="(id) => onDelete(id)"
-			@success-create="(res) => onCreate(res)"
-			@success-update="(res) => onUpdate(res)"
+			@success-delete="(id) => deleteById(iuran, id)"
+			@success-create="(res) => iuran.push(res)"
+			@success-update="(res) => replaceById(iuran, res.id, res)"
 			:disable-santri-id="true"
 			:disable-th-ajaran="true"
 		/>
@@ -194,12 +201,12 @@
 	<q-dialog v-model="crudLunas">
 		<IuranLunasForm
 			:data="dataIuran"
-			@success-update="(res) => onUpdate(res)"
+			@success-update="(res) => replaceById(iuran, res.id, res)"
 		/>
 	</q-dialog>
 </template>
 <script setup>
-import { inject, onMounted, ref } from 'vue';
+import { inject, nextTick, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import apiUpdate from 'src/api/api-update';
@@ -220,21 +227,6 @@ const dataIuran = ref({});
 const santri = inject('santri');
 const crudLunas = ref(false);
 
-const onDelete = (id) => {
-	deleteById(iuran.value, id);
-	assignIuran();
-};
-
-const onCreate = (res) => {
-	iuran.value.push(res);
-	assignIuran();
-};
-
-const onUpdate = (res) => {
-	replaceById(iuran.value, res.id, res);
-	assignIuran();
-};
-
 function editIuran(item) {
 	dataIuran.value = item;
 	dataIuran.value.nama = santri.value.nama;
@@ -250,15 +242,12 @@ async function loadData() {
 			loading,
 		});
 		if (data) {
-			iuran.value = data.iuran;
-			assignIuran();
+			iuran.value = sortMapIuran(data.iuran);
 		}
 	}
 }
 
-onMounted(async () => {
-	await loadData();
-});
+onMounted(async () => await loadData());
 
 async function toggleCetak(val, evt, item, index) {
 	const updated = await apiUpdate({
@@ -282,7 +271,6 @@ async function toggleLunas(val, evt, item, index) {
 	});
 	if (updated) {
 		iuran.value[index] = updated.iuran;
-		assignIuran();
 	} else {
 		iuran.value[index].isLunas = val == true ? false : true;
 	}
@@ -297,31 +285,33 @@ async function setLunas(item, index) {
 	iuran.value[index].isLunas = false;
 }
 
-function assignIuran() {
-	iuran.value = sortMapIuran(iuran.value);
-}
+// Watch untuk sorting tanpa loop
+watch(
+	iuran,
+	async (newValue, oldValue) => {
+		await nextTick(); // Pastikan update UI selesai sebelum sorting
+
+		const sortedData = sortMapIuran([...newValue]); // Buat salinan agar tidak mengubah langsung
+		if (JSON.stringify(sortedData) !== JSON.stringify(oldValue)) {
+			iuran.value = sortedData; // Update hanya jika ada perubahan nyata
+		}
+	},
+	{ deep: true },
+);
 
 function sortMapIuran(data) {
-	const result = data.sort((a, b) => {
-		// Jika kedua nilai lunas adalah null, urutan tetap
-		if (a.lunas === null && b.lunas === null) return 0;
-
-		// Jika a.lunas adalah null, b.lunas harus lebih dulu
-		if (a.lunas === null) return 1;
-
-		// Jika b.lunas adalah null, a.lunas harus lebih dulu
-		if (b.lunas === null) return -1;
-
-		// Bandingkan timestamp jika keduanya tidak null
-		return new Date(a.lunas) - new Date(b.lunas);
-	});
-	return result.map((v) => {
-		return {
+	return data
+		.sort((a, b) => {
+			if (a.lunas === null && b.lunas === null) return 0;
+			if (a.lunas === null) return 1;
+			if (b.lunas === null) return -1;
+			return new Date(a.lunas) - new Date(b.lunas);
+		})
+		.map((v) => ({
 			...v,
-			isLunas: v.lunas ? true : false,
+			isLunas: !!v.lunas,
 			show: v.hasOwnProperty('show') ? v.show : false,
-		};
-	});
+		}));
 }
 </script>
 <style lang=""></style>

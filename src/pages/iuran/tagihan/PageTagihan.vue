@@ -76,7 +76,7 @@
 											Terpilih
 										</td>
 										<td>
-											{{ selected.length }}
+											{{ selected.length }} santri
 											{{
 												selected.map((s) => s.santri_id)
 											}}
