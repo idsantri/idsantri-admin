@@ -167,12 +167,15 @@ const nilai = ref([{}]);
 const loading = ref(false);
 
 onMounted(async () => {
-	await getNilai(tab.value);
+	setTimeout(async () => {
+		await getNilai(tab.value);
+	}, 1000);
 });
 
 watch(tab, async (newTab) => {
 	await getNilai(newTab);
 });
+
 const info =
 	'Kalkulasi nilai rapor dan ijazah:\n' +
 	'▪️ dengan nilai harian:\n' +
@@ -181,6 +184,7 @@ const info =
 	' 🔸(nilai_ujian + nilai_remedial) / 10\n\n' +
 	'Catatan:\n' +
 	'Berlaku standar nilai-minimal rapor dan ijazah.';
+
 async function getNilai(category) {
 	const data = await apiGet({
 		endPoint: 'nilai-mapel',
@@ -190,7 +194,9 @@ async function getNilai(category) {
 			category: category,
 		},
 	});
-	nilai.value = data.nilai;
+	if (data.nilai) {
+		nilai.value = data.nilai;
+	}
 }
 
 function hitungRataRata(data, n) {

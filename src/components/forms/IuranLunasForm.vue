@@ -60,9 +60,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import apiUpdate from 'src/api/api-update';
-import FormHeader from './FormHeader.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
-import FormActions from './FormActions.vue';
 import InputCurrency from '../inputs/InputCurrency.vue';
 
 const props = defineProps({

@@ -1,7 +1,10 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="submit">
-			<FormHeader :title="props.title" :is-new="isNew" />
+			<FormHeader
+				title="Input Domisili"
+				:is-new="input.id ? false : true"
+			/>
 			<q-card-section>
 				<div v-if="loadingCrud">
 					<q-dialog v-model="loadingCrud" persistent="">
@@ -36,29 +39,10 @@
 					autogrow=""
 				/>
 			</q-card-section>
-			<q-card-actions class="flex bg-green-6">
-				<q-btn
-					v-show="!props.isNew"
-					label="Hapus"
-					class="bg-red text-red-1"
-					no-caps=""
-					@click="deleteData(input.id)"
-				/>
-				<q-space />
-				<q-btn
-					label="Tutup"
-					v-close-popup
-					class="bg-green-11"
-					no-caps=""
-					id="btn-close"
-				/>
-				<q-btn
-					type="submit"
-					label="Simpan"
-					class="bg-green-10 text-green-11"
-					no-caps=""
-				/>
-			</q-card-actions>
+			<FormActions
+				:btn-delete="input.id ? true : false"
+				@on-delete="onDelete"
+			/>
 		</q-form>
 		<!-- <pre>{{ input }}</pre> -->
 	</q-card>
@@ -68,15 +52,17 @@ import { onMounted, ref } from 'vue';
 import apiPost from 'src/api/api-post';
 import apiUpdate from 'src/api/api-update';
 import apiDelete from 'src/api/api-delete';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 
 const props = defineProps({
 	data: { type: Object, required: true },
-	isNew: { type: Boolean, default: true },
-	title: { type: String, default: () => 'Input' },
 });
-const emit = defineEmits(['successSubmit', 'successDelete']);
+const emit = defineEmits([
+	'successDelete',
+	'successSubmit',
+	'successUpdate',
+	'successCreate',
+]);
 
 const input = ref({});
 const loadingCrud = ref(false);
@@ -91,8 +77,10 @@ const submit = async () => {
 		domisili: input.value.domisili,
 		keterangan: input.value.keterangan,
 	};
+
 	let response = null;
-	if (props.isNew) {
+	const isNew = !input.value.id;
+	if (isNew) {
 		response = await apiPost({
 			endPoint: 'domisili',
 			data,
@@ -108,20 +96,25 @@ const submit = async () => {
 		});
 	}
 	if (response) {
-		document.getElementById('btn-close').click();
-		emit('successSubmit');
+		document.getElementById('btn-close-form').click();
+		emit('successSubmit', response?.domisili);
+		if (isNew) {
+			emit('successCreate', response?.domisili);
+		} else {
+			emit('successUpdate', response?.domisili);
+		}
 	}
 };
 
-const deleteData = async (id) => {
-	const data = {
+const onDelete = async () => {
+	const id = input.value.id;
+	const result = await apiDelete({
 		endPoint: `domisili/${id}`,
 		loading: loadingCrud,
-	};
-	const del = await apiDelete(data);
-	if (del) {
-		document.getElementById('btn-close').click();
-		emit('successDelete');
+	});
+	if (result) {
+		document.getElementById('btn-close-form').click();
+		emit('successDelete', id);
 	}
 };
 </script>

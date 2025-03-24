@@ -47,14 +47,14 @@ const data = [
 		protected: false,
 		sort: 'asc',
 	},
-	{
-		url: 'keterangan-status',
-		label: 'Keterangan Status',
-		style: 'single',
-		column: 1,
-		protected: false,
-		sort: 'asc',
-	},
+	// {
+	// 	url: 'keterangan-status',
+	// 	label: 'Keterangan Status',
+	// 	style: 'single',
+	// 	column: 1,
+	// 	protected: false,
+	// 	sort: 'asc',
+	// },
 	{
 		url: 'metode-pembayaran',
 		label: 'Metode Pembayaran',

@@ -1,7 +1,7 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="submit">
-			<FormHeader :title="props.title" :is-new="!input.id" />
+			<FormHeader title="Input Kelas" :is-new="input.id ? false : true" />
 			<q-card-section>
 				<div v-if="loadingCrud">
 					<q-dialog v-model="loadingCrud" persistent="">
@@ -61,29 +61,10 @@
 					autogrow=""
 				/>
 			</q-card-section>
-			<q-card-actions class="flex bg-green-6">
-				<q-btn
-					v-show="input.id"
-					label="Hapus"
-					class="bg-red text-red-1"
-					no-caps=""
-					@click="deleteData(input.id)"
-				/>
-				<q-space />
-				<q-btn
-					label="Tutup"
-					v-close-popup
-					class="bg-green-11"
-					no-caps=""
-					id="btn-close"
-				/>
-				<q-btn
-					type="submit"
-					label="Simpan"
-					class="bg-green-10 text-green-11"
-					no-caps=""
-				/>
-			</q-card-actions>
+			<FormActions
+				:btn-delete="input.id ? true : false"
+				@on-delete="onDelete"
+			/>
 		</q-form>
 		<!-- <pre>{{ input }}</pre> -->
 	</q-card>
@@ -94,16 +75,19 @@ import listsStore from 'src/stores/lists-store';
 import apiPost from 'src/api/api-post';
 import apiUpdate from 'src/api/api-update';
 import apiDelete from 'src/api/api-delete';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingkatPendidikan.vue';
 
 const props = defineProps({
 	data: { type: Object, required: true },
-	title: { type: String, default: () => 'Input' },
 });
 
-const emit = defineEmits(['successSubmit', 'successDelete']);
+const emit = defineEmits([
+	'successDelete',
+	'successSubmit',
+	'successUpdate',
+	'successCreate',
+]);
 
 const input = ref({});
 const loadingCrud = ref(false);
@@ -127,7 +111,14 @@ const submit = async () => {
 	};
 
 	let response = null;
-	if (input.value.id) {
+	const isNew = !input.value.id;
+	if (isNew) {
+		response = await apiPost({
+			endPoint: 'kelas',
+			data,
+			loading: loadingCrud,
+		});
+	} else {
 		response = await apiUpdate({
 			endPoint: `kelas/${input.value.id}`,
 			data,
@@ -135,27 +126,27 @@ const submit = async () => {
 			notify: true,
 			loading: loadingCrud,
 		});
-	} else {
-		response = await apiPost({
-			endPoint: 'kelas',
-			data,
-			loading: loadingCrud,
-		});
 	}
 	if (response) {
-		document.getElementById('btn-close').click();
-		emit('successSubmit');
+		document.getElementById('btn-close-form').click();
+		emit('successSubmit', response?.kelas);
+		if (isNew) {
+			emit('successCreate', response?.kelas);
+		} else {
+			emit('successUpdate', response?.kelas);
+		}
 	}
 };
 
-const deleteData = async (id) => {
-	const del = await apiDelete({
+const onDelete = async () => {
+	const id = input.value.id;
+	const result = await apiDelete({
 		endPoint: `kelas/${id}`,
 		loading: loadingCrud,
 	});
-	if (del) {
-		document.getElementById('btn-close').click();
-		emit('successDelete');
+	if (result) {
+		document.getElementById('btn-close-form').click();
+		emit('successDelete', id);
 	}
 };
 </script>

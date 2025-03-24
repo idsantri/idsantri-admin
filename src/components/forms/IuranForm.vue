@@ -57,6 +57,7 @@
 					dense
 					outlined=""
 					class="q-mt-sm"
+					autogrow=""
 				/>
 			</q-card-section>
 			<FormActions
@@ -73,11 +74,9 @@ import listsStore from 'src/stores/lists-store';
 import apiDelete from 'src/api/api-delete';
 import apiUpdate from 'src/api/api-update';
 import apiPost from 'src/api/api-post';
-import FormHeader from './FormHeader.vue';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
-import FormActions from './FormActions.vue';
 
 const props = defineProps({
 	data: { type: Object, required: false, default: () => {} },

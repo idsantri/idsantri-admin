@@ -83,6 +83,7 @@ function makeDataIuran() {
 		th_ajaran_h: params.thAjaranH || '',
 	};
 }
+
 function onAdd() {
 	makeDataIuran();
 	crud.value = true;

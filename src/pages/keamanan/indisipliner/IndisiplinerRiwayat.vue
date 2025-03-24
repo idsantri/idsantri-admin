@@ -32,7 +32,10 @@
 				<q-item
 					v-for="(indisipliner, index) in riwayatIndsipliner"
 					:key="index"
-					class="q-pa-sm"
+					:class="[
+						indisipliner.id == params.id ? 'bg-green-1' : '',
+						'q-pa-sm',
+					]"
 				>
 					<q-item-section>
 						<table>
@@ -73,6 +76,7 @@
 					</q-item-section>
 					<q-item-section side class="no-padding">
 						<q-btn
+							:disable="indisipliner.id == params.id"
 							icon="info"
 							glossy
 							dense
@@ -106,6 +110,7 @@ import { m2h, m2hFormat } from 'src/utils/hijri';
 import { hijriToThAjaranH } from 'src/utils/tahun-ajaran';
 import { onMounted, onUpdated, ref } from 'vue';
 import IndisiplinerCrud from 'src/pages/keamanan/indisipliner/IndisiplinerCrud.vue';
+import { useRoute } from 'vue-router';
 
 const props = defineProps({
 	santri_id: {
@@ -117,6 +122,7 @@ const riwayatIndsipliner = ref([]);
 const loading = ref(false);
 const crudShow = ref(false);
 const santri = ref({});
+const { params } = useRoute();
 
 onMounted(async () => {
 	if (props.santri_id) {
@@ -134,10 +140,10 @@ onUpdated(async () => {
 	}
 });
 
-async function getRiwayat(id) {
+async function getRiwayat(santri_id) {
 	const data = await apiGet({
 		endPoint: 'indisipliner',
-		params: { santri_id: id },
+		params: { santri_id: santri_id },
 		loading,
 	});
 	if (!data.indisipliner) return;

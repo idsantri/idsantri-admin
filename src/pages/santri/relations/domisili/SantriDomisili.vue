@@ -8,53 +8,57 @@
 		/>
 
 		<q-dialog v-model="crudShow">
-			<santri-domisili-crud
+			<DomisiliForm
 				:data="dataObj"
-				:is-new="isNew"
 				title="Input Domisili"
-				@success-submit="loadData"
-				@success-delete="loadData"
+				@success-delete="(id) => deleteById(dataArr, id)"
+				@success-create="(res) => dataArr.push(res)"
+				@success-update="(res) => replaceById(dataArr, res.id, res)"
 			/>
 		</q-dialog>
 	</div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed, inject } from 'vue';
 import TempArray from 'src/pages/santri/relations/TemplateArray.vue';
-import { formatDateShort } from 'src/utils/format-date.js';
+import { formatDate } from 'src/utils/format-date.js';
 import { m2hFormat } from 'src/utils/hijri.js';
-import { getObjectById } from 'src/utils/array-object';
-import SantriDomisiliCrud from './SantriDomisiliCrud.vue';
+import { deleteById, getObjectById, replaceById } from 'src/utils/array-object';
 import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
+import DomisiliForm from 'src/components/forms/DomisiliForm.vue';
 
 const spinner = ref(false);
 const crudShow = ref(false);
 const dataObj = ref({});
-const dataMap = ref([]);
 const dataArr = ref([]);
-const isNew = ref(false);
-const santri = ref({});
-
-const route = useRoute();
-const santriId = route.params.id;
+const santri = inject('santri');
+const { params } = useRoute();
 
 async function loadData() {
 	const data = await apiGet({
-		endPoint: `santri/${santriId}/domisili`,
+		endPoint: 'domisili',
 		loading: spinner,
+		params: {
+			santri_id: params.id,
+		},
 	});
-	if (!data.domisili) return;
-	dataArr.value = data.domisili;
-	dataMap.value = data.domisili.map((v) => ({
-		Tanggal: formatDateShort(v.date_m) + ' | ' + m2hFormat(v.date_m),
+	if (data.domisili) {
+		dataArr.value = data.domisili;
+	}
+}
+
+const dataMap = computed(() =>
+	dataArr.value.map((v) => ({
+		Tanggal:
+			formatDate(v.created_at, 'dd-MM-yyyy') +
+			' | ' +
+			m2hFormat(formatDate(v.created_at, 'yyyy-MM-dd')),
 		Domisili: v.domisili,
 		Keterangan: v.keterangan || '-',
 		id: v.id,
-	}));
-
-	santri.value = data.santri;
-}
+	})),
+);
 
 onMounted(async () => {
 	await loadData();
@@ -62,20 +66,17 @@ onMounted(async () => {
 
 const handleAdd = () => {
 	dataObj.value = {
-		santri_id: santri.value.id,
-		nama: santri.value.nama,
+		santri_id: santri.id,
+		nama: santri.nama,
 	};
-
-	isNew.value = true;
 	crudShow.value = true;
 };
 
 const handleEdit = ({ id }) => {
 	dataObj.value = getObjectById(dataArr, id);
-	dataObj.value.santri_id = santri.value.id;
-	dataObj.value.nama = santri.value.nama;
+	dataObj.value.santri_id = santri.id;
+	dataObj.value.nama = santri.nama;
 
-	isNew.value = false;
 	crudShow.value = true;
 };
 </script>
