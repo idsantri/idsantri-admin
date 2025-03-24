@@ -12,7 +12,7 @@
 			<q-list dense>
 				<q-item>
 					<q-item-section avatar>
-						<q-skeleton v-if="loading" type="QAvatar" />
+						<q-skeleton v-if="loading || !id" type="QAvatar" />
 						<q-avatar v-else class="d-flex">
 							<q-img
 								:src="santri?.image_url || '/user-default.png'"
@@ -25,19 +25,19 @@
 					<q-item-section>
 						<q-item-label overline> Santri </q-item-label>
 						<q-item-label>
-							<q-skeleton v-if="loading" type="text" />
+							<q-skeleton v-if="loading || !id" type="text" />
 							<div v-else>
 								{{ santri.nama }} ({{ santri.sex }})
 							</div>
 						</q-item-label>
 						<q-item-label caption lines="1">
-							<q-skeleton v-if="loading" type="text" />
+							<q-skeleton v-if="loading || !id" type="text" />
 							<div v-else>
 								{{ santri?.alamat_pendek || '-' }}
 							</div>
 						</q-item-label>
 						<q-item-label caption lines="1" class="text-italic">
-							<q-skeleton v-if="loading" type="text" />
+							<q-skeleton v-if="loading || !id" type="text" />
 							<div v-else>
 								{{ santri?.data_akhir || '-' }}
 							</div>
@@ -45,7 +45,7 @@
 					</q-item-section>
 					<q-item-section avatar>
 						<q-skeleton
-							v-if="loading"
+							v-if="loading || !id"
 							type="QBtn"
 							class="full-width"
 						/>
@@ -71,7 +71,7 @@
 					<q-item-section>
 						<q-item-label overline> Wali </q-item-label>
 						<q-item-label>
-							<q-skeleton v-if="loading" type="text" />
+							<q-skeleton v-if="loading || !id" type="text" />
 							<div v-else>
 								{{ wali?.nama }} ({{ wali?.sex }};
 								{{ santri?.wali_status }})
@@ -80,7 +80,7 @@
 					</q-item-section>
 					<q-item-section avatar>
 						<q-skeleton
-							v-if="loading"
+							v-if="loading || !id"
 							type="QBtn"
 							class="full-width"
 						/>
@@ -105,7 +105,7 @@
 					<q-item-section>
 						<q-item-label overline> Orang Tua </q-item-label>
 						<q-item-label>
-							<q-skeleton v-if="loading" type="text" />
+							<q-skeleton v-if="loading || !id" type="text" />
 							<div v-else>
 								{{ ortu?.ayah }} |
 								{{ ortu?.ibu }}
@@ -114,7 +114,7 @@
 					</q-item-section>
 					<q-item-section avatar>
 						<q-skeleton
-							v-if="loading"
+							v-if="loading || !id"
 							type="QBtn"
 							class="full-width"
 						/>
@@ -144,7 +144,7 @@ const emit = defineEmits(['loaded']);
 const props = defineProps({
 	id: {
 		type: [Number, String],
-		required: true,
+		// required: true,
 		validator(value) {
 			// Cek jika number langsung
 			if (typeof value === 'number') {
@@ -176,7 +176,6 @@ const loadData = async () => {
 		santri.value = data.santri;
 		wali.value = data.wali;
 		ortu.value = data.ortu;
-		emit('loaded', santri.value);
 
 		//store
 		santriStore().setSantri(data.santri);
@@ -194,10 +193,10 @@ watchEffect(async () => {
 			santri.value = santriState;
 			ortu.value = ortuState;
 			wali.value = waliState;
-			emit('loaded', santri.value);
 		} else {
 			await loadData();
 		}
+		emit('loaded', santri.value);
 	}
 });
 </script>

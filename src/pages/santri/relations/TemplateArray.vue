@@ -16,27 +16,6 @@
 						color="green-8"
 						@click="$emit('edit', item)"
 					/>
-					<q-btn
-						v-if="btnPrint"
-						class="q-ma-xs text-green-10"
-						size="sm"
-						glossy=""
-						color="green-12"
-						icon="print"
-						round=""
-						@click="$emit('print', item)"
-					/>
-					<q-btn
-						v-if="link"
-						class="q-ma-xs"
-						size="sm"
-						glossy
-						icon="info"
-						round
-						outline
-						color="green-8"
-						:to="`${link}/${item.id}`"
-					/>
 				</q-item-section>
 				<q-item-section>
 					<q-item-label lines="1">
@@ -71,15 +50,8 @@
 	<!-- <pre>{{ data }}</pre> -->
 </template>
 <script setup>
-// const props = defineProps(['data', 'spinner', 'btnPrint']);
 defineProps({
 	data: Object,
 	spinner: Boolean,
-	btnPrint: Boolean,
-	link: {
-		type: String,
-		default: '',
-		required: false,
-	},
 });
 </script>

@@ -16,17 +16,16 @@
 		</q-card-section>
 
 		<q-card-section class="q-pa-sm">
-			<div v-if="loading">
-				<q-spinner-cube
-					color="green-12"
-					size="4em"
-					class="flex q-mx-auto"
-				/>
-			</div>
-			<q-list v-else>
+			<q-list>
 				<q-item class="no-padding">
 					<q-item-section avatar>
+						<q-skeleton
+							v-if="loading || !id"
+							type=""
+							class="full-width full-height"
+						/>
 						<q-img
+							v-else
 							:src="santri?.image_url || '/user-default.png'"
 							:ratio="3 / 4"
 							alt="santri"
@@ -34,18 +33,29 @@
 					</q-item-section>
 					<q-item-section>
 						<q-item-label overline>
-							{{ santri.nama?.toUpperCase() }}
-							({{ santri.id }})
+							<q-skeleton v-if="loading || !id" type="text" />
+							<div v-else>
+								{{ santri.nama?.toUpperCase() }}
+								({{ santri.id }})
+							</div>
 						</q-item-label>
 						<q-item-label>
-							{{ santri.data_akhir }}
+							<q-skeleton v-if="loading || !id" type="text" />
+							<div v-else>{{ santri.data_akhir }}</div>
 						</q-item-label>
 						<q-item-label caption>
-							{{ santri.alamat_pendek }}
+							<q-skeleton v-if="loading || !id" type="text" />
+							<div v-else>{{ santri.alamat_pendek }}</div>
 						</q-item-label>
 					</q-item-section>
-					<q-item-section side>
+					<q-item-section avatar>
+						<q-skeleton
+							v-if="loading || !id"
+							type="QBtn"
+							class="full-width"
+						/>
 						<q-btn
+							v-else
 							round
 							dense
 							glossy
@@ -70,7 +80,7 @@ const emit = defineEmits(['loaded']);
 const props = defineProps({
 	id: {
 		type: [Number, String],
-		required: true,
+		// required: true,
 		validator(value) {
 			// Cek jika number langsung
 			if (typeof value === 'number') {
@@ -98,7 +108,6 @@ const loadData = async () => {
 	});
 	if (data) {
 		santri.value = data.santri;
-		emit('loaded', santri.value);
 
 		//store
 		santriStore().setSantri(data.santri);
@@ -112,10 +121,10 @@ watchEffect(async () => {
 		const stored = santriStore().getSantri;
 		if (stored.id == props.id) {
 			santri.value = stored;
-			emit('loaded', santri.value);
 		} else {
 			await loadData();
 		}
+		emit('loaded', santri.value);
 	}
 });
 </script>

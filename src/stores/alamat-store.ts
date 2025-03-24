@@ -90,7 +90,9 @@ export default defineStore('alamat', {
 						provinsi_name.toLowerCase(),
 				);
 			} else {
-				throw new Error('Find Provinsi: Parameter tidak sesuai!');
+				// throw new Error('Find Provinsi: Parameter tidak sesuai!');
+				console.error('Find Provinsi: Parameter tidak sesuai!');
+				return;
 			}
 		},
 
@@ -99,7 +101,9 @@ export default defineStore('alamat', {
 			const prov = this._findProvinsi(alamat);
 
 			if (!prov || !prov.kabupaten?.length) {
-				throw new Error('Find Kabupaten: Provinsi 0 or Kabupaten 0!');
+				// throw new Error('Find Kabupaten: Provinsi 0 or Kabupaten 0!');
+				console.error('Find Kabupaten: Provinsi 0 or Kabupaten 0!');
+				return;
 			}
 
 			if (kabupaten_id) {
@@ -121,9 +125,13 @@ export default defineStore('alamat', {
 			const kab = this._findKabupaten(alamat);
 
 			if (!kab || !kab.kecamatan?.length) {
-				throw new Error(
+				console.error(
 					'Find Kecamatan: Provinsi 0 or Kabupaten 0 or Kecamatan 0!',
 				);
+				return;
+				// throw new Error(
+				// 	'Find Kecamatan: Provinsi 0 or Kabupaten 0 or Kecamatan 0!',
+				// );
 			}
 
 			if (kecamatan_id) {
