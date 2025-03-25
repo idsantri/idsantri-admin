@@ -167,9 +167,7 @@ const nilai = ref([{}]);
 const loading = ref(false);
 
 onMounted(async () => {
-	setTimeout(async () => {
-		await getNilai(tab.value);
-	}, 1000);
+	await getNilai(tab.value);
 });
 
 watch(tab, async (newTab) => {

@@ -19,7 +19,7 @@
 	</div>
 </template>
 <script setup>
-import { ref, onMounted, computed, inject } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import TempArray from 'src/pages/santri/relations/TemplateArray.vue';
 import { formatDate } from 'src/utils/format-date.js';
 import { m2hFormat } from 'src/utils/hijri.js';
@@ -32,19 +32,17 @@ const spinner = ref(false);
 const crudShow = ref(false);
 const dataObj = ref({});
 const dataArr = ref([]);
-const santri = inject('santri');
+const santri = ref({});
 const { params } = useRoute();
 
 async function loadData() {
 	const data = await apiGet({
-		endPoint: 'domisili',
+		endPoint: `domisili/santri/${params.id}`,
 		loading: spinner,
-		params: {
-			santri_id: params.id,
-		},
 	});
 	if (data.domisili) {
 		dataArr.value = data.domisili;
+		santri.value = data.santri;
 	}
 }
 
@@ -66,16 +64,16 @@ onMounted(async () => {
 
 const handleAdd = () => {
 	dataObj.value = {
-		santri_id: santri.id,
-		nama: santri.nama,
+		santri_id: santri.value.id,
+		nama: santri.value.nama,
 	};
 	crudShow.value = true;
 };
 
 const handleEdit = ({ id }) => {
 	dataObj.value = getObjectById(dataArr, id);
-	dataObj.value.santri_id = santri.id;
-	dataObj.value.nama = santri.nama;
+	dataObj.value.santri_id = santri.value.id;
+	dataObj.value.nama = santri.value.nama;
 
 	crudShow.value = true;
 };

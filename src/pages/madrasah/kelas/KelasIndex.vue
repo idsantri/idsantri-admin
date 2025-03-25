@@ -139,7 +139,10 @@
 								/>
 							</q-tabs>
 							<q-card-section class="q-pa-sm" :key="keyRoute">
-								<router-view :key="$route.fullPath" />
+								<router-view
+									:key="$route.fullPath"
+									:santri_id="kelas.santri_id"
+								/>
 							</q-card-section>
 						</q-card>
 					</div>
@@ -161,7 +164,7 @@
 	</q-page>
 </template>
 <script setup>
-import { onMounted, provide, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import apiUpdate from 'src/api/api-update';
@@ -175,7 +178,6 @@ const kelas = ref({});
 const spinner = ref(false);
 const crudShow = ref(false);
 const santri = ref({});
-provide('santri', santri);
 
 async function updateAktif(val) {
 	// console.log(val);
@@ -200,7 +202,7 @@ async function loadData() {
 	});
 	if (data.kelas) {
 		kelas.value = data.kelas;
-		keyRoute.value++;
+		// keyRoute.value++;
 	}
 }
 
