@@ -19,7 +19,7 @@
 	</div>
 </template>
 <script setup>
-import { ref, onMounted, inject, computed } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import TempArray from 'src/pages/santri/relations/TemplateArray.vue';
 import { deleteById, getObjectById, replaceById } from 'src/utils/array-object';
 import { useRoute } from 'vue-router';
@@ -30,17 +30,17 @@ const spinner = ref(false);
 const crudShow = ref(false);
 const dataObj = ref({});
 const dataArr = ref([]);
-const santri = inject('santri');
+const santri = ref({});
 const { params } = useRoute();
 
 async function loadData() {
 	const data = await apiGet({
-		endPoint: 'kelas',
+		endPoint: `kelas/santri/${params.id}`,
 		loading: spinner,
-		params: { santri_id: params.id },
 	});
 	if (data.kelas) {
 		dataArr.value = data.kelas;
+		santri.value = data.santri;
 	}
 }
 
@@ -63,8 +63,8 @@ onMounted(async () => {
 
 const handleAdd = () => {
 	dataObj.value = {
-		santri_id: santri.id,
-		nama: santri.nama,
+		santri_id: santri.value.id,
+		nama: santri.value.nama,
 	};
 
 	crudShow.value = true;
@@ -72,8 +72,8 @@ const handleAdd = () => {
 
 const handleEdit = ({ id }) => {
 	dataObj.value = getObjectById(dataArr, id);
-	dataObj.value.santri_id = santri.id;
-	dataObj.value.nama = santri.nama;
+	dataObj.value.santri_id = santri.value.id;
+	dataObj.value.nama = santri.value.nama;
 
 	crudShow.value = true;
 };

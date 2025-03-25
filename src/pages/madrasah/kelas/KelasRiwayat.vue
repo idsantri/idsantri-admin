@@ -76,7 +76,7 @@
 				color="green-10"
 				glossy=""
 				class="q-mr-sm"
-				@click="getKelas(santri.id)"
+				@click="getKelas(santri_id)"
 			/>
 			<q-btn
 				style="opacity: 0.8"
@@ -92,17 +92,18 @@
 	</div>
 </template>
 <script setup>
-import { inject, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import KelasForm from 'src/components/forms/KelasForm.vue';
 
+const props = defineProps({ santri_id: { type: [String, Number] } });
 const crudShow = ref(false);
 const { params } = useRoute();
 const loading = ref(false);
 const dataObj = ref({});
 const kelas = ref([]);
-const santri = inject('santri');
+const santri = ref({});
 
 function addData() {
 	dataObj.value = {
@@ -114,20 +115,20 @@ function addData() {
 
 async function getKelas(santri_id) {
 	const data = await apiGet({
-		endPoint: 'kelas',
+		endPoint: `kelas/santri/${santri_id}`,
 		loading: loading,
-		params: { santri_id },
 	});
 	if (data.kelas) {
 		kelas.value = data.kelas;
+		santri.value = data.santri;
 	}
 }
 
 watch(
-	() => santri.value,
-	(newSantri) => {
-		if (newSantri && newSantri.id) {
-			getKelas(newSantri.id);
+	() => props.santri_id,
+	(newId) => {
+		if (newId) {
+			getKelas(newId);
 			// console.log('watch');
 		} else {
 			kelas.value = [];

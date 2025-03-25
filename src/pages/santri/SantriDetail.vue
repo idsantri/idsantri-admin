@@ -88,7 +88,7 @@
 	<!-- <pre>{{ santri }}</pre> -->
 </template>
 <script setup>
-import { reactive, ref, toRefs, onMounted, provide } from 'vue';
+import { reactive, ref, toRefs, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { formatDateFull } from '../../utils/format-date';
 import CardColumn from '../../components/CardColumn.vue';
@@ -113,7 +113,6 @@ function pathIuran() {
 const santri = reactive({});
 const wali = reactive({});
 const ortu = reactive({});
-provide('santri', santri);
 
 const route = useRoute();
 const santriId = route.params.id;

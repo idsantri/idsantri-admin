@@ -68,9 +68,7 @@ async function loadData() {
 }
 
 onMounted(async () => {
-	setTimeout(async () => {
-		await loadData();
-	}, 1000);
+	await loadData();
 });
 
 const handleAdd = () => {
