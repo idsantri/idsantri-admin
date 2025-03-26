@@ -13,21 +13,21 @@
 		"build": "quasar build"
 	},
 	"dependencies": {
-		"@quasar/extras": "^1.16.11",
-		"axios": "^1.2.1",
-		"core-js": "^3.6.5",
-		"datatables.net-dt": "^2.0.2",
-		"datatables.net-vue3": "^3.0.1",
+		"@quasar/extras": "^1.16.17",
+		"axios": "^1.8.4",
+		"core-js": "^3.41.0",
+		"datatables.net-dt": "^2.2.2",
+		"datatables.net-vue3": "^3.0.4",
 		"date-fns": "^4.1.0",
-		"html2pdf.js": "^0.10.1",
-		"pinia": "^2.0.11",
-		"pinia-plugin-persistedstate": "^3.2.1",
-		"quasar": "^2.16.3",
+		"html2pdf.js": "^0.10.3",
+		"pinia": "^3.0.1",
+		"pinia-plugin-persistedstate": "^4.2.0",
+		"quasar": "^2.16.11",
 		"register-service-worker": "^1.7.2",
-		"vue": "^3.4.18",
-		"vue-currency-input": "^3.1.0",
+		"vue": "^3.5.13",
+		"vue-currency-input": "^3.2.1",
 		"vue-image-crop-upload": "^3.0.3",
-		"vue-router": "^4.0.0",
+		"vue-router": "^4.5.0",
 		"xlsx": "^0.18.5"
 	},
 	"devDependencies": {
@@ -39,10 +39,10 @@
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-vue": "^9.0.0",
 		"eslint-webpack-plugin": "^4.0.1",
-		"prettier": "^3.0.3",
+		"prettier": "^3.5.3",
 		"ts-loader": "^9.4.2",
 		"typescript": "^5.2.2",
-		"workbox-webpack-plugin": "^7.0.0"
+		"workbox-webpack-plugin": "^7.3.0"
 	},
 	"browserslist": [
 		"last 10 Chrome versions",
