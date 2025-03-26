@@ -48,89 +48,99 @@
 									/>
 								</div>
 								<table v-else>
-									<tr>
-										<td class="text-italic">Kategori:</td>
-										<td>
-											{{ indisipliner.kategori_text }}
-											&mdash;
-											<q-rating
-												name="kategori"
-												:model-value="
-													indisipliner.kategori || 0
-												"
-												max="5"
-												color="red"
-												icon="thumb_down"
-												icon-selected="thumb_down"
-												readonly
-											/>
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Kasus</td>
-										<td>
-											{{
-												formatDateFull(
-													indisipliner.tgl_kasus,
-												) +
-												' | ' +
-												m2hBacaHijri(
-													indisipliner.tgl_kasus,
-												)
-											}}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Sidang:</td>
-										<td>
-											{{
-												formatDateFull(
-													indisipliner.tgl_sidang,
-												) +
-												' | ' +
-												m2hBacaHijri(
-													indisipliner.tgl_sidang,
-												)
-											}}
-										</td>
-									</tr>
-
-									<tr>
-										<td class="text-italic">Pasal:</td>
-										<td>
-											{{ indisipliner.pasal }}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Deskripsi:</td>
-										<td>
-											{{ indisipliner.deskripsi }}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Eksekutor:</td>
-										<td>
-											{{ indisipliner.eksekutor }}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Saksi:</td>
-										<td>
-											{{ indisipliner.saksi }}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Takzir:</td>
-										<td>
-											{{ indisipliner.takzir }}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Keterangan:</td>
-										<td>
-											{{ indisipliner.keterangan }}
-										</td>
-									</tr>
+									<tbody>
+										<tr>
+											<td class="text-italic">
+												Kategori:
+											</td>
+											<td>
+												{{ indisipliner.kategori_text }}
+												&mdash;
+												<q-rating
+													name="kategori"
+													:model-value="
+														indisipliner.kategori ||
+														0
+													"
+													max="5"
+													color="red"
+													icon="thumb_down"
+													icon-selected="thumb_down"
+													readonly
+												/>
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Kasus</td>
+											<td>
+												{{
+													formatDateFull(
+														indisipliner.tgl_kasus,
+													) +
+													' | ' +
+													m2hBacaHijri(
+														indisipliner.tgl_kasus,
+													)
+												}}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Sidang:</td>
+											<td>
+												{{
+													formatDateFull(
+														indisipliner.tgl_sidang,
+													) +
+													' | ' +
+													m2hBacaHijri(
+														indisipliner.tgl_sidang,
+													)
+												}}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Pasal:</td>
+											<td>
+												{{ indisipliner.pasal }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">
+												Deskripsi:
+											</td>
+											<td>
+												{{ indisipliner.deskripsi }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">
+												Eksekutor:
+											</td>
+											<td>
+												{{ indisipliner.eksekutor }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Saksi:</td>
+											<td>
+												{{ indisipliner.saksi }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Takzir:</td>
+											<td>
+												{{ indisipliner.takzir }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">
+												Keterangan:
+											</td>
+											<td>
+												{{ indisipliner.keterangan }}
+											</td>
+										</tr>
+									</tbody>
 								</table>
 							</q-card-section>
 						</q-card>

@@ -61,27 +61,31 @@
 							</q-card-section>
 							<q-card-section class="q-pa-sm">
 								<table>
-									<tr class="vertical-top">
-										<td
-											class="text-no-wrap text-italic q-pr-md"
-										>
-											Jumlah Murid
-										</td>
-										<td>{{ murid.length }}</td>
-									</tr>
-									<tr class="vertical-top">
-										<td
-											class="text-no-wrap text-italic q-pr-md"
-										>
-											Terpilih
-										</td>
-										<td>
-											{{ selected.length }} santri
-											{{
-												selected.map((s) => s.santri_id)
-											}}
-										</td>
-									</tr>
+									<tbody>
+										<tr class="vertical-top">
+											<td
+												class="text-no-wrap text-italic q-pr-md"
+											>
+												Jumlah Murid
+											</td>
+											<td>{{ murid.length }}</td>
+										</tr>
+										<tr class="vertical-top">
+											<td
+												class="text-no-wrap text-italic q-pr-md"
+											>
+												Terpilih
+											</td>
+											<td>
+												{{ selected.length }} santri
+												{{
+													selected.map(
+														(s) => s.santri_id,
+													)
+												}}
+											</td>
+										</tr>
+									</tbody>
 								</table>
 							</q-card-section>
 							<q-card-section class="q-pa-sm">

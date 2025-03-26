@@ -60,38 +60,40 @@
 								<q-item-label overline>User</q-item-label>
 								<q-item-label>
 									<table>
-										<tr>
-											<td
-												class="text-italic text-caption"
-											>
-												Nama
-											</td>
-											<td>{{ user.name }}</td>
-										</tr>
-										<tr>
-											<td
-												class="text-italic text-caption"
-											>
-												Email
-											</td>
-											<td>{{ user.email }}</td>
-										</tr>
-										<tr>
-											<td
-												class="text-italic text-caption"
-											>
-												Username
-											</td>
-											<td>{{ user.username }}</td>
-										</tr>
-										<tr>
-											<td
-												class="text-italic text-caption"
-											>
-												Telepon
-											</td>
-											<td>{{ user.phone || '-' }}</td>
-										</tr>
+										<tbody>
+											<tr>
+												<td
+													class="text-italic text-caption"
+												>
+													Nama
+												</td>
+												<td>{{ user.name }}</td>
+											</tr>
+											<tr>
+												<td
+													class="text-italic text-caption"
+												>
+													Email
+												</td>
+												<td>{{ user.email }}</td>
+											</tr>
+											<tr>
+												<td
+													class="text-italic text-caption"
+												>
+													Username
+												</td>
+												<td>{{ user.username }}</td>
+											</tr>
+											<tr>
+												<td
+													class="text-italic text-caption"
+												>
+													Telepon
+												</td>
+												<td>{{ user.phone || '-' }}</td>
+											</tr>
+										</tbody>
 									</table>
 								</q-item-label>
 								<q-item-label class="bg-green-1">

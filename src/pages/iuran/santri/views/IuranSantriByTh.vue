@@ -15,36 +15,46 @@
 							class=""
 							style="min-width: 250px; max-width: 300px"
 						>
-							<tr>
-								<td class="text-caption text-italic q-pr-md">
-									Tahun Ajaran
-								</td>
-								<td class="text-right">{{ thAjaranH }}</td>
-							</tr>
-							<tr>
-								<td class="text-caption text-italic q-pr-md">
-									Total Tagihan
-								</td>
-								<td class="text-right">
-									{{ sumNominal(iuran).toRupiah() }}
-								</td>
-							</tr>
-							<tr>
-								<td class="text-caption text-italic q-pr-md">
-									Total Pembayaran
-								</td>
-								<td class="text-right">
-									{{ sumLunas(iuran).toRupiah() }}
-								</td>
-							</tr>
-							<tr>
-								<td class="text-caption text-italic q-pr-md">
-									Sisa Tagihan
-								</td>
-								<td class="text-right text-weight-bold">
-									{{ sumNotLunas(iuran).toRupiah() }}
-								</td>
-							</tr>
+							<tbody>
+								<tr>
+									<td
+										class="text-caption text-italic q-pr-md"
+									>
+										Tahun Ajaran
+									</td>
+									<td class="text-right">{{ thAjaranH }}</td>
+								</tr>
+								<tr>
+									<td
+										class="text-caption text-italic q-pr-md"
+									>
+										Total Tagihan
+									</td>
+									<td class="text-right">
+										{{ sumNominal(iuran).toRupiah() }}
+									</td>
+								</tr>
+								<tr>
+									<td
+										class="text-caption text-italic q-pr-md"
+									>
+										Total Pembayaran
+									</td>
+									<td class="text-right">
+										{{ sumLunas(iuran).toRupiah() }}
+									</td>
+								</tr>
+								<tr>
+									<td
+										class="text-caption text-italic q-pr-md"
+									>
+										Sisa Tagihan
+									</td>
+									<td class="text-right text-weight-bold">
+										{{ sumNotLunas(iuran).toRupiah() }}
+									</td>
+								</tr>
+							</tbody>
 						</table>
 					</q-item-section>
 				</q-item>

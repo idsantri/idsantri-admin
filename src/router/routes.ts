@@ -87,7 +87,7 @@ const routes: RouteRecordRaw[] = [
 			},
 			{
 				path: 'personalia',
-				meta: { title: 'Pesonalia' },
+				meta: { title: 'Personalia' },
 				children: _personalia,
 			},
 			{

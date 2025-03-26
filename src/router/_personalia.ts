@@ -7,6 +7,6 @@ export default [
 	{
 		path: ':id',
 		component: () => import('src/pages/personalia/PersonaliaDetail.vue'),
-		meta: { title: 'Pesonalia Detail' },
+		meta: { title: 'Personalia Detail' },
 	},
 ];
