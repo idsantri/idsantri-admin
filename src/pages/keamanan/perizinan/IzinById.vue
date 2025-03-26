@@ -57,100 +57,119 @@
 									/>
 								</div>
 								<table v-else class="full-width">
-									<tr>
-										<td class="text-italic">Sifat:</td>
-										<td>{{ izin.sifat }}</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Pengajuan:</td>
-										<td>{{ izin.pengajuan }}</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Durasi:</td>
-										<td>
-											{{ izin.durasi + ' hari' }}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">
-											Dari Tanggal:
-										</td>
-										<td>
-											{{
-												formatDateFull(izin.dari_tgl) +
-												' | ' +
-												bacaHijri(m2h(izin.dari_tgl))
-											}}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">
-											Sampai Tanggal:
-										</td>
-										<td>
-											{{
-												formatDateFull(
-													izin.sampai_tgl,
-												) +
-												' | ' +
-												bacaHijri(m2h(izin.sampai_tgl))
-											}}
-										</td>
-									</tr>
-
-									<tr>
-										<td class="text-italic">Keperluan:</td>
-										<td>
-											{{ izin.keperluan }}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Keterangan:</td>
-										<td>
-											{{ izin.keterangan ?? '-' }}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Tujuan:</td>
-										<td>
-											{{ izin.tujuan }}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Catatan:</td>
-										<td>
-											{{ izin.catatan || '-' }}
-										</td>
-									</tr>
-									<tr>
-										<td colspan="2">
-											<q-separator color="green-8" />
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Kembali:</td>
-										<td>
-											{{
-												formatDateFull(
-													izin.kembali_tgl,
-												) +
-												' | ' +
-												bacaHijri(m2h(izin.kembali_tgl))
-											}}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Status:</td>
-										<td>
-											{{
-												izin.status
-													? replaceDynamicText(
-															izin.status,
-														)
-													: ''
-											}}
-										</td>
-									</tr>
+									<tbody>
+										<tr>
+											<td class="text-italic">Sifat:</td>
+											<td>{{ izin.sifat }}</td>
+										</tr>
+										<tr>
+											<td class="text-italic">
+												Pengajuan:
+											</td>
+											<td>{{ izin.pengajuan }}</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Durasi:</td>
+											<td>
+												{{ izin.durasi + ' hari' }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">
+												Dari Tanggal:
+											</td>
+											<td>
+												{{
+													formatDateFull(
+														izin.dari_tgl,
+													) +
+													' | ' +
+													bacaHijri(
+														m2h(izin.dari_tgl),
+													)
+												}}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">
+												Sampai Tanggal:
+											</td>
+											<td>
+												{{
+													formatDateFull(
+														izin.sampai_tgl,
+													) +
+													' | ' +
+													bacaHijri(
+														m2h(izin.sampai_tgl),
+													)
+												}}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">
+												Keperluan:
+											</td>
+											<td>
+												{{ izin.keperluan }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">
+												Keterangan:
+											</td>
+											<td>
+												{{ izin.keterangan ?? '-' }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Tujuan:</td>
+											<td>
+												{{ izin.tujuan }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">
+												Catatan:
+											</td>
+											<td>
+												{{ izin.catatan || '-' }}
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<q-separator color="green-8" />
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">
+												Kembali:
+											</td>
+											<td>
+												{{
+													formatDateFull(
+														izin.kembali_tgl,
+													) +
+													' | ' +
+													bacaHijri(
+														m2h(izin.kembali_tgl),
+													)
+												}}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Status:</td>
+											<td>
+												{{
+													izin.status
+														? replaceDynamicText(
+																izin.status,
+															)
+														: ''
+												}}
+											</td>
+										</tr>
+									</tbody>
 								</table>
 							</q-card-section>
 						</q-card>

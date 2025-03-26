@@ -48,38 +48,40 @@
 								<q-item-label overline>User</q-item-label>
 								<q-item-label v-if="user">
 									<table>
-										<tr>
-											<td
-												class="text-italic text-caption q-pr-sm"
-											>
-												Nama
-											</td>
-											<td>{{ user.name }}</td>
-										</tr>
-										<tr>
-											<td
-												class="text-italic text-caption q-pr-sm"
-											>
-												Email
-											</td>
-											<td>{{ user.email }}</td>
-										</tr>
-										<tr>
-											<td
-												class="text-italic text-caption q-pr-sm"
-											>
-												Username
-											</td>
-											<td>{{ user.username }}</td>
-										</tr>
-										<tr>
-											<td
-												class="text-italic text-caption q-pr-sm"
-											>
-												Telepon
-											</td>
-											<td>{{ user.phone || '-' }}</td>
-										</tr>
+										<tbody>
+											<tr>
+												<td
+													class="text-italic text-caption q-pr-sm"
+												>
+													Nama
+												</td>
+												<td>{{ user.name }}</td>
+											</tr>
+											<tr>
+												<td
+													class="text-italic text-caption q-pr-sm"
+												>
+													Email
+												</td>
+												<td>{{ user.email }}</td>
+											</tr>
+											<tr>
+												<td
+													class="text-italic text-caption q-pr-sm"
+												>
+													Username
+												</td>
+												<td>{{ user.username }}</td>
+											</tr>
+											<tr>
+												<td
+													class="text-italic text-caption q-pr-sm"
+												>
+													Telepon
+												</td>
+												<td>{{ user.phone || '-' }}</td>
+											</tr>
+										</tbody>
 									</table>
 								</q-item-label>
 							</q-item-section>
