@@ -11,8 +11,16 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v4
 
+            - name: Setup Nodejs
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 20
+
             - name: Install dependencies
               run: yarn install #use yarn
+
+            - name: Clean Config
+              run: npx quasar clean --qconf
 
             - name: Build PWA
               run: npx quasar build -m pwa
