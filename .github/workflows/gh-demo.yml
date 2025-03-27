@@ -11,25 +11,16 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v4
 
-            # - name: Setup Nodejs
-            #   uses: actions/setup-node@v3
-            #   with:
-            #       node-version: 18
+            - name: Setup Nodejs
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 20
 
             - name: Install dependencies
               run: yarn install #use yarn
 
             - name: Build PWA
               run: npx quasar build -m pwa
-
-            # - name: Deploy to Shared Hosting
-            #   uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-            #   with:
-            #       server: demangan.net
-            #       username: ${{ secrets.ftp_username }}
-            #       password: ${{ secrets.ftp_password }}
-            #       server-dir: ./dev/
-            #       local-dir: ./dist/pwa/
 
             - name: Deploy to GitHub Pages
               uses: JamesIves/github-pages-deploy-action@v4

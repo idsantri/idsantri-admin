@@ -77,9 +77,10 @@ export default defineConfig((/* ctx */) => {
 			typescript: {
 				strict: true,
 				vueShim: true,
+				// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 				extendTsConfig: (tsConfig) => {
 					if (tsConfig && tsConfig.compilerOptions) {
-						// tsConfig.compilerOptions.baseUrl = './';  // pinia error
+						// tsConfig.compilerOptions.baseUrl = './'; // pinia error
 						tsConfig.compilerOptions.noUnusedLocals = true;
 						tsConfig.compilerOptions.noUnusedParameters = true;
 					}
@@ -188,6 +189,7 @@ export default defineConfig((/* ctx */) => {
 			workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
 			// swFilename: 'sw.js',
 			// manifestFilename: 'manifest.json'
+			// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 			extendManifestJson: (manifest) => {
 				manifest.name = config.PWA_NAME;
 				manifest.short_name = config.PWA_SHORT_NAME;

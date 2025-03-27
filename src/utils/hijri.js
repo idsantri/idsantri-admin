@@ -1,5 +1,5 @@
-import { numbersOnly } from './format-number.js';
-import { isDate } from './format-date.js';
+import { numbersOnly } from 'src/utils/format-number';
+import { isDate } from 'src/utils/format-date';
 
 function m2h(inputMasehi, koreksi = 0) {
 	if (!isDate(inputMasehi)) return;
