@@ -6760,7 +6760,7 @@ sass-embedded-win32-x64@1.86.0:
   resolved "https://registry.npmjs.org/sass-embedded-win32-x64/-/sass-embedded-win32-x64-1.86.0.tgz"
   integrity sha512-GVX0CHtukr3kjqfqretSlPiJzV7V4JxUjpRZV+yC9gUMTiDErilJh2Chw1r0+MYiYvumCDUSDlticmvJs7v0tA==
 
-sass-embedded@*, sass-embedded@^1.80.2:
+sass-embedded@*, sass-embedded@^1.80.2, sass-embedded@^1.86.0:
   version "1.86.0"
   resolved "https://registry.npmjs.org/sass-embedded/-/sass-embedded-1.86.0.tgz"
   integrity sha512-Ibq5DzxjSf9f/IJmKeHVeXlVqiZWdRJF+RXy6v6UupvMYVMU5Ei+teSFBvvpPD5bB2QhhnU/OJlSM0EBCtfr9g==
