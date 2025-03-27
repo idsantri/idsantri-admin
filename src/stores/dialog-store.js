@@ -14,24 +14,24 @@ export default defineStore('modal', {
 	},
 	actions: {
 		toggleSearchSantri(v) {
-			v ? (this.searchSantri = true) : (this.searchSantri = false);
+			this.searchSantri = v;
 		},
 		toggleCrudSantri(v) {
-			v ? (this.crudSantri = true) : (this.crudSantri = false);
+			this.crudSantri = v;
 		},
 
 		toggleSearchWali(v) {
-			v ? (this.searchWali = true) : (this.searchWali = false);
+			this.searchWali = v;
 		},
 		toggleCrudWali(v) {
-			v ? (this.crudWali = true) : (this.crudWali = false);
+			this.crudWali = v;
 		},
 
 		toggleSearchOrtu(v) {
-			v ? (this.searchOrtu = true) : (this.searchOrtu = false);
+			this.searchOrtu = v;
 		},
 		toggleCrudOrtu(v) {
-			v ? (this.crudOrtu = true) : (this.crudOrtu = false);
+			this.crudOrtu = v;
 		},
 	},
 });

@@ -1,6 +1,6 @@
 import api from '.';
 import apiError from './api-error';
-import { ListsCustomParams, ListsParams } from './api-interface';
+import type { ListsCustomParams, ListsParams } from './api-interface';
 
 async function getLists({
 	loadingArray,

@@ -244,15 +244,5 @@ const columns = [
 		sortable: false,
 	},
 ];
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function localTime(time) {
-	const date = new Date(time + ' UTC');
-	const options = { timeZone: 'Asia/Jakarta' };
-	const localTime = date.toLocaleString('id-ID', options);
-
-	// console.log(isDate(localTime));
-	return localTime;
-}
 </script>
 <style lang=""></style>

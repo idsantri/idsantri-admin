@@ -1,6 +1,9 @@
+import type { Component } from 'vue';
+
 export default [
 	{
 		path: '',
-		component: () => import('src/pages/sekretariat/IndexPage.vue'),
+		component: (): Component =>
+			import('src/pages/sekretariat/IndexPage.vue'),
 	},
 ];

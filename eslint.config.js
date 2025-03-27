@@ -41,12 +41,14 @@ export default defineConfigWithVueTs(
 	pluginVue.configs['flat/essential'],
 
 	{
-		files: ['**/*.ts', '**/*.vue'],
+		files: ['**/*.ts'],
 		rules: {
 			'@typescript-eslint/consistent-type-imports': [
 				'error',
 				{ prefer: 'type-imports' },
 			],
+			'@typescript-eslint/explicit-function-return-type': 'warn',
+			'@typescript-eslint/no-unused-vars': 'warn', //aturan unused-vars
 		},
 	},
 	// https://github.com/vuejs/eslint-config-typescript
@@ -71,38 +73,27 @@ export default defineConfigWithVueTs(
 
 		// add your custom rules here
 		rules: {
-			'prefer-promise-reject-errors': 'off',
-
-			quotes: ['warn', 'single', { avoidEscape: true }],
-
-			// this rule, if on, would require explicit return type on the `render` function
-			'@typescript-eslint/explicit-function-return-type': 'off',
-
-			// in plain CommonJS modules, you can't use `import foo = require('foo')` to pass this rule, so it has to be disabled
-			'@typescript-eslint/no-var-requires': 'off',
-
 			// The core 'no-unused-vars' rules (in the eslint:recommended ruleset)
 			// does not work with type definitions
-			'no-unused-vars': 'off',
-			'@typescript-eslint/no-unused-vars': 'warn', //aturan unused-vars
-
-			// allow debugger during development only
+			quotes: ['warn', 'single', { avoidEscape: true }],
 			'no-debugger':
-				process.env.NODE_ENV === 'production' ? 'error' : 'off',
+				process.env.NODE_ENV === 'production' ? 'error' : 'off', // allow debugger during development only
 
 			'vue/block-lang': 'off',
+			'no-unused-vars': 'warn',
+			'prefer-promise-reject-errors': 'warn',
 			'prefer-const': 'warn',
-			'@typescript-eslint/restrict-plus-operands': 'warn',
+			'no-prototype-builtins': 'warn',
 
-			// sementara
-			'no-prototype-builtins': 'off',
-			'@typescript-eslint/no-unused-expressions': 'off',
-			'@typescript-eslint/no-base-to-string': 'off',
-			'@typescript-eslint/consistent-type-imports': 'off',
-			'@typescript-eslint/no-floating-promises': 'off',
-			'@typescript-eslint/prefer-promise-reject-errors': 'off',
-			'@typescript-eslint/no-empty-object-type': 'off',
-			'@typescript-eslint/no-require-imports': 'off',
+			'@typescript-eslint/no-var-requires': 'warn', // in plain CommonJS modules, you can't use `import foo = require('foo')` to pass this rule, so it has to be disabled
+			'@typescript-eslint/restrict-plus-operands': 'warn',
+			'@typescript-eslint/no-unused-expressions': 'warn',
+			'@typescript-eslint/no-base-to-string': 'warn',
+			'@typescript-eslint/no-floating-promises': 'warn',
+			'@typescript-eslint/no-require-imports': 'warn',
+			'@typescript-eslint/consistent-type-imports': 'warn',
+			'@typescript-eslint/prefer-promise-reject-errors': 'warn',
+			'@typescript-eslint/no-empty-object-type': 'warn',
 		},
 	},
 

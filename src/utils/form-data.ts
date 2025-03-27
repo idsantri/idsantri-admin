@@ -1,4 +1,4 @@
-import { Ref } from 'vue';
+import type { Ref } from 'vue';
 
 /**
  * Converts Vue ref data to FormData, combining with existing form element data
@@ -45,7 +45,7 @@ function refToFormData<T extends Record<string, unknown>>(
 				}
 			} else {
 				// Fallback for other types (e.g., null, undefined, etc.)
-				form.append(key, String(value));
+				form.append(key, String(value as string));
 			}
 		}
 	});

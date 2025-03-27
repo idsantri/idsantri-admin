@@ -1,6 +1,6 @@
 import api from '.';
 import apiError from './api-error';
-import { PostParams } from './api-interface';
+import type { PostParams } from './api-interface';
 import { notifyConfirm, notifySuccess } from 'src/utils/notify';
 
 async function apiPost({

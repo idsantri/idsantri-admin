@@ -39,6 +39,7 @@ api.interceptors.response.use(
 			notifyError('Tidak dapat terhubung ke server');
 		} else {
 			// Teruskan kesalahan lain ke blok catch berikutnya
+			// eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
 			return Promise.reject(error);
 		}
 	},

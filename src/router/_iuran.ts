@@ -1,34 +1,37 @@
-import { RouteLocation } from 'vue-router';
+import type { Component } from 'vue';
+import type { RouteLocation } from 'vue-router';
 
 export default [
 	{
 		path: '',
-		component: () => import('src/pages/iuran/PageIndex.vue'),
-		redirect: (to: RouteLocation) => to.fullPath + '/santri',
+		component: (): Component => import('src/pages/iuran/PageIndex.vue'),
+		redirect: (to: RouteLocation): string => to.fullPath + '/santri',
 		children: [
 			{
 				path: 'santri/:id?/:thAjaranH?',
-				component: () =>
+				component: (): Component =>
 					import('src/pages/iuran/santri/PageIuranSantri.vue'),
 			},
 			{
 				path: 'th-ajaran/:thAjaranH?',
-				component: () =>
+				component: (): Component =>
 					import('src/pages/iuran/th-ajaran/PageIndex.vue'),
 			},
 			// {
 			// 	path: 'tanggal',
-			// 	component: () =>
+			// 	component: (): Component =>
 			// 		import('src/pages/iuran/tanggal/PageIndex.vue'),
 			// },
 		],
 	},
 	{
 		path: 'paket',
-		component: () => import('src/pages/iuran/paket/PageIndex.vue'),
+		component: (): Component =>
+			import('src/pages/iuran/paket/PageIndex.vue'),
 	},
 	{
 		path: 'tagihan/:th_ajaran_h?/:tingkat_id?/:kelas?',
-		component: () => import('src/pages/iuran/tagihan/PageTagihan.vue'),
+		component: (): Component =>
+			import('src/pages/iuran/tagihan/PageTagihan.vue'),
 	},
 ];

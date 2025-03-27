@@ -199,7 +199,7 @@ function filterPaket() {
 }
 
 function calculateTotal() {
-	let calc = filterPaket().reduce(function (acc, obj) {
+	const calc = filterPaket().reduce(function (acc, obj) {
 		return acc + Number(obj.nominal) * Number(obj.qty);
 	}, 0);
 

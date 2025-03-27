@@ -171,7 +171,7 @@ const onSubmit = async () => {
 	if (response) {
 		emit('successSubmit', response.santri);
 
-		route.params.id == santri.id ? forceRerender() : null;
+		if (route.params.id == santri.id) forceRerender();
 		dialogStore().toggleCrudSantri(false);
 		dialogStore().toggleSearchSantri(false);
 		router.push(`/santri/${response.santri.id}`);

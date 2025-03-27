@@ -1,6 +1,6 @@
 import api from '.';
 import apiError from './api-error';
-import { UpdateParams } from './api-interface';
+import type { UpdateParams } from './api-interface';
 import { notifySuccess, notifyConfirm } from 'src/utils/notify';
 
 async function apiUpdate({

@@ -116,7 +116,7 @@ function filterPaket() {
 	return iuranPaket.value.filter((obj) => obj.paket == inputPaket.value);
 }
 function calculateTotal() {
-	let calc = filterPaket().reduce(function (acc, obj) {
+	const calc = filterPaket().reduce(function (acc, obj) {
 		return acc + Number(obj.nominal);
 	}, 0);
 

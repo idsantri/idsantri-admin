@@ -109,7 +109,7 @@ function onEdit(v) {
 
 watch(
 	() => props.kecamatan_id,
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 	async (v) => {
 		// console.log('w', v);
 		await checkData();

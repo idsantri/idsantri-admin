@@ -1,6 +1,6 @@
 import api from '.';
 import apiError from './api-error';
-import { GetParams } from './api-interface';
+import type { GetParams } from './api-interface';
 import { notifySuccess } from 'src/utils/notify';
 
 async function apiGet({
