@@ -5,7 +5,7 @@
 
 import { defineConfig } from '#q-app/wrappers';
 import config from 'src/config/index.js';
-// import * as path from 'path';
+import * as path from 'path';
 
 export default defineConfig((/* ctx */) => {
 	// const env = ctx.dev ? 'development' : 'production';
@@ -88,14 +88,16 @@ export default defineConfig((/* ctx */) => {
 				},
 			},
 
-			// extendWebpack(cfg) {
-			// 	// add alias @ to src
-			// 	cfg.resolve = cfg.resolve || {};
-			// 	cfg.resolve.alias = {
-			// 		...cfg.resolve.alias,
-			// 		'@': path.resolve(__dirname, './src'),
-			// 	};
-			// },
+			// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+			extendWebpack(cfg) {
+				// add alias @ to src
+				cfg.resolve = cfg.resolve || {};
+				cfg.resolve.alias = {
+					...cfg.resolve.alias,
+					'@': path.resolve(__dirname, './src'),
+					src: path.resolve(__dirname, './src'),
+				};
+			},
 			// rtl: true, // https://quasar.dev/options/rtl-support
 			// preloadChunks: true,
 			// showProgress: false,
