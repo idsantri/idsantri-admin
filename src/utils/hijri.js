@@ -1,17 +1,14 @@
-import { numbersOnly } from './format-number';
-import { isDate } from './format-date';
+import { numbersOnly } from './format-number.js';
+import { isDate } from './format-date.js';
 
 function m2h(inputMasehi, koreksi = 0) {
 	if (!isDate(inputMasehi)) return;
 
-	let mData = new Date(inputMasehi);
+	const mData = new Date(inputMasehi);
 	let mThn = mData.getFullYear();
 	let mBln = mData.getMonth() + 1;
 	let mTgl = mData.getDate();
 	let okt15th1582;
-	let hasil1;
-	let hasil2;
-	let hasil3;
 	let hThn;
 	let hBln;
 	let hTgl;
@@ -52,15 +49,15 @@ function m2h(inputMasehi, koreksi = 0) {
 		okt15th1582 = 0;
 	}
 
-	hasil1 =
+	const hasil1 =
 		Math.floor(365.25 * mThn) +
 		Math.floor(30.6001 * (mBln + 1)) +
 		mTgl +
 		okt15th1582 -
 		428;
-	hasil2 = hasil1 - 227016;
+	const hasil2 = hasil1 - 227016;
 	hThn = Math.round(hasil2 / 354.3671 + 0.5);
-	hasil3 = hasil2 + 1 - Math.floor(hasil2 / 354.3671) * 354.3671;
+	const hasil3 = hasil2 + 1 - Math.floor(hasil2 / 354.3671) * 354.3671;
 
 	if (
 		hThn % 30 === 2 ||
@@ -173,7 +170,7 @@ const listBulanHijri = [
 
 function getBulanHijri(inputMonth) {
 	const monthObject = listBulanHijri.find(
-		(obj) => obj.month === parseInt(inputMonth)
+		(obj) => obj.month === parseInt(inputMonth),
 	);
 	return monthObject ? monthObject.name : '';
 }
@@ -182,9 +179,9 @@ function bacaHijri(input) {
 	if (!input) return '-';
 	const cleanInput = numbersOnly(input);
 
-	let dd = String(cleanInput).substring(6, 8);
-	let mm = String(cleanInput).substring(4, 6);
-	let yy = String(cleanInput).substring(0, 4);
+	const dd = String(cleanInput).substring(6, 8);
+	const mm = String(cleanInput).substring(4, 6);
+	const yy = String(cleanInput).substring(0, 4);
 	if (String(cleanInput).length != 8 || dd < 1 || mm < 1 || yy < 1) {
 		return 'Format salah!';
 	}

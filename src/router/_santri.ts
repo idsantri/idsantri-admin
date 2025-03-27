@@ -1,4 +1,5 @@
-import { RouteLocation } from 'vue-router';
+import type { Component } from 'vue';
+import type { RouteLocation } from 'vue-router';
 
 export default [
 	{
@@ -7,15 +8,16 @@ export default [
 	},
 	{
 		path: ':id(\\d+)',
-		component: () => import('src/pages/santri/SantriDetail.vue'),
+		component: (): Component => import('src/pages/santri/SantriDetail.vue'),
 		children: [
 			{
 				path: '',
-				redirect: (to: RouteLocation) => to.fullPath + '/status',
+				redirect: (to: RouteLocation): string =>
+					to.fullPath + '/status',
 			},
 			{
 				path: 'status',
-				component: () =>
+				component: (): Component =>
 					import(
 						'src/pages/santri/relations/status/SantriStatus.vue'
 					),
@@ -23,29 +25,29 @@ export default [
 
 			{
 				path: 'kelas',
-				component: () =>
+				component: (): Component =>
 					import('src/pages/santri/relations/kelas/SantriKelas.vue'),
 			},
 			{
 				path: 'domisili',
-				component: () =>
+				component: (): Component =>
 					import(
 						'src/pages/santri/relations/domisili/SantriDomisili.vue'
 					),
 			},
 			{
 				path: 'wali',
-				component: () =>
+				component: (): Component =>
 					import('src/pages/santri/relations/wali/SantriWali.vue'),
 			},
 			{
 				path: 'ortu',
-				component: () =>
+				component: (): Component =>
 					import('src/pages/santri/relations/ortu/SantriOrtu.vue'),
 			},
 			// {
 			// 	path: 'iuran-total',
-			// 	component: () =>
+			// 	component: (): Component =>
 			// 		import(
 			// 			'src/pages/santri/relations/iuran-total/SantriIuranTotal.vue'
 			// 		),
@@ -53,12 +55,12 @@ export default [
 			// {
 			// 	path: 'iuran',
 			// 	meta: { title: 'Detail Santri — Iuran' },
-			// 	component: () =>
+			// 	component: (): Component =>
 			// 		import('src/pages/santri/iuran/SantriIuran.vue'),
 			// 	children: [
 			// 		{
 			// 			path: ':th_ajaran_h',
-			// 			component: () =>
+			// 			component: (): Component =>
 			// 				import(
 			// 					'src/pages/santri/iuran/SantriIuranTh.vue'
 			// 				),
@@ -69,6 +71,6 @@ export default [
 	},
 	{
 		path: 'export',
-		component: () => import('src/pages/santri/ExportPage.vue'),
+		component: (): Component => import('src/pages/santri/ExportPage.vue'),
 	},
 ];

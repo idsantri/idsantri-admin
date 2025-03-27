@@ -95,7 +95,7 @@ function onEdit(v) {
 
 watch(
 	() => props.kabupaten_id,
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 	async (v) => {
 		// console.log('w', v);
 		await checkData();

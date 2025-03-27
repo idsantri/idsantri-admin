@@ -7,7 +7,7 @@ const loadingStore = defineStore('loading', {
 	},
 	actions: {
 		setLoadingMain(v) {
-			v ? (this.loadingMain = true) : (this.loadingMain = false);
+			this.loadingMain = v;
 		},
 	},
 });

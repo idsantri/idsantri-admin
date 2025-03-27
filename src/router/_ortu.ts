@@ -1,3 +1,5 @@
+import type { Component } from 'vue';
+
 export default [
 	{
 		path: '',
@@ -5,6 +7,6 @@ export default [
 	},
 	{
 		path: ':id',
-		component: () => import('src/pages/ortu/OrtuDetail.vue'),
+		component: (): Component => import('src/pages/ortu/OrtuDetail.vue'),
 	},
 ];

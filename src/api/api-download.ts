@@ -1,6 +1,6 @@
 import api from '.';
 import apiError from './api-error';
-import { DownloadParams } from './api-interface';
+import type { DownloadParams } from './api-interface';
 import { notifyConfirm } from 'src/utils/notify';
 
 async function apiDownload({

@@ -3,13 +3,11 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js
 
-/* eslint-disable @typescript-eslint/no-var-requires */
-
-import { configure } from 'quasar/wrappers';
+import { defineConfig } from '#q-app/wrappers';
 import config from 'src/config';
 // import * as path from 'path';
 
-export default configure((/* ctx */) => {
+export default defineConfig((/* ctx */) => {
 	// const env = ctx.dev ? 'development' : 'production';
 	// const baseURL_API =
 	// 	env === 'development' ? 'http://localhost:8000/api' : config.BASE_API;
@@ -74,6 +72,19 @@ export default configure((/* ctx */) => {
 			esbuildTarget: {
 				browser: ['es2022', 'firefox115', 'chrome115', 'safari14'],
 				node: 'node20',
+			},
+
+			typescript: {
+				strict: true,
+				vueShim: true,
+				extendTsConfig: (tsConfig) => {
+					if (tsConfig && tsConfig.compilerOptions) {
+						// tsConfig.compilerOptions.baseUrl = './';  // pinia error
+						tsConfig.compilerOptions.noUnusedLocals = true;
+						tsConfig.compilerOptions.noUnusedParameters = true;
+					}
+					return tsConfig;
+				},
 			},
 
 			// extendWebpack(cfg) {
@@ -238,7 +249,7 @@ export default configure((/* ctx */) => {
 			// extendBexScriptsConf (esbuildConf) {},
 			// extendBexManifestJson (json) {},
 
-			contentScripts: ['my-content-script'],
+			extraScripts: [],
 		},
 	};
 });

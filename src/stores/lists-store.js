@@ -24,7 +24,7 @@ export default defineStore('lists-input', {
 	actions: {
 		checkState(stateName) {
 			// Check if the state property exists
-			if (this.$state.hasOwnProperty(stateName)) {
+			if (Object.prototype.hasOwnProperty.call(this.$state, stateName)) {
 				// Property exists
 				return true;
 			} else {

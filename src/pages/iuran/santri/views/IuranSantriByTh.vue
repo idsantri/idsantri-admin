@@ -320,7 +320,9 @@ function sortMapIuran(data) {
 		.map((v) => ({
 			...v,
 			isLunas: !!v.lunas,
-			show: v.hasOwnProperty('show') ? v.show : false,
+			show: Object.prototype.hasOwnProperty.call(v, 'show')
+				? v.show
+				: false,
 		}));
 }
 </script>

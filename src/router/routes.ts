@@ -1,4 +1,4 @@
-import { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
 import _auth from './_auth';
 import _bendahara from './_bendahara';
 import _cari from './_cari';

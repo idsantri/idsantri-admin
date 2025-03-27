@@ -101,15 +101,6 @@ import dialogStore from 'src/stores/dialog-store';
 import apiGet from 'src/api/api-get';
 import DropDownPrint from './DropDownPrint.vue';
 
-const path = ref(useRoute().fullPath);
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function pathIuran() {
-	if (path.value.indexOf('iuran-total') != -1) return false;
-	if (path.value.indexOf('iuran') != -1) return true;
-	return false;
-}
-
 const santri = reactive({});
 const wali = reactive({});
 const ortu = reactive({});

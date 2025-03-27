@@ -77,7 +77,7 @@ async function download() {
 	if (!data) return;
 	if (!data.url) return notifyWarning('Url tidak ditemukan');
 
-	let link = document.createElement('a');
+	const link = document.createElement('a');
 	link.href = data.url;
 	link.click();
 	link.remove();
