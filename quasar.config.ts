@@ -77,14 +77,12 @@ export default defineConfig((/* ctx */) => {
 			typescript: {
 				strict: true,
 				vueShim: true,
-				// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-				extendTsConfig: (tsConfig) => {
+				extendTsConfig: (tsConfig): void => {
 					if (tsConfig && tsConfig.compilerOptions) {
-						// tsConfig.compilerOptions.baseUrl = './'; // pinia error
 						tsConfig.compilerOptions.noUnusedLocals = true;
 						tsConfig.compilerOptions.noUnusedParameters = true;
+						// tsConfig.compilerOptions.baseUrl = './'; // pinia error
 					}
-					return tsConfig;
 				},
 			},
 
@@ -101,8 +99,7 @@ export default defineConfig((/* ctx */) => {
 			// "chain" is a webpack-chain object https://github.com/sorrycc/webpack-chain
 			// chainWebpack (/* chain, { isClient, isServer } */) {}
 
-			// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-			extendWebpack(cfg) {
+			extendWebpack: (cfg): void => {
 				// add alias @ to src
 				cfg.resolve = cfg.resolve || {};
 				cfg.resolve.alias = {
@@ -192,17 +189,25 @@ export default defineConfig((/* ctx */) => {
 			workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
 			// swFilename: 'sw.js',
 			// manifestFilename: 'manifest.json'
-			// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-			extendManifestJson: (manifest) => {
+
+			extendManifestJson: (manifest): void => {
 				manifest.name = config.PWA_NAME;
 				manifest.short_name = config.PWA_SHORT_NAME;
 				manifest.description = config.PWA_DESCRIPTION;
-				return manifest;
 			},
 			// useCredentialsForManifestTag: true,
 			// injectPwaMetaTags: false,
 			// extendPWACustomSWConf (esbuildConf) {},
-			// extendGenerateSWOptions (cfg) {},
+
+			/**
+			 * Extend the default options for workbox GenerateSW
+			 * https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-build#.GenerateSW
+			 * @param cfg - the default options for workbox GenerateSW
+			 * @description - untuk keperluan cache font pwa
+			 */
+			extendGenerateSWOptions: (cfg): void => {
+				cfg.maximumFileSizeToCacheInBytes = 5 * 1024 * 1024; // 5 MB
+			},
 			// extendInjectManifestOptions (cfg) {}
 		},
 
