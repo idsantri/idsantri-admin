@@ -1,5 +1,5 @@
-import { numbersOnly } from './format-number';
-import { isDate } from './format-date';
+import { numbersOnly } from './format-number.js';
+import { isDate } from './format-date.js';
 
 function m2h(inputMasehi, koreksi = 0) {
 	if (!isDate(inputMasehi)) return;
@@ -173,7 +173,7 @@ const listBulanHijri = [
 
 function getBulanHijri(inputMonth) {
 	const monthObject = listBulanHijri.find(
-		(obj) => obj.month === parseInt(inputMonth)
+		(obj) => obj.month === parseInt(inputMonth),
 	);
 	return monthObject ? monthObject.name : '';
 }

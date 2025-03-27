@@ -17,6 +17,7 @@ function formatDate(date, formatString = 'yyyy-MM-dd HH:mm:ss') {
 
 		return formattedDate;
 	} catch (error) {
+		console.error(error);
 		return 'Invalid Format'; // Handle invalid format error
 	}
 }
