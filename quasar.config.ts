@@ -4,7 +4,7 @@
 // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js
 
 import { defineConfig } from '#q-app/wrappers';
-import config from 'src/config/index.js';
+import config from './src/config/index.js';
 import * as path from 'path';
 
 export default defineConfig((/* ctx */) => {
