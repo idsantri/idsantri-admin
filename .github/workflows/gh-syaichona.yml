@@ -12,7 +12,7 @@ jobs:
               uses: actions/checkout@v4
 
             - name: Install dependencies
-              run: npm install
+              run: yarn install #use yarn
 
             - name: Build PWA
               run: npx quasar build -m pwa
