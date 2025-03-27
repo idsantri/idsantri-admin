@@ -22,6 +22,9 @@ jobs:
             - name: Clean Config
               run: npx quasar clean --qconf
 
+            - name: Clean Config
+              run: npx quasar clean --qconf
+
             - name: Build PWA
               run: npx quasar build -m pwa
 

@@ -1,7 +1,7 @@
 /* eslint-env node */
 
 // Configuration for your app
-// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js
+// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file
 
 import { defineConfig } from '#q-app/wrappers';
 import config from './src/config';
@@ -88,16 +88,6 @@ export default defineConfig((/* ctx */) => {
 				},
 			},
 
-			// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-			extendWebpack(cfg) {
-				// add alias @ to src
-				cfg.resolve = cfg.resolve || {};
-				cfg.resolve.alias = {
-					...cfg.resolve.alias,
-					'@': path.resolve(__dirname, './src'),
-					src: path.resolve(__dirname, './src'),
-				};
-			},
 			// rtl: true, // https://quasar.dev/options/rtl-support
 			// preloadChunks: true,
 			// showProgress: false,
@@ -110,6 +100,17 @@ export default defineConfig((/* ctx */) => {
 			// https://v2.quasar.dev/quasar-cli-webpack/handling-webpack
 			// "chain" is a webpack-chain object https://github.com/sorrycc/webpack-chain
 			// chainWebpack (/* chain, { isClient, isServer } */) {}
+
+			// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+			extendWebpack(cfg) {
+				// add alias @ to src
+				cfg.resolve = cfg.resolve || {};
+				cfg.resolve.alias = {
+					...cfg.resolve.alias,
+					'@': path.resolve(__dirname, './src'),
+					src: path.resolve(__dirname, './src'),
+				};
+			},
 		},
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
