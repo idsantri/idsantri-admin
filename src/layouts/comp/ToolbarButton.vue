@@ -1,4 +1,9 @@
 <template lang="">
+	<div :class="$q.screen.lt.sm ? 'hidden' : '' + 'text-green-11 q-px-sm'">
+		<span>{{ user?.name }} </span>
+		{{ ' ' }}
+		<span class="text-caption">({{ user?.email }})</span>
+	</div>
 	<q-btn
 		round
 		flat
@@ -51,6 +56,9 @@
 </template>
 <script setup>
 import { computed, onMounted, ref } from 'vue';
+import useAuthStore from 'src/stores/auth-store';
+const auth = useAuthStore();
+const user = auth.getUser;
 
 /**
  * ----------------------------------
