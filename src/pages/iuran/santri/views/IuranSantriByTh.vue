@@ -20,14 +20,6 @@
 									<td
 										class="text-caption text-italic q-pr-md"
 									>
-										Tahun Ajaran
-									</td>
-									<td class="text-right">{{ thAjaranH }}</td>
-								</tr>
-								<tr>
-									<td
-										class="text-caption text-italic q-pr-md"
-									>
 										Total Tagihan
 									</td>
 									<td class="text-right">
