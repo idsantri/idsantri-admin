@@ -101,8 +101,6 @@ const submitLogin = async (e) => {
 	const formObject = Object.fromEntries(formData.entries());
 
 	emit('errors', []);
-
-	emit('errors', []);
 	try {
 		showSpinner.value = true;
 		const response = await api.post('login', formObject);
