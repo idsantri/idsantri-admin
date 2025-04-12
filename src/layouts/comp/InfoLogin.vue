@@ -70,8 +70,13 @@ const login = [
 	},
 	{
 		password: '112233',
-		username: 'bendahara',
-		description: 'Akses Kebendaharaan (Iuran)',
+		username: 'iuran',
+		description: 'Akses Iuran/Tagihan',
+	},
+	{
+		password: '112233',
+		username: 'admin-iuran',
+		description: 'Akses Admin Iuran/Tagihan',
 	},
 	{
 		password: '112233',
