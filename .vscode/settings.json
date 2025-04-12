@@ -12,5 +12,13 @@
 	"[vue]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
-	"cSpell.words": ["pinia"]
+	"cSpell.words": [
+		"autogrow",
+		"datatables",
+		"fontawesome",
+		"Persistedstate",
+		"pinia",
+		"swipeable",
+		"themify"
+	]
 }

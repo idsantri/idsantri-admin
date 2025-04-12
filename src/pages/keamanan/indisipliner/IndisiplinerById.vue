@@ -31,10 +31,7 @@
 						</q-toolbar>
 					</q-card-section>
 					<q-card-section class="q-pa-sm">
-						<card-head-santri
-							:data="indisipliner"
-							:loading="loading"
-						/>
+						<CardSantriSimple :id="indisipliner.santri_id" />
 						<q-card bordered flat class="q-mt-sm">
 							<q-card-section
 								class="q-pa-sm text-subtitle1 bg-green-11 flex"
@@ -51,89 +48,99 @@
 									/>
 								</div>
 								<table v-else>
-									<tr>
-										<td class="text-italic">Kategori:</td>
-										<td>
-											{{ indisipliner.kategori_text }}
-											&mdash;
-											<q-rating
-												name="kategori"
-												:model-value="
-													indisipliner.kategori || 0
-												"
-												max="5"
-												color="red"
-												icon="thumb_down"
-												icon-selected="thumb_down"
-												readonly
-											/>
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Kasus</td>
-										<td>
-											{{
-												formatDateFull(
-													indisipliner.tgl_kasus,
-												) +
-												' | ' +
-												m2hBacaHijri(
-													indisipliner.tgl_kasus,
-												)
-											}}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Sidang:</td>
-										<td>
-											{{
-												formatDateFull(
-													indisipliner.tgl_sidang,
-												) +
-												' | ' +
-												m2hBacaHijri(
-													indisipliner.tgl_sidang,
-												)
-											}}
-										</td>
-									</tr>
-
-									<tr>
-										<td class="text-italic">Pasal:</td>
-										<td>
-											{{ indisipliner.pasal }}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Deskripsi:</td>
-										<td>
-											{{ indisipliner.deskripsi }}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Eksekutor:</td>
-										<td>
-											{{ indisipliner.eksekutor }}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Saksi:</td>
-										<td>
-											{{ indisipliner.saksi }}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Takzir:</td>
-										<td>
-											{{ indisipliner.takzir }}
-										</td>
-									</tr>
-									<tr>
-										<td class="text-italic">Keterangan:</td>
-										<td>
-											{{ indisipliner.keterangan }}
-										</td>
-									</tr>
+									<tbody>
+										<tr>
+											<td class="text-italic">
+												Kategori:
+											</td>
+											<td>
+												{{ indisipliner.kategori_text }}
+												&mdash;
+												<q-rating
+													name="kategori"
+													:model-value="
+														indisipliner.kategori ||
+														0
+													"
+													max="5"
+													color="red"
+													icon="thumb_down"
+													icon-selected="thumb_down"
+													readonly
+												/>
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Kasus</td>
+											<td>
+												{{
+													formatDateFull(
+														indisipliner.tgl_kasus,
+													) +
+													' | ' +
+													m2hBacaHijri(
+														indisipliner.tgl_kasus,
+													)
+												}}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Sidang:</td>
+											<td>
+												{{
+													formatDateFull(
+														indisipliner.tgl_sidang,
+													) +
+													' | ' +
+													m2hBacaHijri(
+														indisipliner.tgl_sidang,
+													)
+												}}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Pasal:</td>
+											<td>
+												{{ indisipliner.pasal }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">
+												Deskripsi:
+											</td>
+											<td>
+												{{ indisipliner.deskripsi }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">
+												Eksekutor:
+											</td>
+											<td>
+												{{ indisipliner.eksekutor }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Saksi:</td>
+											<td>
+												{{ indisipliner.saksi }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Takzir:</td>
+											<td>
+												{{ indisipliner.takzir }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">
+												Keterangan:
+											</td>
+											<td>
+												{{ indisipliner.keterangan }}
+											</td>
+										</tr>
+									</tbody>
 								</table>
 							</q-card-section>
 						</q-card>
@@ -141,7 +148,10 @@
 				</q-card>
 			</div>
 			<div class="col-xs-12 col-sm-6">
-				<IndisiplinerRiwayat class="q-ma-sm" :santri_id="santri_id" />
+				<IndisiplinerRiwayat
+					class="q-ma-sm"
+					:santri_id="indisipliner.santri_id"
+				/>
 			</div>
 		</div>
 
@@ -161,30 +171,21 @@ import apiGet from 'src/api/api-get';
 import { formatDateFull } from 'src/utils/format-date';
 import { m2hBacaHijri } from 'src/utils/hijri';
 import IndisiplinerCrud from 'src/pages/keamanan/indisipliner/IndisiplinerCrud.vue';
-import CardHeadSantri from 'src/components/CardHeadSantri.vue';
 import IndisiplinerRiwayat from './IndisiplinerRiwayat.vue';
+import CardSantriSimple from 'src/components/santri/CardSantriSimple.vue';
 
 const route = useRoute();
 const indisipliner = ref({});
 const loading = ref(false);
 const crudShow = ref(false);
-const santri_id = ref();
 
 async function loadData() {
-	santri_id.value = null;
-
 	const data = await apiGet({
 		endPoint: `indisipliner/${route.params.id}`,
 		loading,
 	});
-	indisipliner.value = data.indisipliner;
-
-	if (indisipliner.value) {
-		santri_id.value = indisipliner.value.santri_id;
-		const img = await apiGet({
-			endPoint: `images/santri/${indisipliner.value.santri_id}`,
-		});
-		indisipliner.value.image = img.image_url;
+	if (data) {
+		indisipliner.value = data.indisipliner;
 	}
 }
 

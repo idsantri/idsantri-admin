@@ -30,7 +30,7 @@
 </template>
 <script setup>
 import { ref } from 'vue';
-import FilterKelas from 'src/components/HeadFilterKelas.vue';
+import FilterKelas from 'src/components/filters/FilterKelas.vue';
 
 const textFilter = ref('');
 </script>

@@ -17,6 +17,7 @@
 				/>
 			</q-card-section>
 			<q-table
+				class="q-px-sm"
 				:rows="users"
 				:columns="columns"
 				row-key="name"

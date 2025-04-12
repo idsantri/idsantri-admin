@@ -270,33 +270,17 @@ const handleFileChange = (event) => {
 
 function validateData(dataPivot, mapelIds) {
 	return (
-		mapelIds.some((mapelId) => dataPivot[0].hasOwnProperty(mapelId)) &&
-		dataPivot[0].hasOwnProperty('kelas_id')
+		mapelIds.some((mapelId) =>
+			Object.prototype.hasOwnProperty.call(dataPivot[0], mapelId),
+		) && Object.prototype.hasOwnProperty.call(dataPivot[0], 'kelas_id')
 	);
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function groupDataByMapel1({ nilaiPivot, mapelIds, category, ujian_ke }) {
-	const result = {};
-	mapelIds.forEach((mapelKey) => {
-		// cek key ada di data
-		if (nilaiPivot[0].hasOwnProperty(mapelKey)) {
-			result[mapelKey] = nilaiPivot.map((item) => ({
-				kelas_id: item.kelas_id,
-				mapel_id: mapelKey,
-				ujian_ke: parseInt(ujian_ke),
-				['n_' + category]: item[mapelKey] || null,
-			}));
-		}
-	});
-	return result;
 }
 
 function arrayNilaiMapel({ nilaiPivot, mapelIds, category, ujian_ke }) {
 	let result = [];
 	mapelIds.forEach((mapelKey) => {
 		// cek key ada di data
-		if (nilaiPivot[0].hasOwnProperty(mapelKey)) {
+		if (Object.prototype.hasOwnProperty.call(nilaiPivot[0], mapelKey)) {
 			const row = nilaiPivot.map((item) => ({
 				kelas_id: item.kelas_id,
 				mapel_id: mapelKey,

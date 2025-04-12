@@ -64,7 +64,7 @@
 import { onMounted, reactive, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import CardColumn from '../../components/CardColumn.vue';
-import CardListSantri from 'src/components/CardListSantri.vue';
+import CardListSantri from 'src/components/santri/CardSantriLists.vue';
 import ortuStore from 'src/stores/ortu-store.js';
 import dialogStore from 'src/stores/dialog-store';
 import apiGet from 'src/api/api-get';

@@ -19,12 +19,18 @@ api.interceptors.request.use((config) => {
 	if (token) {
 		config.headers.Authorization = `Bearer ${token}`;
 	}
+	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	config.headers['X-Timezone'] = timezone;
+	// console.log('🚀 ~ api.interceptors.request.use ~ config:', config);
 	return config;
 });
 
 // response
 api.interceptors.response.use(
-	(response) => response,
+	(response) => {
+		// console.log('🚀 ~ response:', response);
+		return response;
+	},
 	(error) => {
 		// Tangani kesalahan jaringan atau koneksi di sini
 		if (!error.response) {
@@ -33,6 +39,7 @@ api.interceptors.response.use(
 			notifyError('Tidak dapat terhubung ke server');
 		} else {
 			// Teruskan kesalahan lain ke blok catch berikutnya
+			// eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors
 			return Promise.reject(error);
 		}
 	},

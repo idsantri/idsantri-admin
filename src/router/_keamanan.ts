@@ -1,45 +1,48 @@
-import { RouteLocation } from 'vue-router';
+import type { Component } from 'vue';
+import type { RouteLocation } from 'vue-router';
 
 export default [
 	{
 		path: '',
-		redirect: (to: RouteLocation) => `${to.fullPath}/izin-pesantren`,
+		redirect: (to: RouteLocation): string =>
+			`${to.fullPath}/izin-pesantren`,
 	},
 
 	// izin-pesantren
 	{
 		path: 'izin-pesantren/:startDate?/:endDate?',
-		component: () =>
+		component: (): Component =>
 			import('src/pages/keamanan/perizinan/filter/IzinByDate.vue'),
 	},
 	{
 		path: 'izin-pesantren/santri/:santri_id',
-		component: () =>
+		component: (): Component =>
 			import('src/pages/keamanan/perizinan/IzinBySantri.vue'),
 	},
 	{
 		// /:id -> matches only numbers
 		path: 'izin-pesantren/:id(\\d+)',
-		component: () => import('src/pages/keamanan/perizinan/IzinById.vue'),
+		component: (): Component =>
+			import('src/pages/keamanan/perizinan/IzinById.vue'),
 	},
 
 	// indisipliner
 	{
 		path: 'indisipliner/:startDate?/:endDate?',
-		component: () =>
+		component: (): Component =>
 			import(
 				'src/pages/keamanan/indisipliner/filter/IndisiplinerByDate.vue'
 			),
 	},
 	{
 		path: 'indisipliner/santri/:santri_id',
-		component: () =>
+		component: (): Component =>
 			import('src/pages/keamanan/indisipliner/IndisiplinerBySantri.vue'),
 	},
 	{
 		// /:id -> matches only numbers
 		path: 'indisipliner/:id(\\d+)',
-		component: () =>
+		component: (): Component =>
 			import('src/pages/keamanan/indisipliner/IndisiplinerById.vue'),
 	},
 ];

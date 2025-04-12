@@ -1,0 +1,110 @@
+import js from '@eslint/js';
+import globals from 'globals';
+import pluginVue from 'eslint-plugin-vue';
+import pluginQuasar from '@quasar/app-webpack/eslint';
+import {
+	defineConfigWithVueTs,
+	vueTsConfigs,
+} from '@vue/eslint-config-typescript';
+
+// the following is optional, if you want prettier too:
+import prettierSkipFormatting from '@vue/eslint-config-prettier/skip-formatting';
+
+export default defineConfigWithVueTs(
+	{
+		/**
+		 * Ignore the following files.
+		 * Please note that pluginQuasar.configs.recommended() already ignores
+		 * the "node_modules" folder for you (and all other Quasar project
+		 * relevant folders and files).
+		 *
+		 * ESLint requires "ignores" key to be the only one in this object
+		 */
+		// ignores: []
+	},
+
+	pluginQuasar.configs.recommended(),
+	js.configs.recommended,
+
+	/**
+	 * https://eslint.vuejs.org
+	 *
+	 * pluginVue.configs.base
+	 *   -> Settings and rules to enable correct ESLint parsing.
+	 * pluginVue.configs[ 'flat/essential']
+	 *   -> base, plus rules to prevent errors or unintended behavior.
+	 * pluginVue.configs["flat/strongly-recommended"]
+	 *   -> Above, plus rules to considerably improve code readability and/or dev experience.
+	 * pluginVue.configs["flat/recommended"]
+	 *   -> Above, plus rules to enforce subjective community defaults to ensure consistency.
+	 */
+	pluginVue.configs['flat/essential'],
+
+	{
+		files: ['**/*.ts'],
+		rules: {
+			'@typescript-eslint/consistent-type-imports': [
+				'error',
+				{ prefer: 'type-imports' },
+			],
+			'@typescript-eslint/explicit-function-return-type': 'warn',
+			'@typescript-eslint/no-unused-vars': 'warn', //aturan unused-vars
+		},
+	},
+	// https://github.com/vuejs/eslint-config-typescript
+	vueTsConfigs.recommendedTypeChecked,
+
+	{
+		languageOptions: {
+			ecmaVersion: 'latest',
+			sourceType: 'module',
+
+			globals: {
+				...globals.browser,
+				...globals.node, // SSR, Electron, config files
+				process: 'readonly', // process.env.*
+				ga: 'readonly', // Google Analytics
+				cordova: 'readonly',
+				Capacitor: 'readonly',
+				chrome: 'readonly', // BEX related
+				browser: 'readonly', // BEX related
+			},
+		},
+
+		// add your custom rules here
+		rules: {
+			// The core 'no-unused-vars' rules (in the eslint:recommended ruleset)
+			// does not work with type definitions
+			quotes: ['warn', 'single', { avoidEscape: true }],
+			'no-debugger':
+				process.env.NODE_ENV === 'production' ? 'error' : 'off', // allow debugger during development only
+
+			'vue/block-lang': 'off',
+			'no-unused-vars': 'warn',
+			'prefer-promise-reject-errors': 'warn',
+			'prefer-const': 'warn',
+			'no-prototype-builtins': 'warn',
+
+			'@typescript-eslint/no-var-requires': 'warn', // in plain CommonJS modules, you can't use `import foo = require('foo')` to pass this rule, so it has to be disabled
+			'@typescript-eslint/restrict-plus-operands': 'warn',
+			'@typescript-eslint/no-unused-expressions': 'warn',
+			'@typescript-eslint/no-base-to-string': 'warn',
+			'@typescript-eslint/no-floating-promises': 'warn',
+			'@typescript-eslint/no-require-imports': 'warn',
+			'@typescript-eslint/consistent-type-imports': 'warn',
+			'@typescript-eslint/prefer-promise-reject-errors': 'warn',
+			'@typescript-eslint/no-empty-object-type': 'warn',
+		},
+	},
+
+	{
+		files: ['src-pwa/custom-service-worker.ts'],
+		languageOptions: {
+			globals: {
+				...globals.serviceworker,
+			},
+		},
+	},
+
+	prettierSkipFormatting, // optional, if you want prettier
+);

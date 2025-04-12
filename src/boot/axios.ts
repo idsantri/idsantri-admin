@@ -1,5 +1,6 @@
-import { boot } from 'quasar/wrappers';
-import axios, { AxiosInstance } from 'axios';
+import { defineBoot } from '#q-app/wrappers';
+import type { AxiosInstance } from 'axios';
+import axios from 'axios';
 import api from 'src/api';
 
 declare module '@vue/runtime-core' {
@@ -16,7 +17,7 @@ declare module '@vue/runtime-core' {
 // "export default () => {}" function below (which runs individually
 // for each client)
 
-export default boot(({ app }) => {
+export default defineBoot(({ app }) => {
 	// for use inside Vue files (Options API) through this.$axios and this.$api
 
 	app.config.globalProperties.$axios = axios;

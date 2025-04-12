@@ -108,8 +108,8 @@ import apiPost from 'src/api/api-post';
 import apiUpdate from 'src/api/api-update';
 import { notifyWarning } from 'src/utils/notify';
 import { forceRerender } from 'src/utils/buttons-click';
-import CarouselAlamat from 'src/components/CarouselAlamat.vue';
-import FormHeader from 'src/components/FormHeader.vue';
+import CarouselAlamat from 'src/components/alamat/CarouselAlamat.vue';
+import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputIdentity from './WaliModalCrudIdentity.vue';
 import InputOthers from './WaliModalCrudOthers.vue';
 

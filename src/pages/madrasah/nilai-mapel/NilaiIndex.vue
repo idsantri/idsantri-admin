@@ -342,7 +342,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
-import FilterKelas from 'components/HeadFilterKelas.vue';
+import FilterKelas from 'components/filters/FilterKelas.vue';
 
 const { params } = useRoute();
 const nilai = ref([{}]);

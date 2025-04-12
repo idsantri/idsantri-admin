@@ -1,4 +1,4 @@
-import { RouteRecordRaw } from 'vue-router';
+import type { RouteRecordRaw } from 'vue-router';
 import _auth from './_auth';
 import _bendahara from './_bendahara';
 import _cari from './_cari';
@@ -13,6 +13,7 @@ import _wali from './_wali';
 import _madrasah from './_madrasah';
 import _info from './_info';
 import _makhadiyah from './_makhadiyah';
+import _iuran from './_iuran';
 
 const routes: RouteRecordRaw[] = [
 	// layout auth
@@ -60,6 +61,11 @@ const routes: RouteRecordRaw[] = [
 				children: _sekretariat,
 			},
 			{
+				path: 'iuran',
+				meta: { title: 'Iuran dan Tagihan' },
+				children: _iuran,
+			},
+			{
 				path: 'madrasah',
 				meta: { title: 'Madrasah' },
 				children: _madrasah,
@@ -81,7 +87,7 @@ const routes: RouteRecordRaw[] = [
 			},
 			{
 				path: 'personalia',
-				meta: { title: 'Pesonalia' },
+				meta: { title: 'Personalia' },
 				children: _personalia,
 			},
 			{

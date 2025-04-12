@@ -21,6 +21,8 @@ export default defineStore('santri', {
 				rw: 1,
 				jl: null,
 				kode_pos: null,
+				alamat_lengkap: null,
+				alamat_pendek: null,
 
 				pa_formal_tingkat: null,
 				pa_formal_kelas: null,
@@ -41,6 +43,12 @@ export default defineStore('santri', {
 			isNew: true,
 		};
 	},
+	getters: {
+		getSantri: (state) => state.santri,
+		getWali: (state) => state.wali,
+		getOrtu: (state) => state.ortu,
+	},
+
 	actions: {
 		setSantri(payload) {
 			for (const key in this.santri) {

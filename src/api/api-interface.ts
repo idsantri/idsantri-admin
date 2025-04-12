@@ -1,13 +1,15 @@
-import { Ref } from 'vue';
+import type { AxiosRequestConfig } from 'axios';
+import type { Ref } from 'vue';
 
 interface Params {
 	endPoint: string;
 	loading?: Ref<boolean>;
 	params?: object;
 	notify?: boolean;
+	config?: AxiosRequestConfig;
 }
 
-interface GetParams extends Params {}
+type GetParams = Params;
 
 interface PostParams extends Params {
 	data: object;
@@ -44,7 +46,7 @@ interface ListsCustomParams extends ListsParams {
 	url: string;
 }
 
-export {
+export type {
 	GetParams,
 	PostParams,
 	UpdateParams,

@@ -30,7 +30,7 @@
 						label="Edit"
 						@click="editSantri"
 					/>
-					<drop-down-print />
+					<drop-down-print :santri="santri" />
 				</div>
 			</q-card-section>
 			<q-card-section class="no-padding">
@@ -92,7 +92,7 @@ import { reactive, ref, toRefs, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { formatDateFull } from '../../utils/format-date';
 import CardColumn from '../../components/CardColumn.vue';
-import CardImage from '../../components/CardImage.vue';
+import CardImage from './CardImage.vue';
 import UploadImage from 'src/components/ImageUploader.vue';
 import santriStore from 'src/stores/santri-store';
 import { bacaHijri } from 'src/utils/hijri';
@@ -100,15 +100,6 @@ import SantriRelations from 'src/pages/santri/SantriRelations.vue';
 import dialogStore from 'src/stores/dialog-store';
 import apiGet from 'src/api/api-get';
 import DropDownPrint from './DropDownPrint.vue';
-
-const path = ref(useRoute().fullPath);
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function pathIuran() {
-	if (path.value.indexOf('iuran-total') != -1) return false;
-	if (path.value.indexOf('iuran') != -1) return true;
-	return false;
-}
 
 const santri = reactive({});
 const wali = reactive({});

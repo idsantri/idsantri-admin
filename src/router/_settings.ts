@@ -1,12 +1,15 @@
+import type { Component } from 'vue';
+
 export default [
 	{
 		path: 'lists',
-		component: () => import('src/pages/settings/lists/ListsIndex.vue'),
+		component: (): Component =>
+			import('src/pages/settings/lists/ListsIndex.vue'),
 		meta: { title: 'Setting: List' },
 		children: [
 			{
 				path: ':listKey',
-				component: () =>
+				component: (): Component =>
 					import('src/pages/settings/lists/ListsByKey.vue'),
 			},
 		],
@@ -17,12 +20,13 @@ export default [
 		children: [
 			{
 				path: '',
-				component: () =>
+				component: (): Component =>
 					import('src/pages/settings/users/UserPage.vue'),
 			},
 			{
 				path: ':id',
-				component: () => import('src/pages/settings/users/UserId.vue'),
+				component: (): Component =>
+					import('src/pages/settings/users/UserId.vue'),
 			},
 		],
 	},
@@ -32,24 +36,32 @@ export default [
 		children: [
 			{
 				path: '',
-				component: () =>
+				component: (): Component =>
 					import('src/pages/settings/profile/IndexProfile.vue'),
 			},
 			{
 				path: 'sign',
-				component: () =>
+				component: (): Component =>
 					import('src/pages/settings/profile/TandaTangan.vue'),
 			},
 		],
 	},
 	{
 		path: 'reports',
-		component: () => import('src/pages/settings/reports/IndexReport.vue'),
+		component: (): Component =>
+			import('src/pages/settings/reports/IndexReport.vue'),
 		meta: { title: 'Setting: Reports' },
 	},
 	{
 		path: 'alamat',
-		component: () => import('src/pages/settings/alamat/IndexAlamat.vue'),
+		component: (): Component =>
+			import('src/pages/settings/alamat/IndexAlamat.vue'),
 		meta: { title: 'Setting: Alamat' },
+	},
+	{
+		path: 'app-wali',
+		component: (): Component =>
+			import('src/pages/settings/app-wali/IndexPage.vue'),
+		meta: { title: 'Setting: App Wali' },
 	},
 ];

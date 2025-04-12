@@ -1,26 +1,28 @@
+import type { Component } from 'vue';
+
 export default [
 	{
 		path: '',
-		redirect: () => '/ugt/pjgt',
+		redirect: (): string => '/ugt/pjgt',
 	},
 	{
 		path: 'pjgt',
-		component: () => import('src/pages/ugt/pjgt/PjgtIndex.vue'),
+		component: (): Component => import('src/pages/ugt/pjgt/PjgtIndex.vue'),
 	},
 	{
 		path: 'pjgt/:id',
-		component: () => import('src/pages/ugt/pjgt/PjgtDetail.vue'),
+		component: (): Component => import('src/pages/ugt/pjgt/PjgtDetail.vue'),
 	},
 	{
 		path: 'gt',
-		component: () => import('src/pages/ugt/gt/GtIndex.vue'),
+		component: (): Component => import('src/pages/ugt/gt/GtIndex.vue'),
 	},
 	{
 		path: 'gt/:id',
-		component: () => import('src/pages/ugt/gt/GtDetail.vue'),
+		component: (): Component => import('src/pages/ugt/gt/GtDetail.vue'),
 	},
 	{
 		path: 'kas',
-		component: () => import('src/pages/ugt/kas/KasIndex.vue'),
+		component: (): Component => import('src/pages/ugt/kas/KasIndex.vue'),
 	},
 ];

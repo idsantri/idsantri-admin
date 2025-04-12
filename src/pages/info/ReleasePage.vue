@@ -1,9 +1,10 @@
 <template>
 	<q-page class="q-pa-sm">
 		<q-card>
+			<CardHeader :show-reload="false" title="Releases" />
 			<q-card-section>
-				<div class="text-subtitle1">ID Santri</div>
-				<div class="text-body1">{{ config.INS_SHORT }}</div>
+				<div class="text-subtitle2 text-weight-bold">ID Santri</div>
+				<div class="text-subtitle1">{{ config.INS_SHORT }}</div>
 				<div class="text-caption">
 					{{ config.INS_DESC }} {{ config.INS_NAME }}
 				</div>
@@ -53,9 +54,19 @@
 	</q-page>
 </template>
 <script setup>
+import CardHeader from 'src/components/CardHeader.vue';
 import config from 'src/config';
 
 const releases = [
+	{
+		ver: '1.3.0',
+		date: 'April 2025',
+		release: {
+			Iuran: ['Fitur Tagihan', 'Item iuran/tagihan harus unik'],
+			Print: ['Cetak ID Card'],
+			Baru: ['Add User Info to Main Layout'],
+		},
+	},
 	{
 		ver: '1.2.4',
 		date: 'Desember 2024',

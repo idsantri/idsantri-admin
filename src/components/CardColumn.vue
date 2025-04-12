@@ -15,12 +15,16 @@
 					class="flex q-ma-lg q-mx-auto"
 				/>
 			</div>
-			<div v-else>
-				<div class="row" v-for="(value, key) in data" :key="key">
-					<div class="col-4 text-caption">{{ key }}</div>
-					<div class="col">{{ value }}</div>
-				</div>
-			</div>
+			<table v-else>
+				<tr class="" v-for="(value, key) in data" :key="key">
+					<td class="text-caption text-italic q-pr-sm vertical-top">
+						{{ key }}
+					</td>
+					<td class="vertical-top">
+						{{ value }}
+					</td>
+				</tr>
+			</table>
 		</q-card-section>
 	</q-card>
 </template>

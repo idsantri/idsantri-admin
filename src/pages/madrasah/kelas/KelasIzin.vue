@@ -43,24 +43,30 @@ const isNew = ref(false);
 const crudShow = ref(false);
 const kelas = ref({});
 const urlReport = ref('');
+
 async function loadData() {
 	const data = await apiGet({
 		endPoint: `izin-madrasah/kelas/${params.id}`,
 		loading,
 	});
-	izin.value = data.izin_madrasah;
-	kelas.value = data.kelas;
-	izinMap.value = data.izin_madrasah.map((v) => ({
-		Tanggal:
-			formatDateShort(v.dari_tgl) + ' | ' + formatHijri(m2h(v.dari_tgl)),
-		Durasi: v.durasi + ' hari',
-		Keperluan:
-			v.keperluan +
-			`${v.keterangan?.length > 0 ? ' (' + v.keterangan + ')' : ''}`,
-		Catatan: v.catatan,
-		id: v.id,
-	}));
+	if (data.izin_madrasah) {
+		izin.value = data.izin_madrasah;
+		kelas.value = data.kelas;
+		izinMap.value = data.izin_madrasah.map((v) => ({
+			Tanggal:
+				formatDateShort(v.dari_tgl) +
+				' | ' +
+				formatHijri(m2h(v.dari_tgl)),
+			Durasi: v.durasi + ' hari',
+			Keperluan:
+				v.keperluan +
+				`${v.keterangan?.length > 0 ? ' (' + v.keterangan + ')' : ''}`,
+			Catatan: v.catatan,
+			id: v.id,
+		}));
+	}
 }
+
 onMounted(async () => {
 	await loadData();
 });

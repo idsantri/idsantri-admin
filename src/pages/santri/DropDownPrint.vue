@@ -55,6 +55,18 @@
 					<q-btn icon="print" flat @click="printKeterangan" />
 				</q-item-section>
 			</q-item>
+
+			<q-item v-close-popup>
+				<q-item-section>
+					<q-item-label>ID Card</q-item-label>
+				</q-item-section>
+				<q-item-section avatar>
+					<q-btn icon="download" flat @click="downloadIdCard" />
+				</q-item-section>
+				<q-item-section avatar>
+					<q-btn icon="print" flat disable />
+				</q-item-section>
+			</q-item>
 		</q-list>
 	</q-btn-dropdown>
 
@@ -73,6 +85,10 @@ import { useRoute } from 'vue-router';
 import ReportViewer from 'src/components/ReportViewer.vue';
 import PermohonanBerhenti from './PermohonanBerhenti.vue';
 import loadingStore from 'src/stores/loading-store';
+
+const props = defineProps({
+	santri: { type: Object, required: true },
+});
 
 const { loadingMain } = toRefs(loadingStore());
 const route = useRoute();
@@ -107,6 +123,16 @@ async function downloadKeterangan() {
 		fileName: 'keterangan-berhenti-' + route.params.id,
 		confirm: true,
 		message: 'Download Keterangan Berhenti',
+	});
+}
+
+async function downloadIdCard() {
+	await apiDownload({
+		endPoint: `reports/santri/id-card/download?id=${route.params.id}`,
+		loading: loadingMain,
+		fileName: 'card-' + route.params.id + ' ~ ' + props.santri.nama,
+		confirm: true,
+		message: 'Download ID Card',
 	});
 }
 

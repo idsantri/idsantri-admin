@@ -42,10 +42,10 @@ export default route(function (/* { store, ssrContext } */) {
 		}
 
 		const store = authStore();
+		const isAuthenticate = store.getIsLogin;
+
 		const authRoutes = ['Register', 'Login', 'Forgot', 'Reset', 'Verify'];
 		const toAuthRoutes = authRoutes.includes(to.name as string);
-		const isAuthenticate =
-			store.getToken && (store.getToken as string).length > 0;
 
 		if (!toAuthRoutes && !isAuthenticate) {
 			next('/login');
@@ -57,10 +57,10 @@ export default route(function (/* { store, ssrContext } */) {
 	});
 
 	const DEFAULT_TITLE = config.INS_SHORT;
-	Router.afterEach((to) => {
-		nextTick(() => {
+	Router.afterEach(async (to) => {
+		await nextTick(() => {
 			document.title = to.meta.title
-				? DEFAULT_TITLE + ' — ' + to.meta.title
+				? `${DEFAULT_TITLE} — ${to.meta.title as string}`
 				: DEFAULT_TITLE;
 		});
 	});

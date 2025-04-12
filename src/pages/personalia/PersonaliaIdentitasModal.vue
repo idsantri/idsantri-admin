@@ -230,9 +230,9 @@ import apiUpdate from 'src/api/api-update';
 import apiPost from 'src/api/api-post';
 import { formatDateFull, isDate } from 'src/utils/format-date';
 import { bacaHijri, m2h } from 'src/utils/hijri';
-import CarouselAlamat from 'src/components/CarouselAlamat.vue';
+import CarouselAlamat from 'src/components/alamat/CarouselAlamat.vue';
 import InputSelectKotaLahir from 'src/components/inputs/InputSelectKotaLahir.vue';
-import FormHeader from 'src/components/FormHeader.vue';
+import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 
 const props = defineProps({

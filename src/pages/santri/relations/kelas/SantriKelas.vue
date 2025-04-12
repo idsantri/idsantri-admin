@@ -9,43 +9,43 @@
 		/>
 
 		<q-dialog v-model="crudShow">
-			<santri-kelas-crud
+			<KelasForm
 				:data="dataObj"
-				:is-new="isNew"
-				title="Input Kelas"
-				@success-submit="loadData"
-				@success-delete="loadData"
+				@success-delete="(id) => deleteById(dataArr, id)"
+				@success-create="(res) => dataArr.push(res)"
+				@success-update="(res) => replaceById(dataArr, res.id, res)"
 			/>
 		</q-dialog>
 	</div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import TempArray from 'src/pages/santri/relations/TemplateArray.vue';
-import { getObjectById } from 'src/utils/array-object';
-import SantriKelasCrud from './SantriKelasCrud.vue';
+import { deleteById, getObjectById, replaceById } from 'src/utils/array-object';
 import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
+import KelasForm from 'src/components/forms/KelasForm.vue';
 
 const spinner = ref(false);
 const crudShow = ref(false);
 const dataObj = ref({});
-const dataMap = ref([]);
 const dataArr = ref([]);
-const isNew = ref(false);
 const santri = ref({});
-
-const route = useRoute();
-const santriId = route.params.id;
+const { params } = useRoute();
 
 async function loadData() {
 	const data = await apiGet({
-		endPoint: `santri/${santriId}/kelas`,
+		endPoint: `kelas/santri/${params.id}`,
 		loading: spinner,
 	});
-	if (!data.kelas) return;
-	dataArr.value = data.kelas;
-	dataMap.value = data.kelas
+	if (data.kelas) {
+		dataArr.value = data.kelas;
+		santri.value = data.santri;
+	}
+}
+
+const dataMap = computed(() =>
+	dataArr.value
 		.map((v) => ({
 			'Tahun Ajaran': `${v.th_ajaran_h}  |  ${v.th_ajaran_m || ''} `,
 			Kelas:
@@ -54,10 +54,8 @@ async function loadData() {
 			Keterangan: v.keterangan || '-',
 			id: v.id,
 		}))
-		.reverse();
-
-	santri.value = data.santri;
-}
+		.reverse(),
+);
 
 onMounted(async () => {
 	await loadData();
@@ -69,7 +67,6 @@ const handleAdd = () => {
 		nama: santri.value.nama,
 	};
 
-	isNew.value = true;
 	crudShow.value = true;
 };
 
@@ -78,7 +75,6 @@ const handleEdit = ({ id }) => {
 	dataObj.value.santri_id = santri.value.id;
 	dataObj.value.nama = santri.value.nama;
 
-	isNew.value = false;
 	crudShow.value = true;
 };
 </script>

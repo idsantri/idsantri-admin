@@ -1,21 +1,7 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card>
-			<q-card-section
-				class="bg-green-8 text-green-11 text-subtitle1 flex q-pa-sm"
-			>
-				Download
-				<q-space />
-				<q-btn
-					no-caps
-					label="Kembali"
-					icon="reply"
-					dense
-					class="q-px-md"
-					outline
-					@click="$router.go(-1)"
-				/>
-			</q-card-section>
+			<CardHeader :showReload="false" title="Download" />
 			<q-card-section>
 				<p>
 					Beberapa fitur print-out dilayani dengan MS Office Access.
@@ -33,5 +19,7 @@
 		</q-card>
 	</q-page>
 </template>
-<script setup></script>
+<script setup>
+import CardHeader from 'src/components/CardHeader.vue';
+</script>
 <style lang=""></style>

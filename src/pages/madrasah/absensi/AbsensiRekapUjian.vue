@@ -190,7 +190,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
-import FilterKelas from 'src/components/HeadFilterKelas.vue';
+import FilterKelas from 'src/components/filters/FilterKelas.vue';
 import { titleCase } from 'src/utils/format-text';
 
 const spinner = ref(false);

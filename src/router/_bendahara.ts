@@ -1,48 +1,58 @@
+import type { Component } from 'vue';
+
 export default [
 	{
 		path: '',
-		redirect: () => '/bendahara/iuran/q/th-ajaran',
+		redirect: (): string => '/iuran',
+	},
+	/**
+	 * @deprecated
+	 */
+	{
+		path: 'iuran-old/export',
+		component: (): Component =>
+			import('src/pages/bendahara/iuran-old/export/ExportIndex.vue'),
 	},
 	{
-		path: 'iuran/export',
-		component: () =>
-			import('src/pages/bendahara/iuran/export/ExportIndex.vue'),
+		path: 'iuran-old/santri/:id/:thAjaranH?',
+		component: (): Component =>
+			import('src/pages/bendahara/iuran-old/santri/IuranSantri.vue'),
+	},
+
+	{
+		path: 'iuran-old',
+		redirect: (): string => '/bendahara/iuran-old/q',
 	},
 	{
-		path: 'iuran/santri/:id/:thAjaranH?',
-		component: () =>
-			import('src/pages/bendahara/iuran/santri/IuranSantri.vue'),
-	},
-	{
-		path: 'iuran/q',
-		redirect: () => '/bendahara/iuran/q/th-ajaran',
+		path: 'iuran-old/q',
+		redirect: (): string => '/bendahara/iuran-old/q/th-ajaran',
 		children: [
 			{
 				path: 'th-ajaran/:thAjaranH?',
-				component: () =>
+				component: (): Component =>
 					import(
-						'src/pages/bendahara/iuran/filter/IuranByThAjaran.vue'
+						'src/pages/bendahara/iuran-old/filter/IuranByThAjaran.vue'
 					),
 			},
 			{
 				path: 'santri/:id?',
-				component: () =>
+				component: (): Component =>
 					import(
-						'src/pages/bendahara/iuran/filter/IuranBySantri.vue'
+						'src/pages/bendahara/iuran-old/filter/IuranBySantri.vue'
 					),
 			},
 			{
 				path: 'tanggal/:startDate?/:endDate?',
-				component: () =>
+				component: (): Component =>
 					import(
-						'src/pages/bendahara/iuran/filter/IuranByTanggal.vue'
+						'src/pages/bendahara/iuran-old/filter/IuranByTanggal.vue'
 					),
 			},
 		],
 	},
 	{
-		path: 'iuran/atur-paket',
-		component: () =>
-			import('src/pages/bendahara/iuran/paket/SettingPaket.vue'),
+		path: 'iuran-old/atur-paket',
+		component: (): Component =>
+			import('src/pages/bendahara/iuran-old/paket/SettingPaket.vue'),
 	},
 ];

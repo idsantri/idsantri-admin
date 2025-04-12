@@ -9,17 +9,28 @@
 			<q-card-section class="no-padding">
 				<div class="row" style="max-width: 1400px">
 					<div class="col-12 col-md-6 q-pa-sm">
-						<q-card>
+						<q-card bordered flat>
 							<!-- santri -->
-							<CardSantri class="" :id="kelas?.santri_id" />
-							<q-separator />
-
+							<CardSantri
+								:id="kelas.santri_id"
+								@loaded="(res) => (santri = res)"
+							/>
+						</q-card>
+						<q-card class="q-mt-sm" bordered flat>
 							<!-- kelas -->
 							<q-card-section class="q-pa-sm">
 								<q-toolbar class="bg-green-1">
 									<q-toolbar-title class="text-subtitle1">
 										Data Kelas
 									</q-toolbar-title>
+									<q-btn
+										class="q-px-sm q-mr-sm"
+										outline
+										dense
+										@click="loadData"
+										icon="sync"
+										no-caps
+									/>
 									<q-btn
 										class="q-px-md"
 										outline
@@ -101,36 +112,37 @@
 					</div>
 
 					<!-- router view -->
-					<div class="col-12 col-md-6 q-pa-sm" :key="keyRoute">
-						<q-card>
-							<q-card-section class="q-pa-sm">
-								<q-tabs
-									no-caps
-									outside-arrows
-									mobile-arrows
-									class="bg-green-7 text-green-3"
-									indicator-color="green-11"
-									active-color="green-11"
-								>
-									<q-route-tab
-										name="riwayat"
-										label="Riwayat"
-										:to="`/madrasah/kelas/${kelas.id}/riwayat`"
-									/>
-									<q-route-tab
-										name="izin"
-										label="Izin"
-										:to="`/madrasah/kelas/${kelas.id}/izin`"
-									/>
-									<q-route-tab
-										name="nilai"
-										label="Nilai Mapel"
-										:to="`/madrasah/kelas/${kelas.id}/nilai-mapel`"
-									/>
-								</q-tabs>
-							</q-card-section>
-							<q-card-section class="q-px-sm q-pb-sm q-pt-none">
-								<router-view />
+					<div class="col-12 col-md-6 q-pa-sm">
+						<q-card bordered flat>
+							<q-tabs
+								no-caps
+								outside-arrows
+								mobile-arrows
+								class="bg-green-7 text-green-3"
+								indicator-color="green-11"
+								active-color="green-11"
+							>
+								<q-route-tab
+									name="riwayat"
+									label="Riwayat"
+									:to="`/madrasah/kelas/${kelas.id}/riwayat`"
+								/>
+								<q-route-tab
+									name="izin"
+									label="Izin"
+									:to="`/madrasah/kelas/${kelas.id}/izin`"
+								/>
+								<q-route-tab
+									name="nilai"
+									label="Nilai Mapel"
+									:to="`/madrasah/kelas/${kelas.id}/nilai-mapel`"
+								/>
+							</q-tabs>
+							<q-card-section class="q-pa-sm" :key="keyRoute">
+								<router-view
+									:key="$route.fullPath"
+									:santri_id="kelas.santri_id"
+								/>
 							</q-card-section>
 						</q-card>
 					</div>
@@ -138,11 +150,14 @@
 			</q-card-section>
 		</q-card>
 		<q-dialog v-model="crudShow">
-			<santri-kelas-crud
+			<KelasForm
 				:data="kelas"
-				:is-new="false"
-				title="Input Kelas"
-				@success-submit="fetchData"
+				@success-update="
+					(res) => {
+						kelas = res;
+						keyRoute++;
+					}
+				"
 				@success-delete="$router.go(-1)"
 			/>
 		</q-dialog>
@@ -153,8 +168,8 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import apiUpdate from 'src/api/api-update';
-import SantriKelasCrud from 'src/pages/santri/relations/kelas/SantriKelasCrud.vue';
-import CardSantri from 'src/components/CardSantri.vue';
+import CardSantri from 'src/components/santri/CardSantri.vue';
+import KelasForm from 'src/components/forms/KelasForm.vue';
 
 const keyRoute = ref(0);
 const route = useRoute();
@@ -162,6 +177,7 @@ const id = route.params.id;
 const kelas = ref({});
 const spinner = ref(false);
 const crudShow = ref(false);
+const santri = ref({});
 
 async function updateAktif(val) {
 	// console.log(val);
@@ -178,18 +194,21 @@ async function updateAktif(val) {
 	}
 }
 
-async function fetchData() {
-	keyRoute.value++;
-	kelas.value = {};
+async function loadData() {
+	// kelas.value = {};
 	const data = await apiGet({
 		endPoint: `kelas/${id}`,
 		loading: spinner,
 	});
-	if (!data.kelas) return;
-	kelas.value = data.kelas;
+	if (data.kelas) {
+		kelas.value = data.kelas;
+		// keyRoute.value++;
+	}
 }
+
 onMounted(async () => {
-	await fetchData();
+	await loadData();
+	// console.log('🚀 ~ fetchData ~ kelas.value:', kelas.value);
 });
 </script>
 <style lang=""></style>

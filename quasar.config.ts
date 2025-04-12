@@ -1,15 +1,13 @@
 /* eslint-env node */
 
 // Configuration for your app
-// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js
+// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file
 
-/* eslint-disable @typescript-eslint/no-var-requires */
+import { defineConfig } from '#q-app/wrappers';
+import config from './src/config';
+import * as path from 'path';
 
-import { configure } from 'quasar/wrappers';
-import config from 'src/config';
-// import * as path from 'path';
-
-export default configure((/* ctx */) => {
+export default defineConfig((/* ctx */) => {
 	// const env = ctx.dev ? 'development' : 'production';
 	// const baseURL_API =
 	// 	env === 'development' ? 'http://localhost:8000/api' : config.BASE_API;
@@ -76,14 +74,18 @@ export default configure((/* ctx */) => {
 				node: 'node20',
 			},
 
-			// extendWebpack(cfg) {
-			// 	// add alias @ to src
-			// 	cfg.resolve = cfg.resolve || {};
-			// 	cfg.resolve.alias = {
-			// 		...cfg.resolve.alias,
-			// 		'@': path.resolve(__dirname, './src'),
-			// 	};
-			// },
+			typescript: {
+				strict: true,
+				vueShim: true,
+				extendTsConfig: (tsConfig): void => {
+					if (tsConfig && tsConfig.compilerOptions) {
+						tsConfig.compilerOptions.noUnusedLocals = true;
+						tsConfig.compilerOptions.noUnusedParameters = true;
+						// tsConfig.compilerOptions.baseUrl = './'; // pinia error
+					}
+				},
+			},
+
 			// rtl: true, // https://quasar.dev/options/rtl-support
 			// preloadChunks: true,
 			// showProgress: false,
@@ -96,6 +98,16 @@ export default configure((/* ctx */) => {
 			// https://v2.quasar.dev/quasar-cli-webpack/handling-webpack
 			// "chain" is a webpack-chain object https://github.com/sorrycc/webpack-chain
 			// chainWebpack (/* chain, { isClient, isServer } */) {}
+
+			extendWebpack: (cfg): void => {
+				// add alias @ to src
+				cfg.resolve = cfg.resolve || {};
+				cfg.resolve.alias = {
+					...cfg.resolve.alias,
+					'@': path.resolve(__dirname, './src'),
+					src: path.resolve(__dirname, './src'),
+				};
+			},
 		},
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
@@ -177,16 +189,25 @@ export default configure((/* ctx */) => {
 			workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
 			// swFilename: 'sw.js',
 			// manifestFilename: 'manifest.json'
-			extendManifestJson: (manifest) => {
+
+			extendManifestJson: (manifest): void => {
 				manifest.name = config.PWA_NAME;
 				manifest.short_name = config.PWA_SHORT_NAME;
 				manifest.description = config.PWA_DESCRIPTION;
-				return manifest;
 			},
 			// useCredentialsForManifestTag: true,
 			// injectPwaMetaTags: false,
 			// extendPWACustomSWConf (esbuildConf) {},
-			// extendGenerateSWOptions (cfg) {},
+
+			/**
+			 * Extend the default options for workbox GenerateSW
+			 * https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-build#.GenerateSW
+			 * @param cfg - the default options for workbox GenerateSW
+			 * @description - untuk keperluan cache font pwa
+			 */
+			extendGenerateSWOptions: (cfg): void => {
+				cfg.maximumFileSizeToCacheInBytes = 5 * 1024 * 1024; // 5 MB
+			},
 			// extendInjectManifestOptions (cfg) {}
 		},
 
@@ -238,7 +259,7 @@ export default configure((/* ctx */) => {
 			// extendBexScriptsConf (esbuildConf) {},
 			// extendBexManifestJson (json) {},
 
-			contentScripts: ['my-content-script'],
+			extraScripts: [],
 		},
 	};
 });

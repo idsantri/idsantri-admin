@@ -1,20 +1,21 @@
-import { RouteLocation } from 'vue-router';
+import type { Component } from 'vue';
+import type { RouteLocation } from 'vue-router';
 
 export default [
 	{
 		path: '',
-		redirect: (to: RouteLocation) => to.fullPath + '/santri',
+		redirect: (to: RouteLocation): string => to.fullPath + '/santri',
 	},
 	{
 		path: 'santri',
-		component: () => import('src/pages/search/SantriSearch.vue'),
+		component: (): Component => import('src/pages/search/SantriSearch.vue'),
 	},
 	{
 		path: 'wali',
-		component: () => import('src/pages/search/WaliSearch.vue'),
+		component: (): Component => import('src/pages/search/WaliSearch.vue'),
 	},
 	{
 		path: 'ortu',
-		component: () => import('src/pages/search/OrtuSearch.vue'),
+		component: (): Component => import('src/pages/search/OrtuSearch.vue'),
 	},
 ];

@@ -1,19 +1,22 @@
 import api from '.';
 import apiError from './api-error';
-import { DownloadParams } from './api-interface';
+import type { DownloadParams } from './api-interface';
 import { notifyConfirm } from 'src/utils/notify';
 
 async function apiDownload({
-	message = 'Download data yang dicetak?',
+	message,
 	endPoint,
 	confirm = false,
 	loading,
 	params,
 	fileName = 'dokumen',
 }: DownloadParams): Promise<boolean> {
-	if (confirm) {
-		const isConfirmed = await notifyConfirm(message, true);
-		if (!isConfirmed) return false;
+	if (message || confirm) {
+		const confirmMessage = message || 'Download data yang dicetak?';
+		const isConfirmed = await notifyConfirm(confirmMessage, true);
+		if (!isConfirmed) {
+			return false;
+		}
 	}
 
 	if (loading && typeof loading.value === 'boolean') loading.value = true;

@@ -414,10 +414,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import apiUpdate from 'src/api/api-update';
 import apiDelete from 'src/api/api-delete';
 import apiGet from 'src/api/api-get';
-import FilterKelas from 'src/components/HeadFilterKelas.vue';
+import FilterKelas from 'src/components/filters/FilterKelas.vue';
 import { titleCase } from 'src/utils/format-text';
 import apiPost from 'src/api/api-post';
 
@@ -453,26 +452,6 @@ async function deleteAbsensi() {
 		absensi.value = [];
 		const url = `/madrasah/absensi/input/${params.absensi}/${params.th_ajaran_h}/${params.tingkat_id}/${params.kelas}`;
 		router.push(url);
-	}
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function submitAbsensiUpdate() {
-	const data = {
-		absensi: JSON.parse(JSON.stringify(absensi.value)),
-	};
-	console.log(data);
-	return;
-	const update = await apiUpdate({
-		endPoint: `absensi/${params.absensi}`,
-		data,
-		confirm: true,
-		message: '<span style="color:blue">Kirim data absensi?</span>',
-		loading: spinner,
-	});
-
-	if (update) {
-		absensi.value = update['absensi_' + params.absensi];
 	}
 }
 
