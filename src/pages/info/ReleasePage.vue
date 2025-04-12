@@ -60,10 +60,11 @@ import config from 'src/config';
 const releases = [
 	{
 		ver: '1.3.0',
-		date: 'Maret 2025',
+		date: 'April 2025',
 		release: {
 			Iuran: ['Fitur Tagihan', 'Item iuran/tagihan harus unik'],
 			Print: ['Cetak ID Card'],
+			Baru: ['Add User Info to Main Layout'],
 		},
 	},
 	{
