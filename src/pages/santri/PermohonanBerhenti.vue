@@ -55,13 +55,13 @@
 					new-value-mode="add"
 					behavior="menu"
 				/>
-				<input-select-array
-					v-model="input.alasan"
-					url="keterangan-status"
-					label="Alasan*"
+				<q-input
+					dense
 					class="q-mt-sm"
-					use-input=""
-					new-value-mode="add"
+					outlined
+					label="Alasan*"
+					v-model="input.alasan"
+					autogrow
 				/>
 				<q-card class="q-mt-sm" flat bordered>
 					<q-card-section class="q-pa-sm">
