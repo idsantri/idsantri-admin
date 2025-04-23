@@ -65,6 +65,10 @@ const releases = [
 			Iuran: ['Fitur Tagihan', 'Item iuran/tagihan harus unik'],
 			Print: ['Cetak ID Card'],
 			Baru: ['Add User Info to Main Layout'],
+			Improve: [
+				'Perbaikan dan peningkatan performa',
+				'Perbaikan pada beberapa fitur',
+			],
 		},
 	},
 	{
