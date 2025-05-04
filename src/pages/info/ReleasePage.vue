@@ -59,6 +59,13 @@ import config from 'src/config';
 
 const releases = [
 	{
+		ver: '1.3.1',
+		date: 'Mei 2025',
+		release: {
+			Print: ['Cetak Sertifikat GT'],
+		},
+	},
+	{
 		ver: '1.3.0',
 		date: 'April 2025',
 		release: {

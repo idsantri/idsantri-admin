@@ -82,13 +82,24 @@
 					</q-card-section>
 					<q-card-actions class="bg-green-7" align="right">
 						<q-btn
-							label="Print"
+							label="Sertifikat"
+							dense
+							no-caps
+							icon="print"
+							color="green-11"
+							class="q-px-md text-green-10"
+							@click="sertifikat"
+							title="Cetak Sertifikat"
+						/>
+						<q-btn
+							label="Surat Tugas"
 							dense
 							no-caps
 							icon="print"
 							color="green-11"
 							class="q-px-md text-green-10"
 							@click="suratTugas"
+							title="Cetak Surat Tugas"
 						/>
 					</q-card-actions>
 				</q-card>
@@ -226,6 +237,10 @@ onMounted(async () => {
 const showViewer = ref(false);
 async function suratTugas() {
 	urlReport.value = `reports/ugt/surat-tugas/view?id=${gt.value.id}`;
+	showViewer.value = true;
+}
+async function sertifikat() {
+	urlReport.value = `reports/ugt/sertifikat/view?id=${gt.value.id}`;
 	showViewer.value = true;
 }
 </script>
