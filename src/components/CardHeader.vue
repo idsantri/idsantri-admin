@@ -9,7 +9,7 @@
 					@click="$emit('onReload')"
 					dense
 					flat
-					class=""
+					class="q-mr-xs"
 					title="Muat ulang"
 				/>
 				<q-icon v-else name="dashboard" class="q-mr-xs" size="sm" />

@@ -239,6 +239,7 @@ async function suratTugas() {
 	urlReport.value = `reports/ugt/surat-tugas/view?id=${gt.value.id}`;
 	showViewer.value = true;
 }
+
 async function sertifikat() {
 	urlReport.value = `reports/ugt/sertifikat/view?id=${gt.value.id}`;
 	showViewer.value = true;

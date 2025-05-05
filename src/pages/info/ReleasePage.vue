@@ -63,6 +63,7 @@ const releases = [
 		date: 'Mei 2025',
 		release: {
 			Print: ['Cetak Sertifikat GT'],
+			Baru: ['Upload stempel lembaga'],
 		},
 	},
 	{
