@@ -48,9 +48,10 @@ export default defineConfigWithVueTs(
 				{ prefer: 'type-imports' },
 			],
 			'@typescript-eslint/explicit-function-return-type': 'warn',
-			'@typescript-eslint/no-unused-vars': 'warn', //aturan unused-vars
+			'@typescript-eslint/no-unused-vars': 'warn',
 		},
 	},
+
 	// https://github.com/vuejs/eslint-config-typescript
 	vueTsConfigs.recommendedTypeChecked,
 
@@ -94,6 +95,7 @@ export default defineConfigWithVueTs(
 			'@typescript-eslint/consistent-type-imports': 'warn',
 			'@typescript-eslint/prefer-promise-reject-errors': 'warn',
 			'@typescript-eslint/no-empty-object-type': 'warn',
+			'@typescript-eslint/no-unused-vars': 'warn',
 		},
 	},
 
