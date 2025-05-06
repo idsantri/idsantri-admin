@@ -24,28 +24,22 @@
 		class="q-pl-md"
 		color="green-11"
 	>
-		<q-list>
-			<q-item
-				clickable
-				v-close-popup
-				name="install"
-				@click="installApp"
-				v-if="!pwaIsInstalled"
-			>
+		<q-list clickable v-close-popup>
+			<q-item name="install" @click="installApp" v-if="!pwaIsInstalled">
 				<q-item-section>Install</q-item-section>
 				<q-item-section avatar>
 					<q-icon color="green" name="install_mobile" />
 				</q-item-section>
 			</q-item>
 
-			<q-item clickable v-close-popup to="/profile">
+			<q-item to="/profile">
 				<q-item-section>Profil</q-item-section>
 				<q-item-section avatar>
 					<q-icon color="green" name="3p" />
 				</q-item-section>
 			</q-item>
 
-			<q-item clickable v-close-popup to="/logout">
+			<q-item to="/logout">
 				<q-item-section>Keluar</q-item-section>
 				<q-item-section avatar>
 					<q-icon color="red" name="logout" />
