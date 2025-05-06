@@ -40,9 +40,9 @@ export default [
 					import('src/pages/settings/profile/IndexProfile.vue'),
 			},
 			{
-				path: 'sign',
+				path: 'upload/:image',
 				component: (): Component =>
-					import('src/pages/settings/profile/TandaTangan.vue'),
+					import('src/pages/settings/profile/UploadImage.vue'),
 			},
 		],
 	},

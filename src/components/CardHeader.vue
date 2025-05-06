@@ -1,7 +1,7 @@
 <template lang="">
-	<q-card-section class="bg-green-7 text-green-11 q-pa-sm">
+	<q-card-section class="bg-green-8 text-green-11 q-pa-sm">
 		<div class="flex items-center">
-			<div class="text-subtitle2">
+			<div class="text-subtitle2 flex items-center">
 				<q-btn
 					v-if="showReload"
 					icon="sync"
@@ -9,10 +9,17 @@
 					@click="$emit('onReload')"
 					dense
 					flat
-					class=""
+					class="q-mr-xs"
 					title="Muat ulang"
 				/>
-				<q-icon v-else name="dashboard" class="q-mr-xs" size="sm" />
+				<!-- <q-icon v-else name="dashboard" class="q-mr-xs" size="sm" /> -->
+				<img
+					v-else
+					src="/idsantri.svg"
+					class="q-mr-xs"
+					style="height: 24px"
+					title="ID Santri"
+				/>
 				<span v-html="title"></span>
 			</div>
 			<q-space />

@@ -1,23 +1,8 @@
 <template lang="">
 	<q-page class="q-pa-sm">
-		<q-card style="max-width: 600px">
-			<q-form @submit.prevent="onSubmit">
-				<q-card-section
-					class="q-pa-sm bg-green-8 text-green-11 text-subtitle1 flex"
-				>
-					Profil Lembaga
-
-					<q-space />
-					<q-btn
-						no-caps
-						label="Kembali"
-						icon="reply"
-						dense
-						class="q-px-md"
-						outline
-						@click="$router.go(-1)"
-					/>
-				</q-card-section>
+		<q-form @submit.prevent="onSubmit">
+			<q-card style="max-width: 600px">
+				<CardHeader title="Profil Lembaga" @onReload="loadData" />
 				<q-card-section class="q-pa-sm">
 					<q-card>
 						<q-card-section
@@ -118,15 +103,31 @@
 						<q-card-section class="q-pa-sm bg-green-1 flex">
 							Personalia
 							<q-space />
-							<q-btn
-								label="Tanda Tangan"
-								class="q-px-md"
-								dense
-								no-caps
+							<q-btn-dropdown
+								label="Upload"
 								outline
-								icon="draw"
-								to="/settings/profile/sign"
-							/>
+								no-caps
+								icon="upload"
+							>
+								<q-list>
+									<q-item
+										v-for="(item, index) in uploadRoutes"
+										:key="index"
+										clickable
+										v-close-popup
+										:to="item.to"
+									>
+										<q-item-section avatar>
+											<q-icon :name="item.icon" />
+										</q-item-section>
+										<q-item-section>
+											<q-item-label>
+												{{ item.label }}
+											</q-item-label>
+										</q-item-section>
+									</q-item>
+								</q-list>
+							</q-btn-dropdown>
 						</q-card-section>
 						<q-card-section class="q-pa-sm">
 							<q-input
@@ -165,8 +166,8 @@
 						class="bg-green-11"
 					/>
 				</q-card-actions>
-			</q-form>
-		</q-card>
+			</q-card>
+		</q-form>
 		<!-- <pre>{{ profile }}</pre> -->
 	</q-page>
 </template>
@@ -174,6 +175,7 @@
 import { ref, onMounted } from 'vue';
 import apiGet from 'src/api/api-get';
 import apiPost from 'src/api/api-post';
+import CardHeader from 'src/components/CardHeader.vue';
 
 const loading = ref(false);
 // init data
@@ -209,42 +211,27 @@ async function onSubmit() {
 	}
 }
 
-// const profile = ref({});
-// const pesantren = ref({});
-// const madrasah = ref({});
-// const alamat = ref({});
-
-// async function loadData() {
-// 	const data = await apiGet({
-// 		endPoint: 'config/profile',
-// 		loading: loading,
-// 	});
-// 	profile.value = data.profile;
-
-// 	pesantren.value = {
-// 		a: profile.value.pesantren[0],
-// 		b: profile.value.pesantren[1],
-// 		c: profile.value.pesantren[2],
-// 	};
-// 	madrasah.value = {
-// 		a: profile.value.madrasah[0],
-// 		b: profile.value.madrasah[1],
-// 		c: profile.value.madrasah[2],
-// 	};
-// 	alamat.value = {
-// 		a: profile.value.alamat[0],
-// 		b: profile.value.alamat[1],
-// 		c: profile.value.alamat[2],
-// 	};
-// }
-
-// watch(
-// 	[pesantren, madrasah, alamat],
-// 	([newPesantren, newMadrasah, newAlamat]) => {
-// 		profile.value.pesantren = newPesantren;
-// 		profile.value.madrasah = newMadrasah;
-// 		profile.value.alamat = newAlamat;
-// 	},
-// );
+const uploadRoutes = [
+	{
+		to: '/settings/profile/upload/stempel',
+		icon: 'approval',
+		label: 'Stempel',
+	},
+	{
+		to: '/settings/profile/upload/tt-pengasuh',
+		icon: 'draw',
+		label: 'Tanda Tangan Pengasuh',
+	},
+	{
+		to: '/settings/profile/upload/tt-ketua',
+		icon: 'draw',
+		label: 'Tanda Tangan Ketua',
+	},
+	{
+		to: '/settings/profile/upload/tt-sekretaris',
+		icon: 'draw',
+		label: 'Tanda Tangan Sekretaris',
+	},
+];
 </script>
 <style lang=""></style>

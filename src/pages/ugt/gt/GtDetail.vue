@@ -80,27 +80,53 @@
 							</q-markup-table>
 						</div>
 					</q-card-section>
-					<q-card-actions class="bg-green-7" align="right">
-						<q-btn
-							label="Sertifikat"
-							dense
-							no-caps
-							icon="print"
-							color="green-11"
-							class="q-px-md text-green-10"
-							@click="sertifikat"
-							title="Cetak Sertifikat"
-						/>
-						<q-btn
-							label="Surat Tugas"
-							dense
-							no-caps
-							icon="print"
-							color="green-11"
-							class="q-px-md text-green-10"
-							@click="suratTugas"
-							title="Cetak Surat Tugas"
-						/>
+					<q-card-actions
+						class="bg-green-7 flex items-center justify-between q-pt-none q-gutter-y-sm"
+					>
+						<div class="flex q-gutter-x-sm">
+							<q-btn
+								label="Sertifikat"
+								dense
+								no-caps
+								icon="download"
+								color="green-11"
+								class="q-px-md text-green-10"
+								@click="downloadSertifikat"
+								title="Cetak Sertifikat"
+							/>
+							<q-btn
+								label="Surat Tugas"
+								dense
+								no-caps
+								icon="download"
+								color="green-11"
+								class="q-px-md text-green-10"
+								@click="downloadSuratTugas"
+								title="Cetak Surat Tugas"
+							/>
+						</div>
+						<div class="flex q-gutter-x-sm">
+							<q-btn
+								label="Sertifikat"
+								dense
+								no-caps
+								icon="print"
+								color="green-11"
+								class="q-px-md text-green-10"
+								@click="viewSertifikat"
+								title="Cetak Sertifikat"
+							/>
+							<q-btn
+								label="Surat Tugas"
+								dense
+								no-caps
+								icon="print"
+								color="green-11"
+								class="q-px-md text-green-10"
+								@click="viewSuratTugas"
+								title="Cetak Surat Tugas"
+							/>
+						</div>
 					</q-card-actions>
 				</q-card>
 			</div>
@@ -210,10 +236,12 @@
 <script setup>
 import apiGet from 'src/api/api-get';
 import { digitSeparator } from 'src/utils/format-number';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import GtCrud from 'src/pages/ugt/gt/GtCrud.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
+import apiDownload from 'src/api/api-download';
+import loadingStore from 'src/stores/loading-store';
 
 const route = useRoute();
 const id = route.params.id;
@@ -221,6 +249,7 @@ const loadingGt = ref(false);
 const gt = ref({});
 const crudShow = ref(false);
 const urlReport = ref('');
+const { loadingMain } = toRefs(loadingStore());
 
 async function loadGt() {
 	const data = await apiGet({
@@ -235,13 +264,34 @@ onMounted(async () => {
 });
 
 const showViewer = ref(false);
-async function suratTugas() {
+async function viewSuratTugas() {
 	urlReport.value = `reports/ugt/surat-tugas/view?id=${gt.value.id}`;
 	showViewer.value = true;
 }
-async function sertifikat() {
+
+async function viewSertifikat() {
 	urlReport.value = `reports/ugt/sertifikat/view?id=${gt.value.id}`;
 	showViewer.value = true;
+}
+
+async function downloadSuratTugas() {
+	await apiDownload({
+		endPoint: `reports/ugt/surat-tugas/download?id=${gt.value.id}`,
+		loading: loadingMain,
+		fileName: 'gt-surat-tugas-' + gt.value.id,
+		confirm: true,
+		message: 'Download Surat Tugas GT?',
+	});
+}
+
+async function downloadSertifikat() {
+	await apiDownload({
+		endPoint: `reports/ugt/sertifikat/download?id=${gt.value.id}`,
+		loading: loadingMain,
+		fileName: 'gt-sertifikat-' + gt.value.id,
+		confirm: true,
+		message: 'Download Sertifikat GT?',
+	});
 }
 </script>
 <style lang=""></style>
