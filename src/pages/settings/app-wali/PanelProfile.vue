@@ -1,15 +1,22 @@
 <template lang="">
 	<div>
-		<div class="flex justify-between items-center">
+		<div class="flex justify-between items-center q-mb-sm">
 			<div>
 				<div class="text-italic text-weight-light">
 					Teks untuk ditampilkan di halaman beranda Aplikasi Wali
 					Santri
 				</div>
 			</div>
-			<q-btn icon="edit" flat @click="onEdit" />
+			<q-btn
+				dense
+				class="q-px-sm"
+				:icon="isEdit ? 'close' : 'edit'"
+				outline
+				:label="isEdit ? 'Batal' : 'Edit'"
+				no-caps
+				@click="onEdit"
+			/>
 		</div>
-		<q-separator class="q-mb-sm" />
 		<div v-if="isEdit">
 			<q-editor
 				v-model="inputProfile"
@@ -64,40 +71,46 @@
 					['save'],
 				]"
 			/>
-			<q-btn
-				color="green-10"
-				outline
-				no-caps
-				:disabled="loading"
-				class="q-px-sm float-right q-my-sm"
-				@click="onSubmit"
-				:loading="loading"
-				icon="save"
-				label="Simpan"
-			/>
 		</div>
 		<div v-else>
-			<div v-if="props.profile" class="">
-				<span v-html="props.profile"> </span>
+			<q-separator class="q-mb-sm" />
+
+			<div v-if="loading">
+				<q-spinner-cube size="4em" class="flex q-ma-lg q-mx-auto" />
 			</div>
-			<div v-else>
+
+			<div v-if="!loading && profile" class="">
+				<span v-html="profile"> </span>
+			</div>
+			<div v-if="!loading && !profile">
 				<div class="">Belum diatur</div>
 			</div>
 		</div>
 	</div>
 </template>
 <script setup>
+import apiGet from 'src/api/api-get';
 import apiPost from 'src/api/api-post';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
-const props = defineProps({
-	profile: String,
-});
-const emit = defineEmits(['onUpdate']);
-
+const profile = ref('');
 const inputProfile = ref('');
 const isEdit = ref(false);
 const loading = ref(false);
+
+async function fetchData() {
+	const data = await apiGet({
+		endPoint: 'config/app-wali/profile',
+		loading: loading,
+	});
+	if (data && data.profile) {
+		profile.value = data.profile;
+	}
+}
+
+onMounted(async () => {
+	await fetchData();
+});
 
 const onSubmit = async () => {
 	const res = await apiPost({
@@ -106,13 +119,13 @@ const onSubmit = async () => {
 		data: { profile: inputProfile.value },
 	});
 	if (res) {
-		emit('onUpdate', res.profile);
 		isEdit.value = false;
+		profile.value = res.profile;
 	}
 };
 
 function onEdit() {
-	inputProfile.value = props.profile;
+	inputProfile.value = profile.value;
 	isEdit.value = !isEdit.value;
 }
 </script>

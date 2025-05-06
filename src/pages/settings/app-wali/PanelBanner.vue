@@ -1,33 +1,28 @@
 <template lang="">
 	<div>
-		<div class="flex justify-between items-center">
+		<div class="flex justify-between items-center q-mb-sm">
 			<div>
 				<div class="text-italic text-weight-light">
 					Banner Pengumuman
 				</div>
 			</div>
-			<q-btn icon="edit" flat @click="onEdit" />
-		</div>
-		<q-separator class="q-mb-sm" />
-		<div v-if="isEdit">
-			<q-form @submit.prevent="onSubmit">
-				<q-input
-					v-model="bannerExpiredAt"
-					type="date"
-					outlined
-					dense
-					label="Tanggal Akhir"
-					:disable="loading"
-					class="q-mb-sm"
-					clearable
-					style="max-width: 400px"
-					mask="date"
-					:loading="loading"
-				/>
 
+			<q-btn
+				dense
+				class="q-px-sm"
+				:icon="showFormAdd ? 'close' : 'add'"
+				outline
+				:label="showFormAdd ? 'Batal' : 'Baru'"
+				no-caps
+				@click="showFormAdd = !showFormAdd"
+			/>
+		</div>
+
+		<div v-if="showFormAdd">
+			<q-form @submit.prevent="onSubmit">
 				<q-editor
 					v-model="bannerContent"
-					min-height="20rem"
+					min-height="10rem"
 					:disable="loading"
 					:definitions="{
 						save: {
@@ -86,75 +81,114 @@
 						['save'],
 					]"
 				/>
-				<q-btn
-					type="submit"
-					color="green-10"
-					outline
-					no-caps
-					:disabled="loading"
-					class="q-px-sm float-right q-my-sm"
-					:loading="loading"
-					icon="save"
-					label="Simpan"
-				/>
 			</q-form>
 		</div>
-		<div v-else>
-			<div>
-				<div>
-					<span class="text-italic text-weight-light">
-						Tampil hingga:
-					</span>
-					<span class="text-weight-bold">
-						{{
-							banner?.expired_at
-								? formatDateFullDay(banner.expired_at)
-								: ''
-						}}
-					</span>
+
+		<div v-if="!showFormAdd">
+			<div v-if="loading">
+				<q-separator class="q-my-sm" />
+				<q-spinner-cube size="4em" class="flex q-ma-lg q-mx-auto" />
+			</div>
+			<div v-else-if="!loading && banners.length === 0">
+				<div class="text-center text-italic q-pa-lg text-negative">
+					Tidak ada data <br />Silakan tambahkan banner baru
 				</div>
 			</div>
-			<div class="q-mt-sm q-card--bordered q-pa-sm">
-				<span v-if="banner?.content" v-html="banner?.content"></span>
-				<span v-else>Tidak ada data</span>
+			<div v-else-if="!loading && banners.length > 0">
+				<CardBanner
+					v-for="(banner, index) in banners"
+					:key="banner.id"
+					:banner="banner"
+					:index="index"
+					@onUpdate="onUpdate"
+					@onDelete="onDelete"
+					:errorUpdate="errorUpdate"
+				/>
+
+				<!-- <pre>{{ banners }}</pre> -->
 			</div>
 		</div>
 	</div>
 </template>
 <script setup>
+import apiGet from 'src/api/api-get';
 import apiPost from 'src/api/api-post';
-import { formatDateFullDay } from 'src/utils/format-date';
-import { ref } from 'vue';
-
-const props = defineProps({ banner: { type: Object } });
-const emit = defineEmits(['onUpdate']);
+import { onMounted, ref } from 'vue';
+import CardBanner from './CardBanner.vue';
 
 const bannerContent = ref('');
-const bannerExpiredAt = ref('');
-const isEdit = ref(false);
 const loading = ref(false);
+const banners = ref([]);
+const showFormAdd = ref(false);
+const errorUpdate = ref(false);
 
-function onEdit() {
-	bannerContent.value = props.banner?.content ?? '';
-	bannerExpiredAt.value = props.banner?.expired_at ?? '';
-	isEdit.value = !isEdit.value;
-}
-
-async function onSubmit() {
-	const banner = {
-		expired_at: bannerExpiredAt.value,
-		content: bannerContent.value,
-	};
-
+async function onDelete(id) {
+	const jsonBanners = JSON.parse(JSON.stringify(banners.value));
+	const newBanners = jsonBanners.filter((banner) => banner.id !== id);
 	const res = await apiPost({
-		endPoint: 'config/app-wali/banner',
+		endPoint: 'config/app-wali/banners',
 		loading: loading,
-		data: { banner },
+		data: { banners: newBanners },
+		notify: true,
+		message: 'Hapus banner?',
 	});
 	if (res) {
-		// console.log(res);
-		emit('onUpdate', res.banner);
-		isEdit.value = false;
+		banners.value = newBanners;
+	}
+}
+
+async function onUpdate(banner) {
+	const jsonBanners = JSON.parse(JSON.stringify(banners.value));
+	const newBanners = jsonBanners.map((ban) => {
+		if (ban.id === banner.id) {
+			return { ...ban, content: banner.content };
+		}
+		return ban;
+	});
+	const res = await apiPost({
+		endPoint: 'config/app-wali/banners',
+		loading: loading,
+		data: { banners: newBanners },
+	});
+	if (res) {
+		banners.value = newBanners;
+	}
+	// TODO: handle error
+}
+
+async function fetchData() {
+	const data = await apiGet({
+		endPoint: 'config/app-wali/banners',
+		loading: loading,
+	});
+	if (data && data.banners) {
+		banners.value = data.banners;
+	}
+}
+
+onMounted(async () => {
+	await fetchData();
+});
+
+async function onSubmit() {
+	const jsonBanners = JSON.parse(JSON.stringify(banners.value));
+	const newBanners = [
+		...jsonBanners,
+		{
+			id: new Date().getTime(),
+			content: bannerContent.value,
+		},
+	];
+
+	const res = await apiPost({
+		endPoint: 'config/app-wali/banners',
+		loading: loading,
+		data: { banners: newBanners },
+	});
+	if (res) {
+		banners.value = newBanners;
+		showFormAdd.value = false;
+		bannerContent.value = '';
 	}
 }
 </script>

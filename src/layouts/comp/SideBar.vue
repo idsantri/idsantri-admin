@@ -19,17 +19,6 @@
 			/>
 		</ExpansionItem>
 
-		<!-- BENDAHARA -->
-		<!-- <div class="bg-light-green-7">
-			<ExpansionItem label="Bendahara" caption="Iuran">
-				<MenuItem
-					v-for="item in menuBendahara"
-					:key="item.to"
-					:item="item"
-				/>
-			</ExpansionItem>
-		</div> -->
-
 		<!-- MAKHADIYAH -->
 		<ExpansionItem label="Makhadiyah" caption="Kedaerahan">
 			<MenuItem
@@ -95,16 +84,6 @@ const MenuSekretariat = [
 		disable: false,
 	},
 ];
-
-// const menuBendahara = [
-// 	{
-// 		to: '/bendahara/iuran-old/q',
-// 		icon: 'payments',
-// 		label: 'Iuran (gaya lama)',
-// 		caption: 'Iuran Santri dan Murid',
-// 		disable: false,
-// 	},
-// ];
 
 const menuMakhadiyah = [
 	{
@@ -260,7 +239,7 @@ const menuSetting = [
 		icon: 'sym_o_settings_applications',
 		label: 'App Wali',
 		caption: 'Aplikasi Wali Santri',
-		disable: true,
+		disable: false,
 	},
 ];
 </script>

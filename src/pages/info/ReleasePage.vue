@@ -62,8 +62,11 @@ const releases = [
 		ver: '1.3.1',
 		date: 'Mei 2025',
 		release: {
-			Print: ['Cetak Sertifikat GT'],
-			Baru: ['Upload stempel lembaga'],
+			Baru: [
+				'Upload stempel lembaga',
+				'Setting Aplikasi Wali Santri',
+				'Sertifikat GT',
+			],
 		},
 	},
 	{
