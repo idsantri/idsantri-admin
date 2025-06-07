@@ -59,6 +59,25 @@ import config from 'src/config';
 
 const releases = [
 	{
+		ver: '1.3.2',
+		date: 'Juni 2025',
+		release: {
+			Baru: ['Virtual Account (VA) untuk pembayaran iuran'],
+			Download: ['Detail status akhir santri'],
+		},
+	},
+	{
+		ver: '1.3.1',
+		date: 'Mei 2025',
+		release: {
+			Baru: [
+				'Upload stempel lembaga',
+				'Setting Aplikasi Wali Santri',
+				'Sertifikat GT',
+			],
+		},
+	},
+	{
 		ver: '1.3.1',
 		date: 'Mei 2025',
 		release: {

@@ -85,6 +85,29 @@
 												}}
 											</td>
 										</tr>
+										<tr class="vertical-top">
+											<td
+												class="text-no-wrap text-italic q-pr-md"
+											>
+												VA Group
+											</td>
+											<td class="">
+												<q-toggle
+													dense
+													v-model="withVA"
+													color="green"
+													:label="va_group"
+													@update:model-value="
+														(v) =>
+															v
+																? (va_group =
+																		va_text)
+																: (va_group =
+																		'')
+													"
+												/>
+											</td>
+										</tr>
 									</tbody>
 								</table>
 							</q-card-section>
@@ -103,13 +126,23 @@
 							</q-card-section>
 							<q-card-actions
 								class="q-pa-sm bg-green-6 absolute-bottom"
-								align="right"
 							>
 								<q-btn
-									label="simpan"
+									label="Unduh Data"
+									glossy
+									color="green-9"
+									class="text-green-11"
+									no-caps
+									icon="download"
+									to="/iuran/download"
+								/>
+								<q-space />
+								<q-btn
+									label="Simpan"
+									glossy
 									outline
 									color="green-10"
-									class="bg-green-11"
+									class="bg-green-11 right-0"
 									no-caps
 									icon="save"
 									@click="onSubmit"
@@ -140,6 +173,13 @@ import InputSelectIuranPaket from 'src/components/inputs/InputSelectIuranPaket.v
 import { notifyError } from 'src/utils/notify';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import useAuthStore from 'src/stores/auth-store';
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
+
+const auth = useAuthStore();
+const { email } = auth.getUser;
+const withVA = ref(true);
 const textFilter = ref('');
 const loading = ref(false);
 const { params } = useRoute();
@@ -148,6 +188,14 @@ const selected = ref([]);
 const iuranPaket = ref([]);
 const loadingPaket = ref(false);
 const input = ref({ th_ajaran_h: params.th_ajaran_h || '' });
+const va_text =
+	format(new Date(), 'yyyy-MM-dd HH:mm:ss', {
+		locale: id,
+	}) +
+		' ' +
+		email || '';
+const va_group = ref(va_text);
+
 async function loadData() {
 	const data = await apiGet({
 		endPoint: 'kelas',
@@ -180,13 +228,16 @@ async function onSubmit() {
 	}
 	const data = {
 		th_ajaran_h: input.value.th_ajaran_h,
+		va_group: va_group.value,
 		santri_id: selected.value.map((s) => s.santri_id),
 		paket: iuranPaket.value.map((i) => {
 			return { item: i.item, nominal: i.nominal };
 		}),
 	};
+	// console.log('🚀 ~ onSubmit ~ data:', data);
+	// return;
 	await apiPost({
-		endPoint: 'iuran/paket',
+		endPoint: 'iuran/paket-massal',
 		loading: loadingPaket,
 		data,
 		message: `PERHATIAN<br/>
