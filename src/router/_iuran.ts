@@ -30,6 +30,11 @@ export default [
 			import('src/pages/iuran/paket/PageIndex.vue'),
 	},
 	{
+		path: 'download',
+		component: (): Component =>
+			import('src/pages/iuran/tagihan/DownloadData.vue'),
+	},
+	{
 		path: 'tagihan/:th_ajaran_h?/:tingkat_id?/:kelas?',
 		component: (): Component =>
 			import('src/pages/iuran/tagihan/PageTagihan.vue'),
