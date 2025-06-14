@@ -156,6 +156,40 @@
 							/>
 						</q-card-section>
 					</q-card>
+
+					<q-card class="q-mt-sm">
+						<q-card-section class="q-pa-sm bg-green-1">
+							Virtual Account Iuran Santri
+						</q-card-section>
+						<q-card-section class="q-pa-sm">
+							<q-input
+								dense
+								class=""
+								outlined
+								label="Nama Bank (Singkatan)"
+								placeholder="Contoh: BSI, BRI, BCA, Mandiri"
+								v-model="profile.va.bank"
+								:loading="loading"
+							/>
+							<q-input
+								dense
+								class="q-mt-sm"
+								outlined
+								label="Prefix (Awalan) Nomor VA"
+								v-model="profile.va.prefix"
+								:loading="loading"
+							/>
+							<q-input
+								dense
+								class="q-mt-sm"
+								outlined
+								label="Link Petunjuk Pembayaran VA"
+								v-model="profile.va.link_info"
+								:loading="loading"
+								type="url"
+							/>
+						</q-card-section>
+					</q-card>
 				</q-card-section>
 				<q-card-actions align="right" class="bg-green-7">
 					<q-btn
@@ -184,6 +218,7 @@ const profile = ref({
 	madrasah: [],
 	alamat: [],
 	personalia: {},
+	va: {},
 });
 
 async function loadData() {
