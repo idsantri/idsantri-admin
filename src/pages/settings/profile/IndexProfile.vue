@@ -179,6 +179,15 @@
 								v-model="profile.va.prefix"
 								:loading="loading"
 							/>
+							<q-input
+								dense
+								class="q-mt-sm"
+								outlined
+								label="Link Petunjuk Pembayaran VA"
+								v-model="profile.va.link_info"
+								:loading="loading"
+								type="url"
+							/>
 						</q-card-section>
 					</q-card>
 				</q-card-section>
