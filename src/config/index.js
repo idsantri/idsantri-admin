@@ -6,7 +6,7 @@ const config = {
 	END_API: '/admin',
 	DEV: true,
 	PWA_NAME: 'ID Santri (Admin)',
-	PWA_SHORT_NAME: 'ID Santri',
+	PWA_SHORT_NAME: 'Admin IDSantri',
 	PWA_DESCRIPTION: 'Aplikasi ID Santri (Admin)',
 };
 export default config;
