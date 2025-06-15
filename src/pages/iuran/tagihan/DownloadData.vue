@@ -49,7 +49,7 @@
 					color="green-11"
 					label="Atur VA"
 					icon="settings"
-					to="/settings/profile"
+					to="/settings/va"
 				/>
 				<q-btn
 					no-caps
