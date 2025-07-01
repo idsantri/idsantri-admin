@@ -16,7 +16,7 @@
 						outline
 						no-caps
 						class="q-mr-xs q-px-sm"
-						to="/makhadiyah/mutasi/start"
+						to="/mutasi/start"
 					/>
 					<q-btn-dropdown
 						flat

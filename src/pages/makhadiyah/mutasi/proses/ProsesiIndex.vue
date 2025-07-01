@@ -16,7 +16,7 @@
 						outline
 						no-caps
 						class="q-mr-xs q-px-sm"
-						to="/makhadiyah/mutasi/result"
+						to="/mutasi/result"
 					/>
 					<q-btn
 						disable

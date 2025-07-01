@@ -87,10 +87,17 @@ const MenuSekretariat = [
 
 const menuMakhadiyah = [
 	{
-		to: '/makhadiyah/mutasi',
+		to: '/mutasi',
 		icon: 'sym_o_follow_the_signs',
 		label: 'Mutasi',
 		caption: 'Mutasi dan Relokasi',
+		disable: false,
+	},
+	{
+		to: '/quran',
+		icon: 'sym_o_book_6',
+		label: 'Quran',
+		caption: 'Pendidikan al-Quran',
 		disable: false,
 	},
 ];
