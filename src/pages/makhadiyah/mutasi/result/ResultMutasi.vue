@@ -1,28 +1,22 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card class="">
-			<q-card-section class="bg-green-8 text-green-11 q-pa-sm">
-				<q-toolbar
-					class="no-padding text-green-11"
-					style="min-height: 0"
-				>
-					<q-toolbar-title class="text-subtitle1">
-						Data Mutasi Domisili
-					</q-toolbar-title>
+			<CardHeader title="Data Mutasi Domisili" @on-reload="loadData">
+				<template v-slot:right>
 					<q-btn
 						icon="tune"
 						label="Atur Mutasi"
 						dense
 						outline
 						no-caps
-						class="q-mr-xs q-px-sm"
+						class="q-ml-sm q-px-sm"
 						to="/mutasi/start"
 					/>
 					<q-btn-dropdown
 						flat
 						dense
 						dropdown-icon="more_vert"
-						class="q-ml-md"
+						class="q-ml-sm"
 						color="green-11"
 					>
 						<q-list>
@@ -57,8 +51,8 @@
 							</q-item>
 						</q-list>
 					</q-btn-dropdown>
-				</q-toolbar>
-			</q-card-section>
+				</template>
+			</CardHeader>
 			<q-card-section class="q-pa-sm">
 				<q-table
 					class="q-pa-sm"
@@ -174,6 +168,7 @@ import EditNewDomisili from 'pages/makhadiyah/mutasi/EditMutasi.vue';
 import apiPost from 'src/api/api-post';
 import loadingStore from 'src/stores/loading-store';
 import { notifyWarning } from 'src/utils/notify';
+import CardHeader from 'src/components/CardHeader.vue';
 
 const santri = ref([]);
 const loading = ref(false);
