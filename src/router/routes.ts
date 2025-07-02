@@ -1,6 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
 import _auth from './_auth';
-import _bendahara from './_bendahara';
 import _cari from './_cari';
 import _keamanan from './_keamanan';
 import _ortu from './_ortu';
@@ -74,11 +73,6 @@ const routes: RouteRecordRaw[] = [
 				path: 'makhadiyah',
 				meta: { title: 'Makhadiyah' },
 				children: _makhadiyah,
-			},
-			{
-				path: 'bendahara',
-				meta: { title: 'Bendahara' },
-				children: _bendahara,
 			},
 			{
 				path: 'keamanan',
