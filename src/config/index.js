@@ -6,7 +6,7 @@ const config = {
 	END_API: '/admin',
 	DEV: false,
 	PWA_NAME: 'Admin Syaichona.id',
-	PWA_SHORT_NAME: 'Syaichona',
+	PWA_SHORT_NAME: 'Admin Syaichona',
 	PWA_DESCRIPTION: 'Aplikasi Aplikasi Syaichona (Admin)',
 };
 export default config;
