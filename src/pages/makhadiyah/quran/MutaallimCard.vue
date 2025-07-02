@@ -65,7 +65,18 @@
 							{{ item.faslah }}
 						</q-item-label>
 						<q-item-label caption>
-							{{ item.aktif ? 'Aktif' : '' }}
+							{{ formatDate(item.created_at, 'dd-MM-yyyy') }} |
+							{{
+								m2hFormat(
+									formatDate(item.created_at, 'yyyy-MM-dd'),
+								)
+							}}
+							<span v-if="item.aktif">
+								<span>|</span>
+								<span class="text-weight-bold text-green-10">
+									Aktif
+								</span>
+							</span>
 						</q-item-label>
 					</q-item-section>
 					<q-item-section avatar>
@@ -95,6 +106,8 @@ import apiGet from 'src/api/api-get';
 import QuranMutaallimForm from 'src/components/forms/QuranMutaallimForm.vue';
 import CardSantriSimple from 'src/components/santri/CardSantriSimple.vue';
 import { getObjectById } from 'src/utils/array-object';
+import { formatDate } from 'src/utils/format-date';
+import { m2hFormat } from 'src/utils/hijri';
 import { onUpdated, ref } from 'vue';
 
 const { santri } = defineProps({ santri: { type: Object } });
@@ -117,6 +130,8 @@ onUpdated(async () => {
 	// console.log(props);
 	if (santri?.id) {
 		await loadMutaallim(santri.id);
+	} else if (santri?.santri_id) {
+		await loadMutaallim(santri.santri_id);
 	}
 });
 

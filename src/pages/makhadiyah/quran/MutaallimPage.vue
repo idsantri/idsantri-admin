@@ -1,83 +1,112 @@
 <template lang="">
-	<q-card flat bordered class="">
-		<q-card-section class="text-subtitle2 q-pa-sm">
-			<q-select
-				outlined
-				dense
-				v-model="model"
-				:options="options"
-				label="Pilih Domisili"
-				multiple
-				style="max-width: 300px"
-				@blur="input"
-			>
-				<template
-					v-slot:option="{ itemProps, opt, selected, toggleOption }"
-				>
-					<q-item v-bind="itemProps">
-						<q-item-section>
-							<q-item-label>{{ opt }}</q-item-label>
-						</q-item-section>
-						<q-item-section side>
-							<q-toggle
-								:model-value="selected"
-								@update:model-value="toggleOption(opt)"
-							/>
-						</q-item-section>
-					</q-item>
-				</template>
-			</q-select>
+	<q-card flat class="flex items-start">
+		<q-card-section class="q-pa-sm col-grow">
+			<q-card flat bordered>
+				<TableHeader
+					title="Data Mutaallim AKTIF"
+					v-model="filter"
+					@on-reload="loadData"
+					@on-filter="showFilter = !showFilter"
+				/>
+				<q-card-section class="q-pa-sm" v-show="showFilter">
+					<q-select
+						dense
+						outlined
+						multiple
+						label="Filter"
+						:options="[
+							'Option 1',
+							'Option 2',
+							'Option 3',
+							'Option 4',
+							'Option 5',
+						]"
+						:modelValue="filter"
+					/>
+				</q-card-section>
+				<q-table
+					:rows="mutaallim"
+					:filter="filter"
+					:loading="loading"
+					:rows-per-page-options="[10, 25, 50, 100, 0]"
+					flat
+					@row-click="(evt, row, index) => (selected = row)"
+					:columns="columns"
+					table-header-class="bg-green-11 text-green-10 text-subtitle1"
+				/>
+			</q-card>
 		</q-card-section>
-		<q-separator />
-
-		<q-separator />
-		<pre>
-			Model: {{ model }}
-		</pre
-		>
-		<!-- <pre>
-			santri: {{ santri }}
-		</pre
-		> -->
+		<q-card-section class="q-pa-sm">
+			<MutaallimCard :santri="{ id: selected.santri_id }" />
+		</q-card-section>
 	</q-card>
 </template>
 <script setup>
+import apiGet from 'src/api/api-get';
 import { onMounted, ref } from 'vue';
-const model = ref([]);
-const options = ref([
-	'a',
-	'b',
-	'c',
-	'd',
-	'e',
-	'f',
-	'g',
-	'h',
-	'i',
-	'j',
-	'k',
-	'l',
-	'm',
-]);
-async function loadData() {}
+import MutaallimCard from './MutaallimCard.vue';
+import TableHeader from './TableHeader.vue';
 
-function input(val) {
-	console.log('Selected values:', val.target.value);
-	console.log('model:', JSON.parse(JSON.stringify(model.value)));
+const selected = ref({});
+const mutaallim = ref([]);
+const loading = ref(false);
+const filter = ref('');
+const showFilter = ref(false);
+
+async function loadData() {
+	const data = await apiGet({ endPoint: 'quran/mutaallim/aktif', loading });
+	if (data) {
+		mutaallim.value = data.mutaallim;
+	}
 }
+
 onMounted(async () => {
 	await loadData();
 });
 
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-function groupByDomisili(data) {
-	const domisiliSet = new Set();
-	data.forEach((item) => {
-		if (item.domisili) {
-			domisiliSet.add(item.domisili);
-		}
-	});
-	return Array.from(domisiliSet);
-}
+const columns = [
+	{
+		name: 'santri_id',
+		label: 'ID Santri',
+		align: 'center',
+		field: 'santri_id',
+		sortable: true,
+	},
+	{
+		name: 'nama',
+		label: 'Nama',
+		align: 'left',
+		field: 'nama',
+		sortable: true,
+	},
+	{
+		name: 'domisili',
+		label: 'Domisili',
+		align: 'left',
+		field: 'domisili',
+		sortable: true,
+	},
+	{
+		name: 'marhalah',
+		label: 'Marhalah',
+		align: 'left',
+		field: 'marhalah',
+		sortable: true,
+	},
+	{
+		name: 'faslah',
+		label: 'Faslah/Kelas',
+		align: 'left',
+		field: 'faslah',
+		sortable: true,
+	},
+	{
+		name: 'no_absen',
+		label: 'No Absen',
+		align: 'left',
+		field: 'no_absen',
+		sortable: true,
+	},
+];
 </script>
 <style lang=""></style>

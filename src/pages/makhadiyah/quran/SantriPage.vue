@@ -1,35 +1,58 @@
 <template lang="">
 	<q-card flat class="flex items-start">
 		<q-card-section class="q-pa-sm col-grow">
-			<q-table
-				:rows="santri"
-				:filter="filter"
-				:loading="loading"
-				:rows-per-page-options="[10, 25, 50, 100, 0]"
-				flat
-				bordered
-				@row-click="(evt, row, index) => (selected = row)"
-				:columns="columns"
-			>
-				<template v-slot:top>
-					<div class="text-subtitle2">Data Santri AKTIF</div>
-					<q-space />
-					<q-input
-						outlined
+			<q-card flat bordered>
+				<TableHeader
+					title="Data Santri AKTIF"
+					v-model="filter"
+					@on-reload="loadData"
+					@on-filter="showFilter = !showFilter"
+				/>
+				<q-card-section class="q-pa-sm" v-show="showFilter">
+					<q-select
 						dense
-						debounce="300"
-						color="primary"
-						v-model="filter"
+						outlined
+						multiple
+						label="Filter Domisili"
+						v-model="modelDomisili"
+						:options="groupByDomisili()"
+						style="max-width: 300px"
 						clearable
-						type="search"
-						placeholder="Tulis teks pencarian di sini..."
 					>
-						<template v-slot:append>
-							<q-icon name="search" />
+						<template
+							v-slot:option="{
+								itemProps,
+								opt,
+								selected,
+								toggleOption,
+							}"
+						>
+							<q-item v-bind="itemProps">
+								<q-item-section>
+									<q-item-label>{{ opt }}</q-item-label>
+								</q-item-section>
+								<q-item-section side>
+									<q-toggle
+										:model-value="selected"
+										@update:model-value="toggleOption(opt)"
+									/>
+								</q-item-section>
+							</q-item>
 						</template>
-					</q-input>
-				</template>
-			</q-table>
+					</q-select>
+					<!-- {{ modelDomisili }} -->
+				</q-card-section>
+				<q-table
+					:rows="santri"
+					:filter="filter"
+					:loading="loading"
+					:rows-per-page-options="[10, 25, 50, 100, 0]"
+					flat
+					@row-click="(evt, row, index) => (selected = row)"
+					:columns="columns"
+					table-header-class="bg-green-11 text-green-10 text-subtitle1"
+				/>
+			</q-card>
 		</q-card-section>
 		<q-card-section class="q-pa-sm">
 			<MutaallimCard :santri="selected" />
@@ -38,13 +61,16 @@
 </template>
 <script setup>
 import apiGet from 'src/api/api-get';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 import MutaallimCard from './MutaallimCard.vue';
+import TableHeader from './TableHeader.vue';
 
 const filter = ref('');
 const loading = ref(false);
 const selected = ref({});
 const santri = ref([]);
+const showFilter = ref(false);
+const modelDomisili = ref([]);
 
 async function loadData() {
 	const data = await apiGet({ endPoint: 'quran/mutaallim/santri', loading });
@@ -55,6 +81,24 @@ async function loadData() {
 onMounted(async () => {
 	await loadData();
 });
+
+watchEffect(() => {
+	if (modelDomisili.value?.length > 0) {
+		console.log('filter');
+	} else {
+		console.log('reset');
+	}
+});
+
+function groupByDomisili() {
+	const domisiliSet = new Set();
+	santri.value.forEach((item) => {
+		if (item.domisili) {
+			domisiliSet.add(item.domisili);
+		}
+	});
+	return Array.from(domisiliSet);
+}
 
 const columns = [
 	{
