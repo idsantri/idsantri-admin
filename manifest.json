@@ -1,7 +1,7 @@
 {
   "id": "idsantri-app",
   "name": "Admin Syaichona.id",
-  "short_name": "Syaichona",
+  "short_name": "Admin Syaichona",
   "description": "Aplikasi Aplikasi Syaichona (Admin)",
   "display": "standalone",
   "start_url": "/",
