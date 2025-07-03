@@ -27,7 +27,7 @@
 					:rows-per-page-options="[10, 25, 50, 100, 0]"
 					flat
 					@row-click="(evt, row, index) => (selected = row)"
-					:columns="optionsColumns"
+					:columns="columnMutaallim"
 					table-header-class="bg-green-11 text-green-10 text-subtitle1"
 				/>
 			</q-card>
@@ -43,7 +43,7 @@ import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import MutaallimCard from './MutaallimCard.vue';
 import TableHeader from './TableHeader.vue';
 import FilterMarhalah from './FilterMarhalah.vue';
-import optionsColumns from './options-columns';
+import { columnMutaallim } from './column-header';
 
 const selected = ref({});
 const mutaallim = ref([]);

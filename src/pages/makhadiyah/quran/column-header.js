@@ -1,12 +1,5 @@
 const optionsColumns = [
 	{
-		name: 'id',
-		label: 'ID Santri',
-		align: 'center',
-		field: 'id',
-		sortable: true,
-	},
-	{
 		name: 'nama',
 		label: 'Nama',
 		align: 'left',
@@ -49,5 +42,24 @@ const optionsColumns = [
 		sortable: true,
 	},
 ];
+export const columnSantri = [
+	{
+		name: 'id',
+		label: 'ID Santri',
+		align: 'center',
+		field: 'id',
+		sortable: true,
+	},
+	...optionsColumns,
+];
 
-export default optionsColumns;
+export const columnMutaallim = [
+	{
+		name: 'santri_id',
+		label: 'ID Santri',
+		align: 'center',
+		field: 'santri_id',
+		sortable: true,
+	},
+	...optionsColumns,
+];

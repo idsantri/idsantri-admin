@@ -34,7 +34,7 @@
 					:rows-per-page-options="[10, 25, 50, 100, 0]"
 					flat
 					@row-click="(evt, row, index) => (selected = row)"
-					:columns="optionsColumns"
+					:columns="columnSantri"
 					table-header-class="bg-green-11 text-green-10 text-subtitle1"
 				/>
 			</q-card>
@@ -51,7 +51,7 @@ import MutaallimCard from './MutaallimCard.vue';
 import TableHeader from './TableHeader.vue';
 import FilterDomisili from './FilterDomisili.vue';
 import FilterKelas from './FilterKelas.vue';
-import optionsColumns from './options-columns';
+import { columnSantri } from './column-header';
 
 const filter = ref('');
 const loading = ref(false);
