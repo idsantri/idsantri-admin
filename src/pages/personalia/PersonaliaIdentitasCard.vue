@@ -57,11 +57,10 @@
 		</q-card-section>
 	</q-card>
 	<q-dialog persistent="" v-model="crudShow">
-		<PersonaliaModal
-			:is-new="false"
-			:data-aparatur="aparatur"
+		<PersonaliaForm
+			:data="aparatur"
 			@success-submit="handleEmit"
-			@success-delete="handleEmit"
+			@success-delete="$router.go(-1)"
 		/>
 	</q-dialog>
 	<!-- modal -->
@@ -79,7 +78,7 @@ import { useRoute, useRouter } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import { formatDateFull } from 'src/utils/format-date';
 import UploadImage from 'src/components/ImageUploader.vue';
-import PersonaliaModal from 'src/pages/personalia/PersonaliaIdentitasModal.vue';
+import PersonaliaForm from 'src/components/forms/PersonaliaForm.vue';
 
 const route = useRoute();
 const router = useRouter();

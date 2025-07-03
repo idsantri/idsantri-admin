@@ -20,6 +20,12 @@
 						exact
 						no-caps
 					/>
+					<q-route-tab
+						label="Muallim"
+						to="/quran/muallim"
+						exact
+						no-caps
+					/>
 					<q-space />
 					<q-btn label="Pengaturan" no-caps outline disabled />
 				</q-tabs>

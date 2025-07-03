@@ -41,6 +41,11 @@ export default [
 				component: (): Component =>
 					import('src/pages/makhadiyah/quran/MutaallimPage.vue'),
 			},
+			{
+				path: 'muallim',
+				component: (): Component =>
+					import('src/pages/makhadiyah/quran/MuallimPage.vue'),
+			},
 		],
 	},
 ];
