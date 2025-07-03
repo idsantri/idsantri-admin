@@ -1,6 +1,6 @@
 <template lang="">
-	<q-card flat class="flex items-start">
-		<q-card-section class="q-pa-sm col-grow">
+	<div class="flex items-start q-gutter-sm">
+		<div class="col-grow">
 			<q-card flat bordered>
 				<TableHeader
 					title="Data Mutaallim AKTIF"
@@ -28,14 +28,14 @@
 					flat
 					@row-click="(evt, row, index) => (selected = row)"
 					:columns="columnMutaallim"
-					table-header-class="bg-green-11 text-green-10 text-subtitle1"
+					table-header-class="bg-green-1 text-green-10 text-subtitle1"
 				/>
 			</q-card>
-		</q-card-section>
-		<q-card-section class="q-pa-sm">
+		</div>
+		<div class="">
 			<MutaallimCard :santri="{ id: selected.santri_id }" />
-		</q-card-section>
-	</q-card>
+		</div>
+	</div>
 </template>
 <script setup>
 import apiGet from 'src/api/api-get';

@@ -1,5 +1,5 @@
 <template>
-	<q-card-section class="q-pa-sm bg-green-1">
+	<q-card-section class="q-pa-sm bg-green-11">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center text-green-10">
 				<q-btn

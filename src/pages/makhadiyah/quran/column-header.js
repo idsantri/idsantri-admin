@@ -42,6 +42,7 @@ const optionsColumns = [
 		sortable: true,
 	},
 ];
+
 export const columnSantri = [
 	{
 		name: 'id',

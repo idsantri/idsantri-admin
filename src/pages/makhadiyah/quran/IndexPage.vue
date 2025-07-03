@@ -5,6 +5,18 @@
 				title="Modul Pendidikan Tajwid al-Quran"
 				:showReload="false"
 			>
+				<!-- <template v-slot:left>
+					<q-btn
+						dense
+						color="green-11"
+						glossy
+						class="q-px-sm q-mr-sm text-green-10"
+						label="Cetak"
+						no-caps=""
+						icon="print"
+						to="/info/download"
+					/>
+				</template> -->
 			</CardHeader>
 			<q-card-section class="q-pa-sm">
 				<q-tabs dense align="left">
@@ -25,12 +37,25 @@
 						to="/quran/muallim"
 						exact
 						no-caps
+						disable
+						title="Fitur belum siap!"
 					/>
 					<q-space />
-					<q-btn label="Pengaturan" no-caps outline disabled />
+					<q-btn
+						dense
+						color="green-11"
+						glossy
+						class="q-px-sm text-green-10"
+						label="Cetak"
+						no-caps=""
+						icon="print"
+						to="/info/download"
+					/>
+					<!-- <q-btn label="Pengaturan" no-caps outline disabled /> -->
 				</q-tabs>
 			</q-card-section>
-			<q-card-section class="no-padding">
+			<q-separator />
+			<q-card-section class="q-pa-sm">
 				<router-view />
 			</q-card-section>
 		</q-card>
