@@ -47,14 +47,17 @@
 			</q-card-section>
 		</q-card>
 		<q-dialog persistent="" v-model="crudShow">
-			<PersonaliaForm :data="{}" @success-submit="handleEmit" />
+			<PersonaliaForm
+				:data="{}"
+				@success-submit="(val) => $router.push(`/personalia/${val.id}`)"
+				@success-delete="$router.go(-1)"
+			/>
 		</q-dialog>
 		<!-- <pre>{{ personalia }}</pre> -->
 	</q-page>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import CardHeader from 'src/components/CardHeader.vue';
 import PersonaliaForm from 'src/components/forms/PersonaliaForm.vue';
@@ -63,18 +66,14 @@ const loading = ref(false);
 const personalia = ref([]);
 const filter = ref('');
 const crudShow = ref(false);
-const router = useRouter();
 
-function handleEmit(val) {
-	crudShow.value = false;
-	router.push(`/personalia/${val.id}`);
-}
 async function loadData() {
 	const data = await apiGet({ endPoint: 'aparatur', loading });
 	if (data) {
 		personalia.value = data.aparatur;
 	}
 }
+
 onMounted(async () => {
 	await loadData();
 });

@@ -1,10 +1,7 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
-			<FormHeader
-				title="Input Data Personalia"
-				:is-new="input.id ? false : true"
-			/>
+			<FormHeader title="Input Data Personalia" :is-new="isNew" />
 			<q-card-section class="no-padding">
 				<div v-if="loadingCrud" style="height: 70vh">
 					<q-dialog v-model="loadingCrud" persistent="">
@@ -39,7 +36,7 @@
 						<q-input
 							dense
 							:hint="
-								!input?.id
+								isNew
 									? 'Kosongkan jika ingin diisi otomatis!'
 									: ''
 							"
@@ -199,7 +196,7 @@
 			</q-card-section>
 
 			<FormActions
-				:btn-delete="input.id ? true : false"
+				:btn-delete="isNew ? false : true"
 				@on-delete="handleDelete"
 			/>
 		</q-form>
@@ -230,6 +227,7 @@ const emit = defineEmits([
 
 const input = ref({});
 const loadingCrud = ref(false);
+const isNew = !props.data?.id;
 
 onMounted(async () => {
 	Object.assign(input.value, props.data);
@@ -240,7 +238,7 @@ const onSubmit = async () => {
 	delete data.image;
 	delete data.aktif;
 	let response = null;
-	if (!input.value.id) {
+	if (isNew) {
 		response = await apiPost({
 			endPoint: 'aparatur',
 			data,
@@ -248,7 +246,7 @@ const onSubmit = async () => {
 		});
 	} else {
 		response = await apiUpdate({
-			endPoint: `aparatur/${input.value.id}`,
+			endPoint: `aparatur/${props.data.id}`,
 			data,
 			confirm: true,
 			notify: true,
@@ -259,7 +257,7 @@ const onSubmit = async () => {
 	if (response) {
 		document.getElementById('btn-close-form').click();
 		emit('successSubmit', response?.aparatur);
-		if (input.value.id) {
+		if (isNew) {
 			emit('successCreate', response?.aparatur);
 		} else {
 			emit('successUpdate', response?.aparatur);
@@ -268,7 +266,7 @@ const onSubmit = async () => {
 };
 
 const handleDelete = async () => {
-	const id = input.value.id;
+	const id = props.data.id;
 
 	const result = await apiDelete({
 		endPoint: `aparatur/${id}`,

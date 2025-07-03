@@ -1,6 +1,6 @@
 <template lang="">
-	<q-card class="">
-		<q-card-section class="bg-green-8 no-padding">
+	<q-card flat bordered class="">
+		<q-card-section class="bg-green-7 no-padding">
 			<q-toolbar class="no-padding no-margin">
 				<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11">
 					Jabatan
@@ -63,11 +63,10 @@
 
 	<!-- modal -->
 	<q-dialog v-model="crudShow">
-		<ModalPersonaliaMadrasah
+		<PersonaliaMadrasahForm
 			:data="dataObj"
-			:is-new="isNew"
-			@success-submit="handleEmit"
-			@success-delete="handleEmit"
+			@success-submit="loadData"
+			@success-delete="loadData"
 		/>
 	</q-dialog>
 </template>
@@ -76,7 +75,7 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import { getObjectById } from 'src/utils/array-object';
-import ModalPersonaliaMadrasah from 'src/pages/personalia/PersonaliaMadrasahModal.vue';
+import PersonaliaMadrasahForm from 'src/components/forms/PersonaliaMadrasahForm.vue';
 
 const route = useRoute();
 const loading = ref(false);
@@ -84,12 +83,7 @@ const jabatan = ref([]);
 const aparatur = ref({});
 const crudShow = ref(false);
 const dataObj = ref({});
-const isNew = ref(false);
 
-async function handleEmit() {
-	crudShow.value = false;
-	await loadData();
-}
 async function loadData() {
 	if (route.params.id) {
 		const data = await apiGet({
@@ -109,15 +103,13 @@ const handleAdd = () => {
 		aparatur_id: aparatur.value.id,
 		nama: aparatur.value.nama,
 	};
-
-	isNew.value = true;
 	crudShow.value = true;
 };
 
 const handleEdit = (id) => {
 	dataObj.value = getObjectById(jabatan.value, id);
 	dataObj.value.nama = aparatur.value.nama;
-	isNew.value = false;
+
 	crudShow.value = true;
 };
 </script>

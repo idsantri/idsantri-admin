@@ -14,7 +14,7 @@
 				dense
 				outlined
 				multiple
-				label="Filter Faslah/Kelas"
+				label="Pilih Kelas"
 				:options="optionsKelas"
 				v-model="modelKelas"
 				style="width: 300px"

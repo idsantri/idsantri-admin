@@ -1,16 +1,20 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="submit">
-			<FormHeader title="Jabatan Madrasiyah" :is-new="isNew" />
-			<div v-if="loadingCrud">
-				<q-spinner-cube
-					color="green-12"
-					size="8em"
-					class="flex q-ma-lg q-mx-auto"
-				/>
-			</div>
-
-			<q-card-section v-else>
+			<FormHeader
+				title="Input Jabatan Madrasiyah"
+				:is-new="input.id ? false : true"
+			/>
+			<q-card-section>
+				<div v-if="loadingCrud">
+					<q-dialog v-model="loadingCrud" persistent="">
+						<q-spinner-cube
+							color="green-12"
+							size="8em"
+							class="flex q-ma-lg q-mx-auto"
+						/>
+					</q-dialog>
+				</div>
 				<q-input
 					dense
 					outlined
@@ -66,29 +70,11 @@
 					autogrow=""
 				/>
 			</q-card-section>
-			<q-card-actions class="flex bg-green-6">
-				<q-btn
-					v-show="!props.isNew"
-					label="Hapus"
-					class="bg-red text-red-1"
-					no-caps=""
-					@click="deleteData(input.id)"
-				/>
-				<q-space />
-				<q-btn
-					label="Tutup"
-					v-close-popup
-					class="bg-green-11"
-					no-caps=""
-					id="btn-close-santri-crud"
-				/>
-				<q-btn
-					type="submit"
-					label="Simpan"
-					class="bg-green-10 text-green-11"
-					no-caps=""
-				/>
-			</q-card-actions>
+
+			<FormActions
+				:btn-delete="input.id ? true : false"
+				@on-delete="deleteData"
+			/>
 		</q-form>
 		<!-- <pre>{{ input }}</pre> -->
 	</q-card>
@@ -104,11 +90,15 @@ import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingk
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 
 const props = defineProps({
-	data: { type: Object, required: true },
-	isNew: { type: Boolean, default: true },
+	data: { type: Object, required: true, default: () => {} },
 });
 
-const emit = defineEmits(['successSubmit', 'successDelete']);
+const emit = defineEmits([
+	'successDelete',
+	'successSubmit',
+	'successUpdate',
+	'successCreate',
+]);
 
 const input = ref({});
 const loadingCrud = ref(false);
@@ -116,7 +106,6 @@ const tingkat = ref([]);
 const tahunAjaran = ref([]);
 
 onMounted(async () => {
-	// input.value = props.data;  // menjadi reactive
 	Object.assign(input.value, props.data);
 	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
 	tingkat.value = listsStore().getByStateName('tingkat-pendidikan');
@@ -124,7 +113,6 @@ onMounted(async () => {
 
 const submit = async () => {
 	const data = {
-		id: input.value.id,
 		aparatur_id: input.value.aparatur_id,
 		jabatan: input.value.jabatan,
 		th_ajaran_h: input.value.th_ajaran_h,
@@ -135,7 +123,8 @@ const submit = async () => {
 	};
 
 	let response = null;
-	if (props.isNew) {
+	const isNew = !input.value.id;
+	if (isNew) {
 		response = await apiPost({
 			endPoint: 'aparatur-madrasah',
 			data,
@@ -143,20 +132,32 @@ const submit = async () => {
 		});
 	} else {
 		response = await apiUpdate({
-			endPoint: `aparatur-madrasah/${data.id}`,
+			endPoint: `aparatur-madrasah/${input.value.id}`,
 			data,
 			confirm: true,
 			loading: loadingCrud,
 		});
 	}
-	if (response) emit('successSubmit');
+	if (response) {
+		document.getElementById('btn-close-form').click();
+		emit('successSubmit', response?.aparatur_madrasah);
+		if (isNew) {
+			emit('successCreate', response?.aparatur_madrasah);
+		} else {
+			emit('successUpdate', response?.aparatur_madrasah);
+		}
+	}
 };
 
-const deleteData = async (id) => {
+const deleteData = async () => {
+	const id = input.value.id;
 	const deleted = await apiDelete({
 		endPoint: `aparatur-madrasah/${id}`,
 		loading: loadingCrud,
 	});
-	if (deleted) emit('successDelete');
+	if (deleted) {
+		document.getElementById('btn-close-form').click();
+		emit('successDelete', id);
+	}
 };
 </script>
