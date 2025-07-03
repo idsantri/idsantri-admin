@@ -16,15 +16,16 @@
 			<q-space />
 			<div class="flex items-center">
 				<q-btn
-					color="green-10"
 					no-caps
 					outline
 					dense
 					class="q-px-sm q-mr-sm"
-					icon="filter_list"
+					:icon="showFilter ? 'filter_list_off' : 'filter_list'"
 					label="Filter"
 					:disable="disableFilter"
 					@click="$emit('onFilter')"
+					color="green-10"
+					:glossy="showFilter"
 				/>
 				<q-input
 					outlined
@@ -55,6 +56,9 @@ defineProps({
 		default: 'Tulis teks pencarian di sini...',
 	},
 	disableFilter: {
+		type: Boolean,
+	},
+	showFilter: {
 		type: Boolean,
 	},
 });

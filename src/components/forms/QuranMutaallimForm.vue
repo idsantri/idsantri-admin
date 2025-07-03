@@ -30,16 +30,16 @@
 					label="Marhalah *"
 					class="q-mt-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
-					:options="['Ula', 'Wustho']"
+					:options="['Ula', 'Wustho', 'Ulya']"
 				/>
 				<input-select-array
 					v-model="input.faslah"
-					url="domisili"
+					url="kelas-tajwid-quran"
 					label="Faslah/Kelas *"
 					class="q-mt-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
-				<q-input
+				<!-- <q-input
 					dense
 					outlined
 					label="No Absen"
@@ -47,7 +47,7 @@
 					:rules="[
 						(val) => !val || !isNaN(val) || 'Hanya menerima angka!',
 					]"
-				/>
+				/> -->
 				<q-card bordered flat class="q-px-sm q-mt-sm">
 					<q-toggle
 						v-model="input.aktif"

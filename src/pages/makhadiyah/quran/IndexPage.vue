@@ -1,7 +1,10 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card class="">
-			<CardHeader title="Modul Marhalah Quran" :showReload="false">
+			<CardHeader
+				title="Modul Pendidikan Tajwid al-Quran"
+				:showReload="false"
+			>
 			</CardHeader>
 			<q-card-section class="q-pa-sm">
 				<q-tabs dense align="left">

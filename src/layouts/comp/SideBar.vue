@@ -97,7 +97,7 @@ const menuMakhadiyah = [
 		to: '/quran',
 		icon: 'sym_o_book_6',
 		label: 'Quran',
-		caption: 'Pendidikan al-Quran',
+		caption: 'Pendidikan Tajwid al-Quran',
 		disable: false,
 	},
 ];

@@ -7,31 +7,27 @@
 					v-model="filter"
 					@on-reload="loadData"
 					@on-filter="showFilter = !showFilter"
+					:show-filter="showFilter"
 				/>
-				<q-card-section class="q-pa-sm" v-show="showFilter">
-					<q-select
-						dense
-						outlined
-						multiple
-						label="Filter"
-						:options="[
-							'Option 1',
-							'Option 2',
-							'Option 3',
-							'Option 4',
-							'Option 5',
-						]"
-						:modelValue="filter"
-					/>
-				</q-card-section>
+				<transition name="fade">
+					<q-card-section class="q-pa-sm" v-if="showFilter">
+						<FilterMarhalah
+							v-model:modelMarhalah="modelMarhalah"
+							v-model:modelFaslah="modelFaslah"
+							:optionsMarhalah="optionsMarhalah"
+							:optionsFaslah="optionsFaslah"
+						/>
+					</q-card-section>
+				</transition>
+
 				<q-table
-					:rows="mutaallim"
+					:rows="filteredMutaallim"
 					:filter="filter"
 					:loading="loading"
 					:rows-per-page-options="[10, 25, 50, 100, 0]"
 					flat
 					@row-click="(evt, row, index) => (selected = row)"
-					:columns="columns"
+					:columns="optionsColumns"
 					table-header-class="bg-green-11 text-green-10 text-subtitle1"
 				/>
 			</q-card>
@@ -43,15 +39,19 @@
 </template>
 <script setup>
 import apiGet from 'src/api/api-get';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import MutaallimCard from './MutaallimCard.vue';
 import TableHeader from './TableHeader.vue';
+import FilterMarhalah from './FilterMarhalah.vue';
+import optionsColumns from './options-columns';
 
 const selected = ref({});
 const mutaallim = ref([]);
 const loading = ref(false);
 const filter = ref('');
 const showFilter = ref(false);
+const modelMarhalah = ref('');
+const modelFaslah = ref([]);
 
 async function loadData() {
 	const data = await apiGet({ endPoint: 'quran/mutaallim/aktif', loading });
@@ -60,53 +60,63 @@ async function loadData() {
 	}
 }
 
+const filteredMutaallim = computed(() => {
+	if (!modelMarhalah.value) return mutaallim.value;
+	if (!modelFaslah.value?.length) {
+		return mutaallim.value.filter(
+			(item) => item.marhalah === modelMarhalah.value,
+		);
+	}
+	return mutaallim.value.filter(
+		(item) =>
+			item.marhalah === modelMarhalah.value &&
+			modelFaslah.value.includes(item.faslah),
+	);
+});
+
 onMounted(async () => {
 	await loadData();
 });
 
-const columns = [
-	{
-		name: 'santri_id',
-		label: 'ID Santri',
-		align: 'center',
-		field: 'santri_id',
-		sortable: true,
-	},
-	{
-		name: 'nama',
-		label: 'Nama',
-		align: 'left',
-		field: 'nama',
-		sortable: true,
-	},
-	{
-		name: 'domisili',
-		label: 'Domisili',
-		align: 'left',
-		field: 'domisili',
-		sortable: true,
-	},
-	{
-		name: 'marhalah',
-		label: 'Marhalah',
-		align: 'left',
-		field: 'marhalah',
-		sortable: true,
-	},
-	{
-		name: 'faslah',
-		label: 'Faslah/Kelas',
-		align: 'left',
-		field: 'faslah',
-		sortable: true,
-	},
-	{
-		name: 'no_absen',
-		label: 'No Absen',
-		align: 'left',
-		field: 'no_absen',
-		sortable: true,
-	},
-];
+watch(modelMarhalah, () => {
+	modelFaslah.value = [];
+});
+
+watchEffect(() => {
+	if (!showFilter.value) {
+		modelMarhalah.value = '';
+		modelFaslah.value = [];
+	}
+});
+
+const optionsMarhalah = computed(() => {
+	const set = new Set();
+	mutaallim.value.forEach((item) => {
+		if (item.marhalah) {
+			set.add(item.marhalah);
+		}
+	});
+	return Array.from(set).sort((a, b) => a.localeCompare(b));
+});
+
+const optionsFaslah = computed(() => {
+	if (!modelMarhalah.value) return [];
+	const set = new Set();
+	mutaallim.value.forEach((item) => {
+		if (item.marhalah === modelMarhalah.value && item.faslah) {
+			set.add(item.faslah);
+		}
+	});
+	return Array.from(set).sort((a, b) => a.localeCompare(b));
+});
 </script>
-<style lang=""></style>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.fade-enter-from,
+.fade-leave-to {
+	opacity: 0;
+}
+</style>
