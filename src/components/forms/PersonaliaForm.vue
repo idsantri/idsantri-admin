@@ -1,7 +1,7 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
-			<FormHeader title="Input Data Personalia" :is-new="props.isNew" />
+			<FormHeader title="Input Data Personalia" :is-new="isNew" />
 			<q-card-section class="no-padding">
 				<div v-if="loadingCrud" style="height: 70vh">
 					<q-dialog v-model="loadingCrud" persistent="">
@@ -194,37 +194,16 @@
 					/>
 				</div>
 			</q-card-section>
-			<q-card-actions class="flex bg-green-6">
-				<q-btn
-					v-show="!$props.isNew"
-					label="Hapus"
-					class="bg-red text-red-1"
-					no-caps=""
-					@click="handleDelete"
-				/>
-				<q-space />
-				<q-btn
-					label="Tutup"
-					v-close-popup
-					class="bg-green-11"
-					no-caps=""
-					id="btn-close-santri-crud"
-				/>
-				<q-btn
-					type="submit"
-					label="Simpan"
-					class="bg-green-10 text-green-11"
-					no-caps=""
-				/>
-			</q-card-actions>
+
+			<FormActions
+				:btn-delete="isNew ? false : true"
+				@on-delete="handleDelete"
+			/>
 		</q-form>
-		<!-- <pre>{{ $props.isNew }}</pre>
-		<pre>{{ $props.dataPersonalia }}</pre> -->
 	</q-card>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import apiDelete from 'src/api/api-delete';
 import apiUpdate from 'src/api/api-update';
 import apiPost from 'src/api/api-post';
@@ -234,21 +213,24 @@ import CarouselAlamat from 'src/components/alamat/CarouselAlamat.vue';
 import InputSelectKotaLahir from 'src/components/inputs/InputSelectKotaLahir.vue';
 import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
+import FormActions from './FormActions.vue';
 
 const props = defineProps({
-	dataAparatur: Object,
-	isNew: Boolean,
+	data: Object,
 });
-const emit = defineEmits(['successSubmit', 'successDelete']);
+const emit = defineEmits([
+	'successDelete',
+	'successSubmit',
+	'successUpdate',
+	'successCreate',
+]);
 
-const router = useRouter();
-const route = useRoute();
 const input = ref({});
-
 const loadingCrud = ref(false);
+const isNew = !props.data?.id;
 
 onMounted(async () => {
-	Object.assign(input.value, props.dataAparatur);
+	Object.assign(input.value, props.data);
 });
 
 const onSubmit = async () => {
@@ -256,7 +238,7 @@ const onSubmit = async () => {
 	delete data.image;
 	delete data.aktif;
 	let response = null;
-	if (props.isNew) {
+	if (isNew) {
 		response = await apiPost({
 			endPoint: 'aparatur',
 			data,
@@ -264,7 +246,7 @@ const onSubmit = async () => {
 		});
 	} else {
 		response = await apiUpdate({
-			endPoint: `aparatur/${route.params.id}`,
+			endPoint: `aparatur/${props.data.id}`,
 			data,
 			confirm: true,
 			notify: true,
@@ -273,17 +255,26 @@ const onSubmit = async () => {
 	}
 
 	if (response) {
+		document.getElementById('btn-close-form').click();
 		emit('successSubmit', response?.aparatur);
+		if (isNew) {
+			emit('successCreate', response?.aparatur);
+		} else {
+			emit('successUpdate', response?.aparatur);
+		}
 	}
 };
 
 const handleDelete = async () => {
+	const id = props.data.id;
+
 	const result = await apiDelete({
-		endPoint: `aparatur/${route.params.id}`,
+		endPoint: `aparatur/${id}`,
 		loading: loadingCrud,
 	});
 	if (result) {
-		router.push('/personalia');
+		document.getElementById('btn-close-form').click();
+		emit('successDelete', id);
 	}
 };
 

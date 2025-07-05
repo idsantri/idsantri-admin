@@ -59,10 +59,17 @@ import config from 'src/config';
 
 const releases = [
 	{
+		ver: '1.4.0',
+		date: 'Juli 2025',
+		release: {
+			'Fitur Baru': ['Pendidikan al-Quran'],
+		},
+	},
+	{
 		ver: '1.3.2',
 		date: 'Juni 2025',
 		release: {
-			Baru: ['Virtual Account (VA) untuk pembayaran iuran'],
+			'Fitur Baru': ['Virtual Account (VA) untuk pembayaran iuran'],
 			Download: ['Detail status akhir santri'],
 		},
 	},
@@ -70,18 +77,7 @@ const releases = [
 		ver: '1.3.1',
 		date: 'Mei 2025',
 		release: {
-			Baru: [
-				'Upload stempel lembaga',
-				'Setting Aplikasi Wali Santri',
-				'Sertifikat GT',
-			],
-		},
-	},
-	{
-		ver: '1.3.1',
-		date: 'Mei 2025',
-		release: {
-			Baru: [
+			'Fitur Baru': [
 				'Upload stempel lembaga',
 				'Setting Aplikasi Wali Santri',
 				'Sertifikat GT',
@@ -94,8 +90,8 @@ const releases = [
 		release: {
 			Iuran: ['Fitur Tagihan', 'Item iuran/tagihan harus unik'],
 			Print: ['Cetak ID Card'],
-			Baru: ['Add User Info to Main Layout'],
 			Improve: [
+				'Add User Info to Main Layout',
 				'Perbaikan dan peningkatan performa',
 				'Perbaikan pada beberapa fitur',
 			],
@@ -138,6 +134,7 @@ const releases = [
 		ver: '1.2.0',
 		date: 'Juli 2024',
 		release: {
+			'Fitur Baru': ['Kenaikan Kelas', 'Mutasi Domisili'],
 			'Izin Pesantren': [
 				'Riwayat izin santri',
 				'Filter by ID Santri',
@@ -147,7 +144,6 @@ const releases = [
 				'Riwayat indisipliner santri',
 				'Filter by ID Santri',
 			],
-			'Fitur Baru': ['Kenaikan Kelas', 'Mutasi Domisili'],
 			Improve: ['Nilai default pada input Wali'],
 		},
 	},
@@ -178,7 +174,7 @@ const releases = [
 		ver: '1.0.0',
 		date: 'Maret 2024',
 		release: {
-			'New Release': ['Semua fitur basic'],
+			'First Release': ['Semua fitur basic'],
 		},
 	},
 ];

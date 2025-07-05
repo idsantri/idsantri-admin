@@ -1,33 +1,27 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card class="" style="min-width: 1200px">
-			<q-card-section class="bg-green-8 text-green-11 q-pa-sm">
-				<q-toolbar
-					class="no-padding text-green-11"
-					style="min-height: 0"
-				>
-					<q-toolbar-title class="text-subtitle1">
-						Modul Mutasi Domisili
-					</q-toolbar-title>
+			<CardHeader title="Modul Mutasi Domisili" :showReload="false">
+				<template v-slot:right>
 					<q-btn
 						icon="visibility"
 						label="Hasil Mutasi"
 						dense
 						outline
 						no-caps
-						class="q-mr-xs q-px-sm"
-						to="/makhadiyah/mutasi/result"
+						class="q-ml-sm q-px-sm"
+						to="/mutasi/result"
 					/>
 					<q-btn
 						disable
 						flat
 						dense
 						icon="more_vert"
-						class="q-ml-md"
+						class="q-ml-sm"
 						color="green-11"
 					/>
-				</q-toolbar>
-			</q-card-section>
+				</template>
+			</CardHeader>
 			<q-card-section class="no-padding">
 				<div class="row">
 					<div class="col q-pa-sm">
@@ -42,6 +36,7 @@
 	</q-page>
 </template>
 <script setup>
+import CardHeader from 'src/components/CardHeader.vue';
 import DataLeft from './LeftCard.vue';
 import DataRight from './RightCard.vue';
 import { onMounted } from 'vue';

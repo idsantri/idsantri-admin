@@ -80,13 +80,18 @@ const login = [
 	},
 	{
 		password: '112233',
-		username: 'makhadiyah',
-		description: 'Akses Kedaerahan',
+		username: 'mutasi',
+		description: 'Akses Kedaerahan (Mutasi Domisili)',
+	},
+	{
+		password: '112233',
+		username: 'quran',
+		description: 'Akses Pendidikan al-Quran',
 	},
 	{
 		password: '112233',
 		username: 'panitia',
-		description: 'Akses Panitia Ujian',
+		description: 'Akses Panitia Ujian Madrasah',
 	},
 ];
 </script>
