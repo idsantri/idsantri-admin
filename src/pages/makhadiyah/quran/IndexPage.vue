@@ -45,6 +45,16 @@
 						dense
 						color="green-11"
 						glossy
+						class="q-px-sm text-green-10 q-mr-sm"
+						label="Download"
+						no-caps=""
+						icon="download"
+						@click="download"
+					/>
+					<q-btn
+						dense
+						color="green-11"
+						glossy
 						class="q-px-sm text-green-10"
 						label="Cetak"
 						no-caps=""
@@ -62,6 +72,27 @@
 	</q-page>
 </template>
 <script setup>
+import apiGet from 'src/api/api-get';
 import CardHeader from 'src/components/CardHeader.vue';
+import loadingStore from 'src/stores/loading-store';
+import { toRefs } from 'vue';
+
+const { loadingMain } = toRefs(loadingStore());
+
+async function download() {
+	// console.log(isActive.value);
+	const data = await apiGet({
+		endPoint: 'export/mutaallim',
+		loading: loadingMain,
+	});
+
+	if (!data) return;
+	if (!data.url) return notifyWarning('Url tidak ditemukan');
+
+	const link = document.createElement('a');
+	link.href = data.url;
+	link.click();
+	link.remove();
+}
 </script>
 <style lang=""></style>
