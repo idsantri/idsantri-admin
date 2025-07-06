@@ -1,10 +1,19 @@
 <template lang="">
-	<q-card class="">
-		<q-card-section class="bg-green-8 no-padding">
+	<q-card flat bordered class="">
+		<q-card-section class="bg-green-7 no-padding">
 			<q-toolbar class="no-padding no-margin">
 				<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11">
-					Data Personalia
+					Identitas
 				</q-toolbar-title>
+				<q-btn
+					dense
+					flat
+					class="q-px-md q-mr-sm"
+					no-caps=""
+					icon="sync"
+					color="green-2"
+					@click="loadData"
+				/>
 				<q-btn
 					dense
 					class="q-px-md q-mr-sm text-green-10"
@@ -57,11 +66,10 @@
 		</q-card-section>
 	</q-card>
 	<q-dialog persistent="" v-model="crudShow">
-		<PersonaliaModal
-			:is-new="false"
-			:data-aparatur="aparatur"
-			@success-submit="handleEmit"
-			@success-delete="handleEmit"
+		<PersonaliaForm
+			:data="aparatur"
+			@success-submit="handleSubmit"
+			@success-delete="$router.go(-1)"
 		/>
 	</q-dialog>
 	<!-- modal -->
@@ -74,27 +82,22 @@
 	/>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import { formatDateFull } from 'src/utils/format-date';
 import UploadImage from 'src/components/ImageUploader.vue';
-import PersonaliaModal from 'src/pages/personalia/PersonaliaIdentitasModal.vue';
+import PersonaliaForm from 'src/components/forms/PersonaliaForm.vue';
 
 const route = useRoute();
 const router = useRouter();
 const aparatur = ref({});
-const aparaturObj = ref({});
 const loading = ref(false);
 const crudShow = ref(false);
 
-async function handleEmit(val) {
-	crudShow.value = false;
-	// console.log(val);
-	// return;
+async function handleSubmit(val) {
 	if (val.id == route.params.id) {
-		await loadData();
-		await loadImage();
+		aparatur.value = val;
 	} else {
 		router.push(`/personalia/${val.id}`);
 	}
@@ -106,37 +109,40 @@ async function loadImage() {
 	});
 	aparatur.value.image = img.image_url;
 }
+
 async function loadData() {
 	const data = await apiGet({
 		endPoint: `aparatur/${route.params.id}`,
 		loading,
 	});
-	aparatur.value = data.aparatur;
-	// console.log(aparatur.value);
-
-	aparaturObj.value = {
-		Nama: `${aparatur.value.nama?.toUpperCase()} (${aparatur.value.sex?.toUpperCase()})`,
-		Alamat: `${aparatur.value.jl || ' '} RT ${String(
-			aparatur.value.rt || 0,
-		).padStart(3, 0)} RW ${String(aparatur.value.rw || 0).padStart(
-			3,
-			'0',
-		)} ${aparatur.value.desa || ' '} ${
-			aparatur.value.kecamatan || ' '
-		} ${aparatur.value.kabupaten || ' '} ${
-			aparatur.value.provinsi || ' '
-		} ${aparatur.value.kode_pos || ' '}`.replace(/\s\s+/g, ' '),
-		Kelahiran: `${aparatur.value.tmp_lahir || '-'}, ${formatDateFull(
-			aparatur.value.tgl_lahir,
-		)}`,
-		Telepon: aparatur.value.telepon || '-',
-		Email: aparatur.value.email || '-',
-	};
+	if (data) {
+		aparatur.value = data.aparatur;
+		await loadImage();
+	}
 }
+
+const aparaturObj = computed(() => ({
+	Nama: `${aparatur.value.nama?.toUpperCase()} (${aparatur.value.sex?.toUpperCase()})`,
+	Alamat: `${aparatur.value.jl || ' '} RT ${String(
+		aparatur.value.rt || 0,
+	).padStart(3, 0)} RW ${String(aparatur.value.rw || 0).padStart(
+		3,
+		'0',
+	)} ${aparatur.value.desa || ' '} ${
+		aparatur.value.kecamatan || ' '
+	} ${aparatur.value.kabupaten || ' '} ${
+		aparatur.value.provinsi || ' '
+	} ${aparatur.value.kode_pos || ' '}`.replace(/\s\s+/g, ' '),
+	Kelahiran: `${aparatur.value.tmp_lahir || '-'}, ${formatDateFull(
+		aparatur.value.tgl_lahir,
+	)}`,
+	Telepon: aparatur.value.telepon || '-',
+	Email: aparatur.value.email || '-',
+}));
+
 onMounted(async () => {
 	if (route.params.id) {
 		await loadData();
-		await loadImage();
 	}
 });
 

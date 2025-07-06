@@ -1,36 +1,19 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card class="">
-			<q-card-section class="bg-green-8 no-padding">
-				<q-toolbar class="no-padding no-margin">
-					<q-toolbar-title
-						class="text-subtitle1 q-ml-sm text-green-11"
-					>
-						Data Personalia
-					</q-toolbar-title>
-
-					<q-btn
-						no-caps
-						label="Kembali"
-						icon="reply"
-						dense
-						class="q-px-md q-mr-sm"
-						outline
-						color="green-11"
-						@click="$router.go(-1)"
-					/>
-
+			<CardHeader title="Data Personalia" @onReload="loadData">
+				<template v-slot:left>
 					<q-btn
 						dense
-						class="q-px-md q-mr-sm text-green-10"
+						class="q-px-md text-green-10 q-mr-sm"
 						label="Tambah"
 						no-caps=""
 						icon="add"
 						color="green-2"
 						@click="crudShow = true"
 					/>
-				</q-toolbar>
-			</q-card-section>
+				</template>
+			</CardHeader>
 			<q-card-section class="no-padding">
 				<q-table
 					:rows="personalia"
@@ -64,10 +47,10 @@
 			</q-card-section>
 		</q-card>
 		<q-dialog persistent="" v-model="crudShow">
-			<PersonaliaModal
-				:is-new="true"
-				:data-personalia="{}"
-				@success-submit="handleEmit"
+			<PersonaliaForm
+				:data="{}"
+				@success-submit="(val) => $router.push(`/personalia/${val.id}`)"
+				@success-delete="$router.go(-1)"
 			/>
 		</q-dialog>
 		<!-- <pre>{{ personalia }}</pre> -->
@@ -75,24 +58,24 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
 import apiGet from 'src/api/api-get';
-import PersonaliaModal from 'src/pages/personalia/PersonaliaIdentitasModal.vue';
+import CardHeader from 'src/components/CardHeader.vue';
+import PersonaliaForm from 'src/components/forms/PersonaliaForm.vue';
 
 const loading = ref(false);
 const personalia = ref([]);
 const filter = ref('');
 const crudShow = ref(false);
-const router = useRouter();
 
-function handleEmit(val) {
-	crudShow.value = false;
-	router.push(`/personalia/${val.id}`);
+async function loadData() {
+	const data = await apiGet({ endPoint: 'aparatur', loading });
+	if (data) {
+		personalia.value = data.aparatur;
+	}
 }
 
 onMounted(async () => {
-	const data = await apiGet({ endPoint: 'aparatur', loading });
-	personalia.value = data.aparatur;
+	await loadData();
 });
 
 const columns = [

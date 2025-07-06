@@ -9,7 +9,7 @@ export default [
 	{
 		path: ':id',
 		component: (): Component =>
-			import('src/pages/personalia/PersonaliaDetail.vue'),
+			import('src/pages/personalia/detail/PersonaliaDetail.vue'),
 		meta: { title: 'Personalia Detail' },
 	},
 ];

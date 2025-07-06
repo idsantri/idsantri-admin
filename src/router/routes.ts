@@ -70,7 +70,7 @@ const routes: RouteRecordRaw[] = [
 				children: _madrasah,
 			},
 			{
-				path: 'makhadiyah',
+				path: '',
 				meta: { title: 'Makhadiyah' },
 				children: _makhadiyah,
 			},

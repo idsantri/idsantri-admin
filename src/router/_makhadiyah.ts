@@ -23,4 +23,29 @@ export default [
 			},
 		],
 	},
+	{
+		path: 'quran',
+		component: (): Component =>
+			import('src/pages/makhadiyah/quran/IndexPage.vue'),
+		meta: { title: 'Makhadiyah: Quran' },
+		redirect: (to: RouteLocation): string => `${to.fullPath}/mutaallim`,
+
+		children: [
+			{
+				path: 'santri',
+				component: (): Component =>
+					import('src/pages/makhadiyah/quran/SantriPage.vue'),
+			},
+			{
+				path: 'mutaallim',
+				component: (): Component =>
+					import('src/pages/makhadiyah/quran/MutaallimPage.vue'),
+			},
+			{
+				path: 'muallim',
+				component: (): Component =>
+					import('src/pages/makhadiyah/quran/MuallimPage.vue'),
+			},
+		],
+	},
 ];

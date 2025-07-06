@@ -167,14 +167,14 @@ const data = [
 		protected: true,
 		sort: 'asc',
 	},
-	// {
-	// 	url: 'prefix-va-bank',
-	// 	label: 'VA Bank (Prefix)',
-	// 	style: 'double',
-	// 	column: 2,
-	// 	protected: false,
-	// 	sort: 'asc',
-	// },
+	{
+		url: 'kelas-tajwid-quran',
+		label: 'Kelas Quran (Tajwid)',
+		style: 'single',
+		column: 1,
+		protected: false,
+		sort: 'asc',
+	},
 ];
 
 const listData = Object.values(data).sort((a, b) => {
