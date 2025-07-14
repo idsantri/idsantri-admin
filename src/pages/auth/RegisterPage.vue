@@ -32,7 +32,7 @@
 					bg-color="green-1"
 					outlined
 					v-model="password"
-					type="password"
+					:type="isPwd ? 'password' : 'text'"
 					required
 					label="Password"
 					placeholder="Masukkan password!"
@@ -42,13 +42,21 @@
 					readonly
 					onfocus="this.removeAttribute('readonly');"
 					onblur="this.setAttribute('readonly','true');"
-				/>
+				>
+					<template v-slot:append>
+						<q-icon
+							:name="isPwd ? 'visibility_off' : 'visibility'"
+							class="cursor-pointer"
+							@click="isPwd = !isPwd"
+						/>
+					</template>
+				</q-input>
 				<q-input
 					bg-color="green-1"
 					round
 					outlined
 					v-model="password_confirmation"
-					type="password"
+					:type="isPwd ? 'password' : 'text'"
 					required
 					label="Konfirmasi Password"
 					placeholder="Ulangi password!"
@@ -58,7 +66,15 @@
 					readonly
 					onfocus="this.removeAttribute('readonly');"
 					onblur="this.setAttribute('readonly','true');"
-				/>
+				>
+					<template v-slot:append>
+						<q-icon
+							:name="isPwd ? 'visibility_off' : 'visibility'"
+							class="cursor-pointer"
+							@click="isPwd = !isPwd"
+						/>
+					</template>
+				</q-input>
 				<q-btn
 					type="submit"
 					class="full-width q-pa-sm text-green-10"
@@ -98,15 +114,16 @@ import { ref } from 'vue';
 import { toArray } from 'src/utils/array-object';
 import { notifyAlert } from 'src/utils/notify';
 
+const emit = defineEmits(['title', 'errors']);
+emit('title', 'Daftar');
+emit('errors', []);
+
 const router = useRouter();
 const name = ref('');
 const email = ref('');
 const password = ref('');
 const password_confirmation = ref('');
-
-const emit = defineEmits(['title', 'errors']);
-emit('title', 'Daftar');
-emit('errors', []);
+const isPwd = ref(true);
 const showSpinner = ref(false);
 
 const register = async () => {

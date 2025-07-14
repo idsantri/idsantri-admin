@@ -71,13 +71,13 @@ import { ref } from 'vue';
 import { toArray } from 'src/utils/array-object';
 import { notifyAlert } from 'src/utils/notify';
 
-const showSpinner = ref(false);
-const router = useRouter();
-const email = ref('');
-
 const emit = defineEmits(['title', 'errors']);
 emit('title', 'Lupa Kata Sandi?');
 emit('errors', []);
+
+const showSpinner = ref(false);
+const router = useRouter();
+const email = ref('');
 
 const reset = async () => {
 	emit('errors', []);
