@@ -18,12 +18,12 @@
 				/>
 				<q-input
 					id="password"
+					:type="isPwd ? 'password' : 'text'"
 					bg-color="green-1"
 					outlined
 					label="Password"
 					name="password"
 					v-model="password"
-					type="password"
 					required
 					autocomplete="off"
 					autocapitalize="none"
@@ -31,7 +31,15 @@
 					onfocus="this.removeAttribute('readonly');"
 					onblur="this.setAttribute('readonly','true');"
 					hint="Password atau kata sandi"
-				/>
+				>
+					<template v-slot:append>
+						<q-icon
+							:name="isPwd ? 'visibility_off' : 'visibility'"
+							class="cursor-pointer"
+							@click="isPwd = !isPwd"
+						/>
+					</template>
+				</q-input>
 				<q-btn
 					type="submit"
 					class="full-width q-pa-sm text-green-10"
@@ -82,19 +90,20 @@ import { toArray } from 'src/utils/array-object';
 import { notifyAlert, notifySuccess } from 'src/utils/notify';
 import useAuthStore from 'stores/auth-store';
 
-const router = useRouter();
-const login = ref('');
-const password = ref('');
-const showSpinner = ref(false);
-
 const emit = defineEmits(['title', 'errors']);
 emit('title', 'Login');
 emit('errors', []);
-const auth = useAuthStore();
 
 const props = defineProps({
 	credential: { type: Object },
 });
+
+const router = useRouter();
+const login = ref('');
+const password = ref('');
+const showSpinner = ref(false);
+const isPwd = ref(true);
+const auth = useAuthStore();
 
 const submitLogin = async (e) => {
 	const formData = new FormData(e.target);

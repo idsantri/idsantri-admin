@@ -26,28 +26,49 @@
 					bg-color="green-1"
 					outlined
 					v-model="password"
-					type="password"
+					:type="isPwd ? 'password' : 'text'"
 					required
 					label="Password"
 					placeholder="Masukkan password!"
+					autocapitalize="none"
 					autocomplete="off"
+					autocorrect="off"
 					readonly
 					onfocus="this.removeAttribute('readonly');"
 					onblur="this.setAttribute('readonly','true');"
-				/>
+				>
+					<template v-slot:append>
+						<q-icon
+							:name="isPwd ? 'visibility_off' : 'visibility'"
+							class="cursor-pointer"
+							@click="isPwd = !isPwd"
+						/>
+					</template>
+				</q-input>
 				<q-input
 					bg-color="green-1"
+					round
 					outlined
 					v-model="password_confirmation"
-					type="password"
+					:type="isPwd ? 'password' : 'text'"
 					required
 					label="Konfirmasi Password"
 					placeholder="Ulangi password!"
+					autocapitalize="none"
 					autocomplete="off"
+					autocorrect="off"
 					readonly
 					onfocus="this.removeAttribute('readonly');"
 					onblur="this.setAttribute('readonly','true');"
-				/>
+				>
+					<template v-slot:append>
+						<q-icon
+							:name="isPwd ? 'visibility_off' : 'visibility'"
+							class="cursor-pointer"
+							@click="isPwd = !isPwd"
+						/>
+					</template>
+				</q-input>
 				<q-btn
 					type="submit"
 					class="full-width q-pa-sm text-green-10"
@@ -87,18 +108,19 @@ import { ref } from 'vue';
 import { toArray } from 'src/utils/array-object';
 import { notifyAlert } from 'src/utils/notify';
 
-const showSpinner = ref(false);
-const router = useRouter();
-const email = ref('');
-const password = ref('');
-const password_confirmation = ref('');
-
 const emit = defineEmits(['title', 'errors']);
 emit('title', 'Reset Password');
 emit('errors', []);
 
+const router = useRouter();
 const { query } = useRoute();
+const email = ref('');
+const password = ref('');
+const password_confirmation = ref('');
+const showSpinner = ref(false);
+const isPwd = ref(true);
 const token = ref(query.token);
+
 // console.log(token.value);
 
 const reset = async () => {
