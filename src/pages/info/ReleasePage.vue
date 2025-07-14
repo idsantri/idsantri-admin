@@ -63,6 +63,7 @@ const releases = [
 		date: 'Juli 2025',
 		release: {
 			'Fitur Baru': ['Pendidikan al-Quran'],
+			Improve: ['Show password on input password'],
 		},
 	},
 	{

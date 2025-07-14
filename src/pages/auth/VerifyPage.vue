@@ -17,8 +17,8 @@ import axios from 'axios';
 const emit = defineEmits(['title', 'errors']);
 emit('title', 'Verifikasi Email');
 emit('errors', []);
-const showSpinner = ref(false);
 
+const showSpinner = ref(false);
 const router = useRouter();
 const params = ref(useRoute().query);
 const query = JSON.parse(JSON.stringify(params.value));
@@ -30,8 +30,7 @@ async function makeRequest() {
 	showSpinner.value = true;
 	try {
 		const { data } = await axios.request(config);
-		const notification = notifyAlert(data.message, 0);
-		await notification; // tunggu notifikasi ditutup
+		await notifyAlert(data.message, 0);
 		router.push({ name: 'Login' });
 	} catch (error) {
 		if (error.response.data.message) {
