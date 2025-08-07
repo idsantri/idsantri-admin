@@ -59,6 +59,22 @@ import config from 'src/config';
 
 const releases = [
 	{
+		ver: '1.5.0',
+		date: 'Agustus 2025',
+		release: {
+			'Fitur Baru': ['Statistik: Chart'],
+			Improve: ['Perbaikan dan peningkatan performa'],
+		},
+	},
+	{
+		ver: '1.4.0',
+		date: 'Juli 2025',
+		release: {
+			'Fitur Baru': ['Pendidikan al-Quran'],
+			Improve: ['Show password on input password'],
+		},
+	},
+	{
 		ver: '1.4.0',
 		date: 'Juli 2025',
 		release: {

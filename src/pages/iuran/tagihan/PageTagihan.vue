@@ -179,7 +179,7 @@ import { id } from 'date-fns/locale';
 
 const auth = useAuthStore();
 const { email } = auth.getUser;
-const withVA = ref(true);
+const withVA = ref(false);
 const textFilter = ref('');
 const loading = ref(false);
 const { params } = useRoute();
@@ -192,9 +192,9 @@ const va_text =
 	format(new Date(), 'yyyy-MM-dd HH:mm:ss', {
 		locale: id,
 	}) +
-		' ' +
+		' ~ ' +
 		email || '';
-const va_group = ref(va_text);
+const va_group = ref('');
 
 async function loadData() {
 	const data = await apiGet({

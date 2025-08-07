@@ -5,7 +5,6 @@ import _keamanan from './_keamanan';
 import _ortu from './_ortu';
 import _personalia from './_personalia';
 import _santri from './_santri';
-import _sekretariat from './_sekretariat';
 import _settings from './_settings';
 import _ugt from './_ugt';
 import _wali from './_wali';
@@ -53,11 +52,6 @@ const routes: RouteRecordRaw[] = [
 				path: 'home',
 				component: () => import('src/pages/home/HomeIndex.vue'),
 				meta: { title: 'Home' },
-			},
-			{
-				path: 'sekretariat',
-				meta: { title: 'Sekretariat' },
-				children: _sekretariat,
 			},
 			{
 				path: 'iuran',
