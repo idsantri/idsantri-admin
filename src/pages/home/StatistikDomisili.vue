@@ -27,8 +27,11 @@ import ChartKamar from './ChartKamar.vue';
 const loading = ref(false);
 const asrama = ref([]);
 const kamar = ref([]);
-const total = ref(0);
 const filter = ref('');
+
+const total = computed(() => {
+	return asrama.value.reduce((sum, val) => sum + val.jumlah, 0);
+});
 
 onMounted(async () => {
 	loading.value = true;
@@ -36,7 +39,6 @@ onMounted(async () => {
 	if (data?.asrama) {
 		asrama.value = data.asrama;
 		kamar.value = data.kamar;
-		total.value = data.asrama.reduce((sum, val) => sum + val.jumlah, 0);
 	}
 	loading.value = false;
 });
@@ -47,6 +49,7 @@ const filtered = computed(() => {
 });
 
 function handleSliceClick(item) {
-	filter.value = item.asrama;
+	// console.log(item);
+	filter.value = item?.asrama || '';
 }
 </script>
