@@ -1,12 +1,22 @@
 <template>
-	<div style="max-width: 500px; margin: auto">
+	<div class="tw:border tw:rounded-md tw:overflow-hidden">
+		<div
+			class="tw:text-center tw:font-light tw:text-2xl tw:py-2 bg-green-7 text-green-11"
+		>
+			Diagram Domisili Santri Aktif
+		</div>
 		<div v-if="!loading && asrama.length">
-			<ChartAsrama
-				:asrama="asrama"
-				:total="total"
-				@slice-click="handleSliceClick"
-			/>
-			<ChartKamar :kamar="filtered" :total="total" />
+			<div
+				class="tw:flex tw:items-center tw:justify-center tw:gap-2 tw:max-w-md tw:mx-auto overflow-x-scroll tw:flex-wrap tw:md:flex-nowrap"
+			>
+				<ChartAsrama
+					:asrama="asrama"
+					:total="total"
+					@slice-click="handleSliceClick"
+				/>
+
+				<ChartKamar :kamar="filtered" :total="total" />
+			</div>
 		</div>
 		<p v-else>
 			<q-spinner-cube
