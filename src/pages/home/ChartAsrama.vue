@@ -82,10 +82,12 @@ const chartOptions = computed(() => ({
 			},
 		},
 	},
-	onClick: (event, elements) => {
+	onHover: (event, elements) => {
 		if (elements.length > 0) {
 			const index = elements[0].index;
 			emit('slice-click', props.asrama[index]);
+		} else {
+			emit('slice-click', null);
 		}
 	},
 }));

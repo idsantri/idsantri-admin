@@ -1,12 +1,22 @@
 <template>
-	<div style="max-width: 500px; margin: auto">
+	<div class="tw:border tw:rounded-md tw:overflow-hidden">
+		<div
+			class="tw:text-center tw:font-light tw:text-2xl tw:py-2 bg-green-7 text-green-11"
+		>
+			Diagram Domisili Santri Aktif
+		</div>
 		<div v-if="!loading && asrama.length">
-			<ChartAsrama
-				:asrama="asrama"
-				:total="total"
-				@slice-click="handleSliceClick"
-			/>
-			<ChartKamar :kamar="filtered" :total="total" />
+			<div
+				class="tw:flex tw:items-center tw:justify-center tw:gap-2 tw:max-w-md tw:mx-auto overflow-x-scroll tw:flex-wrap tw:md:flex-nowrap"
+			>
+				<ChartAsrama
+					:asrama="asrama"
+					:total="total"
+					@slice-click="handleSliceClick"
+				/>
+
+				<ChartKamar :kamar="filtered" :total="total" />
+			</div>
 		</div>
 		<p v-else>
 			<q-spinner-cube
@@ -27,8 +37,11 @@ import ChartKamar from './ChartKamar.vue';
 const loading = ref(false);
 const asrama = ref([]);
 const kamar = ref([]);
-const total = ref(0);
 const filter = ref('');
+
+const total = computed(() => {
+	return asrama.value.reduce((sum, val) => sum + val.jumlah, 0);
+});
 
 onMounted(async () => {
 	loading.value = true;
@@ -36,7 +49,6 @@ onMounted(async () => {
 	if (data?.asrama) {
 		asrama.value = data.asrama;
 		kamar.value = data.kamar;
-		total.value = data.asrama.reduce((sum, val) => sum + val.jumlah, 0);
 	}
 	loading.value = false;
 });
@@ -47,6 +59,7 @@ const filtered = computed(() => {
 });
 
 function handleSliceClick(item) {
-	filter.value = item.asrama;
+	// console.log(item);
+	filter.value = item?.asrama || '';
 }
 </script>

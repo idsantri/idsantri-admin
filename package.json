@@ -16,6 +16,7 @@
 	},
 	"dependencies": {
 		"@quasar/extras": "^1.16.17",
+		"@tailwindcss/postcss": "^4.1.11",
 		"axios": "^1.8.4",
 		"chart.js": "^4.5.0",
 		"core-js": "^3.41.0",
@@ -27,6 +28,7 @@
 		"pinia-plugin-persistedstate": "^4.2.0",
 		"quasar": "^2.18.1",
 		"register-service-worker": "^1.7.2",
+		"tailwindcss": "^4.1.11",
 		"vue": "^3.5.13",
 		"vue-chartjs": "^5.3.2",
 		"vue-currency-input": "^3.2.1",
@@ -46,6 +48,7 @@
 		"eslint-plugin-vue": "^10.0.0",
 		"eslint-webpack-plugin": "^5.0.0",
 		"globals": "^16.0.0",
+		"postcss": "^8.5.6",
 		"prettier": "^3.5.3",
 		"sass-embedded": "^1.86.0",
 		"ts-loader": "^9.5.2",

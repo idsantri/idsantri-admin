@@ -36,7 +36,6 @@ const chartData = computed(() => {
 	const labels = props.kamar.map((item) => item.kamar);
 	const data = props.kamar.map((item) => item.jumlah);
 	const backgroundColor = generateColors(data.length);
-	const total = props.kamar.reduce((acc, item) => acc + item.jumlah, 0);
 	return {
 		labels,
 		datasets: [
