@@ -17,7 +17,7 @@
 				/>
 			</q-toolbar>
 		</q-card-section>
-		<q-card-section v-if="loading" class="text-center">
+		<q-card-section v-if="loading" class="flex flex-center">
 			<q-spinner-cube color="green-12" size="8em" class="" />
 		</q-card-section>
 		<q-card-section
@@ -101,7 +101,7 @@
 		<!-- {{ riwayatIzin }} -->
 
 		<q-dialog v-model="crudShow">
-			<izin-crud
+			<IzinPesantrenForm
 				:data="santri"
 				@success-delete="null"
 				@success-submit="
@@ -117,8 +117,8 @@ import { formatDateShort } from 'src/utils/format-date';
 import { m2h, m2hFormat } from 'src/utils/hijri';
 import { hijriToThAjaranH } from 'src/utils/tahun-ajaran';
 import { onMounted, onUpdated, ref } from 'vue';
-import IzinCrud from 'src/pages/keamanan/perizinan/IzinCrud.vue';
 import { useRoute } from 'vue-router';
+import IzinPesantrenForm from 'src/components/forms/IzinPesantrenForm.vue';
 
 const props = defineProps({
 	santri_id: {
