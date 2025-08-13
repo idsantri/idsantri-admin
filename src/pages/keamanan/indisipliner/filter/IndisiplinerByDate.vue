@@ -62,7 +62,7 @@
 	</q-page>
 
 	<q-dialog v-model="crudShow">
-		<indisipliner-crud
+		<IndisiplinerForm
 			:data="{}"
 			@success-delete="null"
 			@success-submit="
@@ -77,8 +77,8 @@ import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import { formatDateShort, isDate } from 'src/utils/format-date';
 import FilterTanggal from 'src/components/filters/FilterTanggal.vue';
-import IndisiplinerCrud from 'src/pages/keamanan/indisipliner/IndisiplinerCrud.vue';
 import DropDownMenu from './DropDownMenu.vue';
+import IndisiplinerForm from 'src/components/forms/IndisiplinerForm.vue';
 
 const indisipliner = ref([{}]);
 const loading = ref(false);

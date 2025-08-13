@@ -18,7 +18,7 @@
 				/>
 			</q-toolbar>
 		</q-card-section>
-		<q-card-section v-if="loading" class="text-center">
+		<q-card-section v-if="loading" class="flex flex-center">
 			<q-spinner-cube color="green-12" size="8em" class="" />
 		</q-card-section>
 		<q-card-section
@@ -93,7 +93,7 @@
 		<!-- {{ riwayatIndsipliner }} -->
 
 		<q-dialog v-model="crudShow">
-			<indisipliner-crud
+			<IndisiplinerForm
 				:data="santri"
 				@success-delete="null"
 				@success-submit="
@@ -109,8 +109,8 @@ import { formatDateShort } from 'src/utils/format-date';
 import { m2h, m2hFormat } from 'src/utils/hijri';
 import { hijriToThAjaranH } from 'src/utils/tahun-ajaran';
 import { onMounted, onUpdated, ref } from 'vue';
-import IndisiplinerCrud from 'src/pages/keamanan/indisipliner/IndisiplinerCrud.vue';
 import { useRoute } from 'vue-router';
+import IndisiplinerForm from 'src/components/forms/IndisiplinerForm.vue';
 
 const props = defineProps({
 	santri_id: {

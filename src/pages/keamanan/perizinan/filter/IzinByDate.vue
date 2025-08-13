@@ -61,7 +61,7 @@
 		</q-card>
 
 		<q-dialog v-model="crudShow">
-			<izin-crud
+			<IzinPesantrenForm
 				:data="{}"
 				@success-delete="null"
 				@success-submit="
@@ -77,8 +77,8 @@ import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import { isDate } from 'src/utils/format-date';
 import FilterTanggal from 'src/components/filters/FilterTanggal.vue';
-import IzinCrud from 'src/pages/keamanan/perizinan/IzinCrud.vue';
 import DropDownMenu from './DropDownMenu.vue';
+import IzinPesantrenForm from 'src/components/forms/IzinPesantrenForm.vue';
 
 const izin = ref([{}]);
 const loading = ref(false);
