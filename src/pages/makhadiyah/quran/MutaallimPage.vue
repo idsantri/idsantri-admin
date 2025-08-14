@@ -59,6 +59,7 @@ async function loadData() {
 	const data = await apiGet({ endPoint: 'quran/mutaallim/aktif', loading });
 	if (data) {
 		mutaallim.value = data.mutaallim;
+		// console.log(data.mutaallim);
 	}
 }
 

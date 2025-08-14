@@ -23,6 +23,15 @@
 					disable=""
 					filled=""
 				/>
+				<InputSelectArray
+					v-model="input.th_ajaran_h"
+					url="tahun-ajaran"
+					label="Tahun Ajaran *"
+					sort="desc"
+					class="q-mt-sm"
+					:rules="[(val) => !!val || 'Harus diisi!']"
+					:selected="input.th_ajaran_h"
+				/>
 				<q-select
 					dense
 					outlined=""
@@ -94,6 +103,7 @@ onMounted(async () => {
 const submit = async () => {
 	const data = {
 		santri_id: input.value.santri_id,
+		th_ajaran_h: input.value.th_ajaran_h,
 		marhalah: input.value.marhalah,
 		faslah: input.value.faslah,
 		no_absen: input.value.no_absen,

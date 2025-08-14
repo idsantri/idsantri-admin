@@ -61,7 +61,7 @@
 				>
 					<q-item-section>
 						<q-item-label>
-							{{ item.marhalah }} |
+							{{ item.th_ajaran_h }} | {{ item.marhalah }} |
 							{{ item.faslah }}
 						</q-item-label>
 						<q-item-label caption>
@@ -122,6 +122,7 @@ async function loadMutaallim(santriId) {
 		loading: loading,
 	});
 	if (data) {
+		// console.log(data.mutaallim);
 		mutaallim.value = data.mutaallim;
 	}
 }
