@@ -33,7 +33,9 @@
 			</q-card>
 		</div>
 		<div class="">
-			<MutaallimCard :santri="{ id: selected.santri_id }" />
+			<MutaallimCard
+				:santri="{ id: selected.santri_id, nama: selected.nama }"
+			/>
 		</div>
 	</div>
 </template>
