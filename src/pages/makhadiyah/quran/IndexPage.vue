@@ -37,8 +37,6 @@
 						to="/quran/muallim"
 						exact
 						no-caps
-						disable
-						title="Fitur belum siap!"
 					/>
 					<q-space />
 					<q-btn

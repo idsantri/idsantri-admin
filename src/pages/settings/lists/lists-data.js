@@ -168,8 +168,8 @@ const data = [
 		sort: 'asc',
 	},
 	{
-		url: 'kelas-tajwid-quran',
-		label: 'Kelas Quran (Tajwid)',
+		url: 'faslah-quran',
+		label: 'Faslah/Kelas Quran (Tajwid)',
 		style: 'single',
 		column: 1,
 		protected: false,

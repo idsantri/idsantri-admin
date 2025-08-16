@@ -1,14 +1,26 @@
 <template lang="">
-	<q-card flat class="flex items-start">
-		<q-card-section class="q-pa-sm col-grow">
+	<q-card flat class="">
+		<q-card-section class="no-padding">
 			<q-card flat bordered>
 				<TableHeader
-					title="Data Muallim AKTIF"
+					title="Data Muallim"
 					v-model="filter"
 					@on-reload="null"
 					@on-filter="showFilter = !showFilter"
-					:show-filter="showFilter"
-				/>
+					:btn-filter="false"
+				>
+					<template #actions>
+						<q-btn
+							no-caps
+							dense
+							class="q-px-sm q-mr-sm"
+							icon="search"
+							label="Personalia"
+							color="green-10"
+							@click="$router.push('/personalia')"
+						/>
+					</template>
+				</TableHeader>
 				<!-- <transition name="fade">
 					<q-card-section class="q-pa-sm" v-if="showFilter">
 						<FilterDomisili
@@ -37,17 +49,14 @@
 					:columns="columnSantri"
 					table-header-class="bg-green-1 text-green-10 text-subtitle1"
 				/> -->
+				<div>
+					Lorem ipsum dolor sit amet consectetur adipisicing elit.
+					Fugit nihil praesentium molestias a adipisci, dolore vitae
+					odit, quidem consequatur optio voluptates asperiores
+					pariatur eos numquam rerum delectus commodi perferendis
+					voluptate?
+				</div>
 			</q-card>
-		</q-card-section>
-		<q-card-section class="q-pa-sm">
-			<q-card flat bordered class="" style="width: 350px">
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit
-				nihil praesentium molestias a adipisci, dolore vitae odit,
-				quidem consequatur optio voluptates asperiores pariatur eos
-				numquam rerum delectus commodi perferendis voluptate?
-			</q-card>
-
-			<!-- <MutaallimCard :santri="selected" /> -->
 		</q-card-section>
 	</q-card>
 </template>
