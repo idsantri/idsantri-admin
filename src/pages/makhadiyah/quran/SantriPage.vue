@@ -77,7 +77,7 @@ const filteredSantri = computed(() => {
 });
 
 async function loadData() {
-	const data = await apiGet({ endPoint: 'quran/mutaallim/santri', loading });
+	const data = await apiGet({ endPoint: 'mutaallim/santri', loading });
 	if (data) {
 		santri.value = data.santri;
 	}

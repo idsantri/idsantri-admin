@@ -43,7 +43,7 @@
 				/>
 				<input-select-array
 					v-model="input.faslah"
-					url="kelas-tajwid-quran"
+					url="faslah-quran"
 					label="Faslah/Kelas *"
 					class="q-mt-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
@@ -116,13 +116,13 @@ const submit = async () => {
 	const isNew = !input.value.id;
 	if (isNew) {
 		response = await apiPost({
-			endPoint: 'quran/mutaallim',
+			endPoint: 'mutaallim',
 			data,
 			loading: loadingCrud,
 		});
 	} else {
 		response = await apiUpdate({
-			endPoint: `quran/mutaallim/${input.value.id}`,
+			endPoint: `mutaallim/${input.value.id}`,
 			data,
 			confirm: true,
 			notify: true,
@@ -143,7 +143,7 @@ const submit = async () => {
 const onDelete = async () => {
 	const id = input.value.id;
 	const result = await apiDelete({
-		endPoint: `quran/mutaallim/${id}`,
+		endPoint: `mutaallim/${id}`,
 		loading: loadingCrud,
 	});
 	if (result) {

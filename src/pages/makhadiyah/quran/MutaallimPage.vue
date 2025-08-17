@@ -56,7 +56,7 @@ const modelMarhalah = ref('');
 const modelFaslah = ref([]);
 
 async function loadData() {
-	const data = await apiGet({ endPoint: 'quran/mutaallim/aktif', loading });
+	const data = await apiGet({ endPoint: 'mutaallim/aktif', loading });
 	if (data) {
 		mutaallim.value = data.mutaallim;
 		// console.log(data.mutaallim);

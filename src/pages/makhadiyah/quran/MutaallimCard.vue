@@ -118,7 +118,7 @@ const loading = ref(false);
 
 async function loadMutaallim(santriId) {
 	const data = await apiGet({
-		endPoint: `quran/mutaallim/santri/${santriId}`,
+		endPoint: `mutaallim/santri/${santriId}`,
 		loading: loading,
 	});
 	if (data) {
