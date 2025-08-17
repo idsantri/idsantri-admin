@@ -62,7 +62,7 @@ const releases = [
 		ver: '1.5.0',
 		date: 'Agustus 2025',
 		release: {
-			'Fitur Baru': ['Statistik: Chart'],
+			'Fitur Baru': ['Pendidikan al-Quran: Muallim', 'Statistik: Chart'],
 			Improve: ['Perbaikan dan peningkatan performa'],
 		},
 	},
@@ -70,15 +70,7 @@ const releases = [
 		ver: '1.4.0',
 		date: 'Juli 2025',
 		release: {
-			'Fitur Baru': ['Pendidikan al-Quran'],
-			Improve: ['Show password on input password'],
-		},
-	},
-	{
-		ver: '1.4.0',
-		date: 'Juli 2025',
-		release: {
-			'Fitur Baru': ['Pendidikan al-Quran'],
+			'Fitur Baru': ['Pendidikan al-Quran: Mutaallim'],
 			Improve: ['Show password on input password'],
 		},
 	},

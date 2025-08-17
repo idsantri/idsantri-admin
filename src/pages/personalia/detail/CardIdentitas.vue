@@ -94,20 +94,15 @@ const router = useRouter();
 const aparatur = ref({});
 const loading = ref(false);
 const crudShow = ref(false);
+const emits = defineEmits(['on-load']);
 
 async function handleSubmit(val) {
 	if (val.id == route.params.id) {
 		aparatur.value = val;
+		emits('on-load', aparatur.value);
 	} else {
 		router.push(`/personalia/${val.id}`);
 	}
-}
-
-async function loadImage() {
-	const img = await apiGet({
-		endPoint: `images/aparatur/${aparatur.value.id}`,
-	});
-	aparatur.value.image = img.image_url;
 }
 
 async function loadData() {
@@ -118,6 +113,16 @@ async function loadData() {
 	if (data) {
 		aparatur.value = data.aparatur;
 		await loadImage();
+		emits('on-load', aparatur.value);
+	}
+}
+
+async function loadImage() {
+	const img = await apiGet({
+		endPoint: `images/aparatur/${aparatur.value.id}`,
+	});
+	if (img) {
+		aparatur.value.image = img.image_url;
 	}
 }
 
