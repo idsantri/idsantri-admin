@@ -1,8 +1,8 @@
 {
   "id": "idsantri-app",
-  "name": "ID Santri (Admin)",
-  "short_name": "ID Santri",
-  "description": "Aplikasi ID Santri (Admin)",
+  "name": "Admin Demangan.id",
+  "short_name": "Admin Demangan",
+  "description": "Aplikasi Demangan (Admin)",
   "display": "standalone",
   "start_url": "/",
   "orientation": "portrait",
