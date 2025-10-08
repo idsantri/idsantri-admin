@@ -126,31 +126,10 @@
 					/>
 				</div>
 			</q-card-section>
-
-			<q-card-actions class="flex bg-green-6">
-				<q-btn
-					v-show="input.id"
-					label="Hapus"
-					class="bg-red text-red-1"
-					no-caps=""
-					@click="handleDelete"
-				/>
-				<q-space />
-				<q-btn
-					label="Tutup"
-					v-close-popup
-					class="bg-green-11"
-					no-caps=""
-					id="btn-close-crud"
-				/>
-				<q-btn
-					type="submit"
-					label="Simpan"
-					class="bg-green-10 text-green-11"
-					no-caps=""
-				/>
-			</q-card-actions>
-			<!-- <pre>{{ input }}</pre> -->
+			<FormActions
+				:btn-delete="input.id ? true : false"
+				@on-delete="onDelete"
+			/>
 		</q-form>
 	</q-card>
 </template>
@@ -169,7 +148,14 @@ import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 const props = defineProps({
 	data: Object,
 });
-const emit = defineEmits(['successSubmit', 'successDelete']);
+
+const emit = defineEmits([
+	'successDelete',
+	'successSubmit',
+	'successUpdate',
+	'successCreate',
+]);
+
 const input = ref({ kategori: 3 });
 const loadingCrud = ref(false);
 
@@ -192,7 +178,8 @@ async function onSubmit() {
 	// console.log(data);
 	// return;
 	let response = null;
-	if (input.value.id) {
+	const isNew = !input.value.id;
+	if (!isNew) {
 		response = await apiUpdate({
 			endPoint: `indisipliner/${input.value.id}`,
 			data,
@@ -208,18 +195,25 @@ async function onSubmit() {
 		});
 	}
 	if (response) {
-		document.getElementById('btn-close-crud').click();
+		document.getElementById('btn-close-form').click();
 		emit('successSubmit', response?.indisipliner);
+		if (isNew) {
+			emit('successCreate', response?.indisipliner);
+		} else {
+			emit('successUpdate', response?.indisipliner);
+		}
 	}
 }
 
-const handleDelete = async () => {
+const onDelete = async () => {
+	const id = input.value.id;
 	const result = await apiDelete({
-		endPoint: `indisipliner/${input.value.id}`,
+		endPoint: `indisipliner/${id}`,
 		loading: loadingCrud,
 	});
 	if (result) {
-		emit('successDelete');
+		document.getElementById('btn-close-form').click();
+		emit('successDelete', id);
 	}
 };
 

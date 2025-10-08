@@ -1,7 +1,7 @@
 <template>
-	<div class="tw:border tw:rounded-md tw:overflow-hidden">
+	<q-card bordered flat>
 		<div
-			class="tw:text-center tw:font-light tw:text-2xl tw:py-2 bg-green-7 text-green-11"
+			class="tw:text-center tw:font-light tw:text-xl tw:py-2 bg-green-7 text-green-11"
 		>
 			Diagram Domisili Santri Aktif
 		</div>
@@ -10,12 +10,13 @@
 				class="tw:flex tw:items-center tw:justify-center tw:gap-2 tw:max-w-md tw:mx-auto overflow-x-scroll tw:flex-wrap tw:md:flex-nowrap"
 			>
 				<ChartAsrama
+					class="tw:mx-2"
 					:asrama="asrama"
 					:total="total"
 					@slice-click="handleSliceClick"
 				/>
 
-				<ChartKamar :kamar="filtered" :total="total" />
+				<ChartKamar class="tw:mx-2" :kamar="filtered" :total="total" />
 			</div>
 		</div>
 		<p v-else>
@@ -25,7 +26,7 @@
 				class="flex q-ma-lg q-mx-auto"
 			/>
 		</p>
-	</div>
+	</q-card>
 </template>
 
 <script setup>

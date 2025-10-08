@@ -15,7 +15,9 @@
 			</div>
 			<q-space />
 			<div class="flex items-center">
+				<slot name="actions" />
 				<q-btn
+					v-if="btnFilter"
 					no-caps
 					outline
 					dense
@@ -60,6 +62,10 @@ defineProps({
 	},
 	showFilter: {
 		type: Boolean,
+	},
+	btnFilter: {
+		type: Boolean,
+		default: true,
 	},
 });
 defineEmits(['onReload', 'onFilter']);

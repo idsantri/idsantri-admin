@@ -182,14 +182,14 @@
 			</div>
 		</div>
 		<q-dialog v-model="crudShow">
-			<izin-crud
+			<IzinPesantrenForm
 				:data="izin"
 				@success-delete="$router.go(-1)"
 				@success-submit="loadData"
 			/>
 		</q-dialog>
 		<q-dialog v-model="showKembali">
-			<izin-kembali
+			<IzinPesantrenKembaliForm
 				:data="{
 					id: izin.id,
 					kembali_tgl: izin.kembali_tgl,
@@ -209,11 +209,11 @@ import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import { formatDateFull } from 'src/utils/format-date';
 import { bacaHijri, m2h } from 'src/utils/hijri';
-import IzinCrud from 'src/pages/keamanan/perizinan/IzinCrud.vue';
-import IzinKembali from 'src/pages/keamanan/perizinan/IzinKembali.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
 import IzinRiwayat from './IzinRiwayat.vue';
 import CardSantriSimple from 'src/components/santri/CardSantriSimple.vue';
+import IzinPesantrenForm from 'src/components/forms/IzinPesantrenForm.vue';
+import IzinPesantrenKembaliForm from 'src/components/forms/IzinPesantrenKembaliForm.vue';
 
 const showViewer = ref(false);
 const urlReport = ref('');

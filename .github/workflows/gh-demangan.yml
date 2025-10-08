@@ -1,9 +1,9 @@
 on:
   push:
     branches:
-      - demo
+      - demangan
 
-name: 🚀 Deploy website on push (Demo)
+name: 🚀 Deploy website on push (Demangan)
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,4 +30,4 @@ jobs:
         with:
           folder: dist/pwa
           clean: true
-          branch: gh-demo
+          branch: gh-demangan

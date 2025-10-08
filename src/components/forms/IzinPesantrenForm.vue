@@ -1,12 +1,6 @@
 <template lang="">
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
-			<!-- <q-card-section class="bg-green-7 text-green-11 q-pa-sm">
-				<toolbar-form @emit-button="null">
-					Input Izin Santri &mdash;
-					<em> {{ input.id ? 'edit' : 'baru' }}</em>
-				</toolbar-form>
-			</q-card-section> -->
 			<FormHeader title="Input Izin Santri" :is-new="!input.id" />
 
 			<q-card-section class="q-pa-sm">
@@ -108,29 +102,10 @@
 				</div>
 			</q-card-section>
 
-			<q-card-actions class="flex bg-green-6">
-				<q-btn
-					v-show="input.id"
-					label="Hapus"
-					class="bg-red text-red-1"
-					no-caps=""
-					@click="handleDelete"
-				/>
-				<q-space />
-				<q-btn
-					label="Tutup"
-					v-close-popup
-					class="bg-green-11"
-					no-caps=""
-					id="btn-close-crud"
-				/>
-				<q-btn
-					type="submit"
-					label="Simpan"
-					class="bg-green-10 text-green-11"
-					no-caps=""
-				/>
-			</q-card-actions>
+			<FormActions
+				:btn-delete="input.id ? true : false"
+				@on-delete="onDelete"
+			/>
 			<!-- <pre>{{ input }}</pre> -->
 		</q-form>
 	</q-card>
@@ -148,7 +123,13 @@ import FormHeader from 'src/components/forms/FormHeader.vue';
 const props = defineProps({
 	data: Object,
 });
-const emit = defineEmits(['successSubmit', 'successDelete']);
+
+const emit = defineEmits([
+	'successDelete',
+	'successSubmit',
+	'successUpdate',
+	'successCreate',
+]);
 
 const input = ref({ pengajuan: 'Baru', tujuan: 'Sesuai alamat rumah' });
 const loadingCrud = ref(false);
@@ -168,7 +149,8 @@ async function onSubmit() {
 	// console.log(data);
 	// return;
 	let response = null;
-	if (input.value.id) {
+	const isNew = !input.value.id;
+	if (!isNew) {
 		response = await apiUpdate({
 			endPoint: `izin-pesantren/${input.value.id}`,
 			data,
@@ -184,19 +166,25 @@ async function onSubmit() {
 		});
 	}
 	if (response) {
-		document.getElementById('btn-close-crud').click();
+		document.getElementById('btn-close-form').click();
 		emit('successSubmit', response?.izin_pesantren);
+		if (isNew) {
+			emit('successCreate', response?.izin_pesantren);
+		} else {
+			emit('successUpdate', response?.izin_pesantren);
+		}
 	}
 }
 
-const handleDelete = async () => {
+const onDelete = async () => {
+	const id = input.value.id;
 	const result = await apiDelete({
-		endPoint: `izin-pesantren/${input.value.id}`,
+		endPoint: `izin-pesantren/${id}`,
 		loading: loadingCrud,
 	});
 	if (result) {
-		emit('successDelete');
-		// router.go(-1);
+		document.getElementById('btn-close-form').click();
+		emit('successDelete', id);
 	}
 };
 

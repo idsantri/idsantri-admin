@@ -156,7 +156,7 @@
 		</div>
 
 		<q-dialog v-model="crudShow">
-			<indisipliner-crud
+			<IndisiplinerForm
 				:data="indisipliner"
 				@success-delete="$router.go(-1)"
 				@success-submit="loadData"
@@ -170,9 +170,9 @@ import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import { formatDateFull } from 'src/utils/format-date';
 import { m2hBacaHijri } from 'src/utils/hijri';
-import IndisiplinerCrud from 'src/pages/keamanan/indisipliner/IndisiplinerCrud.vue';
 import IndisiplinerRiwayat from './IndisiplinerRiwayat.vue';
 import CardSantriSimple from 'src/components/santri/CardSantriSimple.vue';
+import IndisiplinerForm from 'src/components/forms/IndisiplinerForm.vue';
 
 const route = useRoute();
 const indisipliner = ref({});
