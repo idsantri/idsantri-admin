@@ -1,0 +1,1 @@
+"use strict";(globalThis["webpackChunkidsantri_app"]=globalThis["webpackChunkidsantri_app"]||[]).push([[5038],{35038:(a,i,n)=>{n.r(i),n.d(i,{default:()=>e});var r=n(51347);function u(a,i,n,u,s,t){return(0,r.uX)(),(0,r.CE)("div",null,"id murid")}const s={};var t=n(32968);const d=(0,t.A)(s,[["render",u]]),e=d}}]);
