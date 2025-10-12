@@ -19,7 +19,7 @@
 				<ChartKamar class="tw:mx-2" :kamar="filtered" :total="total" />
 			</div>
 		</div>
-		<p v-else>
+		<p v-if="loading">
 			<q-spinner-cube
 				color="green-12"
 				size="10em"
