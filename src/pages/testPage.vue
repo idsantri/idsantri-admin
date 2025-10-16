@@ -22,6 +22,10 @@ const getById = async () => {
 		loading.value = true;
 		const { data } = await ApiSantri.getById(8000);
 		santri.value = data.santri;
+
+		// const res = await Santri._api.get('/santri/8000', {});
+		// Santri._showSuccess('berhasil fetch by id');
+		// console.log(res);
 	} catch (_err) {
 		// console.log('err ', _err);
 	} finally {

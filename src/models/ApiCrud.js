@@ -1,88 +1,120 @@
-import { notifySuccess } from 'src/utils/notify.js';
-import apiError from 'src/api/api-error.ts';
-import api from 'src/api';
+import Api from './Api';
 
-export default class ApiCrud {
-	constructor(path) {
-		this.path = path;
-		this.api = api;
+export default class ApiCrud extends Api {
+	/**
+	 * Get all records with optional query parameters
+	 * @param {Object} params - Query parameters for filtering/pagination
+	 * @param {boolean} notifySuccess - Whether to show success notification
+	 * @returns {Promise<Object>} Response data
+	 */
+	async getAll(params = {}, notifySuccess = true) {
+		try {
+			const { data } = await this._api.get(this._path, { params });
+
+			if (notifySuccess) {
+				this._showSuccess(data.message);
+			}
+
+			return data;
+		} catch (error) {
+			return this._handleError(error);
+		}
 	}
 
 	/**
-	 * Fetch all data from API with given parameters.
-	 *
-	 * @param {Object} [params] - Parameters to be passed to the API.
-	 * @param {boolean} [notifySuccess=true] - Whether to notify success message.
-	 * @returns {Promise<Object | boolean>} - Response data or false if error occur.
-	 * @example
-	 * const api = new ApiCrud('api/users');
-	 * const response = await api.getAll({ role: 'admin' });
-	 * console.log(response); // { data: [...], message: '...' }
+	 * Get a single record by ID
+	 * @param {string|number} id - Record ID
+	 * @param {Object} params - Query parameters
+	 * @param {boolean} notifySuccess - Whether to show success notification
+	 * @returns {Promise<Object>} Response data
 	 */
-
-	handleError(error) {
-		apiError(error);
-		return false;
-	}
-
-	async getAll(params = {}, notifySuccess = true) {
+	async getById(id, params = {}, notifySuccess = true) {
 		try {
-			const { data } = await this.api.get(this.path, {
-				params: { ...params },
+			const { data } = await this._api.get(`${this._path}/${id}`, {
+				params,
 			});
+
 			if (notifySuccess) {
-				notifySuccess(data.message);
+				this._showSuccess(data.message);
 			}
-			return data || true;
+
+			return data;
 		} catch (error) {
-			return this.handleError(error);
+			return this._handleError(error);
 		}
 	}
 
-	async getById(id, params = {}) {
+	/**
+	 * Create a new record
+	 * @param {Object} payload - Data to create
+	 * @param {Object} params - Query parameters
+	 * @param {boolean} notifySuccess - Whether to show success notification
+	 * @returns {Promise<Object>} Response data
+	 */
+	async create(payload, params = {}, notifySuccess = true) {
 		try {
-			const { data } = await this.api.get(`${this.path}/${id}`, {
-				params: { ...params },
+			const { data } = await this._api.post(this._path, payload, {
+				params,
 			});
-			notifySuccess(data.message);
+
+			if (notifySuccess) {
+				this._showSuccess(data.message);
+			}
+
 			return data || true;
 		} catch (error) {
-			return this.handleError(error);
+			return this._handleError(error);
 		}
 	}
 
-	async create(data) {
+	/**
+	 * Update an existing record
+	 * @param {string|number} id - Record ID
+	 * @param {Object} payload - Data to update
+	 * @param {Object} params - Query parameters
+	 * @param {boolean} notifySuccess - Whether to show success notification
+	 * @returns {Promise<Object>} Response data
+	 */
+	async update(id, payload, params = {}, notifySuccess = true) {
 		try {
-			const { data: resData } = await this.api.post(this.path, data);
-			notifySuccess(resData.message);
-			return resData || true;
-		} catch (error) {
-			return this.handleError(error);
-		}
-	}
-
-	async update(id, data) {
-		try {
-			const { data: resData } = await this.api.put(
-				`${this.path}/${id}`,
-				data,
+			const { data } = await this._api.put(
+				`${this._path}/${id}`,
+				payload,
+				{
+					params,
+				},
 			);
-			notifySuccess(resData.message);
-			return resData || true;
+
+			if (notifySuccess) {
+				this._showSuccess(data.message);
+			}
+
+			return data || true;
 		} catch (error) {
-			return this.handleError(error);
+			return this._handleError(error);
 		}
 	}
 
-	async remove(id, params = {}) {
+	/**
+	 * Delete a record by ID
+	 * @param {string|number} id - Record ID
+	 * @param {Object} params - Query parameters
+	 * @param {boolean} notifySuccess - Whether to show success notification
+	 * @returns {Promise<Object>} Response data
+	 */
+	async remove(id, params = {}, notifySuccess = true) {
 		try {
-			const { data } = await this.api.delete(`${this.path}/${id}`, {
-				params: { ...params },
+			const { data } = await this._api.delete(`${this._path}/${id}`, {
+				params,
 			});
-			notifySuccess(data.message);
+
+			if (notifySuccess) {
+				this._showSuccess(data.message);
+			}
+
 			return data || true;
 		} catch (error) {
-			return this.handleError(error);
+			return this._handleError(error);
 		}
 	}
 }

@@ -11,12 +11,15 @@ class ApiAddress extends ApiCrud {
 
 	async searchKabKota(params) {
 		try {
-			const { data } = await this.api.get(`${this.path}/kabupaten-kota`, {
-				params: { ...params },
-			});
+			const { data } = await this._api.get(
+				`${this._path}/kabupaten-kota`,
+				{
+					params: { ...params },
+				},
+			);
 			return data || true;
 		} catch (error) {
-			return this.handleError(error);
+			return this._handleError(error);
 		}
 	}
 }

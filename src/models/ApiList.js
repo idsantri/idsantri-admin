@@ -7,10 +7,10 @@ class ApiList extends ApiCrud {
 
 	async getByKey(key) {
 		try {
-			const { data } = await this.api.get(`${this.path}/${key}`);
+			const { data } = await this._api.get(`${this._path}/${key}`);
 			return data || true;
 		} catch (error) {
-			return this.handleError(error);
+			return this._handleError(error);
 		}
 	}
 }
