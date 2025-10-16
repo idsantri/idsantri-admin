@@ -1,7 +1,7 @@
 import js from '@eslint/js';
 import globals from 'globals';
 import pluginVue from 'eslint-plugin-vue';
-import pluginQuasar from '@quasar/app-webpack/eslint';
+import pluginQuasar from '@quasar/app-vite/eslint';
 import {
 	defineConfigWithVueTs,
 	vueTsConfigs,
