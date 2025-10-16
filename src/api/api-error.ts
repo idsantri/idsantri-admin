@@ -1,6 +1,23 @@
 import axios from 'axios';
-import { buildTextError } from 'src/utils/array-object';
 import { notifyError } from 'src/utils/notify';
+
+const isPrimitiveArray = (
+	arr: unknown,
+): arr is (string | number | boolean | bigint | symbol | null | undefined)[] =>
+	Array.isArray(arr) && arr.every((item) => typeof item !== 'object');
+
+function buildTextError(message: unknown): string {
+	let result = '';
+	if (isPrimitiveArray(message)) {
+		result =
+			'<ul style="padding:0; padding-left:8px; min-width:250px;max-width:400px">';
+		result += message.map((msg) => `<li>${String(msg)}</li>`).join('');
+		result += '</ul>';
+	} else {
+		result = String(message);
+	}
+	return result;
+}
 
 function apiError(error: unknown): void {
 	// Check for axios.AxiosError type
