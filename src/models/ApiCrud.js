@@ -1,4 +1,4 @@
-import { notifySuccess } from 'src/utils/notify.js';
+import { notifyError, notifySuccess } from 'src/utils/notify.js';
 import apiError from 'src/api/api-error.ts';
 import api from 'src/api';
 
@@ -25,13 +25,21 @@ export default class ApiCrud {
 		return false;
 	}
 
+	showSuccess(message) {
+		notifySuccess(message);
+	}
+
+	showError(message) {
+		notifyError(message);
+	}
+
 	async getAll(params = {}, notifySuccess = true) {
 		try {
 			const { data } = await this.api.get(this.path, {
 				params: { ...params },
 			});
 			if (notifySuccess) {
-				notifySuccess(data.message);
+				this.showSuccess(data.message);
 			}
 			return data || true;
 		} catch (error) {
@@ -44,7 +52,7 @@ export default class ApiCrud {
 			const { data } = await this.api.get(`${this.path}/${id}`, {
 				params: { ...params },
 			});
-			notifySuccess(data.message);
+			this.showSuccess(data.message);
 			return data || true;
 		} catch (error) {
 			return this.handleError(error);
@@ -54,7 +62,7 @@ export default class ApiCrud {
 	async create(data) {
 		try {
 			const { data: resData } = await this.api.post(this.path, data);
-			notifySuccess(resData.message);
+			this.showSuccess(resData.message);
 			return resData || true;
 		} catch (error) {
 			return this.handleError(error);
@@ -67,7 +75,7 @@ export default class ApiCrud {
 				`${this.path}/${id}`,
 				data,
 			);
-			notifySuccess(resData.message);
+			this.showSuccess(resData.message);
 			return resData || true;
 		} catch (error) {
 			return this.handleError(error);
@@ -79,7 +87,7 @@ export default class ApiCrud {
 			const { data } = await this.api.delete(`${this.path}/${id}`, {
 				params: { ...params },
 			});
-			notifySuccess(data.message);
+			this.showSuccess(data.message);
 			return data || true;
 		} catch (error) {
 			return this.handleError(error);

@@ -1,8 +1,8 @@
 import ApiCrud from './ApiCrud.js';
 
-class ApiSantri extends ApiCrud {
+class Santri extends ApiCrud {
 	constructor() {
 		super('santri');
 	}
 }
-export default new ApiSantri();
+export default new Santri();
