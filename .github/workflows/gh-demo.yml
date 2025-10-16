@@ -15,8 +15,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 22
-          cache: "pnpm"
-          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install Corepack
         run: npm i -g corepack
