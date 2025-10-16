@@ -14,6 +14,11 @@ function getObjectById(arr, id) {
 const isPrimitiveArray = (arr) =>
 	Array.isArray(arr) && arr.every((item) => typeof item !== 'object');
 
+/**
+ * @deprecated
+ * @param {*} message
+ * @returns
+ */
 function buildTextError(message) {
 	let result = '';
 	if (isPrimitiveArray(message)) {

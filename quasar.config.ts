@@ -190,7 +190,7 @@ export default defineConfig((/* ctx */) => {
 			// swFilename: 'sw.js',
 			// manifestFilename: 'manifest.json'
 
-			extendManifestJson: (manifest): void => {
+			extendManifestJson: (manifest: { [key: string]: string }): void => {
 				manifest.name = config.PWA_NAME;
 				manifest.short_name = config.PWA_SHORT_NAME;
 				manifest.description = config.PWA_DESCRIPTION;
@@ -205,7 +205,7 @@ export default defineConfig((/* ctx */) => {
 			 * @param cfg - the default options for workbox GenerateSW
 			 * @description - untuk keperluan cache font pwa
 			 */
-			extendGenerateSWOptions: (cfg): void => {
+			extendGenerateSWOptions: (cfg: { [key: string]: number }): void => {
 				cfg.maximumFileSizeToCacheInBytes = 5 * 1024 * 1024; // 5 MB
 			},
 			// extendInjectManifestOptions (cfg) {}
