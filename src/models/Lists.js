@@ -1,6 +1,6 @@
 import ApiCrud from './ApiCrud.js';
 
-class ApiList extends ApiCrud {
+class Lists extends ApiCrud {
 	constructor() {
 		super('lists');
 	}
@@ -15,4 +15,4 @@ class ApiList extends ApiCrud {
 	}
 }
 
-export default new ApiList();
+export default new Lists();

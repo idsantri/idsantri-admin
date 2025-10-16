@@ -1,6 +1,6 @@
 import ApiCrud from './ApiCrud.js';
 
-class ApiSantri extends ApiCrud {
+class Santri extends ApiCrud {
 	constructor() {
 		super('santri');
 	}
@@ -47,4 +47,4 @@ class ApiSantri extends ApiCrud {
 		return this.#getParents(santriId, 'wali', notifySuccess);
 	}
 }
-export default new ApiSantri();
+export default new Santri();

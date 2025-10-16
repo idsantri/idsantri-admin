@@ -1,6 +1,6 @@
 <template lang="">
 	<q-page>
-		<h1 v-if="loading">loading ...</h1>
+		<h1 v-if="loading">test page ...</h1>
 		<q-btn @click="getById">Fetch by id</q-btn>
 		<pre>{{ santri }}</pre>
 		<q-btn @click="test">Test</q-btn>
@@ -9,9 +9,9 @@
 </template>
 <script setup>
 import { ref } from 'vue';
-import ApiSantri from 'src/models/ApiSantri';
-import ApiAddress from 'src/models/ApiAddress';
-import ApiList from 'src/models/ApiList';
+import Santri from 'src/models/Santri';
+import Alamat from 'src/models/Alamat';
+import Lists from 'src/models/Lists';
 
 const santri = ref([]);
 const loading = ref(false);
@@ -20,7 +20,7 @@ const getById = async () => {
 	try {
 		santri.value = [];
 		loading.value = true;
-		const { data } = await ApiSantri.getById(8000);
+		const { data } = await Santri.getById(8000);
 		santri.value = data.santri;
 
 		// const res = await Santri._api.get('/santri/8000', {});
@@ -36,7 +36,7 @@ const getById = async () => {
 const testLists = async () => {
 	try {
 		loading.value = true;
-		const { data } = await ApiList.getByKey('tahun-ajaran');
+		const { data } = await Lists.getByKey('tahun-ajaran');
 		console.log(data);
 	} finally {
 		loading.value = false;
@@ -46,7 +46,7 @@ const testLists = async () => {
 const test = async () => {
 	try {
 		loading.value = true;
-		const { data } = await ApiAddress.searchByParams({
+		const { data } = await Alamat.searchByParams({
 			provinsi: 'jawa timur',
 		});
 		console.log(data);

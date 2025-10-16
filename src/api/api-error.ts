@@ -27,7 +27,7 @@ function apiError(error: unknown): void {
 			if (message) {
 				notifyError(buildTextError(message));
 			} else {
-				console.log(
+				console.error(
 					`Response error during ${error.config?.method?.toUpperCase()} ${error.config?.url}`,
 					error,
 				);

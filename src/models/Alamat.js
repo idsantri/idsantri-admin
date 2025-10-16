@@ -1,6 +1,6 @@
 import ApiCrud from './ApiCrud.js';
 
-class ApiAddress extends ApiCrud {
+class Alamat extends ApiCrud {
 	constructor() {
 		super('alamat');
 	}
@@ -23,4 +23,4 @@ class ApiAddress extends ApiCrud {
 		}
 	}
 }
-export default new ApiAddress();
+export default new Alamat();
