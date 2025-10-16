@@ -1,6 +1,6 @@
 <template lang="">
 	<q-page>
-		<h1 v-if="loading">loading ...</h1>
+		<h1 v-if="loading">test page ...</h1>
 		<q-btn @click="getById">Fetch by id</q-btn>
 		<pre>{{ santri }}</pre>
 		<q-btn @click="test">Test</q-btn>
