@@ -1,6 +1,6 @@
 import { notifySuccess } from 'src/utils/notify.js';
-import apiError from '../api-error.ts';
-import api from '../index.ts';
+import apiError from 'src/api/api-error.ts';
+import api from 'src/api';
 
 export default class ApiCrud {
 	constructor(path) {

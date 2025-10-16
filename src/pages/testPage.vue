@@ -9,9 +9,9 @@
 </template>
 <script setup>
 import { ref } from 'vue';
-import ApiSantri from 'src/api/models/ApiSantri';
-import ApiAddress from 'src/api/models/ApiAddress';
-import ApiList from 'src/api/models/ApiList';
+import ApiSantri from 'src/models/ApiSantri';
+import ApiAddress from 'src/models/ApiAddress';
+import ApiList from 'src/models/ApiList';
 
 const santri = ref([]);
 const loading = ref(false);
