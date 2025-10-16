@@ -1,7 +1,7 @@
 import { Notify } from 'quasar';
 import { Dialog } from 'quasar';
 
-const notifySuccess = (message) => {
+const notifySuccess = (message = 'Berhasil') => {
 	Notify.create({
 		type: 'positive',
 		message: message,

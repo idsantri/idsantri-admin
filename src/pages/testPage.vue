@@ -1,67 +1,54 @@
 <template lang="">
 	<q-page>
-		<q-card>
-			<q-card-section>
-				<h1 class="text-subtitle1">Upload File Excel</h1>
-
-				<q-file
-					@input="handleFileChange"
-					outlined
-					bottom-slots
-					v-model="model"
-					label="Label"
-					counter
-				>
-					<template v-slot:prepend>
-						<q-icon name="cloud_upload" @click.stop.prevent />
-					</template>
-					<template v-slot:append>
-						<q-icon
-							name="close"
-							@click.stop.prevent="model = null"
-							class="cursor-pointer"
-						/>
-					</template>
-
-					<template v-slot:hint
-						>Hanya membaca sheet pertama
-					</template>
-				</q-file>
-				<br />
-				<!-- <input type="file" v-on:change="handleFileChange" /> -->
-				<br />
-				<!-- <pre v-if="jsonData">{{ jsonData }}</pre> -->
-			</q-card-section>
-			<q-table :rows="jsonData" />
-		</q-card>
+		<h1 v-if="loading">loading ...</h1>
+		<q-btn @click="getById">Fetch by id</q-btn>
+		<pre>{{ santri }}</pre>
+		<q-btn @click="test">Test</q-btn>
+		<q-btn @click="testLists">Test</q-btn>
 	</q-page>
 </template>
 <script setup>
-import { ref, watch } from 'vue';
-import { read, utils } from 'xlsx';
-const model = ref();
+import { ref } from 'vue';
+import ApiSantri from 'src/api/models/ApiSantri';
+import ApiAddress from 'src/api/models/ApiAddress';
+import ApiList from 'src/api/models/ApiList';
 
-const jsonData = ref([]);
-const handleFileChange = (event) => {
-	const file = event.target.files[0];
-	const reader = new FileReader();
+const santri = ref([]);
+const loading = ref(false);
 
-	reader.onload = (e) => {
-		const data = e.target.result;
-		const workbook = read(data, { type: 'array' });
-		const sheetName = workbook.SheetNames[0];
-		const worksheet = workbook.Sheets[sheetName];
-		jsonData.value = utils.sheet_to_json(worksheet);
-		console.log(jsonData.value);
-	};
-
-	reader.readAsArrayBuffer(file);
+const getById = async () => {
+	try {
+		santri.value = [];
+		loading.value = true;
+		const { data } = await ApiSantri.getById(8000);
+		santri.value = data.santri;
+	} catch (_err) {
+		// console.log('err ', _err);
+	} finally {
+		loading.value = false;
+	}
 };
 
-watch(model, (newModel) => {
-	if (!newModel) {
-		jsonData.value = [];
+const testLists = async () => {
+	try {
+		loading.value = true;
+		const { data } = await ApiList.getByKey('tahun-ajaran');
+		console.log(data);
+	} finally {
+		loading.value = false;
 	}
-});
+};
+
+const test = async () => {
+	try {
+		loading.value = true;
+		const { data } = await ApiAddress.searchByParams({
+			provinsi: 'jawa timur',
+		});
+		console.log(data);
+	} finally {
+		loading.value = false;
+	}
+};
 </script>
 <style lang=""></style>
