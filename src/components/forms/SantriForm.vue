@@ -1,19 +1,10 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
+			<LoadingForm v-if="loadingCrud" />
 			<FormHeader title="Input Data Santri" :is-new="isNew" />
 			<q-card-section class="no-padding">
-				<div v-if="loadingCrud" style="height: 70vh">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-carousel
-					v-else
 					v-model="slide"
 					transition-prev="slide-right"
 					transition-next="slide-left"
@@ -124,6 +115,7 @@ import CarouselRegister from './carousel/SantriRegister.vue';
 import CarouselIdentity from './carousel/SantriIdentity.vue';
 import CarouselPendidikanAkhir from './carousel/SantriPendidikanAkhir.vue';
 import CarouselOrtuWali from './carousel/SantriOrtuWali.vue';
+import LoadingForm from './parts/LoadingForm.vue';
 
 const router = useRouter();
 const route = useRoute();
