@@ -29,7 +29,7 @@
 						:name="carousel.identitas.button"
 						class="no-wrap flex-center"
 					>
-						<input-identity :title="carousel.identitas.title" />
+						<CarouselIdentity :title="carousel.identitas.title" />
 					</q-carousel-slide>
 
 					<!-- ayah -->
@@ -37,7 +37,7 @@
 						:name="carousel.ayah.button"
 						class="no-wrap flex-center"
 					>
-						<input-ayah :title="carousel.ayah.title" />
+						<CarouselAyah :title="carousel.ayah.title" />
 					</q-carousel-slide>
 
 					<!-- ibu -->
@@ -45,7 +45,7 @@
 						:name="carousel.ibu.button"
 						class="no-wrap flex-center"
 					>
-						<input-ibu :title="carousel.ibu.title" />
+						<CarouselIbu :title="carousel.ibu.title" />
 					</q-carousel-slide>
 				</q-carousel>
 			</q-card-section>
@@ -97,9 +97,9 @@ import apiUpdate from 'src/api/api-update';
 import apiDelete from 'src/api/api-delete';
 import apiPost from 'src/api/api-post';
 import { forceRerender } from 'src/utils/buttons-click';
-import InputIdentity from './OrtuModalCrudIdentity.vue';
-import InputAyah from './OrtuModalCrudAyah.vue';
-import InputIbu from './OrtuModalCrudIbu.vue';
+import CarouselIdentity from './carousel/OrtuIdentity.vue';
+import CarouselAyah from './carousel/OrtuAyah.vue';
+import CarouselIbu from './carousel/OrtuIbu.vue';
 import FormHeader from 'src/components/forms/FormHeader.vue';
 
 const router = useRouter();
