@@ -1,8 +1,9 @@
 import ApiCrud from './ApiCrud.js';
 
 class Alamat extends ApiCrud {
-	constructor() {
+	constructor(endpoint = '') {
 		super('alamat');
+		this._path = endpoint ? `${this._path}/${endpoint}` : this._path;
 	}
 
 	async searchByParams(params = {}) {
@@ -23,4 +24,12 @@ class Alamat extends ApiCrud {
 		}
 	}
 }
+
+// TODO: Uncomment and implement if needed in the future
+// const alamat = new Alamat();
+// alamat.provinsi = new Alamat('provinsi');
+// alamat.kabupaten = new Alamat('kabupaten');
+// alamat.kecamatan = new Alamat('kecamatan');
+// alamat.desa = new Alamat('desa');
+
 export default new Alamat();
