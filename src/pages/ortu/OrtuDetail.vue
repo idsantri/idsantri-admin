@@ -61,51 +61,61 @@
 	</q-page>
 </template>
 <script setup>
-import { onMounted, reactive, ref, toRefs } from 'vue';
+import { computed, onMounted, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import CardColumn from '../../components/CardColumn.vue';
 import CardListSantri from 'src/components/santri/CardSantriLists.vue';
 import ortuStore from 'src/stores/ortu-store.js';
 import dialogStore from 'src/stores/dialog-store';
-import apiGet from 'src/api/api-get';
+import { storeToRefs } from 'pinia';
+import Ortu from 'src/models/Ortu';
 
-const ortu = reactive({});
+const { ortu } = storeToRefs(ortuStore());
 const route = useRoute();
 const ortuId = route.params.id;
 
 const dialog = dialogStore();
 const { searchOrtu, crudOrtu } = toRefs(dialog);
-const identity = ref({});
-const dataAyah = ref({});
-const dataIbu = ref({});
 const santri = ref({});
 const loading = ref(false);
 
+async function loadData() {
+	ortuStore().$reset();
+	try {
+		loading.value = true;
+		const data = await Ortu.getById({
+			id: ortuId,
+		});
+		if (data) {
+			ortuStore().setOrtu(data.ortu);
+			santri.value = ortu.value.santri;
+		}
+	} catch (_err) {
+		// console.error('err ', _err);
+	} finally {
+		loading.value = false;
+	}
+}
+
+const identity = computed(() => ({
+	ID: ortu.value.id,
+	'Jumlah Anak': ortu.value.jumlah_anak,
+}));
+
+const dataAyah = computed(() => ({
+	Ayah: ortu.value.ayah?.toUpperCase(),
+	NIK: ortu.value.a_nik,
+	Hidup: ortu.value.a_hidup ? 'Ya' : 'Tidak',
+}));
+
+const dataIbu = computed(() => ({
+	Ibu: ortu.value.ibu?.toUpperCase(),
+	NIK: ortu.value.i_nik,
+	Hidup: ortu.value.i_hidup ? 'Ya' : 'Tidak',
+}));
+
 onMounted(async () => {
-	const data = await apiGet({ endPoint: `ortu/${ortuId}`, loading });
-	Object.assign(ortu, data.ortu);
-
-	// identity
-	identity.value = {
-		ID: ortu.id,
-		'Jumlah Anak': ortu.jumlah_anak,
-	};
-	// ayah
-	dataAyah.value = {
-		Ayah: ortu.ayah?.toUpperCase(),
-		NIK: ortu.a_nik,
-		Hidup: ortu.a_hidup ? 'Ya' : 'Tidak',
-	};
-	// ibu
-	dataIbu.value = {
-		Ibu: ortu.ibu?.toUpperCase(),
-		NIK: ortu.i_nik,
-		Hidup: ortu.i_hidup ? 'Ya' : 'Tidak',
-	};
-
-	// santri
-	santri.value = ortu.santri;
-	ortuStore().setOrtu(ortu);
+	await loadData();
 });
 
 /**

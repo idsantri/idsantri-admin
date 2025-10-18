@@ -17,26 +17,20 @@
 				>
 					<!-- identitas -->
 					<q-carousel-slide
-						:name="carousel.identitas.button"
+						name="identity"
 						class="no-wrap flex-center"
 					>
-						<CarouselIdentity :title="carousel.identitas.title" />
+						<CarouselRegister v-model="inputs" />
 					</q-carousel-slide>
 
 					<!-- ayah -->
-					<q-carousel-slide
-						:name="carousel.ayah.button"
-						class="no-wrap flex-center"
-					>
-						<CarouselAyah :title="carousel.ayah.title" />
+					<q-carousel-slide name="ayah" class="no-wrap flex-center">
+						<CarouselAyah v-model="inputs" />
 					</q-carousel-slide>
 
 					<!-- ibu -->
-					<q-carousel-slide
-						:name="carousel.ibu.button"
-						class="no-wrap flex-center"
-					>
-						<CarouselIbu :title="carousel.ibu.title" />
+					<q-carousel-slide name="ibu" class="no-wrap flex-center">
+						<CarouselIbu v-model="inputs" />
 					</q-carousel-slide>
 				</q-carousel>
 			</q-card-section>
@@ -88,7 +82,7 @@ import apiUpdate from 'src/api/api-update';
 import apiDelete from 'src/api/api-delete';
 import apiPost from 'src/api/api-post';
 import { forceRerender } from 'src/utils/buttons-click';
-import CarouselIdentity from './carousel/OrtuIdentity.vue';
+import CarouselRegister from './carousel/OrtuRegister.vue';
 import CarouselAyah from './carousel/OrtuAyah.vue';
 import CarouselIbu from './carousel/OrtuIbu.vue';
 
@@ -98,9 +92,11 @@ const { isNew } = reactive(ortuStore());
 const { santri } = santriStore();
 const { ortu_id } = toRefs(santri);
 const loadingCrud = ref(false);
+const inputs = ref({ ...ortu });
 
 const onSubmit = async () => {
-	const data = JSON.parse(JSON.stringify(ortu));
+	const data = JSON.parse(JSON.stringify(inputs.value));
+	delete data.santri;
 	let response = null;
 	if (isNew) {
 		response = await apiPost({
@@ -145,33 +141,19 @@ const resetOrDelete = async () => {
 	}
 };
 
-const carousel = {
-	identitas: {
-		title: 'Identitas',
-		button: '1',
-	},
-	ayah: {
-		title: 'Data Ayah',
-		button: '2',
-	},
-	ibu: {
-		title: 'Data Ibu',
-		button: '3',
-	},
-};
-const slide = ref(carousel.identitas.button);
+const slide = ref('identity');
 const toggleOptions = [
 	{
-		label: carousel.identitas.button,
-		value: carousel.identitas.button,
+		label: 1,
+		value: 'identity',
 	},
 	{
-		label: carousel.ayah.button,
-		value: carousel.ayah.button,
+		label: 2,
+		value: 'ayah',
 	},
 	{
-		label: carousel.ibu.button,
-		value: carousel.ibu.button,
+		label: 3,
+		value: 'ibu',
 	},
 ];
 </script>

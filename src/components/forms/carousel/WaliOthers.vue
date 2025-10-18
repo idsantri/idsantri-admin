@@ -1,9 +1,7 @@
 <template>
-	<div class="text-subtitle2">
-		{{ props.title }}
-	</div>
+	<div class="text-subtitle2">Lain-Lain</div>
 	<InputSelectArray
-		v-model="pa_formal_tingkat"
+		v-model="inputs.pa_formal_tingkat"
 		url="pendidikan-akhir-formal"
 		label="Pendidikan Akhir Formal"
 		class="q-mt-sm"
@@ -11,14 +9,14 @@
 	/>
 
 	<InputSelectArray
-		v-model="pa_diniyah_tingkat"
+		v-model="inputs.pa_diniyah_tingkat"
 		url="pendidikan-akhir-diniyah"
 		label="Pendidikan Akhir Diniyah"
 		class="q-mt-sm"
 		hint=""
 	/>
 	<InputSelectArray
-		v-model="pekerjaan"
+		v-model="inputs.pekerjaan"
 		url="pekerjaan"
 		label="Pekerjaan"
 		class="q-mt-sm"
@@ -30,7 +28,7 @@
 		class="q-mt-sm"
 		outlined
 		label="Telepon"
-		v-model="telepon"
+		v-model="inputs.telepon"
 		:rules="[(val) => !val || !isNaN(val) || 'Hanya angka!']"
 		error-color="negative"
 	/>
@@ -40,7 +38,7 @@
 		class="q-mt-sm"
 		outlined
 		label="Email"
-		v-model="email"
+		v-model="inputs.email"
 	/>
 	<q-input
 		dense
@@ -48,29 +46,14 @@
 		class="q-mt-sm"
 		outlined
 		label="Penghasilan"
-		v-model="penghasilan"
+		v-model="inputs.penghasilan"
 		:rules="[(val) => !val || !isNaN(val) || 'Hanya angka!']"
 		error-color="negative"
 	/>
 </template>
 <script setup>
-import { onMounted, toRefs } from 'vue';
-import waliState from 'src/stores/wali-store';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 
-const props = defineProps({
-	title: { type: String, default: '' },
-});
-const { wali } = waliState();
-const {
-	pa_formal_tingkat,
-	pa_diniyah_tingkat,
-	pekerjaan,
-	telepon,
-	email,
-	penghasilan,
-} = toRefs(wali);
-
-onMounted(async () => {});
+const inputs = defineModel();
 </script>
 <style></style>

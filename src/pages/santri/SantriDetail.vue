@@ -103,7 +103,7 @@ import DropDownPrint from './DropDownPrint.vue';
 import { storeToRefs } from 'pinia';
 import Santri from 'src/models/Santri';
 
-const { santri, wali, ortu } = storeToRefs(santriStore());
+const { santri } = storeToRefs(santriStore());
 
 const route = useRoute();
 const santriId = route.params.id;
@@ -131,9 +131,9 @@ async function loadData() {
 			id: santriId,
 		});
 		if (data) {
-			santri.value = data.santri;
-			ortu.value = data.ortu;
-			wali.value = data.wali;
+			santriStore().setSantri(data.santri);
+			santriStore().setOrtu(data.ortu);
+			santriStore().setWali(data.wali);
 		}
 	} catch (_err) {
 		// console.error('err ', _err);

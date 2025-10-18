@@ -17,31 +17,23 @@
 				>
 					<!-- identitas -->
 					<q-carousel-slide
-						:name="carousel.identitas.button"
+						name="identity"
 						class="no-wrap flex-center"
 					>
-						<CarouselIdentity :title="carousel.identitas.title" />
+						<CarouselIdentity v-model="inputs" />
 					</q-carousel-slide>
 
 					<!-- alamat -->
-					<q-carousel-slide
-						:name="carousel.alamat.button"
-						class="no-wrap flex-center"
-					>
-						<carousel-alamat
-							@emit-input="(val) => Object.assign(wali, val)"
+					<q-carousel-slide name="alamat" class="no-wrap flex-center">
+						<CarouselAlamat
+							v-model="inputs"
 							@emit-route="closeModal"
-							:data="wali"
 						/>
-						<!-- <input-alamat :title="carousel.alamat.title" /> -->
 					</q-carousel-slide>
 
 					<!-- pendidikan -->
-					<q-carousel-slide
-						:name="carousel.others.button"
-						class="no-wrap flex-center"
-					>
-						<CarouselOthers :title="carousel.others.title" />
+					<q-carousel-slide name="others" class="no-wrap flex-center">
+						<CarouselOthers v-model="inputs" />
 					</q-carousel-slide>
 				</q-carousel>
 			</q-card-section>
@@ -109,6 +101,7 @@ const { ortu, isNew: newOrtu } = reactive(ortuStore());
 const { santri, isNew: newSantri, ortu: ortuSantri } = santriStore();
 const { wali_id } = toRefs(santri);
 const loadingCrud = ref(false);
+const inputs = ref({ ...wali });
 
 onMounted(() => {
 	if (isNew && newSantri && newOrtu && ortuSantri.ayah == ortu.ayah) {
@@ -150,7 +143,8 @@ function closeModal() {
 }
 
 const onSubmit = async () => {
-	const data = JSON.parse(JSON.stringify(wali));
+	const data = JSON.parse(JSON.stringify(inputs.value));
+	delete data.santri;
 	let response = null;
 	if (isNew) {
 		response = await apiPost({
@@ -195,33 +189,19 @@ const resetOrDelete = async () => {
 	}
 };
 
-const carousel = {
-	identitas: {
-		title: 'Identitas Diri',
-		button: '1',
-	},
-	alamat: {
-		title: 'Data Alamat',
-		button: '2',
-	},
-	others: {
-		title: 'Lain-Lain',
-		button: '3',
-	},
-};
-const slide = ref(carousel.identitas.button);
+const slide = ref('identity');
 const toggleOptions = [
 	{
-		label: carousel.identitas.button,
-		value: carousel.identitas.button,
+		label: 1,
+		value: 'identity',
 	},
 	{
-		label: carousel.alamat.button,
-		value: carousel.alamat.button,
+		label: 2,
+		value: 'alamat',
 	},
 	{
-		label: carousel.others.button,
-		value: carousel.others.button,
+		label: 2,
+		value: 'others',
 	},
 ];
 </script>

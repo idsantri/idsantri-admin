@@ -5,7 +5,7 @@
 		hint="Kota kelahiran"
 		outlined
 		label="Tempat Lahir"
-		v-model="input.tmp_lahir"
+		v-model="input"
 		:options="options"
 		emit-value
 		map-options
@@ -32,12 +32,12 @@
 import getData from 'src/api/api-get';
 import { onMounted, ref } from 'vue';
 
-const props = defineProps({
-	data: { type: Object, required: true },
-});
-const emit = defineEmits(['emitInput']);
+// const props = defineProps({
+// 	data: { type: Object, required: true },
+// });
+// const emit = defineEmits(['emitInput']);
 
-const input = ref(props.data);
+const input = defineModel();
 const options = ref([]);
 const loading = ref(false);
 

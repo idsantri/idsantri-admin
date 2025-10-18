@@ -4,7 +4,7 @@ class Santri extends ApiCrud {
 	constructor() {
 		super('santri');
 	}
-	async getSearch() {
+	async search() {
 		throw new Error('Use datatables.net method instead of this');
 	}
 

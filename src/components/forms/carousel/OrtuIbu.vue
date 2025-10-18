@@ -1,14 +1,12 @@
 <template>
-	<div class="text-subtitle2">
-		{{ props.title }}
-	</div>
+	<div class="text-subtitle2">Data Ibu</div>
 	<q-input
 		dense
 		hint=""
 		class="q-mt-sm"
 		outlined
 		label="Nama*"
-		v-model="ibu"
+		v-model="inputs.ibu"
 		:rules="[
 			(val) => !!val || 'Harus diisi!',
 			(val) => val?.length >= 3 || 'Setidaknya 3 huruf!',
@@ -23,36 +21,33 @@
 		class="q-mt-sm"
 		outlined
 		label="Nomor Induk Kependudukan"
-		v-model="i_nik"
+		v-model="inputs.i_nik"
 		:rules="[
 			(val) =>
 				!val || (val?.length == 16 && !isNaN(val)) || '16 digit angka!',
 		]"
 		error-color="negative"
 	/>
-	<input-select-kota-lahir
-		@emit-input="(val) => Object.assign(input, val)"
-		:data="input"
-	/>
+	<input-select-kota-lahir v-model="inputs.i_tmp_lahir" />
 
 	<q-input
 		dense
 		:hint="
-			isDate(i_tgl_lahir)
-				? formatDateFull(i_tgl_lahir) +
+			isDate(inputs.i_tgl_lahir)
+				? formatDateFull(inputs.i_tgl_lahir) +
 					' | ' +
-					bacaHijri(m2h(i_tgl_lahir))
+					bacaHijri(m2h(inputs.i_tgl_lahir))
 				: ''
 		"
 		class="q-mt-sm"
 		outlined
 		label="Tanggal Lahir"
-		v-model="i_tgl_lahir"
+		v-model="inputs.i_tgl_lahir"
 		type="date"
 	/>
 	<q-card bordered flat class="q-px-sm q-mt-sm">
 		<q-toggle
-			v-model="i_hidup"
+			v-model="inputs.i_hidup"
 			color="green"
 			:true-value="1"
 			:false-value="0"
@@ -60,7 +55,7 @@
 		/>
 	</q-card>
 	<input-select-array
-		v-model="i_pa_formal_tingkat"
+		v-model="inputs.i_pa_formal_tingkat"
 		url="pendidikan-akhir-formal"
 		label="Pendidikan Akhir Formal"
 		class="q-mt-sm"
@@ -70,7 +65,7 @@
 	/>
 
 	<input-select-array
-		v-model="i_pa_diniyah_tingkat"
+		v-model="inputs.i_pa_diniyah_tingkat"
 		url="pendidikan-akhir-diniyah"
 		label="Pendidikan Akhir Diniyah"
 		class="q-mt-sm"
@@ -80,7 +75,7 @@
 	/>
 
 	<input-select-array
-		v-model="i_pekerjaan"
+		v-model="inputs.i_pekerjaan"
 		url="pekerjaan"
 		label="Pekerjaan"
 		class="q-mt-sm"
@@ -90,32 +85,10 @@
 	/>
 </template>
 <script setup>
-import { onMounted, ref, toRefs } from 'vue';
-import ortuState from 'src/stores/ortu-store.js';
 import { m2h, bacaHijri } from 'src/utils/hijri';
 import { isDate, formatDateFull } from 'src/utils/format-date';
 import InputSelectKotaLahir from 'src/components/inputs/InputSelectKotaLahir.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 
-const props = defineProps({
-	title: { type: String, default: '' },
-});
-
-const { ortu } = ortuState();
-const {
-	ibu,
-	i_tgl_lahir,
-	i_tmp_lahir,
-	i_nik,
-	i_hidup,
-	i_pa_formal_tingkat,
-	i_pa_diniyah_tingkat,
-	i_pekerjaan,
-} = toRefs(ortu);
-
-const input = ref({
-	tmp_lahir: i_tmp_lahir,
-});
-
-onMounted(async () => {});
+const inputs = defineModel();
 </script>

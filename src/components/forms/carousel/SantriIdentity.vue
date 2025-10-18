@@ -50,10 +50,7 @@
 		]"
 		error-color="negative"
 	/>
-	<input-select-kota-lahir
-		@emit-input="(val) => (inputs.tmp_lahir = val.tmp_lahir)"
-		:data="inputs"
-	/>
+	<input-select-kota-lahir v-model="inputs.tmp_lahir" />
 
 	<q-input
 		dense
