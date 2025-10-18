@@ -1,8 +1,8 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
-			<LoadingForm v-if="loadingCrud" />
 			<FormHeader title="Input Data Santri" :is-new="isNew" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section class="no-padding">
 				<q-carousel
 					v-model="slide"
@@ -98,13 +98,11 @@ import { reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import dialogStore from 'src/stores/dialog-store';
 import santriStore from 'src/stores/santri-store';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 import CarouselRegister from './carousel/SantriRegister.vue';
 import CarouselIdentity from './carousel/SantriIdentity.vue';
 import CarouselAlamat from './carousel/CarouselAlamat.vue';
 import CarouselPendidikanAkhir from './carousel/SantriPendidikanAkhir.vue';
 import CarouselOrtuWali from './carousel/SantriOrtuWali.vue';
-import LoadingForm from './parts/LoadingForm.vue';
 import Santri from 'src/models/Santri';
 
 const emit = defineEmits(['successSubmit', 'successDelete']);

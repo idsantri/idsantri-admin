@@ -75,7 +75,7 @@ import { onMounted, ref } from 'vue';
 import apiDelete from 'src/api/api-delete';
 import apiUpdate from 'src/api/api-update';
 import apiPost from 'src/api/api-post';
-import FormHeader from 'src/components/forms/FormHeader.vue';
+import FormHeader from 'src/components/forms/parts/FormHeader.vue';
 
 const props = defineProps({
 	data: { type: Object, required: false, default: () => {} },

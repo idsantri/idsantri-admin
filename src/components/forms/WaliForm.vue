@@ -2,19 +2,9 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Data Wali" :is-new="isNew" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section class="no-padding">
-				<div v-if="loadingCrud" style="height: 70vh">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
-
 				<q-carousel
-					v-else
 					v-model="slide"
 					transition-prev="slide-right"
 					transition-next="slide-left"
@@ -109,7 +99,6 @@ import apiUpdate from 'src/api/api-update';
 import { notifyWarning } from 'src/utils/notify';
 import { forceRerender } from 'src/utils/buttons-click';
 import CarouselAlamat from 'src/components/forms/carousel/CarouselAlamat.vue';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 import CarouselIdentity from './carousel/WaliIdentity.vue';
 import CarouselOthers from './carousel/WaliOthers.vue';
 

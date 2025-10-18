@@ -2,16 +2,8 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Iuran" :is-new="input.id ? false : true" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<InputSelectSantriId
 					:active-only="true"
 					@emit-input="(val) => Object.assign(input, val)"

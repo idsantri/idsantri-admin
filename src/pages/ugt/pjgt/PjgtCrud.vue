@@ -193,7 +193,7 @@ import apiUpdate from 'src/api/api-update';
 import apiPost from 'src/api/api-post';
 import CarouselAlamat from 'src/components/forms/carousel/CarouselAlamat.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
-import FormHeader from 'src/components/forms/FormHeader.vue';
+import FormHeader from 'src/components/forms/parts/FormHeader.vue';
 
 const loadingState = loadingStore();
 const { loadingMain } = toRefs(loadingState);

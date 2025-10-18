@@ -2,18 +2,9 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Data Orang Tua" :is-new="isNew" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section class="no-padding">
-				<div v-if="loadingCrud" style="height: 70vh">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-carousel
-					v-else
 					v-model="slide"
 					transition-prev="slide-right"
 					transition-next="slide-left"
@@ -100,7 +91,6 @@ import { forceRerender } from 'src/utils/buttons-click';
 import CarouselIdentity from './carousel/OrtuIdentity.vue';
 import CarouselAyah from './carousel/OrtuAyah.vue';
 import CarouselIbu from './carousel/OrtuIbu.vue';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 
 const router = useRouter();
 const { ortu } = reactive(ortuStore());

@@ -2,17 +2,8 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Izin Santri" :is-new="!input.id" />
-
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section class="q-pa-sm">
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<div>
 					<InputSelectSantriId
 						:active-only="true"
@@ -118,7 +109,6 @@ import apiDelete from 'src/api/api-delete';
 import { isDate, formatDateFull } from 'src/utils/format-date';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 
 const props = defineProps({
 	data: Object,

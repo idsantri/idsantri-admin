@@ -4,16 +4,8 @@
 			<q-card-section class="bg-green-7 text-green-11 q-pa-sm">
 				<div class="text-subtitle1">Tetapkan Tanggal Kembali</div>
 			</q-card-section>
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section class="q-pa-sm">
-				<div v-if="loading">
-					<q-dialog v-model="loading" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-input
 					dense
 					:hint="
@@ -74,12 +66,12 @@ const props = defineProps({
 const emit = defineEmits(['successSubmit']);
 
 const input = ref({});
-const loading = ref(false);
+const loadingCrud = ref(false);
 
 async function setBack() {
 	const updated = await apiUpdate({
 		endPoint: `izin-pesantren/${input.value.id}/set-kembali`,
-		loading,
+		loading: loadingCrud,
 		data: {
 			kembali_tgl: input.value.kembali_tgl,
 		},
@@ -95,7 +87,7 @@ async function setBack() {
 async function setNotBack() {
 	const updated = await apiUpdate({
 		endPoint: `izin-pesantren/${input.value.id}/set-kembali`,
-		loading,
+		loading: loadingCrud,
 		data: {
 			kembali_tgl: null,
 		},

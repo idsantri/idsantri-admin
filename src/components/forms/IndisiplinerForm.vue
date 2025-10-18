@@ -2,16 +2,8 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Santri Indisipliner" :is-new="!input.id" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section class="q-pa-sm">
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<div>
 					<InputSelectSantriId
 						:active-only="true"
@@ -140,7 +132,6 @@ import { isDate, formatDateFull } from 'src/utils/format-date';
 import apiPost from 'src/api/api-post';
 import apiUpdate from 'src/api/api-update';
 import apiDelete from 'src/api/api-delete';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectTatibSantri from 'src/components/inputs/InputSelectTatibSantri.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';

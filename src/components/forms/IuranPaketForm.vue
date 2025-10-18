@@ -2,16 +2,8 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Paket Iuran" :is-new="!input.id" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-input
 					dense
 					class=""

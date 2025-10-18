@@ -121,7 +121,7 @@ import apiPost from 'src/api/api-post';
 import apiUpdate from 'src/api/api-update';
 import apiDelete from 'src/api/api-delete';
 import loadingStore from 'src/stores/loading-store';
-import FormHeader from 'src/components/forms/FormHeader.vue';
+import FormHeader from 'src/components/forms/parts/FormHeader.vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 

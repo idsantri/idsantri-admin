@@ -5,16 +5,8 @@
 				title="Input Jabatan Madrasiyah"
 				:is-new="input.id ? false : true"
 			/>
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-input
 					dense
 					outlined
@@ -85,7 +77,6 @@ import listsStore from 'src/stores/lists-store';
 import apiDelete from 'src/api/api-delete';
 import apiPost from 'src/api/api-post';
 import apiUpdate from 'src/api/api-update';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingkatPendidikan.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 

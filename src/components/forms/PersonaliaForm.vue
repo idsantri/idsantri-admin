@@ -2,19 +2,9 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Data Personalia" :is-new="isNew" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section class="no-padding">
-				<div v-if="loadingCrud" style="height: 70vh">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
-
 				<q-carousel
-					v-else
 					v-model="slide"
 					transition-prev="slide-right"
 					transition-next="slide-left"
@@ -211,9 +201,7 @@ import { formatDateFull, isDate } from 'src/utils/format-date';
 import { bacaHijri, m2h } from 'src/utils/hijri';
 import CarouselAlamat from 'src/components/forms/carousel/CarouselAlamat.vue';
 import InputSelectKotaLahir from 'src/components/inputs/InputSelectKotaLahir.vue';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
-import FormActions from './FormActions.vue';
 
 const props = defineProps({
 	data: Object,
