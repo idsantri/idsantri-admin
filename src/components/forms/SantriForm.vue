@@ -20,7 +20,7 @@
 						name="register"
 						class="no-wrap flex-center"
 					>
-						<CarouselRegister v-model="santri" />
+						<CarouselRegister v-model="inputs" />
 					</q-carousel-slide>
 
 					<!-- identitas -->
@@ -28,13 +28,13 @@
 						name="identity"
 						class="no-wrap flex-center"
 					>
-						<CarouselIdentity v-model="santri" />
+						<CarouselIdentity v-model="inputs" />
 					</q-carousel-slide>
 
 					<!-- alamat -->
 					<q-carousel-slide name="alamat" class="no-wrap flex-center">
 						<CarouselAlamat
-							v-model="santri"
+							v-model="inputs"
 							@emit-route="closeModal"
 						/>
 					</q-carousel-slide>
@@ -44,7 +44,7 @@
 						name="pendidikan"
 						class="no-wrap flex-center"
 					>
-						<CarouselPendidikanAkhir v-model="santri" />
+						<CarouselPendidikanAkhir v-model="inputs" />
 					</q-carousel-slide>
 
 					<!-- ortu wali -->
@@ -52,7 +52,7 @@
 						name="ortu_wali"
 						class="no-wrap flex-center"
 					>
-						<CarouselOrtuWali v-model="santri" />
+						<CarouselOrtuWali v-model="inputs" />
 					</q-carousel-slide>
 				</q-carousel>
 			</q-card-section>
@@ -94,13 +94,11 @@
 	</q-card>
 </template>
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import dialogStore from 'src/stores/dialog-store';
 import santriStore from 'src/stores/santri-store';
-import { forceRerender } from 'src/utils/buttons-click';
 import FormHeader from 'src/components/forms/FormHeader.vue';
-// import CarouselAlamat from 'src/components/forms/carousel/CarouselAlamat.vue';
 import CarouselRegister from './carousel/SantriRegister.vue';
 import CarouselIdentity from './carousel/SantriIdentity.vue';
 import CarouselAlamat from './carousel/CarouselAlamat.vue';
@@ -109,12 +107,27 @@ import CarouselOrtuWali from './carousel/SantriOrtuWali.vue';
 import LoadingForm from './parts/LoadingForm.vue';
 import Santri from 'src/models/Santri';
 
+const emit = defineEmits(['successSubmit', 'successDelete']);
 const router = useRouter();
 const route = useRoute();
-const { santri } = reactive(santriStore());
 const { isNew } = reactive(santriStore());
+const { santri } = reactive(santriStore());
+const inputs = ref({ ...santri });
 const loadingCrud = ref(false);
-const emit = defineEmits(['successSubmit', 'successDelete']);
+
+watch(
+	() => santri.ortu_id,
+	(value) => {
+		inputs.value.ortu_id = value;
+	},
+);
+
+watch(
+	() => santri.wali_id,
+	(value) => {
+		inputs.value.wali_id = value;
+	},
+);
 
 function closeModal() {
 	dialogStore().toggleCrudSantri(false);
@@ -128,11 +141,15 @@ function closeModal() {
 }
 
 const onSubmit = async () => {
-	const data = JSON.parse(JSON.stringify(santri));
+	const data = JSON.parse(JSON.stringify(inputs.value));
 	delete data.image_url;
 	delete data.data_akhir;
 	delete data.alamat_lengkap;
 	delete data.alamat_pendek;
+	delete data.th_ajaran_h;
+	delete data.th_ajaran_m;
+	// console.log(data);
+	// return;
 
 	try {
 		loadingCrud.value = true;
@@ -148,7 +165,7 @@ const onSubmit = async () => {
 			if (route.params.id != response.santri.id) {
 				router.push(`/santri/${response.santri.id}`);
 			} else {
-				forceRerender();
+				santriStore().setSantri(response.santri);
 			}
 		}
 	} finally {

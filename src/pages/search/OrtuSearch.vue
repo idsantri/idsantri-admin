@@ -59,8 +59,6 @@ import { toArray } from 'src/utils/array-object';
 
 const dialog = dialogStore();
 const { searchOrtu, crudOrtu, crudSantri } = toRefs(dialog);
-const { santri } = santriStore();
-const { ortu_id } = toRefs(santri);
 const addNew = () => {
 	ortuStore().$reset();
 	crudOrtu.value = true;
@@ -188,7 +186,7 @@ onMounted(() => {
 	};
 	document.copyId = (id) => {
 		if (crudSantri.value) {
-			ortu_id.value = id;
+			santriStore().setOrtuId(id);
 		} else {
 			navigator.clipboard.writeText(id);
 			notifySuccess(`ID (${id}) sudah disalin/dicopy ke clipboard`);

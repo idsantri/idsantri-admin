@@ -57,8 +57,6 @@ import { toArray } from 'src/utils/array-object';
 
 const dialog = dialogStore();
 const { searchWali, crudWali, crudSantri } = toRefs(dialog);
-const { santri } = santriStore();
-const { wali_id } = toRefs(santri);
 const addNew = () => {
 	waliStore().$reset();
 	crudWali.value = true;
@@ -182,7 +180,7 @@ onMounted(() => {
 	};
 	document.copyId = (id) => {
 		if (crudSantri.value) {
-			wali_id.value = id;
+			santriStore().setWaliId(id);
 		} else {
 			navigator.clipboard.writeText(id);
 			notifySuccess(`ID (${id}) sudah disalin/dicopy ke clipboard`);

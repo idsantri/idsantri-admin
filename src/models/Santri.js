@@ -21,21 +21,16 @@ class Santri extends ApiCrud {
 		// }
 	}
 
-	async #getParents(santriId, parent, _notifySuccess = true) {
-		throw new Error('not implemented yet');
-		// try {
-		// 	const { data } = await this._api.get(
-		// 		`${this._path}/${santriId}/${parent}`,
-		// 	);
+	async #getParents(santriId, parent, notifySuccess = true) {
+		const resData = await this._apiGet({
+			endPoint: `${this._path}/${santriId}/${parent}`,
+		});
 
-		// 	if (notifySuccess) {
-		// 		this._showSuccess(data.message);
-		// 	}
+		if (notifySuccess) {
+			this._showSuccess(resData.message);
+		}
 
-		// 	return data;
-		// } catch (error) {
-		// 	return this._handleError(error);
-		// }
+		return resData.data;
 	}
 
 	async getOrtu({ santriId, notifySuccess = true }) {
