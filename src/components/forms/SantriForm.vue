@@ -36,12 +36,10 @@
 						:name="carousel.alamat.button"
 						class="no-wrap flex-center"
 					>
-						<carousel-alamat
-							@emit-input="(val) => Object.assign(santri, val)"
+						<CarouselAlamat
+							v-model="santri"
 							@emit-route="closeModal"
-							:data="santri"
 						/>
-						<!-- <input-alamat :title="carousel.alamat.title" /> -->
 					</q-carousel-slide>
 
 					<!-- pendidikan -->
@@ -107,9 +105,10 @@ import dialogStore from 'src/stores/dialog-store';
 import santriStore from 'src/stores/santri-store';
 import { forceRerender } from 'src/utils/buttons-click';
 import FormHeader from 'src/components/forms/FormHeader.vue';
-import CarouselAlamat from 'src/components/forms/carousel/CarouselAlamat.vue';
+// import CarouselAlamat from 'src/components/forms/carousel/CarouselAlamat.vue';
 import CarouselRegister from './carousel/SantriRegister.vue';
 import CarouselIdentity from './carousel/SantriIdentity.vue';
+import CarouselAlamat from './carousel/CarouselAlamat.vue';
 import CarouselPendidikanAkhir from './carousel/SantriPendidikanAkhir.vue';
 import CarouselOrtuWali from './carousel/SantriOrtuWali.vue';
 import LoadingForm from './parts/LoadingForm.vue';

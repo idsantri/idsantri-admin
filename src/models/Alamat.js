@@ -7,7 +7,7 @@ class Alamat extends ApiCrud {
 	}
 
 	async searchByParams(params = {}) {
-		return this.getAll(params, false);
+		return this.getAll({ params, notifySuccess: false });
 	}
 
 	async searchKabKota(params) {
