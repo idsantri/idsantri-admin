@@ -17,25 +17,22 @@
 				>
 					<!-- registrasi -->
 					<q-carousel-slide
-						:name="carousel.registrasi.button"
+						name="register"
 						class="no-wrap flex-center"
 					>
-						<CarouselRegister :title="carousel.registrasi.title" />
+						<CarouselRegister v-model="santri" />
 					</q-carousel-slide>
 
 					<!-- identitas -->
 					<q-carousel-slide
-						:name="carousel.identitas.button"
+						name="identity"
 						class="no-wrap flex-center"
 					>
-						<CarouselIdentity :title="carousel.identitas.title" />
+						<CarouselIdentity v-model="santri" />
 					</q-carousel-slide>
 
 					<!-- alamat -->
-					<q-carousel-slide
-						:name="carousel.alamat.button"
-						class="no-wrap flex-center"
-					>
+					<q-carousel-slide name="alamat" class="no-wrap flex-center">
 						<CarouselAlamat
 							v-model="santri"
 							@emit-route="closeModal"
@@ -44,20 +41,18 @@
 
 					<!-- pendidikan -->
 					<q-carousel-slide
-						:name="carousel.pendidikan.button"
+						name="pendidikan"
 						class="no-wrap flex-center"
 					>
-						<CarouselPendidikanAkhir
-							:title="carousel.pendidikan.title"
-						/>
+						<CarouselPendidikanAkhir v-model="santri" />
 					</q-carousel-slide>
 
 					<!-- ortu wali -->
 					<q-carousel-slide
-						:name="carousel.ortu_wali.button"
+						name="ortu_wali"
 						class="no-wrap flex-center"
 					>
-						<CarouselOrtuWali :title="carousel.ortu_wali.title" />
+						<CarouselOrtuWali v-model="santri" />
 					</q-carousel-slide>
 				</q-carousel>
 			</q-card-section>
@@ -180,49 +175,27 @@ const resetOrDelete = async () => {
 	}
 };
 
-const carousel = {
-	registrasi: {
-		title: 'Data Registrasi',
-		button: '1',
-	},
-	identitas: {
-		title: 'Identitas Diri',
-		button: '2',
-	},
-	alamat: {
-		title: 'Data Alamat',
-		button: '3',
-	},
-	pendidikan: {
-		title: 'Riwayat Pendidikan',
-		button: '4',
-	},
-	ortu_wali: {
-		title: 'Orang Tua dan Wali',
-		button: '5',
-	},
-};
-const slide = ref(carousel.registrasi.button);
+const slide = ref('register');
 const toggleOptions = [
 	{
-		label: carousel.registrasi.button,
-		value: carousel.registrasi.button,
+		label: 1,
+		value: 'register',
 	},
 	{
-		label: carousel.identitas.button,
-		value: carousel.identitas.button,
+		label: 2,
+		value: 'identity',
 	},
 	{
-		label: carousel.alamat.button,
-		value: carousel.alamat.button,
+		label: 3,
+		value: 'alamat',
 	},
 	{
-		label: carousel.pendidikan.button,
-		value: carousel.pendidikan.button,
+		label: 4,
+		value: 'pendidikan',
 	},
 	{
-		label: carousel.ortu_wali.button,
-		value: carousel.ortu_wali.button,
+		label: '5',
+		value: 'ortu_wali',
 	},
 ];
 </script>

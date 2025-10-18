@@ -1,4 +1,5 @@
 <template lang="">
+	<div class="text-subtitle2">Data Alamat</div>
 	<q-select
 		dense
 		hint=""

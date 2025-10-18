@@ -1,64 +1,63 @@
 <template>
-	<div class="text-subtitle2">
-		{{ props.title }}
-	</div>
+	<div class="text-subtitle2">Data Registrasi</div>
 	<q-input
 		dense
 		hint="Kosongkan jika ingin diisi otomatis!"
 		class="q-mt-sm"
 		outlined
 		label="ID"
-		v-model="id"
+		v-model="inputs.id"
 		:rules="[(val) => !val || !isNaN(val) || 'Hanya angka!']"
 		error-color="negative"
 	/>
 
 	<q-input
 		dense
-		:hint="isDate(tgl_daftar_m) ? formatDateFull(tgl_daftar_m) : ''"
+		:hint="
+			isDate(inputs.tgl_daftar_m)
+				? formatDateFull(inputs.tgl_daftar_m)
+				: ''
+		"
 		class="q-mt-sm"
 		outlined
 		label="Tanggal Daftar (M)*"
-		v-model="tgl_daftar_m"
+		v-model="inputs.tgl_daftar_m"
 		type="date"
-		@change="isDate(tgl_daftar_m) ? (tgl_daftar_h = m2h(tgl_daftar_m)) : ''"
+		@change="
+			isDate(inputs.tgl_daftar_m)
+				? (inputs.tgl_daftar_h = m2h(inputs.tgl_daftar_m))
+				: (inputs.tgl_daftar_h = '')
+		"
 		:rules="[(val) => !!val || 'Harus diisi!']"
 		error-color="negative"
 	/>
 	<q-input
 		dense
-		:hint="tgl_daftar_h?.length ? bacaHijri(tgl_daftar_h) : ''"
+		:hint="
+			inputs.tgl_daftar_h?.length ? bacaHijri(inputs.tgl_daftar_h) : ''
+		"
 		class="q-mt-sm"
 		outlined
 		label="Tanggal Daftar (H)*"
-		v-model="tgl_daftar_h"
-		mask="####-##-##"
+		v-model="inputs.tgl_daftar_h"
 		:rules="[
 			(val) => !!val || 'Harus diisi!',
 			(val) => val?.length == 8 || '8 digit angka!',
 		]"
 		error-color="negative"
+		mask="####-##-##"
 	/>
 </template>
 <script setup>
-import { onMounted, toRefs, watch } from 'vue';
-import santriState from 'src/stores/santri-store';
 import { m2h, bacaHijri } from 'src/utils/hijri';
 import { isDate, formatDateFull } from 'src/utils/format-date';
+import { watch } from 'vue';
 
-const props = defineProps({
-	title: { type: String, default: '' },
-});
-
-const { santri } = santriState();
-const { id, tgl_daftar_m, tgl_daftar_h } = toRefs(santri);
-
-onMounted(async () => {});
-
-watch(tgl_daftar_h, (newValue, oldValue) => {
-	// Menghapus karakter "-" dari tgl_daftar_h
-	if (newValue !== oldValue) {
-		tgl_daftar_h.value = newValue.replace(/-/g, '');
-	}
-});
+const inputs = defineModel();
+watch(
+	() => inputs.value.tgl_daftar_h,
+	(newValue, _oldValue) => {
+		inputs.value.tgl_daftar_h = newValue.replace(/-/g, '');
+	},
+);
 </script>

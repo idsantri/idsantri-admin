@@ -1,14 +1,12 @@
 <template>
-	<div class="text-subtitle2">
-		{{ props.title }}
-	</div>
+	<div class="text-subtitle2">Identitas Diri</div>
 	<q-input
 		dense
 		hint=""
 		class="q-mt-sm"
 		outlined
 		label="Nama*"
-		v-model="nama"
+		v-model="inputs.nama"
 		:rules="[
 			(val) => !!val || 'Harus diisi!',
 			(val) => val?.length >= 3 || 'Setidaknya 3 huruf!',
@@ -22,7 +20,7 @@
 		class="q-mt-sm"
 		outlined
 		label="Nomor Induk Siswa Nasional"
-		v-model="nisn"
+		v-model="inputs.nisn"
 		:rules="[(val) => !val || !isNaN(val) || 'Hanya angka!']"
 		error-color="negative"
 	/>
@@ -32,7 +30,7 @@
 		class="q-mt-sm"
 		outlined
 		label="Nomor Kartu Keluarga"
-		v-model="nkk"
+		v-model="inputs.nkk"
 		:rules="[
 			(val) =>
 				!val || (val?.length == 16 && !isNaN(val)) || '16 digit angka!',
@@ -45,7 +43,7 @@
 		class="q-mt-sm"
 		outlined
 		label="Nomor Induk Kependudukan"
-		v-model="nik"
+		v-model="inputs.nik"
 		:rules="[
 			(val) =>
 				!val || (val?.length == 16 && !isNaN(val)) || '16 digit angka!',
@@ -53,31 +51,39 @@
 		error-color="negative"
 	/>
 	<input-select-kota-lahir
-		@emit-input="(val) => (santri.tmp_lahir = val.tmp_lahir)"
-		:data="santri"
+		@emit-input="(val) => (inputs.tmp_lahir = val.tmp_lahir)"
+		:data="inputs"
 	/>
 
 	<q-input
 		dense
 		:hint="
-			isDate(tgl_lahir)
-				? formatDateFull(tgl_lahir) + ' | ' + bacaHijri(m2h(tgl_lahir))
+			isDate(inputs.tgl_lahir)
+				? formatDateFull(inputs.tgl_lahir) +
+					' | ' +
+					bacaHijri(m2h(inputs.tgl_lahir))
 				: ''
 		"
 		class="q-mt-sm"
 		outlined
 		label="Tanggal Lahir"
-		v-model="tgl_lahir"
+		v-model="inputs.tgl_lahir"
 		type="date"
 	/>
 
 	<q-select
 		dense
-		:hint="sex == 'L' ? 'Laki-Laki' : sex == 'P' ? 'Perempuan' : ''"
+		:hint="
+			inputs.sex == 'L'
+				? 'Laki-Laki'
+				: inputs.sex == 'P'
+					? 'Perempuan'
+					: ''
+		"
 		class="q-mt-sm"
 		outlined
 		label="Jenis Kelamin"
-		v-model="sex"
+		v-model="inputs.sex"
 		:options="['L', 'P']"
 		emit-value
 		map-options
@@ -86,16 +92,9 @@
 	/>
 </template>
 <script setup>
-import { toRefs } from 'vue';
-import santriState from 'src/stores/santri-store';
 import { m2h, bacaHijri } from 'src/utils/hijri';
 import { isDate, formatDateFull } from 'src/utils/format-date';
 import InputSelectKotaLahir from 'src/components/inputs/InputSelectKotaLahir.vue';
 
-const props = defineProps({
-	title: { type: String, default: '' },
-});
-
-const { santri } = santriState();
-const { nama, nisn, nkk, nik, tgl_lahir, sex } = toRefs(santri);
+const inputs = defineModel();
 </script>
