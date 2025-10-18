@@ -18,32 +18,28 @@ export default [
 			{
 				path: 'status',
 				component: (): Component =>
-					import(
-						'src/pages/santri/relations/status/SantriStatus.vue'
-					),
+					import('src/pages/santri/relations/SantriStatus.vue'),
 			},
 
 			{
 				path: 'kelas',
 				component: (): Component =>
-					import('src/pages/santri/relations/kelas/SantriKelas.vue'),
+					import('src/pages/santri/relations/SantriKelas.vue'),
 			},
 			{
 				path: 'domisili',
 				component: (): Component =>
-					import(
-						'src/pages/santri/relations/domisili/SantriDomisili.vue'
-					),
+					import('src/pages/santri/relations/SantriDomisili.vue'),
 			},
 			{
 				path: 'wali',
 				component: (): Component =>
-					import('src/pages/santri/relations/wali/SantriWali.vue'),
+					import('src/pages/santri/relations/SantriWali.vue'),
 			},
 			{
 				path: 'ortu',
 				component: (): Component =>
-					import('src/pages/santri/relations/ortu/SantriOrtu.vue'),
+					import('src/pages/santri/relations/SantriOrtu.vue'),
 			},
 			// {
 			// 	path: 'iuran-total',

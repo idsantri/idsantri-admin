@@ -84,11 +84,11 @@
 			@update-uploader="updateUploader"
 			@success-upload="successUpload"
 		/>
+		<!-- <pre>{{ santri }}</pre> -->
 	</q-page>
-	<!-- <pre>{{ santri }}</pre> -->
 </template>
 <script setup>
-import { reactive, ref, toRefs, onMounted } from 'vue';
+import { ref, toRefs, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { formatDateFull } from '../../utils/format-date';
 import CardColumn from '../../components/CardColumn.vue';
@@ -100,10 +100,10 @@ import SantriRelations from 'src/pages/santri/SantriRelations.vue';
 import dialogStore from 'src/stores/dialog-store';
 import apiGet from 'src/api/api-get';
 import DropDownPrint from './DropDownPrint.vue';
+import { storeToRefs } from 'pinia';
+import Santri from 'src/models/Santri';
 
-const santri = reactive({});
-const wali = reactive({});
-const ortu = reactive({});
+const { santri, wali, ortu } = storeToRefs(santriStore());
 
 const route = useRoute();
 const santriId = route.params.id;
@@ -111,8 +111,6 @@ const santriId = route.params.id;
 const dialog = dialogStore();
 const { searchSantri, crudSantri } = toRefs(dialog);
 
-const register = ref({});
-const identity = ref({});
 const loading = ref(false);
 const loadingImage = ref(false);
 
@@ -125,50 +123,53 @@ async function loadImage() {
 	santri.image_url = img.image_url;
 }
 
-async function getSantri() {
-	const data = await apiGet({ endPoint: `santri/${santriId}`, loading });
-	if (!data.santri) return;
-	Object.assign(santri, data.santri);
-	Object.assign(wali, data.wali);
-	Object.assign(ortu, data.ortu);
+async function loadData() {
+	santriStore().$reset();
+	try {
+		loading.value = true;
+		const data = await Santri.getById({
+			id: santriId,
+		});
+		if (data) {
+			santri.value = data.santri;
+			ortu.value = data.ortu;
+			wali.value = data.wali;
+		}
+	} catch (_err) {
+		// console.error('err ', _err);
+	} finally {
+		loading.value = false;
+	}
 }
 
+const register = computed(() => ({
+	ID: santri.value.id,
+	'Tanggal Daftar':
+		formatDateFull(santri.value.tgl_daftar_m) +
+		' | ' +
+		bacaHijri(santri.value.tgl_daftar_h),
+	'Tahun Ajaran': `${santri.value.th_ajaran_h || '-'} | ${
+		santri.value.th_ajaran_m || '-'
+	}`,
+}));
+
+const identity = computed(() => ({
+	Nama: `${santri.value.nama?.toUpperCase()} (${santri.value.sex?.toUpperCase()})`,
+	Alamat: `${santri.value.jl || ' '} RT ${String(
+		santri.value.rt || 0,
+	).padStart(3, 0)} RW ${String(santri.value.rw || 0).padStart(3, '0')} ${
+		santri.value.desa || ' '
+	} ${santri.value.kecamatan || ' '} ${santri.value.kabupaten || ' '} ${
+		santri.value.provinsi || ' '
+	} ${santri.value.kode_pos || ' '}`.replace(/\s\s+/g, ' '),
+	Kelahiran: `${santri.value.tmp_lahir || '-'}, ${formatDateFull(
+		santri.value.tgl_lahir,
+	)}`,
+	'Data Akhir': santri.value.data_akhir || '-',
+}));
+
 onMounted(async () => {
-	await getSantri();
-	// register
-	register.value = {
-		ID: santri.id,
-		'Tanggal Daftar':
-			formatDateFull(santri.tgl_daftar_m) +
-			' | ' +
-			bacaHijri(santri.tgl_daftar_h),
-		'Tahun Ajaran': `${santri.th_ajaran_h || '-'} | ${
-			santri.th_ajaran_m || '-'
-		}`,
-	};
-
-	// identity
-	identity.value = {
-		Nama: `${santri.nama?.toUpperCase()} (${santri.sex?.toUpperCase()})`,
-		Alamat: `${santri.jl || ' '} RT ${String(santri.rt || 0).padStart(
-			3,
-			0,
-		)} RW ${String(santri.rw || 0).padStart(3, '0')} ${
-			santri.desa || ' '
-		} ${santri.kecamatan || ' '} ${santri.kabupaten || ' '} ${
-			santri.provinsi || ' '
-		} ${santri.kode_pos || ' '}`.replace(/\s\s+/g, ' '),
-		Kelahiran: `${santri.tmp_lahir || '-'}, ${formatDateFull(
-			santri.tgl_lahir,
-		)}`,
-		'Data Akhir': santri.data_akhir || '-',
-	};
-
-	santriStore().setSantri(santri);
-	santriStore().setOrtu(ortu);
-	santriStore().setWali(wali);
-
-	// await loadImage();
+	await loadData();
 });
 
 /**

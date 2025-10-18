@@ -2,7 +2,9 @@ import api from '.';
 import apiError from './api-error';
 import type { DeleteParams } from './api-interface';
 import { notifySuccess, notifyConfirm } from 'src/utils/notify';
-
+/**
+ * @deprecated Use apiDelete in src/api/apiDelete.ts instead
+ */
 async function apiDelete({
 	endPoint,
 	message = '<span style="color: red">Hapus data ini?</span>',

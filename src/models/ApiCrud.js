@@ -1,88 +1,160 @@
-import { notifySuccess } from 'src/utils/notify.js';
-import apiError from 'src/api/api-error.ts';
-import api from 'src/api';
+import Api from './Api';
 
-export default class ApiCrud {
-	constructor(path) {
-		this.path = path;
-		this.api = api;
+export default class ApiCrud extends Api {
+	/**
+	 * Get all records with optional query parameters for filtering/pagination
+	 * @param {Object} options - Options object
+	 * @param {Object} options.params - Query parameters
+	 * @param {boolean} options.notifySuccess - Whether to show success notification
+	 * @returns {Promise<Object>} Response data
+	 */
+	async getAll({ params = {}, notifySuccess = true }) {
+		const resData = await this._apiGet({
+			endPoint: this._path,
+			params,
+		});
+
+		if (notifySuccess) {
+			this._showSuccess(resData.message);
+		}
+
+		return resData.data;
 	}
 
 	/**
-	 * Fetch all data from API with given parameters.
-	 *
-	 * @param {Object} [params] - Parameters to be passed to the API.
-	 * @param {boolean} [notifySuccess=true] - Whether to notify success message.
-	 * @returns {Promise<Object | boolean>} - Response data or false if error occur.
-	 * @example
-	 * const api = new ApiCrud('api/users');
-	 * const response = await api.getAll({ role: 'admin' });
-	 * console.log(response); // { data: [...], message: '...' }
+	 * Get a single record by ID
+	 * @param {Object} options - Options object
+	 * @param {string|number} options.id - Record ID
+	 * @param {Object} options.params - Query parameters
+	 * @param {boolean} options.notifySuccess - Whether to show success notification
+	 * @returns {Promise<Object>} Response data
 	 */
+	async getById({ id, params = {}, notifySuccess = true }) {
+		const resData = await this._apiGet({
+			endPoint: `${this._path}/${id}`,
+			params,
+		});
 
-	handleError(error) {
-		apiError(error);
-		return false;
-	}
-
-	async getAll(params = {}, notifySuccess = true) {
-		try {
-			const { data } = await this.api.get(this.path, {
-				params: { ...params },
-			});
-			if (notifySuccess) {
-				notifySuccess(data.message);
-			}
-			return data || true;
-		} catch (error) {
-			return this.handleError(error);
+		if (notifySuccess) {
+			this._showSuccess(resData.message);
 		}
+
+		return resData.data;
 	}
 
-	async getById(id, params = {}) {
-		try {
-			const { data } = await this.api.get(`${this.path}/${id}`, {
-				params: { ...params },
-			});
-			notifySuccess(data.message);
-			return data || true;
-		} catch (error) {
-			return this.handleError(error);
-		}
-	}
-
-	async create(data) {
-		try {
-			const { data: resData } = await this.api.post(this.path, data);
-			notifySuccess(resData.message);
-			return resData || true;
-		} catch (error) {
-			return this.handleError(error);
-		}
-	}
-
-	async update(id, data) {
-		try {
-			const { data: resData } = await this.api.put(
-				`${this.path}/${id}`,
-				data,
+	/**
+	 * Create a new record
+	 * @param {Object} options - Options object
+	 * @param {Object} options.data - Data to create
+	 * @param {Object} options.params - Query parameters
+	 * @param {boolean} options.notifySuccess - Whether to show success notification
+	 * @returns {Promise<Object>} Response data
+	 */
+	async create({
+		data,
+		params = {},
+		notifySuccess = true,
+		confirm = false,
+		message = '',
+	}) {
+		if (message || confirm) {
+			const isConfirmed = await this._notifyConfirm(
+				message || 'Simpan data ini?',
 			);
-			notifySuccess(resData.message);
-			return resData || true;
-		} catch (error) {
-			return this.handleError(error);
+			if (!isConfirmed) {
+				return false;
+			}
 		}
+		const resData = await this._apiPost({
+			endPoint: this._path,
+			data,
+			params,
+		});
+
+		if (notifySuccess) {
+			this._showSuccess(resData.message);
+		}
+
+		return resData.data || true;
 	}
 
-	async remove(id, params = {}) {
-		try {
-			const { data } = await this.api.delete(`${this.path}/${id}`, {
-				params: { ...params },
-			});
-			notifySuccess(data.message);
-			return data || true;
-		} catch (error) {
-			return this.handleError(error);
+	/**
+	 * Update an existing record
+	 * @param {Object} options - Options object
+	 * @param {string|number} options.id - Record ID
+	 * @param {Object} options.data - Data to update
+	 * @param {Object} options.params - Query parameters
+	 * @param {boolean} options.notifySuccess - Whether to show success notification
+	 * @param {boolean} options.confirm - Whether to show confirmation dialog
+	 * @param {string} options.message - Custom confirmation message
+	 * @returns {Promise<Object>} Response data
+	 */
+	async update({
+		id,
+		data,
+		params = {},
+		notifySuccess = true,
+		confirm = false,
+		message = '',
+	}) {
+		if (message || confirm) {
+			const isConfirmed = await this._notifyConfirm(
+				message || 'Update data ini?',
+			);
+
+			if (!isConfirmed) {
+				return false;
+			}
 		}
+		const resData = await this._apiUpdate({
+			endPoint: `${this._path}/${id}`,
+			data,
+			params,
+		});
+
+		if (notifySuccess) {
+			this._showSuccess(resData.message);
+		}
+
+		return resData.data || true;
+	}
+
+	/**
+	 * Delete a record by ID
+	 * @param {Object} options - Options object
+	 * @param {string|number} options.id - Record ID
+	 * @param {Object} options.params - Query parameters
+	 * @param {boolean} options.notifySuccess - Whether to show success notification
+	 * @param {boolean} options.confirm - Whether to show confirmation dialog
+	 * @param {string} options.message - Custom confirmation message
+	 * @returns {Promise<Object>} Response data
+	 */
+	async remove({
+		id,
+		params = {},
+		notifySuccess = true,
+		confirm = true,
+		message = '',
+	}) {
+		if (message || confirm) {
+			const isConfirmed = await this._notifyConfirm(
+				message || '<span style="color: red">Hapus data ini?</span>',
+			);
+
+			if (!isConfirmed) {
+				return false;
+			}
+		}
+
+		const resData = await this._apiDelete({
+			endPoint: `${this._path}/${id}`,
+			params,
+		});
+
+		if (notifySuccess) {
+			this._showSuccess(resData.message);
+		}
+
+		return resData.data || true;
 	}
 }

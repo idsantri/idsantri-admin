@@ -65,13 +65,18 @@ export default defineStore('santri', {
 				}
 			}
 		},
-
+		setWaliId(waliId) {
+			this.santri.wali_id = waliId;
+		},
 		setOrtu(payload) {
 			for (const key in this.ortu) {
 				if (key in payload) {
 					this.ortu[key] = payload[key];
 				}
 			}
+		},
+		setOrtuId(ortuId) {
+			this.santri.ortu_id = ortuId;
 		},
 
 		setNull() {

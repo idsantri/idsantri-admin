@@ -1,7 +1,5 @@
 <template>
-	<div class="text-subtitle2">
-		{{ props.title }}
-	</div>
+	<div class="text-subtitle2">Orang Tua dan Wali</div>
 	<div class="text-overline q-mt-sm">Orang Tua</div>
 
 	<q-input
@@ -10,7 +8,7 @@
 		class=""
 		outlined
 		label="ID Orang Tua*"
-		v-model="ortu_id"
+		v-model="inputs.ortu_id"
 	>
 		<template v-slot:append>
 			<q-btn
@@ -52,7 +50,7 @@
 				no-caps=""
 				outline=""
 				icon="visibility"
-				@click="check('ortu', ortu_id)"
+				@click="check('ortu', inputs.ortu_id)"
 			/>
 		</template>
 	</q-input>
@@ -72,7 +70,7 @@
 		class="q-mt-sm"
 		outlined
 		label="ID Wali*"
-		v-model="wali_id"
+		v-model="inputs.wali_id"
 	>
 		<template v-slot:append>
 			<q-btn
@@ -114,11 +112,11 @@
 				outline=""
 				label="Cek"
 				icon="visibility"
-				@click="check('wali', wali_id)"
+				@click="check('wali', inputs.wali_id)"
 		/></template>
 	</q-input>
 	<input-select-array
-		v-model="wali_status"
+		v-model="inputs.wali_status"
 		url="hubungan-wali"
 		label="Status Wali*"
 		class="q-mt-sm"
@@ -133,12 +131,7 @@ import santriState from 'src/stores/santri-store';
 import apiGet from 'src/api/api-get';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 
-const props = defineProps({
-	title: { type: String, default: '' },
-});
-const { santri } = santriState();
-const { ortu_id, anak_ke, wali_id, wali_status } = toRefs(santri);
-
+const inputs = defineModel();
 const dialog = dialogStore();
 const { searchOrtu, searchWali } = toRefs(dialog);
 
@@ -165,21 +158,24 @@ const check = async (param, id) => {
 };
 
 async function pasteOrtu() {
-	ortu_id.value = await navigator.clipboard.readText();
+	inputs.value.ortu_id = await navigator.clipboard.readText();
 }
 
 async function pasteWali() {
-	wali_id.value = await navigator.clipboard.readText();
+	inputs.value.wali_id = await navigator.clipboard.readText();
 }
 
-watch([ortu_id, wali_id], ([newOrtu, newWali], [oldOrtu, oldWali]) => {
-	if (newOrtu != oldOrtu) {
-		check('ortu', newOrtu);
-	}
-	if (newWali != oldWali) {
-		check('wali', newWali);
-	}
-});
+watch(
+	[() => inputs.value.ortu_id, () => inputs.value.wali_id],
+	([newOrtu, newWali], [oldOrtu, oldWali]) => {
+		if (newOrtu != oldOrtu) {
+			check('ortu', newOrtu);
+		}
+		if (newWali != oldWali) {
+			check('wali', newWali);
+		}
+	},
+);
 </script>
 <style scoped>
 .slot-after {
