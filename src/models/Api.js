@@ -1,11 +1,17 @@
-import { notifyError, notifySuccess } from 'src/utils/notify.js';
+import { notifyConfirm, notifyError, notifySuccess } from 'src/utils/notify.js';
 import apiError from 'src/api/api-error.ts';
-import api from 'src/api';
+import apiGet from 'src/api/apiGet';
+import apiPost from 'src/api/apiPost';
+import apiUpdate from 'src/api/apiUpdate';
+import apiDelete from 'src/api/apiDelete';
 
 export default class Api {
 	constructor(path) {
 		this._path = path;
-		this._api = api;
+		this._apiGet = apiGet;
+		this._apiPost = apiPost;
+		this._apiUpdate = apiUpdate;
+		this._apiDelete = apiDelete;
 	}
 
 	_handleError(error) {
@@ -19,5 +25,9 @@ export default class Api {
 
 	_showError(message) {
 		notifyError(message);
+	}
+
+	async _notifyConfirm(message, title = 'Konfirmasi') {
+		return await notifyConfirm(message, true, title);
 	}
 }

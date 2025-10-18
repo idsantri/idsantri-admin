@@ -3,6 +3,9 @@ import apiError from './api-error';
 import type { UpdateParams } from './api-interface';
 import { notifySuccess, notifyConfirm } from 'src/utils/notify';
 
+/**
+ * @deprecated Use apiUpdate in src/api/apiUpdate.ts instead
+ */
 async function apiUpdate({
 	endPoint,
 	data,

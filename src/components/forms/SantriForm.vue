@@ -105,9 +105,6 @@ import { reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import dialogStore from 'src/stores/dialog-store';
 import santriStore from 'src/stores/santri-store';
-import apiDelete from 'src/api/api-delete';
-import apiPost from 'src/api/api-post';
-import apiUpdate from 'src/api/api-update';
 import { forceRerender } from 'src/utils/buttons-click';
 import FormHeader from 'src/components/forms/FormHeader.vue';
 import CarouselAlamat from 'src/components/forms/carousel/CarouselAlamat.vue';
@@ -116,6 +113,7 @@ import CarouselIdentity from './carousel/SantriIdentity.vue';
 import CarouselPendidikanAkhir from './carousel/SantriPendidikanAkhir.vue';
 import CarouselOrtuWali from './carousel/SantriOrtuWali.vue';
 import LoadingForm from './parts/LoadingForm.vue';
+import Santri from 'src/models/Santri';
 
 const router = useRouter();
 const route = useRoute();
@@ -142,31 +140,25 @@ const onSubmit = async () => {
 	delete data.alamat_lengkap;
 	delete data.alamat_pendek;
 
-	// console.log(data);
-	// return;
-	let response = null;
-	if (isNew) {
-		response = await apiPost({
-			endPoint: 'santri',
-			data,
-			loading: loadingCrud,
-		});
-	} else {
-		response = await apiUpdate({
-			endPoint: `santri/${route.params.id}`,
-			data,
-			confirm: true,
-			notify: true,
-			loading: loadingCrud,
-		});
-	}
-	if (response) {
-		emit('successSubmit', response.santri);
+	try {
+		loadingCrud.value = true;
+		const response = isNew
+			? await Santri.create({ data })
+			: await Santri.update({ id: route.params.id, data, confirm: true });
+		if (response) {
+			emit('successSubmit', response.santri);
 
-		if (route.params.id == santri.id) forceRerender();
-		dialogStore().toggleCrudSantri(false);
-		dialogStore().toggleSearchSantri(false);
-		router.push(`/santri/${response.santri.id}`);
+			dialogStore().toggleCrudSantri(false);
+			dialogStore().toggleSearchSantri(false);
+
+			if (route.params.id != response.santri.id) {
+				router.push(`/santri/${response.santri.id}`);
+			} else {
+				forceRerender();
+			}
+		}
+	} finally {
+		loadingCrud.value = false;
 	}
 };
 
@@ -174,16 +166,17 @@ const resetOrDelete = async () => {
 	if (isNew) {
 		santriStore().setNull();
 	} else {
-		const result = await apiDelete({
-			endPoint: `santri/${santri.id}`,
-			message: '<span style="color:\'red\'">Hapus santri?</span>',
-			loading: loadingCrud,
-		});
-		if (result) {
-			emit('successDelete');
+		try {
+			loadingCrud.value = true;
+			const response = await Santri.remove({ id: santri.id });
+			if (response) {
+				emit('successDelete');
 
-			router.push('/cari/santri');
-			dialogStore().toggleCrudSantri(false);
+				router.push('/cari/santri');
+				dialogStore().toggleCrudSantri(false);
+			}
+		} finally {
+			loadingCrud.value = false;
 		}
 	}
 };
