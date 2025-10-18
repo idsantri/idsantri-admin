@@ -105,7 +105,6 @@ import CarouselPendidikanAkhir from './carousel/SantriPendidikanAkhir.vue';
 import CarouselOrtuWali from './carousel/SantriOrtuWali.vue';
 import Santri from 'src/models/Santri';
 
-const emit = defineEmits(['successSubmit', 'successDelete']);
 const router = useRouter();
 const route = useRoute();
 const { isNew } = reactive(santriStore());
@@ -155,8 +154,6 @@ const onSubmit = async () => {
 			? await Santri.create({ data })
 			: await Santri.update({ id: route.params.id, data, confirm: true });
 		if (response) {
-			emit('successSubmit', response.santri);
-
 			dialogStore().toggleCrudSantri(false);
 			dialogStore().toggleSearchSantri(false);
 
@@ -174,19 +171,17 @@ const onSubmit = async () => {
 const resetOrDelete = async () => {
 	if (isNew) {
 		santriStore().setNull();
-	} else {
-		try {
-			loadingCrud.value = true;
-			const response = await Santri.remove({ id: santri.id });
-			if (response) {
-				emit('successDelete');
-
-				router.push('/cari/santri');
-				dialogStore().toggleCrudSantri(false);
-			}
-		} finally {
-			loadingCrud.value = false;
+		return;
+	}
+	try {
+		loadingCrud.value = true;
+		const response = await Santri.remove({ id: santri.id });
+		if (response) {
+			dialogStore().toggleCrudSantri(false);
+			router.push('/cari/santri');
 		}
+	} finally {
+		loadingCrud.value = false;
 	}
 };
 

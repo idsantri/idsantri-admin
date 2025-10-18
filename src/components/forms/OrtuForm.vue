@@ -73,71 +73,70 @@
 	</q-card>
 </template>
 <script setup>
-import { reactive, ref, toRefs } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import ortuStore from 'src/stores/ortu-store.js';
 import dialogStore from 'src/stores/dialog-store';
 import santriStore from 'src/stores/santri-store';
-import apiUpdate from 'src/api/api-update';
-import apiDelete from 'src/api/api-delete';
-import apiPost from 'src/api/api-post';
-import { forceRerender } from 'src/utils/buttons-click';
 import CarouselRegister from './carousel/OrtuRegister.vue';
 import CarouselAyah from './carousel/OrtuAyah.vue';
 import CarouselIbu from './carousel/OrtuIbu.vue';
+import Ortu from 'src/models/Ortu';
 
 const router = useRouter();
 const { ortu } = reactive(ortuStore());
 const { isNew } = reactive(ortuStore());
-const { santri } = santriStore();
-const { ortu_id } = toRefs(santri);
 const loadingCrud = ref(false);
 const inputs = ref({ ...ortu });
 
 const onSubmit = async () => {
 	const data = JSON.parse(JSON.stringify(inputs.value));
 	delete data.santri;
-	let response = null;
-	if (isNew) {
-		response = await apiPost({
-			endPoint: 'ortu',
-			data,
-			loading: loadingCrud,
-		});
-	} else {
-		response = await apiUpdate({
-			endPoint: `ortu/${ortu.id}`,
-			data,
-			confirm: true,
-			notify: true,
-			loading: loadingCrud,
-		});
-	}
-	if (response) {
-		if (isNew) {
-			ortu_id.value = response.ortu.id;
-		} else {
-			forceRerender();
+
+	try {
+		loadingCrud.value = true;
+
+		const response = isNew
+			? await Ortu.create({ data })
+			: await Ortu.update({
+					id: ortu.id,
+					data,
+					confirm: true,
+				});
+
+		if (response) {
+			ortuStore().setOrtu(response.ortu);
+			dialogStore().toggleCrudOrtu(false);
+			dialogStore().toggleSearchOrtu(false);
+
+			if (isNew) {
+				santriStore().setOrtuId(ortu.id);
+			}
 		}
-		dialogStore().toggleCrudOrtu(false);
-		dialogStore().toggleSearchOrtu(false);
+	} finally {
+		loadingCrud.value = false;
 	}
 };
 
 const resetOrDelete = async () => {
 	if (isNew) {
 		ortuStore().setNull();
-	} else {
-		const result = await apiDelete({
-			endPoint: `ortu/${ortu.id}`,
-			message:
-				'<span style="color:red">Hapus Orang Tua?</span><br/><br/><hr/><em>Pastikan yang bersangkutan tidak memiliki anak!</em><hr/>',
-			loading: loadingCrud,
+		return;
+	}
+
+	try {
+		loadingCrud.value = true;
+		const response = await Ortu.remove({
+			id: ortu.id,
+			message: `<span style="color:red">Hapus Orang Tua?</span><br/><br/>
+				<hr/><em>Pastikan yang bersangkutan tidak memiliki anak!</em><hr/>`,
 		});
-		if (result) {
-			router.push('/cari/ortu');
+		if (response) {
 			dialogStore().toggleCrudOrtu(false);
+			router.push('/cari/ortu');
 		}
+	} finally {
+		loadingCrud.value = false;
 	}
 };
 

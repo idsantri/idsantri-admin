@@ -79,29 +79,25 @@
 	</q-card>
 </template>
 <script setup>
-import { onMounted, reactive, ref, toRefs } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import waliStore from 'src/stores/wali-store';
 import dialogStore from 'src/stores/dialog-store';
 import santriStore from 'src/stores/santri-store';
 import ortuStore from 'src/stores/ortu-store';
-import apiDelete from 'src/api/api-delete';
-import apiPost from 'src/api/api-post';
-import apiUpdate from 'src/api/api-update';
 import { notifyWarning } from 'src/utils/notify';
-import { forceRerender } from 'src/utils/buttons-click';
 import CarouselAlamat from 'src/components/forms/carousel/CarouselAlamat.vue';
 import CarouselIdentity from './carousel/WaliIdentity.vue';
 import CarouselOthers from './carousel/WaliOthers.vue';
+import Wali from 'src/models/Wali';
 
 const router = useRouter();
 const { wali } = reactive(waliStore());
 const { isNew } = reactive(waliStore());
 const { ortu, isNew: newOrtu } = reactive(ortuStore());
 const { santri, isNew: newSantri, ortu: ortuSantri } = santriStore();
-const { wali_id } = toRefs(santri);
 const loadingCrud = ref(false);
-const inputs = ref({ ...wali });
+const inputs = ref({});
 
 onMounted(() => {
 	if (isNew && newSantri && newOrtu && ortuSantri.ayah == ortu.ayah) {
@@ -114,6 +110,12 @@ onMounted(() => {
 			wali.pa_diniyah_tingkat = ortu.a_pa_diniyah_tingkat;
 			wali.pekerjaan = ortu.a_pekerjaan;
 		}
+
+		/**
+		 * TODO:
+		 * salin alamat dari santri
+		 * PROBLEM: data alamat santri belum masuk ke store santri
+		 */
 		wali.provinsi = santri.provinsi;
 		wali.kabupaten = santri.kabupaten;
 		wali.kecamatan = santri.kecamatan;
@@ -122,6 +124,8 @@ onMounted(() => {
 		wali.rw = santri.rw;
 		wali.jl = santri.jl;
 		wali.kode_pos = santri.kode_pos;
+
+		inputs.value = { ...wali };
 
 		let message = ortu.a_hidup
 			? 'Data default diambilkan dari data santri dan ortu (ayah).'
@@ -145,47 +149,49 @@ function closeModal() {
 const onSubmit = async () => {
 	const data = JSON.parse(JSON.stringify(inputs.value));
 	delete data.santri;
-	let response = null;
-	if (isNew) {
-		response = await apiPost({
-			endPoint: 'wali',
-			data,
-			loading: loadingCrud,
-		});
-	} else {
-		response = await apiUpdate({
-			endPoint: `wali/${wali.id}`,
-			data,
-			confirm: true,
-			notify: true,
-			loading: loadingCrud,
-		});
-	}
-	if (response) {
-		if (isNew) {
-			wali_id.value = response.wali.id;
-		} else {
-			forceRerender();
+
+	try {
+		loadingCrud.value = true;
+		const response = isNew
+			? await Wali.create({ data })
+			: await Wali.update({
+					id: wali.id,
+					data,
+					confirm: true,
+				});
+		if (response) {
+			waliStore().setWali(response.wali);
+			dialogStore().toggleCrudWali(false);
+			dialogStore().toggleSearchWali(false);
+
+			if (isNew) {
+				santriStore().setWaliId(wali.id);
+			}
 		}
-		dialogStore().toggleCrudWali(false);
-		dialogStore().toggleSearchWali(false);
+	} finally {
+		loadingCrud.value = false;
 	}
 };
 
 const resetOrDelete = async () => {
 	if (isNew) {
 		waliStore().setNull();
-	} else {
-		const result = await apiDelete({
-			endPoint: `wali/${wali.id}`,
-			message:
-				'<span style="color:red">Hapus Wali?</span><br/><br/><hr/><em>Pastikan yang bersangkutan tidak memiliki anak!</em><hr/>',
-			loading: loadingCrud,
+		return;
+	}
+
+	try {
+		loadingCrud.value = true;
+		const response = await Wali.remove({
+			id: wali.id,
+			message: `<span style="color:red">Hapus Wali?</span><br/><br/>
+			<hr/><em>Pastikan yang bersangkutan tidak memiliki anak!</em><hr/>`,
 		});
-		if (result) {
-			router.push('/cari/wali');
+		if (response) {
 			dialogStore().toggleCrudWali(false);
+			router.push('/cari/wali');
 		}
+	} finally {
+		loadingCrud.value = false;
 	}
 };
 
