@@ -6,7 +6,7 @@
 			<q-card-section>
 				<q-input
 					dense
-					class=""
+					class="q-my-sm"
 					outlined
 					v-model="input.urut"
 					label="Nomor Urut"
@@ -15,7 +15,7 @@
 
 				<q-input
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					v-model="input.paket"
 					required
@@ -26,12 +26,12 @@
 					v-model="input.item"
 					url="iuran"
 					label="Nama Iuran"
-					class="q-mt-sm"
+					class="q-my-sm"
 					@update:model-value="setNominal"
 				/>
 				<InputCurrency
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					v-model="input.nominal"
 					required

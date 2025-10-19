@@ -3,7 +3,7 @@
 	<q-input
 		hint="Diisi otomatis oleh sistem"
 		dense
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="ID"
 		:model-value="inputs.id"
@@ -13,7 +13,7 @@
 	<q-input
 		dense
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Nama*"
 		v-model="inputs.nama"
@@ -28,7 +28,7 @@
 	<q-input
 		dense
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Nomor Induk Kependudukan"
 		v-model="inputs.nik"
@@ -38,7 +38,7 @@
 		]"
 		error-color="negative"
 	/>
-	<input-select-kota-lahir v-model="inputs.tmp_lahir" />
+	<input-select-kota-lahir v-model="inputs.tmp_lahir" class="q-my-sm" />
 
 	<q-input
 		dense
@@ -47,7 +47,7 @@
 				? formatDateFull(tgl_lahir) + ' | ' + bacaHijri(m2h(tgl_lahir))
 				: ''
 		"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Tanggal Lahir"
 		v-model="inputs.tgl_lahir"
@@ -63,7 +63,7 @@
 					? 'Perempuan'
 					: ''
 		"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Jenis Kelamin"
 		v-model="inputs.sex"

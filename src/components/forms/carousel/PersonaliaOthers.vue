@@ -4,21 +4,21 @@
 		v-model="inputs.pa_formal"
 		url="pendidikan-akhir-formal"
 		label="Pendidikan Akhir Formal"
-		class="q-mt-sm"
+		class="q-my-sm"
 		hint=""
 	/>
 	<input-select-array
 		v-model="inputs.pa_diniyah"
 		url="pendidikan-akhir-diniyah"
 		label="Pendidikan Akhir Diniyah"
-		class="q-mt-sm"
+		class="q-my-sm"
 		hint=""
 	/>
 
 	<q-input
 		dense
 		hint="08123456789"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Telepon"
 		v-model="inputs.telepon"
@@ -28,7 +28,7 @@
 	<q-input
 		dense
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Email"
 		v-model="inputs.email"

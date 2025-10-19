@@ -3,7 +3,7 @@
 	<q-input
 		dense
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Nama*"
 		v-model="inputs.ayah"
@@ -18,7 +18,7 @@
 	<q-input
 		dense
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Nomor Induk Kependudukan"
 		v-model="inputs.a_nik"
@@ -28,7 +28,7 @@
 		]"
 		error-color="negative"
 	/>
-	<input-select-kota-lahir v-model="inputs.a_tmp_lahir" />
+	<input-select-kota-lahir v-model="inputs.a_tmp_lahir" class="q-my-sm" />
 
 	<q-input
 		dense
@@ -39,13 +39,13 @@
 					bacaHijri(m2h(inputs.a_tgl_lahir))
 				: ''
 		"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Tanggal Lahir"
 		v-model="inputs.a_tgl_lahir"
 		type="date"
 	/>
-	<q-card bordered flat class="q-px-sm q-mt-sm">
+	<q-card bordered flat class="q-px-sm q-my-sm">
 		<q-toggle
 			v-model="inputs.a_hidup"
 			color="green"
@@ -58,7 +58,7 @@
 		v-model="inputs.a_pa_formal_tingkat"
 		url="pendidikan-akhir-diniyah"
 		label="Pendidikan Akhir Formal"
-		class="q-mt-sm"
+		class="q-my-sm"
 		hint=""
 		use-input=""
 		new-value-mode="add"
@@ -68,7 +68,7 @@
 		v-model="inputs.a_pa_diniyah_tingkat"
 		url="pendidikan-akhir-diniyah"
 		label="Pendidikan Akhir Diniyah"
-		class="q-mt-sm"
+		class="q-my-sm"
 		use-input=""
 		new-value-mode="add"
 		hint=""
@@ -78,7 +78,7 @@
 		v-model="inputs.a_pekerjaan"
 		url="pekerjaan"
 		label="Pekerjaan"
-		class="q-mt-sm"
+		class="q-my-sm"
 		use-input=""
 		new-value-mode="add"
 		hint=""

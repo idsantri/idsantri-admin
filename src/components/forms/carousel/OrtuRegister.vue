@@ -3,7 +3,7 @@
 	<q-input
 		hint="Diisi otomatis oleh sistem"
 		dense
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="ID"
 		:model-value="inputs.id"
@@ -13,7 +13,7 @@
 	<q-input
 		dense
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Jumlah Anak"
 		v-model="inputs.jumlah_anak"

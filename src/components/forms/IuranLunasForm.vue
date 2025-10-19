@@ -10,6 +10,7 @@
 					v-model="input.nama"
 					dense
 					outlined=""
+					class="q-my-sm"
 				/>
 				<q-input
 					disable
@@ -17,7 +18,7 @@
 					v-model="input.th_ajaran_h"
 					dense
 					outlined=""
-					class="q-mt-sm"
+					class="q-my-sm"
 				/>
 				<q-input
 					disable
@@ -25,12 +26,12 @@
 					v-model="input.item"
 					dense
 					outlined=""
-					class="q-mt-sm"
+					class="q-my-sm"
 				/>
 				<InputCurrency
 					disable
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					v-model="input.nominal"
 					required
@@ -40,13 +41,12 @@
 					v-model="input.via"
 					url="metode-pembayaran"
 					label="Via"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
 			</q-card-section>
 			<FormActions :btn-delete="false" />
 		</q-form>
-		<!-- <pre>{{ props.santri }}</pre> -->
 	</q-card>
 </template>
 <script setup>
@@ -59,7 +59,12 @@ const props = defineProps({
 	data: { type: Object, required: true },
 });
 
-const emit = defineEmits(['successSubmit', 'successUpdate']);
+const emit = defineEmits([
+	'successDelete',
+	'successSubmit',
+	'successUpdate',
+	'successCreate',
+]);
 
 const input = ref({});
 const loadingCrud = ref(false);

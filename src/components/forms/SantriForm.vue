@@ -68,28 +68,11 @@
 					/>
 				</div>
 			</q-card-section>
-			<q-card-actions class="flex bg-green-6">
-				<q-btn
-					:label="isNew ? 'Reset' : 'Hapus'"
-					class="bg-red text-red-1"
-					no-caps=""
-					@click="resetOrDelete"
-				/>
-				<q-space />
-				<q-btn
-					label="Tutup"
-					v-close-popup
-					class="bg-green-11"
-					no-caps=""
-					id="btn-close-santri-crud"
-				/>
-				<q-btn
-					type="submit"
-					label="Simpan"
-					class="bg-green-10 text-green-11"
-					no-caps=""
-				/>
-			</q-card-actions>
+			<FormActions
+				:btn-delete="true"
+				:label-delete="isNew ? 'Reset' : 'Hapus'"
+				@onDelete="resetOrDelete"
+			/>
 		</q-form>
 	</q-card>
 </template>
@@ -175,7 +158,7 @@ const onSubmit = async () => {
 
 const resetOrDelete = async () => {
 	if (isNew) {
-		santriStore().setNull();
+		inputs.value = { ...santri };
 		return;
 	}
 	try {

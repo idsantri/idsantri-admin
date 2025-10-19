@@ -8,13 +8,14 @@
 					:active-only="true"
 					@emit-input="(val) => Object.assign(input, val)"
 					:data="props.data"
+					class="q-my-sm"
 				/>
 				<InputSelectArray
 					v-model="input.th_ajaran_h"
 					url="tahun-ajaran"
 					label="Tahun Ajaran"
 					sort="desc"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:selected="input.th_ajaran_h"
 					:disable="props.disableThAjaran"
@@ -23,12 +24,12 @@
 					v-model="input.item"
 					url="iuran"
 					label="Nama Iuran"
-					class="q-mt-sm"
+					class="q-my-sm"
 					@update:model-value="setNominal"
 				/>
 				<InputCurrency
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					v-model="input.nominal"
 					required
@@ -40,7 +41,7 @@
 					v-model="input.via"
 					url="metode-pembayaran"
 					label="Via"
-					class="q-mt-sm"
+					class="q-my-sm"
 					v-show="input.id && input.lunas"
 				/>
 				<q-input
@@ -48,7 +49,7 @@
 					v-model="input.keterangan"
 					dense
 					outlined=""
-					class="q-mt-sm"
+					class="q-my-sm"
 					autogrow=""
 				/>
 			</q-card-section>

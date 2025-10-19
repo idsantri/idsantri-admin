@@ -8,6 +8,7 @@
 			<FormLoading v-if="loadingCrud" />
 			<q-card-section>
 				<q-input
+					class="q-my-sm"
 					dense
 					outlined
 					label="Nama"
@@ -16,15 +17,15 @@
 					filled=""
 				/>
 				<input-select-array
+					class="q-my-sm"
 					v-model="input.domisili"
 					url="domisili"
 					label="Domisili *"
-					class="q-mt-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
 				<q-input
+					class="q-my-sm"
 					dense
-					class="q-mt-sm"
 					outlined
 					label="Keterangan"
 					v-model="input.keterangan"

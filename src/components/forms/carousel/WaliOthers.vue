@@ -4,7 +4,7 @@
 		v-model="inputs.pa_formal_tingkat"
 		url="pendidikan-akhir-formal"
 		label="Pendidikan Akhir Formal"
-		class="q-mt-sm"
+		class="q-my-sm"
 		hint=""
 	/>
 
@@ -12,20 +12,20 @@
 		v-model="inputs.pa_diniyah_tingkat"
 		url="pendidikan-akhir-diniyah"
 		label="Pendidikan Akhir Diniyah"
-		class="q-mt-sm"
+		class="q-my-sm"
 		hint=""
 	/>
 	<InputSelectArray
 		v-model="inputs.pekerjaan"
 		url="pekerjaan"
 		label="Pekerjaan"
-		class="q-mt-sm"
+		class="q-my-sm"
 		hint=""
 	/>
 	<q-input
 		dense
 		hint="08123456789"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Telepon"
 		v-model="inputs.telepon"
@@ -35,7 +35,7 @@
 	<q-input
 		dense
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Email"
 		v-model="inputs.email"
@@ -43,7 +43,7 @@
 	<q-input
 		dense
 		hint="Penghasilan bulanan"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Penghasilan"
 		v-model="inputs.penghasilan"

@@ -5,14 +5,14 @@
 		v-model="inputs.wilayah"
 		url="wilayah-ugt"
 		label="Wilayah PJGT"
-		class="q-mt-sm"
+		class="q-my-sm"
 		hint=""
 	/>
 
 	<q-input
 		dense
 		hint="08123456789"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Telepon"
 		v-model="inputs.telepon"
@@ -22,7 +22,7 @@
 	<q-input
 		dense
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Email"
 		v-model="inputs.email"

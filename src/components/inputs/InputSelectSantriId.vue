@@ -2,7 +2,6 @@
 	<q-card class="" flat bordered>
 		<q-card-section class="q-pa-sm">
 			<q-select
-				class=""
 				dense
 				:hint="
 					$props.activeOnly

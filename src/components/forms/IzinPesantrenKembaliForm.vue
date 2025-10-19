@@ -1,9 +1,7 @@
 <template lang="">
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="setBack">
-			<q-card-section class="bg-green-7 text-green-11 q-pa-sm">
-				<div class="text-subtitle1">Tetapkan Tanggal Kembali</div>
-			</q-card-section>
+			<FormHeader title="Tetapkan Tanggal Kembali" :is-new="false" />
 			<FormLoading v-if="loadingCrud" />
 			<q-card-section class="q-pa-sm">
 				<q-input
@@ -13,7 +11,7 @@
 							? formatDateFull(input.kembali_tgl)
 							: ''
 					"
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					label="Tanggal (M)*"
 					v-model="input.kembali_tgl"
@@ -22,32 +20,11 @@
 					error-color="negative"
 				/>
 			</q-card-section>
-			<q-card-actions class="bg-green-6 text-green-11 q-pa-sm">
-				<q-btn
-					label="Belum Kembali"
-					no-caps
-					class="q-px-sm text-red-1"
-					color="negative"
-					@click="setNotBack"
-				/>
-				<q-space />
-				<q-btn
-					label="Tutup"
-					no-caps
-					class="q-px-sm"
-					color="green-4"
-					v-close-popup
-					id="btn-close-crud"
-				/>
-				<q-btn
-					label="Simpan"
-					no-caps
-					class="q-px-sm"
-					color="green-10"
-					type="submit"
-				/>
-			</q-card-actions>
-			<!-- {{ input }} -->
+			<FormActions
+				:btn-delete="!!data.kembali_tgl"
+				@on-delete="setNotBack"
+				label-delete="Belum Kembali"
+			/>
 		</q-form>
 	</q-card>
 </template>
@@ -78,7 +55,7 @@ async function setBack() {
 		message: 'Tetapkan sudah kembali ke pesantren pada tanggal ini?',
 	});
 	if (updated) {
-		document.getElementById('btn-close-crud').click();
+		document.getElementById('btn-close-form').click();
 		emit('successSubmit');
 	}
 	// console.log('back');
@@ -94,7 +71,7 @@ async function setNotBack() {
 		message: 'Tetapkan belum kembali ke pesantren?',
 	});
 	if (updated) {
-		document.getElementById('btn-close-crud').click();
+		document.getElementById('btn-close-form').click();
 		emit('successSubmit');
 	}
 	// console.log('not back');

@@ -1,6 +1,5 @@
 <template lang="">
 	<q-select
-		class="q-mt-sm"
 		dense
 		hint="Kota kelahiran"
 		outlined

@@ -14,13 +14,14 @@
 					:model-value="input?.nama + ' (' + input?.aparatur_id + ')'"
 					disable=""
 					filled=""
+					class="q-my-sm"
 				/>
 
 				<input-select-array
 					v-model="input.jabatan"
 					url="jabatan-madrasiyah"
 					label="Jabatan"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
 				<InputSelectArray
@@ -28,14 +29,14 @@
 					url="tahun-ajaran"
 					label="Tahun Ajaran *"
 					sort="desc"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:selected="input.th_ajaran_h"
 				/>
 
 				<InputSelectTingkatPendidikan
 					v-model="input.tingkat_id"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:selected="input.tingkat_id"
 				/>
@@ -43,19 +44,19 @@
 					v-model="input.kelas"
 					url="kelas"
 					label="Kelas"
-					class="q-mt-sm"
+					class="q-my-sm"
 				/>
 
 				<q-input
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					label="Ruang"
 					v-model="input.ruang"
 				/>
 				<q-input
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					label="Keterangan"
 					v-model="input.keterangan"
@@ -68,7 +69,6 @@
 				@on-delete="deleteData"
 			/>
 		</q-form>
-		<!-- <pre>{{ input }}</pre> -->
 	</q-card>
 </template>
 <script setup>

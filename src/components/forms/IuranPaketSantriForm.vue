@@ -8,19 +8,20 @@
 					:active-only="true"
 					@emit-input="(val) => Object.assign(input, val)"
 					:data="props.data"
+					class="q-my-sm"
 				/>
 				<input-select-array
 					v-model="input.th_ajaran_h"
 					url="tahun-ajaran"
 					label="Tahun Ajaran"
 					sort="desc"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:selected="input.th_ajaran_h"
 					:disable="props.disableThAjaran"
 				/>
 				<InputSelectIuranPaket
-					class="q-mt-sm"
+					class="q-my-sm"
 					@on-input="(v) => (paketIuran = v)"
 				/>
 				<q-input
@@ -28,10 +29,10 @@
 					v-model="input.keterangan"
 					dense
 					outlined=""
-					class="q-mt-sm"
+					class="q-my-sm"
 				/>
 			</q-card-section>
-			<FormActions />
+			<FormActions :btn-delete="false" />
 		</q-form>
 	</q-card>
 </template>
@@ -48,7 +49,12 @@ const props = defineProps({
 	title: { type: String, default: () => 'Input' },
 });
 
-const emit = defineEmits(['successSubmit', 'successCreate']);
+const emit = defineEmits([
+	'successDelete',
+	'successSubmit',
+	'successUpdate',
+	'successCreate',
+]);
 
 const input = ref({});
 const loadingCrud = ref(false);

@@ -14,18 +14,19 @@
 					:model-value="input?.nama + ' (' + input?.santri_id + ')'"
 					disable=""
 					filled=""
+					class="q-my-sm"
 				/>
 
 				<input-select-array
 					v-model="input.status"
 					url="status"
 					label="Status *"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
 				<q-input
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					label="Keterangan"
 					v-model="input.keterangan"

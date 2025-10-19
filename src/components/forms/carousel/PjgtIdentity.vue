@@ -3,7 +3,7 @@
 	<q-input
 		dense
 		:hint="isNew ? 'Kosongkan jika ingin diisi otomatis!' : ''"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="ID"
 		v-model="inputs.id"
@@ -13,7 +13,7 @@
 	<q-input
 		dense
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Nama*"
 		v-model="inputs.nama"
@@ -34,7 +34,7 @@
 					? 'Perempuan'
 					: ''
 		"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Jenis Kelamin"
 		v-model="inputs.sex"
@@ -49,12 +49,12 @@
 		url="jenis-lembaga-pendidikan"
 		label="Jenis Lembaga"
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 	/>
 	<q-input
 		dense
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Nama Lembaga"
 		v-model="inputs.nama_lembaga"

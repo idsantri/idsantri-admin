@@ -3,7 +3,7 @@
 	<q-input
 		dense
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Nama*"
 		v-model="inputs.nama"
@@ -17,7 +17,7 @@
 	<q-input
 		dense
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Nomor Induk Siswa Nasional"
 		v-model="inputs.nisn"
@@ -27,7 +27,7 @@
 	<q-input
 		dense
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Nomor Kartu Keluarga"
 		v-model="inputs.nkk"
@@ -40,7 +40,7 @@
 	<q-input
 		dense
 		hint=""
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Nomor Induk Kependudukan"
 		v-model="inputs.nik"
@@ -61,7 +61,7 @@
 					bacaHijri(m2h(inputs.tgl_lahir))
 				: ''
 		"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Tanggal Lahir"
 		v-model="inputs.tgl_lahir"
@@ -77,7 +77,7 @@
 					? 'Perempuan'
 					: ''
 		"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Jenis Kelamin"
 		v-model="inputs.sex"

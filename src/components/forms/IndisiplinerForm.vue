@@ -9,6 +9,7 @@
 						:active-only="true"
 						@emit-input="(val) => Object.assign(input, val)"
 						:data="props.data"
+						class="q-my-sm"
 					/>
 					<q-input
 						dense
@@ -19,7 +20,7 @@
 									bacaHijri(m2h(input.tgl_kasus))
 								: ''
 						"
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Tanggal Kasus*"
 						v-model="input.tgl_kasus"
@@ -37,7 +38,7 @@
 									bacaHijri(m2h(input.tgl_sidang))
 								: ''
 						"
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Tanggal Sidang*"
 						v-model="input.tgl_sidang"
@@ -48,7 +49,7 @@
 					<q-select
 						dense
 						v-model="input.kategori"
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Kategori*"
 						:options="categoryOptions"
@@ -72,14 +73,14 @@
 						</template>
 					</q-select>
 					<input-select-tatib-santri
-						class="q-mt-sm"
+						class="q-my-sm"
 						v-model="input.pasal"
 						:rules="[(val) => !!val || 'Harus diisi!']"
 						:selected="input.pasal ? input.pasal.join('; ') : ''"
 					/>
 					<q-input
 						dense
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Deskripsi"
 						v-model="input.deskripsi"
@@ -87,7 +88,7 @@
 					/>
 					<q-input
 						dense
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Eksekutor"
 						v-model="input.eksekutor"
@@ -96,7 +97,7 @@
 					/>
 					<q-input
 						dense
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Saksi"
 						v-model="input.saksi"
@@ -105,12 +106,12 @@
 						v-model="input.takzir"
 						url="takzir-santri"
 						label="Takzir"
-						class="q-mt-sm"
+						class="q-my-sm"
 						multiple
 					/>
 					<q-input
 						dense
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Keterangan"
 						v-model="input.keterangan"

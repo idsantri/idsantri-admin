@@ -1,13 +1,13 @@
 <template>
 	<div class="text-subtitle2">Riwayat Pendidikan</div>
 	<div class="text-italic">Sebelum masuk ke lembaga ini</div>
-	<div class="text-overline q-mt-sm">Formal</div>
+	<div class="text-overline q-my-sm">Formal</div>
 
 	<input-select-array
 		v-model="inputs.pa_formal_tingkat"
 		url="pendidikan-akhir-formal"
 		label="Pendidikan Akhir Formal"
-		class="q-mt-sm"
+		class="q-my-sm"
 		hint=""
 		use-input=""
 		new-value-mode="add"
@@ -16,7 +16,7 @@
 		v-model="inputs.pa_formal_kelas"
 		url="kelas"
 		label="Kelas"
-		class="q-mt-sm"
+		class="q-my-sm"
 		hint=""
 		use-input=""
 		new-value-mode="add"
@@ -24,7 +24,7 @@
 	<q-input
 		dense
 		hint="Nama sekolah dan alamat"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Sekolah"
 		v-model="inputs.pa_formal_alamat"
@@ -32,12 +32,12 @@
 		clearable
 	/>
 
-	<div class="text-overline q-mt-sm">Diniyah</div>
+	<div class="text-overline q-my-sm">Diniyah</div>
 	<input-select-array
 		v-model="inputs.pa_diniyah_tingkat"
 		url="pendidikan-akhir-diniyah"
 		label="Pendidikan Akhir Diniyah"
-		class="q-mt-sm"
+		class="q-my-sm"
 		hint=""
 		use-input=""
 		new-value-mode="add"
@@ -47,7 +47,7 @@
 		v-model="inputs.pa_diniyah_kelas"
 		url="kelas"
 		label="Kelas"
-		class="q-mt-sm"
+		class="q-my-sm"
 		hint=""
 		use-input=""
 		new-value-mode="add"
@@ -56,7 +56,7 @@
 	<q-input
 		dense
 		hint="Nama sekolah dan alamat"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Sekolah"
 		v-model="inputs.pa_diniyah_alamat"

@@ -9,12 +9,13 @@
 						:active-only="true"
 						@emit-input="(val) => Object.assign(input, val)"
 						:data="props.data"
+						class="q-my-sm"
 					/>
 					<input-select-array
 						v-model="input.sifat"
 						url="sifat-izin"
 						label="Sifat"
-						class="q-mt-sm"
+						class="q-my-sm"
 						:rules="[(val) => !!val || 'Harus diisi!']"
 					/>
 					<q-select
@@ -22,7 +23,7 @@
 						v-model="input.pengajuan"
 						dense
 						outlined
-						class="q-mt-sm"
+						class="q-my-sm"
 						:options="[
 							'Baru',
 							'Perpanjangan ke-1',
@@ -38,7 +39,7 @@
 								? formatDateFull(input.dari_tgl)
 								: ''
 						"
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Tanggal (M)*"
 						v-model="input.dari_tgl"
@@ -49,7 +50,7 @@
 					<q-input
 						dense
 						hint=""
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Durasi (hari)*"
 						v-model="input.durasi"
@@ -63,7 +64,7 @@
 						v-model="input.keperluan"
 						url="keperluan-izin"
 						label="Keperluan *"
-						class="q-mt-sm"
+						class="q-my-sm"
 						:rules="[(val) => !!val || 'Harus diisi!']"
 					/>
 
@@ -71,12 +72,12 @@
 						v-model="input.keterangan"
 						url="keterangan-izin"
 						label="Keterangan"
-						class="q-mt-sm"
+						class="q-my-sm"
 					/>
 
 					<q-input
 						dense
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Tujuan"
 						v-model="input.tujuan"
@@ -84,7 +85,7 @@
 					/>
 					<q-input
 						dense
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Catatan"
 						v-model="input.catatan"
