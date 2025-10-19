@@ -61,7 +61,7 @@
 		class="q-my-sm"
 		outlined
 		label="Anak ke?"
-		v-model="anak_ke"
+		v-model="inputs.anak_ke"
 	>
 		<template #after>
 			<div class="text-body2 slot-after">
