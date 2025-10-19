@@ -18,6 +18,7 @@
 				option-label="id"
 				error-color="negative"
 				:loading="loading"
+				input-debounce="400"
 				use-input
 				clearable=""
 				@filter="filterFunction"
@@ -100,11 +101,15 @@ async function getLists(val) {
 	}
 }
 
-async function filterFunction(val, update) {
+async function filterFunction(val, update, abort) {
 	if (!val) {
 		update(() => {
 			options.value = [];
 		});
+		return;
+	}
+	if (val.length < 3) {
+		abort();
 		return;
 	}
 	const listIds = await getLists(val);

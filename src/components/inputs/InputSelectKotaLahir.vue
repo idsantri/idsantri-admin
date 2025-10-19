@@ -10,7 +10,7 @@
 		map-options
 		error-color="negative"
 		:loading="loading"
-		input-debounce="100"
+		input-debounce="400"
 		use-input
 		clearable=""
 		new-value-mode="add"
@@ -38,16 +38,20 @@ async function getLists(val) {
 	}
 }
 
-async function filterFunction(val, update) {
+async function filterFunction(val, update, abort) {
 	if (!val) {
 		update(() => {
 			options.value = [];
 		});
 		return;
 	}
-	const lists = await getLists(val);
+	if (val.length < 3) {
+		abort();
+		return;
+	}
+	const listsKota = await getLists(val);
 	update(
-		() => (options.value = lists),
+		() => (options.value = listsKota),
 		(menuRef) => {
 			if (val !== '' && menuRef.options.length) {
 				menuRef.setOptionIndex(-1);
