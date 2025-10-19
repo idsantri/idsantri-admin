@@ -2,21 +2,15 @@
 	<q-card-actions class="flex bg-green-6">
 		<q-btn
 			v-if="btnDelete"
-			label="Hapus"
+			:label="labelDelete"
 			class="bg-red text-red-1"
 			no-caps=""
 			@click="$emit('onDelete')"
 		/>
-		<q-btn
-			v-if="btnReset"
-			label="Reset"
-			class="bg-red text-red-1"
-			no-caps=""
-			@click="$emit('onReset')"
-		/>
 		<q-space />
 		<q-btn
-			label="Tutup"
+			v-if="btnClose"
+			:label="labelClose"
 			v-close-popup
 			class="bg-green-11"
 			no-caps=""
@@ -24,7 +18,7 @@
 		/>
 		<q-btn
 			type="submit"
-			label="Simpan"
+			:label="labelSubmit"
 			class="bg-green-10 text-green-11"
 			no-caps=""
 		/>
@@ -32,8 +26,11 @@
 </template>
 <script setup>
 defineProps({
-	btnDelete: Boolean,
-	btnReset: Boolean,
+	btnDelete: { type: Boolean, default: true },
+	btnClose: { type: Boolean, default: true },
+	labelDelete: { type: String, default: () => 'Hapus' },
+	labelClose: { type: String, default: () => 'Tutup' },
+	labelSubmit: { type: String, default: () => 'Simpan' },
 });
 </script>
 <style lang=""></style>

@@ -2,27 +2,20 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Iuran" :is-new="input.id ? false : true" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<InputSelectSantriId
 					:active-only="true"
 					@emit-input="(val) => Object.assign(input, val)"
 					:data="props.data"
+					class="q-my-sm"
 				/>
 				<InputSelectArray
 					v-model="input.th_ajaran_h"
 					url="tahun-ajaran"
 					label="Tahun Ajaran"
 					sort="desc"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:selected="input.th_ajaran_h"
 					:disable="props.disableThAjaran"
@@ -31,12 +24,12 @@
 					v-model="input.item"
 					url="iuran"
 					label="Nama Iuran"
-					class="q-mt-sm"
+					class="q-my-sm"
 					@update:model-value="setNominal"
 				/>
 				<InputCurrency
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					v-model="input.nominal"
 					required
@@ -48,7 +41,7 @@
 					v-model="input.via"
 					url="metode-pembayaran"
 					label="Via"
-					class="q-mt-sm"
+					class="q-my-sm"
 					v-show="input.id && input.lunas"
 				/>
 				<q-input
@@ -56,7 +49,7 @@
 					v-model="input.keterangan"
 					dense
 					outlined=""
-					class="q-mt-sm"
+					class="q-my-sm"
 					autogrow=""
 				/>
 			</q-card-section>
@@ -98,8 +91,8 @@ const iuran = ref([]);
 
 onMounted(async () => {
 	Object.assign(input.value, props.data);
-	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
-	iuran.value = listsStore().getByStateName('iuran');
+	tahunAjaran.value = listsStore().getStateByKey('tahun-ajaran');
+	iuran.value = listsStore().getStateByKey('iuran');
 	// console.log('🚀 ~ onMounted ~ props.data:', props.data);
 });
 

@@ -16,10 +16,10 @@
 				/>
 			</q-card-section>
 			<q-card-section class="q-pa-sm">
-				<q-card v-if="listModel" class="">
+				<q-card v-if="listModel" class="" bordered flat>
 					<router-view :key="$route.fullPath" />
 				</q-card>
-				<q-card v-else class="">
+				<q-card v-else class="" bordered flat>
 					<q-card-section
 						class="bg-green-1 text-center text-italic text-subtitle1 q-pa-lg"
 					>
@@ -28,8 +28,6 @@
 				</q-card>
 			</q-card-section>
 		</q-card>
-		<!-- <pre>list model:{{ listModel }}</pre> -->
-		<!-- <pre>list data:{{ listData }}</pre> -->
 	</q-page>
 </template>
 <script setup>

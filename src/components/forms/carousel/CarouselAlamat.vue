@@ -1,100 +1,45 @@
 <template lang="">
 	<div class="text-subtitle2">Data Alamat</div>
-	<q-select
-		dense
-		hint=""
-		class="q-my-sm"
-		outlined
+	<InputSelectAlamat
+		@sync-click="fetchProvinsi()"
+		@route-click="$emit('emitRoute')"
 		label="Provinsi"
-		emit-value
-		map-options
 		v-model="inputs.provinsi"
 		:options="listsProvinsi"
 		:loading="loadingProvinsi"
-		behavior="menu"
-		clearable
-	>
-		<template v-slot:after>
-			<CarouselAlamatDropDown
-				@sync-click="fetchProvinsi()"
-				@route-click="$emit('emitRoute')"
-			/>
-		</template>
-	</q-select>
-
-	<q-select
-		dense
-		hint=""
 		class="q-my-sm"
-		outlined
+	/>
+	<InputSelectAlamat
+		@sync-click="fetchKabupaten()"
+		@route-click="$emit('emitRoute')"
 		label="Kabupaten/Kota"
-		emit-value
-		map-options
 		v-model="inputs.kabupaten"
 		:options="listsKabupaten"
 		:loading="loadingKabupaten"
-		behavior="menu"
-		clearable
-	>
-		<template v-slot:after>
-			<CarouselAlamatDropDown
-				@sync-click="fetchKabupaten()"
-				@route-click="$emit('emitRoute')"
-			/>
-		</template>
-	</q-select>
-
-	<q-select
-		dense
-		hint=""
 		class="q-my-sm"
-		outlined
+	/>
+	<InputSelectAlamat
+		@sync-click="fetchKecamatan()"
+		@route-click="$emit('emitRoute')"
 		label="Kecamatan"
-		emit-value
-		map-options
 		v-model="inputs.kecamatan"
 		:options="listsKecamatan"
 		:loading="loadingKecamatan"
-		behavior="menu"
-		clearable
-	>
-		<template v-slot:after>
-			<CarouselAlamatDropDown
-				@sync-click="fetchKecamatan()"
-				@route-click="$emit('emitRoute')"
-			/>
-		</template>
-	</q-select>
-
-	<q-select
-		dense
-		hint=""
 		class="q-my-sm"
-		outlined
-		label="Desa/Keluarahan"
-		emit-value
-		map-options
+	/>
+	<InputSelectAlamat
+		@sync-click="fetchDesa()"
+		@route-click="$emit('emitRoute')"
+		label="Desa/Kelurahan"
 		v-model="inputs.desa"
 		:options="listsDesa"
 		:loading="loadingDesa"
-		use-input=""
-		new-value-mode="add"
-		behavior="menu"
-		clearable
-	>
-		<template v-slot:after>
-			<CarouselAlamatDropDown
-				@sync-click="fetchDesa()"
-				@route-click="$emit('emitRoute')"
-			/>
-		</template>
-	</q-select>
-
-	<div class="row">
+		class="q-my-sm"
+	/>
+	<div class="row q-my-sm">
 		<q-input
 			dense
-			hint=""
-			class="q-my-sm col q-mr-sm"
+			class="col q-mr-sm"
 			outlined
 			label="RT"
 			v-model="inputs.rt"
@@ -103,8 +48,7 @@
 
 		<q-input
 			dense
-			hint=""
-			class="q-my-sm col q-ml-sm"
+			class="col q-ml-sm"
 			outlined
 			label="RW"
 			v-model="inputs.rw"
@@ -140,14 +84,16 @@
 import { onMounted, ref, watch } from 'vue';
 import alamatStore from 'src/stores/alamat-store';
 import Alamat from 'src/models/Alamat';
-import CarouselAlamatDropDown from './CarouselAlamatDropDown.vue';
+import InputSelectAlamat from 'src/components/inputs/InputSelectAlamat.vue';
 
-const alamat = alamatStore();
+const alamatState = alamatStore();
 const inputs = defineModel();
+
 const listsProvinsi = ref([]);
 const listsKabupaten = ref([]);
 const listsKecamatan = ref([]);
 const listsDesa = ref([]);
+
 const loadingProvinsi = ref(false);
 const loadingKabupaten = ref(false);
 const loadingKecamatan = ref(false);
@@ -192,8 +138,8 @@ async function fetchProvinsi() {
 		loadingProvinsi.value = true;
 		const data = await Alamat.searchByParams();
 		if (data) {
-			alamat.setProvinsi(data.provinsi);
-			const provinsi = alamat.getProvinsi();
+			alamatState.setProvinsi(data.provinsi);
+			const provinsi = alamatState.getProvinsi();
 			listsProvinsi.value = arrayAlamat(provinsi, 'provinsi');
 		}
 	} catch (error) {
@@ -205,7 +151,7 @@ async function fetchProvinsi() {
 
 async function checkProvinsi() {
 	listsProvinsi.value = [];
-	const provinsi = alamat.getProvinsi();
+	const provinsi = alamatState.getProvinsi();
 	if (provinsi?.length > 0) {
 		listsProvinsi.value = arrayAlamat(provinsi, 'provinsi');
 	} else {
@@ -222,8 +168,12 @@ async function fetchKabupaten() {
 		loadingKabupaten.value = true;
 		const data = await Alamat.searchByParams({ provinsi });
 		if (data) {
-			alamat.setKabupaten(data.kabupaten, { provinsi_name: provinsi });
-			const kabupaten = alamat.getKabupaten({ provinsi_name: provinsi });
+			alamatState.setKabupaten(data.kabupaten, {
+				provinsi_name: provinsi,
+			});
+			const kabupaten = alamatState.getKabupaten({
+				provinsi_name: provinsi,
+			});
 			listsKabupaten.value = arrayAlamat(kabupaten, 'kabupaten');
 		}
 	} catch (error) {
@@ -237,7 +187,7 @@ async function checkKabupaten(provinsi_name) {
 	listsKabupaten.value = [];
 	if (!provinsi_name) return;
 
-	const kabupaten = alamat.getKabupaten({ provinsi_name });
+	const kabupaten = alamatState.getKabupaten({ provinsi_name });
 	if (kabupaten?.length > 0) {
 		listsKabupaten.value = arrayAlamat(kabupaten, 'kabupaten');
 	} else {
@@ -255,11 +205,11 @@ async function fetchKecamatan() {
 		loadingKecamatan.value = true;
 		const data = await Alamat.searchByParams({ provinsi, kabupaten });
 		if (data) {
-			alamat.setKecamatan(data.kecamatan, {
+			alamatState.setKecamatan(data.kecamatan, {
 				provinsi_name: provinsi,
 				kabupaten_name: kabupaten,
 			});
-			const kecamatan = alamat.getKecamatan({
+			const kecamatan = alamatState.getKecamatan({
 				provinsi_name: provinsi,
 				kabupaten_name: kabupaten,
 			});
@@ -276,7 +226,10 @@ async function checkKecamatan(provinsi_name, kabupaten_name) {
 	listsKecamatan.value = [];
 	if (!provinsi_name || !kabupaten_name) return;
 
-	const kecamatan = alamat.getKecamatan({ provinsi_name, kabupaten_name });
+	const kecamatan = alamatState.getKecamatan({
+		provinsi_name,
+		kabupaten_name,
+	});
 	if (kecamatan?.length > 0) {
 		listsKecamatan.value = arrayAlamat(kecamatan, 'kecamatan');
 	} else {
@@ -299,12 +252,12 @@ async function fetchDesa() {
 			kecamatan,
 		});
 		if (data) {
-			alamat.setDesa(data.desa, {
+			alamatState.setDesa(data.desa, {
 				provinsi_name: provinsi,
 				kabupaten_name: kabupaten,
 				kecamatan_name: kecamatan,
 			});
-			const desa = alamat.getDesa({
+			const desa = alamatState.getDesa({
 				provinsi_name: provinsi,
 				kabupaten_name: kabupaten,
 				kecamatan_name: kecamatan,
@@ -322,7 +275,7 @@ async function checkDesa(provinsi_name, kabupaten_name, kecamatan_name) {
 	listsDesa.value = [];
 	if (!provinsi_name || !kabupaten_name || !kecamatan_name) return;
 
-	const desa = alamat.getDesa({
+	const desa = alamatState.getDesa({
 		provinsi_name,
 		kabupaten_name,
 		kecamatan_name,
@@ -349,7 +302,6 @@ watch(
 watch(
 	() => inputs.value.kabupaten,
 	async (newValue, oldValue) => {
-		console.log('watch kab');
 		if (newValue != oldValue) {
 			inputs.value.kecamatan = '';
 			inputs.value.desa = '';

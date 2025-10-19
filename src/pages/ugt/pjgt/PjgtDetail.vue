@@ -166,7 +166,7 @@
 			</div>
 		</div>
 		<q-dialog persistent="" v-model="crudShow">
-			<pjgt-crud
+			<PjgtForm
 				:is-new="false"
 				:data="pjgt"
 				@success-submit="loadPjgt()"
@@ -196,7 +196,7 @@ import apiGet from 'src/api/api-get';
 import { formatAlamatLengkap } from 'src/utils/format-text';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import PjgtCrud from 'src/pages/ugt/pjgt/PjgtCrud.vue';
+import PjgtForm from 'src/components/forms/PjgtForm.vue';
 import GtCrud from 'src/pages/ugt/gt/GtCrud.vue';
 
 const route = useRoute();

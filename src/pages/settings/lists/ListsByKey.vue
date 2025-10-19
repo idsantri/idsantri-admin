@@ -38,7 +38,7 @@
 		</div>
 	</q-card-section>
 	<q-dialog v-model="crud">
-		<lists-crud
+		<ListsForm
 			:data-input="objList"
 			:show-input="showInput"
 			@success-delete="fetchData"
@@ -51,12 +51,12 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import listData from './lists-data';
 
-import { getLists } from 'src/api/api-get-lists';
-import ListsCrud from './ListsCrud.vue';
+import ListsForm from 'src/components/forms/ListsForm.vue';
 import ListsSingle from './ListsStyleSingle.vue';
 import ListsDouble from './ListsStyleDouble.vue';
 import ListsTriple from './ListsStyleTriple.vue';
 import listsStore from 'src/stores/lists-store';
+import Lists from 'src/models/Lists';
 
 const crud = ref(false);
 const { params } = useRoute();
@@ -64,6 +64,7 @@ const loading = ref(false);
 const listGet = ref([]);
 const objList = ref({});
 const showInput = ref({});
+const store = listsStore();
 
 onMounted(async () => {
 	await fetchData();
@@ -72,20 +73,20 @@ onMounted(async () => {
 const selected = listData.find(({ url }) => url == params.listKey);
 
 async function fetchData() {
-	const data = await getLists({
-		loading,
-		key: selected.url,
-		sort: selected.sort,
-	});
-	listGet.value = data;
+	try {
+		loading.value = true;
+		const data = await Lists.getByKey(selected.url);
+		listGet.value = data[selected.key];
 
-	const store = listsStore();
-	const checkState = store.checkState(selected.url);
-	if (checkState) {
-		store.$patch({ [selected.url]: data });
+		const checkState = store.checkState(selected.key);
+		if (checkState) {
+			store.$patch({ [selected.key]: data[selected.key] });
+		}
+	} catch (error) {
+		console.log('error get list ', error);
+	} finally {
+		loading.value = false;
 	}
-	// const a = store.getByStateName_arr(selected.url);
-	// console.log(a);
 }
 
 function setInput() {

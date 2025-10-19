@@ -5,16 +5,8 @@
 				title="Input Jabatan Madrasiyah"
 				:is-new="input.id ? false : true"
 			/>
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-input
 					dense
 					outlined
@@ -22,11 +14,12 @@
 					:model-value="input?.nama + ' (' + input?.aparatur_id + ')'"
 					disable=""
 					filled=""
+					class="q-my-sm"
 				/>
 
 				<q-input
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					filled
 					label="Jabatan"
@@ -38,7 +31,7 @@
 					url="tahun-ajaran"
 					label="Tahun Ajaran *"
 					sort="desc"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:selected="input.th_ajaran_h"
 				/>
@@ -48,7 +41,7 @@
 					outlined=""
 					v-model="input.marhalah"
 					label="Marhalah *"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:options="['Ula', 'Wustho', 'Ulya']"
 				/>
@@ -56,19 +49,19 @@
 					v-model="input.faslah"
 					url="faslah-quran"
 					label="Faslah/Kelas"
-					class="q-mt-sm"
+					class="q-my-sm"
 				/>
 
 				<q-input
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					label="Ruang"
 					v-model="input.ruang"
 				/>
 				<q-input
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					label="Keterangan"
 					v-model="input.keterangan"
@@ -90,7 +83,6 @@ import listsStore from 'src/stores/lists-store';
 import apiDelete from 'src/api/api-delete';
 import apiPost from 'src/api/api-post';
 import apiUpdate from 'src/api/api-update';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 
 const props = defineProps({
@@ -110,7 +102,7 @@ const tahunAjaran = ref([]);
 
 onMounted(async () => {
 	Object.assign(input.value, props.data);
-	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
+	tahunAjaran.value = listsStore().getStateByKey('tahun-ajaran');
 });
 
 const submit = async () => {

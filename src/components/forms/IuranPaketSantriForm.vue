@@ -2,33 +2,26 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="submit">
 			<FormHeader title="Modul Paket" :is-new="true" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<input-select-santri-id
 					:active-only="true"
 					@emit-input="(val) => Object.assign(input, val)"
 					:data="props.data"
+					class="q-my-sm"
 				/>
 				<input-select-array
 					v-model="input.th_ajaran_h"
 					url="tahun-ajaran"
 					label="Tahun Ajaran"
 					sort="desc"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:selected="input.th_ajaran_h"
 					:disable="props.disableThAjaran"
 				/>
 				<InputSelectIuranPaket
-					class="q-mt-sm"
+					class="q-my-sm"
 					@on-input="(v) => (paketIuran = v)"
 				/>
 				<q-input
@@ -36,10 +29,10 @@
 					v-model="input.keterangan"
 					dense
 					outlined=""
-					class="q-mt-sm"
+					class="q-my-sm"
 				/>
 			</q-card-section>
-			<FormActions />
+			<FormActions :btn-delete="false" />
 		</q-form>
 	</q-card>
 </template>
@@ -56,7 +49,12 @@ const props = defineProps({
 	title: { type: String, default: () => 'Input' },
 });
 
-const emit = defineEmits(['successSubmit', 'successCreate']);
+const emit = defineEmits([
+	'successDelete',
+	'successSubmit',
+	'successUpdate',
+	'successCreate',
+]);
 
 const input = ref({});
 const loadingCrud = ref(false);
@@ -64,7 +62,7 @@ const tahunAjaran = ref([]);
 const paketIuran = ref([]);
 onMounted(async () => {
 	Object.assign(input.value, props.data);
-	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
+	tahunAjaran.value = listsStore().getStateByKey('tahun-ajaran');
 });
 
 const submit = async () => {

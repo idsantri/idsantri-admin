@@ -1,8 +1,8 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
-			<LoadingForm v-if="loadingCrud" />
 			<FormHeader title="Input Data Santri" :is-new="isNew" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section class="no-padding">
 				<q-carousel
 					v-model="slide"
@@ -68,52 +68,37 @@
 					/>
 				</div>
 			</q-card-section>
-			<q-card-actions class="flex bg-green-6">
-				<q-btn
-					:label="isNew ? 'Reset' : 'Hapus'"
-					class="bg-red text-red-1"
-					no-caps=""
-					@click="resetOrDelete"
-				/>
-				<q-space />
-				<q-btn
-					label="Tutup"
-					v-close-popup
-					class="bg-green-11"
-					no-caps=""
-					id="btn-close-santri-crud"
-				/>
-				<q-btn
-					type="submit"
-					label="Simpan"
-					class="bg-green-10 text-green-11"
-					no-caps=""
-				/>
-			</q-card-actions>
+			<FormActions
+				:btn-delete="true"
+				:label-delete="isNew ? 'Reset' : 'Hapus'"
+				@onDelete="resetOrDelete"
+			/>
 		</q-form>
 	</q-card>
 </template>
 <script setup>
-import { reactive, ref, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import dialogStore from 'src/stores/dialog-store';
 import santriStore from 'src/stores/santri-store';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 import CarouselRegister from './carousel/SantriRegister.vue';
 import CarouselIdentity from './carousel/SantriIdentity.vue';
 import CarouselAlamat from './carousel/CarouselAlamat.vue';
 import CarouselPendidikanAkhir from './carousel/SantriPendidikanAkhir.vue';
 import CarouselOrtuWali from './carousel/SantriOrtuWali.vue';
-import LoadingForm from './parts/LoadingForm.vue';
 import Santri from 'src/models/Santri';
+import { storeToRefs } from 'pinia';
 
-const emit = defineEmits(['successSubmit', 'successDelete']);
 const router = useRouter();
 const route = useRoute();
 const { isNew } = reactive(santriStore());
 const { santri } = reactive(santriStore());
-const inputs = ref({ ...santri });
+const { inputs } = storeToRefs(santriStore());
 const loadingCrud = ref(false);
+
+onMounted(() => {
+	inputs.value = { ...santri };
+});
 
 watch(
 	() => santri.ortu_id,
@@ -157,8 +142,6 @@ const onSubmit = async () => {
 			? await Santri.create({ data })
 			: await Santri.update({ id: route.params.id, data, confirm: true });
 		if (response) {
-			emit('successSubmit', response.santri);
-
 			dialogStore().toggleCrudSantri(false);
 			dialogStore().toggleSearchSantri(false);
 
@@ -175,20 +158,18 @@ const onSubmit = async () => {
 
 const resetOrDelete = async () => {
 	if (isNew) {
-		santriStore().setNull();
-	} else {
-		try {
-			loadingCrud.value = true;
-			const response = await Santri.remove({ id: santri.id });
-			if (response) {
-				emit('successDelete');
-
-				router.push('/cari/santri');
-				dialogStore().toggleCrudSantri(false);
-			}
-		} finally {
-			loadingCrud.value = false;
+		inputs.value = { ...santri };
+		return;
+	}
+	try {
+		loadingCrud.value = true;
+		const response = await Santri.remove({ id: santri.id });
+		if (response) {
+			dialogStore().toggleCrudSantri(false);
+			router.push('/cari/santri');
 		}
+	} finally {
+		loadingCrud.value = false;
 	}
 };
 

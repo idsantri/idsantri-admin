@@ -40,6 +40,7 @@ export default defineStore('santri', {
 			},
 			wali: { id: null, nama: null, sex: null },
 			ortu: { id: null, ayah: null, ibu: null, jumlah_anak: null },
+			inputs: {},
 			isNew: true,
 		};
 	},
@@ -47,6 +48,8 @@ export default defineStore('santri', {
 		getSantri: (state) => state.santri,
 		getWali: (state) => state.wali,
 		getOrtu: (state) => state.ortu,
+		getIsNew: (state) => state.isNew,
+		getInputs: (state) => state.inputs,
 	},
 
 	actions: {

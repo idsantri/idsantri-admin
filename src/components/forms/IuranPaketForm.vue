@@ -2,19 +2,11 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Paket Iuran" :is-new="!input.id" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-input
 					dense
-					class=""
+					class="q-my-sm"
 					outlined
 					v-model="input.urut"
 					label="Nomor Urut"
@@ -23,7 +15,7 @@
 
 				<q-input
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					v-model="input.paket"
 					required
@@ -34,12 +26,12 @@
 					v-model="input.item"
 					url="iuran"
 					label="Nama Iuran"
-					class="q-mt-sm"
+					class="q-my-sm"
 					@update:model-value="setNominal"
 				/>
 				<InputCurrency
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					v-model="input.nominal"
 					required
@@ -81,7 +73,7 @@ const iuran = ref([]);
 
 onMounted(async () => {
 	Object.assign(input.value, props.data);
-	iuran.value = listsStore().getByStateName('iuran');
+	iuran.value = listsStore().getStateByKey('iuran');
 });
 
 const setNominal = (val) => {

@@ -1,35 +1,39 @@
+import Api from './Api.js';
 import ApiCrud from './ApiCrud.js';
 
-class Alamat extends ApiCrud {
-	constructor(endpoint = '') {
+class Alamat extends Api {
+	constructor() {
 		super('alamat');
-		this._path = endpoint ? `${this._path}/${endpoint}` : this._path;
 	}
 
 	async searchByParams(params = {}) {
-		return this.getAll({ params, notifySuccess: false });
+		const resData = await this._apiGet({
+			endPoint: this._path,
+			params,
+		});
+
+		return resData.data;
 	}
 
-	async searchKabKota(params) {
-		try {
-			const { data } = await this._api.get(
-				`${this._path}/kabupaten-kota`,
-				{
-					params: { ...params },
-				},
-			);
-			return data || true;
-		} catch (error) {
-			return this._handleError(error);
-		}
+	async searchKabKota(params = {}) {
+		const resData = await this._apiGet({
+			endPoint: `${this._path}/kabupaten-kota`,
+			params,
+		});
+
+		return resData.data;
 	}
+
+	Provinsi = new AlamatRegional('provinsi');
+	Kabupaten = new AlamatRegional('kabupaten');
+	Kecamatan = new AlamatRegional('kecamatan');
+	Desa = new AlamatRegional('desa');
 }
 
-// TODO: Uncomment and implement if needed in the future
-// const alamat = new Alamat();
-// alamat.provinsi = new Alamat('provinsi');
-// alamat.kabupaten = new Alamat('kabupaten');
-// alamat.kecamatan = new Alamat('kecamatan');
-// alamat.desa = new Alamat('desa');
-
+class AlamatRegional extends ApiCrud {
+	constructor(region) {
+		super('alamat');
+		this._path = `${this._path}/${region}`;
+	}
+}
 export default new Alamat();

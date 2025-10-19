@@ -118,7 +118,7 @@ import apiPost from 'src/api/api-post';
 import apiDelete from 'src/api/api-delete';
 import { formatDateFull, isDate } from 'src/utils/format-date';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
-import FormHeader from 'src/components/forms/FormHeader.vue';
+import FormHeader from 'src/components/forms/parts/FormHeader.vue';
 
 const props = defineProps({
 	data: { type: Object, required: true },

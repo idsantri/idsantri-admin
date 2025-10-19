@@ -5,16 +5,8 @@
 				title="Input Pendidikan Quran"
 				:is-new="input.id ? false : true"
 			/>
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-input
 					dense
 					outlined
@@ -22,13 +14,14 @@
 					:model-value="input?.nama + ' (' + input?.santri_id + ')'"
 					disable=""
 					filled=""
+					class="q-my-sm"
 				/>
 				<InputSelectArray
 					v-model="input.th_ajaran_h"
 					url="tahun-ajaran"
 					label="Tahun Ajaran *"
 					sort="desc"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:selected="input.th_ajaran_h"
 				/>
@@ -37,7 +30,7 @@
 					outlined=""
 					v-model="input.marhalah"
 					label="Marhalah *"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:options="['Ula', 'Wustho', 'Ulya']"
 				/>
@@ -45,19 +38,10 @@
 					v-model="input.faslah"
 					url="faslah-quran"
 					label="Faslah/Kelas *"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
-				<!-- <q-input
-					dense
-					outlined
-					label="No Absen"
-					v-model="input.no_absen"
-					:rules="[
-						(val) => !val || !isNaN(val) || 'Hanya menerima angka!',
-					]"
-				/> -->
-				<q-card bordered flat class="q-px-sm q-mt-sm">
+				<q-card bordered flat class="q-px-sm q-my-sm">
 					<q-toggle
 						v-model="input.aktif"
 						color="green"

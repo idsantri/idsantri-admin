@@ -2,21 +2,14 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Santri Indisipliner" :is-new="!input.id" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section class="q-pa-sm">
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<div>
 					<InputSelectSantriId
 						:active-only="true"
 						@emit-input="(val) => Object.assign(input, val)"
 						:data="props.data"
+						class="q-my-sm"
 					/>
 					<q-input
 						dense
@@ -27,7 +20,7 @@
 									bacaHijri(m2h(input.tgl_kasus))
 								: ''
 						"
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Tanggal Kasus*"
 						v-model="input.tgl_kasus"
@@ -45,7 +38,7 @@
 									bacaHijri(m2h(input.tgl_sidang))
 								: ''
 						"
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Tanggal Sidang*"
 						v-model="input.tgl_sidang"
@@ -56,7 +49,7 @@
 					<q-select
 						dense
 						v-model="input.kategori"
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Kategori*"
 						:options="categoryOptions"
@@ -80,14 +73,14 @@
 						</template>
 					</q-select>
 					<input-select-tatib-santri
-						class="q-mt-sm"
+						class="q-my-sm"
 						v-model="input.pasal"
 						:rules="[(val) => !!val || 'Harus diisi!']"
 						:selected="input.pasal ? input.pasal.join('; ') : ''"
 					/>
 					<q-input
 						dense
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Deskripsi"
 						v-model="input.deskripsi"
@@ -95,7 +88,7 @@
 					/>
 					<q-input
 						dense
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Eksekutor"
 						v-model="input.eksekutor"
@@ -104,7 +97,7 @@
 					/>
 					<q-input
 						dense
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Saksi"
 						v-model="input.saksi"
@@ -113,12 +106,12 @@
 						v-model="input.takzir"
 						url="takzir-santri"
 						label="Takzir"
-						class="q-mt-sm"
+						class="q-my-sm"
 						multiple
 					/>
 					<q-input
 						dense
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Keterangan"
 						v-model="input.keterangan"
@@ -140,7 +133,6 @@ import { isDate, formatDateFull } from 'src/utils/format-date';
 import apiPost from 'src/api/api-post';
 import apiUpdate from 'src/api/api-update';
 import apiDelete from 'src/api/api-delete';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectTatibSantri from 'src/components/inputs/InputSelectTatibSantri.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';

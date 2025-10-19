@@ -5,10 +5,10 @@
 	<q-input
 		hint=""
 		dense
-		class=""
 		outlined
 		label="ID Orang Tua*"
 		v-model="inputs.ortu_id"
+		class="q-my-sm"
 	>
 		<template v-slot:append>
 			<q-btn
@@ -36,7 +36,7 @@
 	<q-input
 		hint=""
 		dense
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Nama Orang Tua"
 		:model-value="ortu?.ayah + ' | ' + ortu?.ibu"
@@ -55,7 +55,14 @@
 		</template>
 	</q-input>
 
-	<q-input hint="" dense class="" outlined label="Anak ke?" v-model="anak_ke">
+	<q-input
+		hint=""
+		dense
+		class="q-my-sm"
+		outlined
+		label="Anak ke?"
+		v-model="inputs.anak_ke"
+	>
 		<template #after>
 			<div class="text-body2 slot-after">
 				dari {{ ortu?.jumlah_anak || '?' }} bersaudara
@@ -67,7 +74,7 @@
 	<q-input
 		hint=""
 		dense
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="ID Wali*"
 		v-model="inputs.wali_id"
@@ -98,7 +105,7 @@
 	<q-input
 		hint=""
 		dense
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Nama Wali"
 		:model-value="wali?.nama + ' (' + wali?.sex + ')'"
@@ -119,7 +126,7 @@
 		v-model="inputs.wali_status"
 		url="hubungan-wali"
 		label="Status Wali*"
-		class="q-mt-sm"
+		class="q-my-sm"
 		hint="Hubungan dengan wali"
 		:rules="[(val) => !!val || 'Harus diisi!']"
 	/>

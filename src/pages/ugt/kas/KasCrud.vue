@@ -121,7 +121,7 @@ import apiGet from 'src/api/api-get';
 import apiPost from 'src/api/api-post';
 import apiUpdate from 'src/api/api-update';
 import apiDelete from 'src/api/api-delete';
-import FormHeader from 'src/components/forms/FormHeader.vue';
+import FormHeader from 'src/components/forms/parts/FormHeader.vue';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 
 const { loadingMain } = toRefs(loadingStore());

@@ -61,6 +61,7 @@ const dialog = dialogStore();
 const { searchOrtu, crudOrtu, crudSantri } = toRefs(dialog);
 const addNew = () => {
 	ortuStore().$reset();
+	ortuStore().setNew();
 	crudOrtu.value = true;
 };
 

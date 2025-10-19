@@ -24,7 +24,7 @@
 			@on-edit="onEdit"
 		/>
 		<q-dialog v-model="crudShow">
-			<CrudDesa
+			<AlamatDesaForm
 				:data="alamat"
 				@success-delete="fetchData"
 				@success-submit="fetchData"
@@ -38,7 +38,7 @@ import alamatStore from 'src/stores/alamat-store';
 import apiGet from 'src/api/api-get';
 import { notifyWarning } from 'src/utils/notify';
 import TableAlamat from './TableAlamat.vue';
-import CrudDesa from './CrudDesa.vue';
+import AlamatDesaForm from 'src/components/forms/AlamatDesaForm.vue';
 
 const props = defineProps({
 	provinsi_id: { type: String, required: true, default: '' },

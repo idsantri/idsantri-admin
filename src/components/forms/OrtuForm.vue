@@ -2,18 +2,9 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Data Orang Tua" :is-new="isNew" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section class="no-padding">
-				<div v-if="loadingCrud" style="height: 70vh">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-carousel
-					v-else
 					v-model="slide"
 					transition-prev="slide-right"
 					transition-next="slide-left"
@@ -26,26 +17,20 @@
 				>
 					<!-- identitas -->
 					<q-carousel-slide
-						:name="carousel.identitas.button"
+						name="identity"
 						class="no-wrap flex-center"
 					>
-						<CarouselIdentity :title="carousel.identitas.title" />
+						<CarouselRegister v-model="inputs" />
 					</q-carousel-slide>
 
 					<!-- ayah -->
-					<q-carousel-slide
-						:name="carousel.ayah.button"
-						class="no-wrap flex-center"
-					>
-						<CarouselAyah :title="carousel.ayah.title" />
+					<q-carousel-slide name="ayah" class="no-wrap flex-center">
+						<CarouselAyah v-model="inputs" />
 					</q-carousel-slide>
 
 					<!-- ibu -->
-					<q-carousel-slide
-						:name="carousel.ibu.button"
-						class="no-wrap flex-center"
-					>
-						<CarouselIbu :title="carousel.ibu.title" />
+					<q-carousel-slide name="ibu" class="no-wrap flex-center">
+						<CarouselIbu v-model="inputs" />
 					</q-carousel-slide>
 				</q-carousel>
 			</q-card-section>
@@ -62,126 +47,95 @@
 					/>
 				</div>
 			</q-card-section>
-			<q-card-actions class="flex bg-green-6">
-				<q-btn
-					:label="isNew ? 'Reset' : 'Hapus'"
-					class="bg-red text-red-1"
-					no-caps=""
-					@click="resetOrDelete"
-				/>
-				<q-space />
-				<q-btn
-					label="Tutup"
-					v-close-popup
-					class="bg-green-11"
-					no-caps=""
-					id="btn-close-ortu-crud"
-				/>
-				<q-btn
-					type="submit"
-					label="Simpan"
-					class="bg-green-10 text-green-11"
-					no-caps=""
-				/>
-			</q-card-actions>
+			<FormActions
+				:btn-delete="true"
+				:label-delete="isNew ? 'Reset' : 'Hapus'"
+				@onDelete="resetOrDelete"
+			/>
 		</q-form>
 	</q-card>
 </template>
 <script setup>
-import { reactive, ref, toRefs } from 'vue';
+import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import ortuStore from 'src/stores/ortu-store.js';
 import dialogStore from 'src/stores/dialog-store';
 import santriStore from 'src/stores/santri-store';
-import apiUpdate from 'src/api/api-update';
-import apiDelete from 'src/api/api-delete';
-import apiPost from 'src/api/api-post';
-import { forceRerender } from 'src/utils/buttons-click';
-import CarouselIdentity from './carousel/OrtuIdentity.vue';
+import CarouselRegister from './carousel/OrtuRegister.vue';
 import CarouselAyah from './carousel/OrtuAyah.vue';
 import CarouselIbu from './carousel/OrtuIbu.vue';
-import FormHeader from 'src/components/forms/FormHeader.vue';
+import Ortu from 'src/models/Ortu';
 
 const router = useRouter();
 const { ortu } = reactive(ortuStore());
 const { isNew } = reactive(ortuStore());
-const { santri } = santriStore();
-const { ortu_id } = toRefs(santri);
 const loadingCrud = ref(false);
+const inputs = ref({ ...ortu });
 
 const onSubmit = async () => {
-	const data = JSON.parse(JSON.stringify(ortu));
-	let response = null;
-	if (isNew) {
-		response = await apiPost({
-			endPoint: 'ortu',
-			data,
-			loading: loadingCrud,
-		});
-	} else {
-		response = await apiUpdate({
-			endPoint: `ortu/${ortu.id}`,
-			data,
-			confirm: true,
-			notify: true,
-			loading: loadingCrud,
-		});
-	}
-	if (response) {
-		if (isNew) {
-			ortu_id.value = response.ortu.id;
-		} else {
-			forceRerender();
+	const data = JSON.parse(JSON.stringify(inputs.value));
+	delete data.santri;
+
+	try {
+		loadingCrud.value = true;
+
+		const response = isNew
+			? await Ortu.create({ data })
+			: await Ortu.update({
+					id: ortu.id,
+					data,
+					confirm: true,
+				});
+
+		if (response) {
+			ortuStore().setOrtu(response.ortu);
+			dialogStore().toggleCrudOrtu(false);
+			dialogStore().toggleSearchOrtu(false);
+
+			if (isNew) {
+				santriStore().setOrtuId(ortu.id);
+			}
 		}
-		dialogStore().toggleCrudOrtu(false);
-		dialogStore().toggleSearchOrtu(false);
+	} finally {
+		loadingCrud.value = false;
 	}
 };
 
 const resetOrDelete = async () => {
 	if (isNew) {
-		ortuStore().setNull();
-	} else {
-		const result = await apiDelete({
-			endPoint: `ortu/${ortu.id}`,
-			message:
-				'<span style="color:red">Hapus Orang Tua?</span><br/><br/><hr/><em>Pastikan yang bersangkutan tidak memiliki anak!</em><hr/>',
-			loading: loadingCrud,
+		inputs.value = { ...ortu };
+		return;
+	}
+
+	try {
+		loadingCrud.value = true;
+		const response = await Ortu.remove({
+			id: ortu.id,
+			message: `<span style="color:red">Hapus Orang Tua?</span><br/><br/>
+				<hr/><em>Pastikan yang bersangkutan tidak memiliki anak!</em><hr/>`,
 		});
-		if (result) {
-			router.push('/cari/ortu');
+		if (response) {
 			dialogStore().toggleCrudOrtu(false);
+			router.push('/cari/ortu');
 		}
+	} finally {
+		loadingCrud.value = false;
 	}
 };
 
-const carousel = {
-	identitas: {
-		title: 'Identitas',
-		button: '1',
-	},
-	ayah: {
-		title: 'Data Ayah',
-		button: '2',
-	},
-	ibu: {
-		title: 'Data Ibu',
-		button: '3',
-	},
-};
-const slide = ref(carousel.identitas.button);
+const slide = ref('identity');
 const toggleOptions = [
 	{
-		label: carousel.identitas.button,
-		value: carousel.identitas.button,
+		label: 1,
+		value: 'identity',
 	},
 	{
-		label: carousel.ayah.button,
-		value: carousel.ayah.button,
+		label: 2,
+		value: 'ayah',
 	},
 	{
-		label: carousel.ibu.button,
-		value: carousel.ibu.button,
+		label: 3,
+		value: 'ibu',
 	},
 ];
 </script>

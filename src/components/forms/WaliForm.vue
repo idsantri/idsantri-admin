@@ -2,19 +2,9 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Data Wali" :is-new="isNew" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section class="no-padding">
-				<div v-if="loadingCrud" style="height: 70vh">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
-
 				<q-carousel
-					v-else
 					v-model="slide"
 					transition-prev="slide-right"
 					transition-next="slide-left"
@@ -27,31 +17,23 @@
 				>
 					<!-- identitas -->
 					<q-carousel-slide
-						:name="carousel.identitas.button"
+						name="identity"
 						class="no-wrap flex-center"
 					>
-						<CarouselIdentity :title="carousel.identitas.title" />
+						<CarouselIdentity v-model="inputs" />
 					</q-carousel-slide>
 
 					<!-- alamat -->
-					<q-carousel-slide
-						:name="carousel.alamat.button"
-						class="no-wrap flex-center"
-					>
-						<carousel-alamat
-							@emit-input="(val) => Object.assign(wali, val)"
+					<q-carousel-slide name="alamat" class="no-wrap flex-center">
+						<CarouselAlamat
+							v-model="inputs"
 							@emit-route="closeModal"
-							:data="wali"
 						/>
-						<!-- <input-alamat :title="carousel.alamat.title" /> -->
 					</q-carousel-slide>
 
 					<!-- pendidikan -->
-					<q-carousel-slide
-						:name="carousel.others.button"
-						class="no-wrap flex-center"
-					>
-						<CarouselOthers :title="carousel.others.title" />
+					<q-carousel-slide name="others" class="no-wrap flex-center">
+						<CarouselOthers v-model="inputs" />
 					</q-carousel-slide>
 				</q-carousel>
 			</q-card-section>
@@ -70,56 +52,38 @@
 				</div>
 			</q-card-section>
 
-			<!-- action -->
-			<q-card-actions class="flex bg-green-6">
-				<q-btn
-					:label="isNew ? 'Reset' : 'Hapus'"
-					class="bg-red text-red-1"
-					no-caps=""
-					@click="resetOrDelete"
-				/>
-				<q-space />
-				<q-btn
-					label="Tutup"
-					v-close-popup
-					class="bg-green-11"
-					no-caps=""
-					id="btn-close-wali-crud"
-				/>
-				<q-btn
-					type="submit"
-					label="Simpan"
-					class="bg-green-10 text-green-11"
-					no-caps=""
-				/>
-			</q-card-actions>
+			<FormActions
+				:btn-delete="true"
+				:label-delete="isNew ? 'Reset' : 'Hapus'"
+				@onDelete="resetOrDelete"
+			/>
 		</q-form>
 	</q-card>
 </template>
 <script setup>
-import { onMounted, reactive, ref, toRefs } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import waliStore from 'src/stores/wali-store';
 import dialogStore from 'src/stores/dialog-store';
 import santriStore from 'src/stores/santri-store';
 import ortuStore from 'src/stores/ortu-store';
-import apiDelete from 'src/api/api-delete';
-import apiPost from 'src/api/api-post';
-import apiUpdate from 'src/api/api-update';
 import { notifyWarning } from 'src/utils/notify';
-import { forceRerender } from 'src/utils/buttons-click';
 import CarouselAlamat from 'src/components/forms/carousel/CarouselAlamat.vue';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 import CarouselIdentity from './carousel/WaliIdentity.vue';
 import CarouselOthers from './carousel/WaliOthers.vue';
+import Wali from 'src/models/Wali';
 
 const router = useRouter();
 const { wali } = reactive(waliStore());
 const { isNew } = reactive(waliStore());
 const { ortu, isNew: newOrtu } = reactive(ortuStore());
-const { santri, isNew: newSantri, ortu: ortuSantri } = santriStore();
-const { wali_id } = toRefs(santri);
+const {
+	isNew: newSantri,
+	ortu: ortuSantri,
+	inputs: inputsSantri,
+} = santriStore();
 const loadingCrud = ref(false);
+const inputs = ref({});
 
 onMounted(() => {
 	if (isNew && newSantri && newOrtu && ortuSantri.ayah == ortu.ayah) {
@@ -132,14 +96,17 @@ onMounted(() => {
 			wali.pa_diniyah_tingkat = ortu.a_pa_diniyah_tingkat;
 			wali.pekerjaan = ortu.a_pekerjaan;
 		}
-		wali.provinsi = santri.provinsi;
-		wali.kabupaten = santri.kabupaten;
-		wali.kecamatan = santri.kecamatan;
-		wali.desa = santri.desa;
-		wali.rt = santri.rt;
-		wali.rw = santri.rw;
-		wali.jl = santri.jl;
-		wali.kode_pos = santri.kode_pos;
+
+		wali.provinsi = inputsSantri.provinsi;
+		wali.kabupaten = inputsSantri.kabupaten;
+		wali.kecamatan = inputsSantri.kecamatan;
+		wali.desa = inputsSantri.desa;
+		wali.rt = inputsSantri.rt;
+		wali.rw = inputsSantri.rw;
+		wali.jl = inputsSantri.jl;
+		wali.kode_pos = inputsSantri.kode_pos;
+
+		inputs.value = { ...wali };
 
 		let message = ortu.a_hidup
 			? 'Data default diambilkan dari data santri dan ortu (ayah).'
@@ -161,78 +128,67 @@ function closeModal() {
 }
 
 const onSubmit = async () => {
-	const data = JSON.parse(JSON.stringify(wali));
-	let response = null;
-	if (isNew) {
-		response = await apiPost({
-			endPoint: 'wali',
-			data,
-			loading: loadingCrud,
-		});
-	} else {
-		response = await apiUpdate({
-			endPoint: `wali/${wali.id}`,
-			data,
-			confirm: true,
-			notify: true,
-			loading: loadingCrud,
-		});
-	}
-	if (response) {
-		if (isNew) {
-			wali_id.value = response.wali.id;
-		} else {
-			forceRerender();
+	const data = JSON.parse(JSON.stringify(inputs.value));
+	delete data.santri;
+
+	try {
+		loadingCrud.value = true;
+		const response = isNew
+			? await Wali.create({ data })
+			: await Wali.update({
+					id: wali.id,
+					data,
+					confirm: true,
+				});
+		if (response) {
+			waliStore().setWali(response.wali);
+			dialogStore().toggleCrudWali(false);
+			dialogStore().toggleSearchWali(false);
+
+			if (isNew) {
+				santriStore().setWaliId(wali.id);
+			}
 		}
-		dialogStore().toggleCrudWali(false);
-		dialogStore().toggleSearchWali(false);
+	} finally {
+		loadingCrud.value = false;
 	}
 };
 
 const resetOrDelete = async () => {
 	if (isNew) {
-		waliStore().setNull();
-	} else {
-		const result = await apiDelete({
-			endPoint: `wali/${wali.id}`,
-			message:
-				'<span style="color:red">Hapus Wali?</span><br/><br/><hr/><em>Pastikan yang bersangkutan tidak memiliki anak!</em><hr/>',
-			loading: loadingCrud,
+		inputs.value = { ...wali };
+		return;
+	}
+
+	try {
+		loadingCrud.value = true;
+		const response = await Wali.remove({
+			id: wali.id,
+			message: `<span style="color:red">Hapus Wali?</span><br/><br/>
+			<hr/><em>Pastikan yang bersangkutan tidak memiliki anak!</em><hr/>`,
 		});
-		if (result) {
-			router.push('/cari/wali');
+		if (response) {
 			dialogStore().toggleCrudWali(false);
+			router.push('/cari/wali');
 		}
+	} finally {
+		loadingCrud.value = false;
 	}
 };
 
-const carousel = {
-	identitas: {
-		title: 'Identitas Diri',
-		button: '1',
-	},
-	alamat: {
-		title: 'Data Alamat',
-		button: '2',
-	},
-	others: {
-		title: 'Lain-Lain',
-		button: '3',
-	},
-};
-const slide = ref(carousel.identitas.button);
+const slide = ref('identity');
 const toggleOptions = [
 	{
-		label: carousel.identitas.button,
-		value: carousel.identitas.button,
+		label: 1,
+		value: 'identity',
 	},
 	{
-		label: carousel.alamat.button,
-		value: carousel.alamat.button,
+		label: 2,
+		value: 'alamat',
 	},
 	{
-		label: carousel.others.button,
-		value: carousel.others.button,
+		label: 2,
+		value: 'others',
 	},
 ];
 </script>

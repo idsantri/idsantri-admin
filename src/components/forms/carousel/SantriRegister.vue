@@ -3,7 +3,7 @@
 	<q-input
 		dense
 		hint="Kosongkan jika ingin diisi otomatis!"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="ID"
 		v-model="inputs.id"
@@ -18,7 +18,7 @@
 				? formatDateFull(inputs.tgl_daftar_m)
 				: ''
 		"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Tanggal Daftar (M)*"
 		v-model="inputs.tgl_daftar_m"
@@ -36,7 +36,7 @@
 		:hint="
 			inputs.tgl_daftar_h?.length ? bacaHijri(inputs.tgl_daftar_h) : ''
 		"
-		class="q-mt-sm"
+		class="q-my-sm"
 		outlined
 		label="Tanggal Daftar (H)*"
 		v-model="inputs.tgl_daftar_h"
@@ -57,7 +57,9 @@ const inputs = defineModel();
 watch(
 	() => inputs.value.tgl_daftar_h,
 	(newValue, _oldValue) => {
-		inputs.value.tgl_daftar_h = newValue.replace(/-/g, '');
+		if (newValue?.length) {
+			inputs.value.tgl_daftar_h = newValue.replace(/-/g, '');
+		}
 	},
 );
 </script>

@@ -4,7 +4,7 @@ import listData from 'src/pages/settings/lists/lists-data';
 function organizeData(data) {
 	const organizedData = {};
 	data.forEach((item) => {
-		organizedData[item.url] = [];
+		organizedData[item.key] = [];
 	});
 
 	return organizedData;
@@ -15,16 +15,16 @@ export default defineStore('lists-input', {
 		return organizeData(listData);
 		// return {
 		// 	domisili: [],
-		// 	'hubungan-wali': [],
+		// 	'hubungan_wali': [],
 		// };
 	},
 
 	getters: {},
 
 	actions: {
-		checkState(stateName) {
+		checkState(key) {
 			// Check if the state property exists
-			if (Object.prototype.hasOwnProperty.call(this.$state, stateName)) {
+			if (Object.prototype.hasOwnProperty.call(this.$state, key)) {
 				// Property exists
 				return true;
 			} else {
@@ -32,11 +32,13 @@ export default defineStore('lists-input', {
 				return false;
 			}
 		},
-		getByStateName(stateName) {
-			return this[stateName];
+
+		getStateByKey(key) {
+			return this[key];
 		},
-		getByStateName_arr(stateName) {
-			return this[stateName].map((v) => v.val0);
+
+		getStateByKey_Arr(key) {
+			return this[key].map((v) => v.val0);
 		},
 	},
 

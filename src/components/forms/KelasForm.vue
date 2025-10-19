@@ -2,16 +2,8 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="submit">
 			<FormHeader title="Input Kelas" :is-new="input.id ? false : true" />
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-input
 					dense
 					outlined
@@ -19,20 +11,21 @@
 					:model-value="input?.nama + ' (' + input?.santri_id + ')'"
 					disable=""
 					filled=""
+					class="q-my-sm"
 				/>
 				<InputSelectArray
 					v-model="input.th_ajaran_h"
 					url="tahun-ajaran"
 					label="Tahun Ajaran *"
 					sort="desc"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:selected="input.th_ajaran_h"
 				/>
 
 				<InputSelectTingkatPendidikan
 					v-model="input.tingkat_id"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:selected="input.tingkat_id"
 				/>
@@ -40,13 +33,13 @@
 					v-model="input.kelas"
 					url="kelas"
 					label="Kelas *"
-					class="q-mt-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
+					class="q-my-sm"
 				/>
 
 				<q-input
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					label="Nomor Absen"
 					v-model="input.no_absen"
@@ -54,7 +47,7 @@
 				/>
 				<q-input
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					label="Keterangan"
 					v-model="input.keterangan"
@@ -96,8 +89,8 @@ const tingkat = ref([]);
 
 onMounted(async () => {
 	Object.assign(input.value, props.data);
-	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
-	tingkat.value = listsStore().getByStateName('tingkat-pendidikan');
+	tahunAjaran.value = listsStore().getStateByKey('tahun-ajaran');
+	tingkat.value = listsStore().getStateByKey('tingkat-pendidikan');
 });
 
 const submit = async () => {

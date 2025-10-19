@@ -2,28 +2,20 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Izin Santri" :is-new="!input.id" />
-
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section class="q-pa-sm">
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<div>
 					<InputSelectSantriId
 						:active-only="true"
 						@emit-input="(val) => Object.assign(input, val)"
 						:data="props.data"
+						class="q-my-sm"
 					/>
 					<input-select-array
 						v-model="input.sifat"
 						url="sifat-izin"
 						label="Sifat"
-						class="q-mt-sm"
+						class="q-my-sm"
 						:rules="[(val) => !!val || 'Harus diisi!']"
 					/>
 					<q-select
@@ -31,7 +23,7 @@
 						v-model="input.pengajuan"
 						dense
 						outlined
-						class="q-mt-sm"
+						class="q-my-sm"
 						:options="[
 							'Baru',
 							'Perpanjangan ke-1',
@@ -47,7 +39,7 @@
 								? formatDateFull(input.dari_tgl)
 								: ''
 						"
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Tanggal (M)*"
 						v-model="input.dari_tgl"
@@ -58,7 +50,7 @@
 					<q-input
 						dense
 						hint=""
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Durasi (hari)*"
 						v-model="input.durasi"
@@ -72,7 +64,7 @@
 						v-model="input.keperluan"
 						url="keperluan-izin"
 						label="Keperluan *"
-						class="q-mt-sm"
+						class="q-my-sm"
 						:rules="[(val) => !!val || 'Harus diisi!']"
 					/>
 
@@ -80,12 +72,12 @@
 						v-model="input.keterangan"
 						url="keterangan-izin"
 						label="Keterangan"
-						class="q-mt-sm"
+						class="q-my-sm"
 					/>
 
 					<q-input
 						dense
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Tujuan"
 						v-model="input.tujuan"
@@ -93,7 +85,7 @@
 					/>
 					<q-input
 						dense
-						class="q-mt-sm"
+						class="q-my-sm"
 						outlined
 						label="Catatan"
 						v-model="input.catatan"
@@ -118,7 +110,6 @@ import apiDelete from 'src/api/api-delete';
 import { isDate, formatDateFull } from 'src/utils/format-date';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 
 const props = defineProps({
 	data: Object,

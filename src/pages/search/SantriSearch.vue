@@ -62,6 +62,7 @@ const { searchSantri, crudSantri } = toRefs(dialog);
 
 const addNew = () => {
 	santriStore().$reset();
+	santriStore().setNew();
 	crudSantri.value = true;
 };
 const router = useRouter();

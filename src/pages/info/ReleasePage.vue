@@ -59,6 +59,13 @@ import config from 'src/config';
 
 const releases = [
 	{
+		ver: '1.5.1',
+		date: 'Oktober 2025',
+		release: {
+			Improve: ['Perbaikan dan peningkatan performa'],
+		},
+	},
+	{
 		ver: '1.5.0',
 		date: 'Agustus 2025',
 		release: {

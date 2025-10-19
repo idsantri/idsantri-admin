@@ -5,17 +5,10 @@
 				title="Input Domisili"
 				:is-new="input.id ? false : true"
 			/>
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-input
+					class="q-my-sm"
 					dense
 					outlined
 					label="Nama"
@@ -24,15 +17,15 @@
 					filled=""
 				/>
 				<input-select-array
+					class="q-my-sm"
 					v-model="input.domisili"
 					url="domisili"
 					label="Domisili *"
-					class="q-mt-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
 				<q-input
+					class="q-my-sm"
 					dense
-					class="q-mt-sm"
 					outlined
 					label="Keterangan"
 					v-model="input.keterangan"

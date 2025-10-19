@@ -1,5 +1,4 @@
 import { notifyConfirm, notifyError, notifySuccess } from 'src/utils/notify.js';
-import apiError from 'src/api/api-error.ts';
 import apiGet from 'src/api/apiGet';
 import apiPost from 'src/api/apiPost';
 import apiUpdate from 'src/api/apiUpdate';
@@ -12,11 +11,6 @@ export default class Api {
 		this._apiPost = apiPost;
 		this._apiUpdate = apiUpdate;
 		this._apiDelete = apiDelete;
-	}
-
-	_handleError(error) {
-		apiError(error);
-		return false;
 	}
 
 	_showSuccess(message) {

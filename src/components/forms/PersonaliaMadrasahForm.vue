@@ -5,16 +5,8 @@
 				title="Input Jabatan Madrasiyah"
 				:is-new="input.id ? false : true"
 			/>
+			<FormLoading v-if="loadingCrud" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-input
 					dense
 					outlined
@@ -22,13 +14,14 @@
 					:model-value="input?.nama + ' (' + input?.aparatur_id + ')'"
 					disable=""
 					filled=""
+					class="q-my-sm"
 				/>
 
 				<input-select-array
 					v-model="input.jabatan"
 					url="jabatan-madrasiyah"
 					label="Jabatan"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
 				<InputSelectArray
@@ -36,14 +29,14 @@
 					url="tahun-ajaran"
 					label="Tahun Ajaran *"
 					sort="desc"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:selected="input.th_ajaran_h"
 				/>
 
 				<InputSelectTingkatPendidikan
 					v-model="input.tingkat_id"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:selected="input.tingkat_id"
 				/>
@@ -51,19 +44,19 @@
 					v-model="input.kelas"
 					url="kelas"
 					label="Kelas"
-					class="q-mt-sm"
+					class="q-my-sm"
 				/>
 
 				<q-input
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					label="Ruang"
 					v-model="input.ruang"
 				/>
 				<q-input
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					label="Keterangan"
 					v-model="input.keterangan"
@@ -76,7 +69,6 @@
 				@on-delete="deleteData"
 			/>
 		</q-form>
-		<!-- <pre>{{ input }}</pre> -->
 	</q-card>
 </template>
 <script setup>
@@ -85,7 +77,6 @@ import listsStore from 'src/stores/lists-store';
 import apiDelete from 'src/api/api-delete';
 import apiPost from 'src/api/api-post';
 import apiUpdate from 'src/api/api-update';
-import FormHeader from 'src/components/forms/FormHeader.vue';
 import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingkatPendidikan.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 
@@ -107,8 +98,8 @@ const tahunAjaran = ref([]);
 
 onMounted(async () => {
 	Object.assign(input.value, props.data);
-	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
-	tingkat.value = listsStore().getByStateName('tingkat-pendidikan');
+	tahunAjaran.value = listsStore().getStateByKey('tahun-ajaran');
+	tingkat.value = listsStore().getStateByKey('tingkat-pendidikan');
 });
 
 const submit = async () => {
