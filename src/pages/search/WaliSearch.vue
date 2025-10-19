@@ -59,6 +59,7 @@ const dialog = dialogStore();
 const { searchWali, crudWali, crudSantri } = toRefs(dialog);
 const addNew = () => {
 	waliStore().$reset();
+	waliStore().setNew();
 	crudWali.value = true;
 };
 

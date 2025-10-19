@@ -16,44 +16,16 @@
 		clearable=""
 		new-value-mode="add"
 		@filter="filterFunction"
-		@update:model-value="onInput"
 		behavior="menu"
 	/>
-	<!-- <pre>{{ input }}</pre> -->
 </template>
 <script setup>
-/**
- * @example
-	<input-select-kota-lahir
-		@emit-input="(val) => (input.tmp_lahir = val.tmp_lahir)"
-		:data="input" />
- */
-
 import getData from 'src/api/api-get';
-import { onMounted, ref } from 'vue';
-
-// const props = defineProps({
-// 	data: { type: Object, required: true },
-// });
-// const emit = defineEmits(['emitInput']);
+import { ref } from 'vue';
 
 const input = defineModel();
 const options = ref([]);
 const loading = ref(false);
-
-function onInput() {
-	emit('emitInput', input.value);
-}
-
-onMounted(async () => {
-	/**
-	 * tak pakai Object.assign
-	 * karena telat baca pada input aparatur
-	 */
-	// console.log('props', props.tmp_lahir);
-	// Object.assign(input.value, props.data);
-	// console.log('input', input.value);
-});
 
 async function filterFunction(val, update) {
 	if (!val) {
