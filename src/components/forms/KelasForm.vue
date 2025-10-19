@@ -89,8 +89,8 @@ const tingkat = ref([]);
 
 onMounted(async () => {
 	Object.assign(input.value, props.data);
-	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
-	tingkat.value = listsStore().getByStateName('tingkat-pendidikan');
+	tahunAjaran.value = listsStore().getStateByKey('tahun-ajaran');
+	tingkat.value = listsStore().getStateByKey('tingkat-pendidikan');
 });
 
 const submit = async () => {

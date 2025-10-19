@@ -62,7 +62,7 @@ const tahunAjaran = ref([]);
 const paketIuran = ref([]);
 onMounted(async () => {
 	Object.assign(input.value, props.data);
-	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
+	tahunAjaran.value = listsStore().getStateByKey('tahun-ajaran');
 });
 
 const submit = async () => {

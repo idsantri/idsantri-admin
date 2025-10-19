@@ -78,9 +78,9 @@ async function fetchData() {
 		const data = await Lists.getByKey(selected.url);
 		listGet.value = data[selected.key];
 
-		const checkState = store.checkState(selected.url);
+		const checkState = store.checkState(selected.key);
 		if (checkState) {
-			store.$patch({ [selected.url]: data[selected.key] });
+			store.$patch({ [selected.key]: data[selected.key] });
 		}
 	} catch (error) {
 		console.log('error get list ', error);

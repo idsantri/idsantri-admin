@@ -18,10 +18,10 @@
 	</q-select>
 </template>
 <script setup>
-import { getLists } from 'src/api/api-get-lists';
 import listsStore from 'src/stores/lists-store';
 import { onMounted, ref } from 'vue';
 import DropDownAfter from './DropDownAfter.vue';
+import Lists from 'src/models/Lists';
 
 const props = defineProps({
 	selected: {
@@ -53,6 +53,7 @@ const loading = ref(false);
 const options = ref([]);
 const store = listsStore();
 const url = 'tatib-santri';
+const key = url.replace(/-/g, '_');
 
 function mapData(data) {
 	let result = [];
@@ -65,23 +66,26 @@ function mapData(data) {
 }
 
 onMounted(async () => {
-	const data = store.getByStateName(url);
+	const data = store.getStateByKey(key);
 	if (data.length) {
 		options.value = mapData(data);
 	} else {
 		await fetchList();
-		const result = store.getByStateName(url);
+		const result = store.getStateByKey(key);
 		options.value = mapData(result);
 	}
 });
 
 async function fetchList() {
-	const data = await getLists({
-		key: url,
-		loading,
-		sort: 'asc',
-	});
-	store.$patch({ [url]: data });
+	try {
+		loading.value = true;
+		const data = await Lists.getByKey(url);
+		store.$patch({ [key]: data[key] });
+	} catch (error) {
+		console.log('error get list ', error);
+	} finally {
+		loading.value = false;
+	}
 }
 </script>
 <style lang=""></style>

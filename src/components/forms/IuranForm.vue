@@ -91,8 +91,8 @@ const iuran = ref([]);
 
 onMounted(async () => {
 	Object.assign(input.value, props.data);
-	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
-	iuran.value = listsStore().getByStateName('iuran');
+	tahunAjaran.value = listsStore().getStateByKey('tahun-ajaran');
+	iuran.value = listsStore().getStateByKey('iuran');
 	// console.log('🚀 ~ onMounted ~ props.data:', props.data);
 });
 

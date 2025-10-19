@@ -109,22 +109,29 @@ const ArrayCrud = (() => {
 		const newArray = [...currentArray];
 
 		if (typeof sortBy === 'string') {
-			// Sort by key
 			newArray.sort((a, b) => {
-				const aVal = a[sortBy];
-				const bVal = b[sortBy];
+				let aVal = a[sortBy];
+				let bVal = b[sortBy];
 
-				if (order === 'asc') {
-					return aVal > bVal ? 1 : -1;
-				} else {
-					return aVal < bVal ? 1 : -1;
+				// Tambahkan pengecekan dan konversi untuk string agar case-insensitive
+				if (typeof aVal === 'string' && typeof bVal === 'string') {
+					aVal = aVal.toLowerCase();
+					bVal = bVal.toLowerCase();
 				}
+
+				// Aturan perbandingan
+				if (aVal < bVal) {
+					return order === 'asc' ? -1 : 1;
+				}
+				if (aVal > bVal) {
+					return order === 'asc' ? 1 : -1;
+				}
+				return 0; // Kedua nilai sama
 			});
 		} else if (typeof sortBy === 'function') {
-			// Sort by function
+			// Sort by function (tetap menggunakan fungsi kustom yang disediakan)
 			newArray.sort(sortBy);
 		}
-
 		return newArray;
 	}
 
