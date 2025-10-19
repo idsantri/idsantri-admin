@@ -23,7 +23,7 @@
 			@on-edit="onEdit"
 		/>
 		<q-dialog v-model="crudShow">
-			<CrudProvinsi
+			<AlamatProvinsiForm
 				:data="alamat"
 				@success-delete="fetchData"
 				@success-submit="fetchData"
@@ -36,7 +36,7 @@ import { onMounted, ref } from 'vue';
 import alamatStore from 'src/stores/alamat-store';
 import apiGet from 'src/api/api-get';
 import TableAlamat from './TableAlamat.vue';
-import CrudProvinsi from './CrudProvinsi.vue';
+import AlamatProvinsiForm from 'src/components/forms/AlamatProvinsiForm.vue';
 
 const rows = ref([]);
 const loading = ref(false);
