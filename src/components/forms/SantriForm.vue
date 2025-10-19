@@ -94,7 +94,7 @@
 	</q-card>
 </template>
 <script setup>
-import { reactive, ref, watch } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import dialogStore from 'src/stores/dialog-store';
 import santriStore from 'src/stores/santri-store';
@@ -104,13 +104,18 @@ import CarouselAlamat from './carousel/CarouselAlamat.vue';
 import CarouselPendidikanAkhir from './carousel/SantriPendidikanAkhir.vue';
 import CarouselOrtuWali from './carousel/SantriOrtuWali.vue';
 import Santri from 'src/models/Santri';
+import { storeToRefs } from 'pinia';
 
 const router = useRouter();
 const route = useRoute();
 const { isNew } = reactive(santriStore());
 const { santri } = reactive(santriStore());
-const inputs = ref({ ...santri });
+const { inputs } = storeToRefs(santriStore());
 const loadingCrud = ref(false);
+
+onMounted(() => {
+	inputs.value = { ...santri };
+});
 
 watch(
 	() => santri.ortu_id,

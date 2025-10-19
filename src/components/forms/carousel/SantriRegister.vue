@@ -57,7 +57,9 @@ const inputs = defineModel();
 watch(
 	() => inputs.value.tgl_daftar_h,
 	(newValue, _oldValue) => {
-		inputs.value.tgl_daftar_h = newValue.replace(/-/g, '');
+		if (newValue?.length) {
+			inputs.value.tgl_daftar_h = newValue.replace(/-/g, '');
+		}
 	},
 );
 </script>

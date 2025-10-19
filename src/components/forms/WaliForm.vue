@@ -95,7 +95,11 @@ const router = useRouter();
 const { wali } = reactive(waliStore());
 const { isNew } = reactive(waliStore());
 const { ortu, isNew: newOrtu } = reactive(ortuStore());
-const { santri, isNew: newSantri, ortu: ortuSantri } = santriStore();
+const {
+	isNew: newSantri,
+	ortu: ortuSantri,
+	inputs: inputsSantri,
+} = santriStore();
 const loadingCrud = ref(false);
 const inputs = ref({});
 
@@ -111,19 +115,14 @@ onMounted(() => {
 			wali.pekerjaan = ortu.a_pekerjaan;
 		}
 
-		/**
-		 * TODO:
-		 * salin alamat dari santri
-		 * PROBLEM: data alamat santri belum masuk ke store santri
-		 */
-		wali.provinsi = santri.provinsi;
-		wali.kabupaten = santri.kabupaten;
-		wali.kecamatan = santri.kecamatan;
-		wali.desa = santri.desa;
-		wali.rt = santri.rt;
-		wali.rw = santri.rw;
-		wali.jl = santri.jl;
-		wali.kode_pos = santri.kode_pos;
+		wali.provinsi = inputsSantri.provinsi;
+		wali.kabupaten = inputsSantri.kabupaten;
+		wali.kecamatan = inputsSantri.kecamatan;
+		wali.desa = inputsSantri.desa;
+		wali.rt = inputsSantri.rt;
+		wali.rw = inputsSantri.rw;
+		wali.jl = inputsSantri.jl;
+		wali.kode_pos = inputsSantri.kode_pos;
 
 		inputs.value = { ...wali };
 
