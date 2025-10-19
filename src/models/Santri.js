@@ -8,17 +8,13 @@ class Santri extends ApiCrud {
 		throw new Error('Use datatables.net method instead of this');
 	}
 
-	async getIds({ _params = {} }) {
-		throw new Error('not implemented yet');
-		// try {
-		// 	const { data } = await this._api.get(`${this._path}/ids`, {
-		// 		params,
-		// 	});
+	async getIds(params = {}) {
+		const resData = await this._apiGet({
+			endPoint: `${this._path}/ids`,
+			params,
+		});
 
-		// 	return data;
-		// } catch (error) {
-		// 	return this._handleError(error);
-		// }
+		return resData.data;
 	}
 
 	async #getParents(santriId, parent, notifySuccess = true) {

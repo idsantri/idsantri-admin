@@ -53,7 +53,7 @@
 	</q-card>
 </template>
 <script setup>
-import getData from 'src/api/api-get';
+import Santri from 'src/models/Santri';
 import { onMounted, ref } from 'vue';
 
 const props = defineProps({
@@ -76,7 +76,6 @@ function onInput() {
 	)?.data_akhir;
 
 	emit('emitInput', input.value);
-	// console.log('input', input.value);
 }
 
 onMounted(async () => {
@@ -86,9 +85,20 @@ onMounted(async () => {
 		data_akhir: props.data?.data_akhir,
 	};
 	Object.assign(input.value, data);
-	// console.log('props', props.data);
-	// console.log('data', data);
 });
+
+async function getLists(val) {
+	try {
+		loading.value = true;
+		const response = await Santri.getIds({
+			active_only: props.activeOnly ? true : false,
+			q: val,
+		});
+		return response.lists;
+	} finally {
+		loading.value = false;
+	}
+}
 
 async function filterFunction(val, update) {
 	if (!val) {
@@ -97,17 +107,9 @@ async function filterFunction(val, update) {
 		});
 		return;
 	}
-	const data = await getData({
-		endPoint: 'santri/ids',
-		loading: loading,
-		params: {
-			active_only: props.activeOnly ? true : false,
-			q: val,
-		},
-	});
-	// console.log(data);
+	const listIds = await getLists(val);
 	update(
-		() => (options.value = data.lists),
+		() => (options.value = listIds),
 		(menuRef) => {
 			if (val !== '' && menuRef.options.length) {
 				menuRef.setOptionIndex(-1);

@@ -10,18 +10,13 @@ class Alamat extends ApiCrud {
 		return this.getAll({ params, notifySuccess: false });
 	}
 
-	async searchKabKota(params) {
-		try {
-			const { data } = await this._api.get(
-				`${this._path}/kabupaten-kota`,
-				{
-					params: { ...params },
-				},
-			);
-			return data || true;
-		} catch (error) {
-			return this._handleError(error);
-		}
+	async searchKabKota(params = {}) {
+		const resData = await this._apiGet({
+			endPoint: `${this._path}/kabupaten-kota`,
+			params,
+		});
+
+		return resData.data;
 	}
 }
 

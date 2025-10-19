@@ -19,12 +19,24 @@
 	/>
 </template>
 <script setup>
-import getData from 'src/api/api-get';
+import Alamat from 'src/models/Alamat';
 import { ref } from 'vue';
 
 const input = defineModel();
 const options = ref([]);
 const loading = ref(false);
+
+async function getLists(val) {
+	try {
+		loading.value = true;
+		const response = await Alamat.searchKabKota({
+			q: val,
+		});
+		return response.kabupaten_kota;
+	} finally {
+		loading.value = false;
+	}
+}
 
 async function filterFunction(val, update) {
 	if (!val) {
@@ -33,16 +45,9 @@ async function filterFunction(val, update) {
 		});
 		return;
 	}
-	const data = await getData({
-		endPoint: 'alamat/kabupaten-kota',
-		loading,
-		params: {
-			q: val,
-		},
-	});
-	// console.log(data);
+	const lists = await getLists(val);
 	update(
-		() => (options.value = data.kabupaten_kota),
+		() => (options.value = lists),
 		(menuRef) => {
 			if (val !== '' && menuRef.options.length) {
 				menuRef.setOptionIndex(-1);
