@@ -38,7 +38,7 @@
 		</div>
 	</q-card-section>
 	<q-dialog v-model="crud">
-		<lists-crud
+		<ListsForm
 			:data-input="objList"
 			:show-input="showInput"
 			@success-delete="fetchData"
@@ -52,7 +52,7 @@ import { useRoute } from 'vue-router';
 import listData from './lists-data';
 
 import { getLists } from 'src/api/api-get-lists';
-import ListsCrud from './ListsCrud.vue';
+import ListsForm from 'src/components/forms/ListsForm.vue';
 import ListsSingle from './ListsStyleSingle.vue';
 import ListsDouble from './ListsStyleDouble.vue';
 import ListsTriple from './ListsStyleTriple.vue';
