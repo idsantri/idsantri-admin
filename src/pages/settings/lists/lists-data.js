@@ -177,7 +177,13 @@ const data = [
 	},
 ];
 
-const listData = Object.values(data).sort((a, b) => {
+// Menambahkan properti 'key' ke setiap objek
+const dataWithKey = data.map((item) => ({
+	...item,
+	key: item.url.replace(/-/g, '_'),
+}));
+
+const listData = Object.values(dataWithKey).sort((a, b) => {
 	return a.label > b.label ? 1 : -1;
 });
 

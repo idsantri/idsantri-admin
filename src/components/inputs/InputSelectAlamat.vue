@@ -46,7 +46,7 @@
 </template>
 <script setup>
 const input = defineModel();
-const props = defineProps({
+defineProps({
 	options: {
 		type: Array,
 		default: () => [],
