@@ -17,7 +17,7 @@ const ArrayCrud = (() => {
 	 * CREATE - Menambahkan object baru ke array
 	 * @param {Array} currentArray - Array saat ini (ref.value)
 	 * @param {Object} newObject - Object yang akan ditambahkan
-	 * @param {string} position - Posisi penambahan ("first" atau "back")
+	 * @param {string} position - Posisi penambahan ("first" atau "last")
 	 * @returns {Array} Array baru untuk update state
 	 */
 	function create(currentArray, newObject, position = 'last') {
