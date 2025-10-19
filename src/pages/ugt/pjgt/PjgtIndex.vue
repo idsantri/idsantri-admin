@@ -73,7 +73,7 @@
 			</q-card-section>
 		</q-card>
 		<q-dialog persistent="" v-model="crudShow">
-			<modal-pjgt
+			<PjgtForm
 				:is-new="true"
 				:data="{}"
 				@success-submit="(v) => $router.push(`/ugt/pjgt/${v.id}`)"
@@ -88,7 +88,7 @@
 import { ref, onMounted } from 'vue';
 import apiGet from 'src/api/api-get';
 import { getListsCustom } from 'src/api/api-get-lists';
-import ModalPjgt from 'src/pages/ugt/pjgt/PjgtCrud.vue';
+import PjgtForm from 'src/components/forms/PjgtForm.vue';
 
 const pjgt = ref([]);
 const loading = ref(false);

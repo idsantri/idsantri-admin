@@ -1,7 +1,7 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
-			<FormHeader title="Input Data Personalia" :is-new="isNew" />
+			<FormHeader title="Input Data PJGT" :is-new="props.isNew" />
 			<FormLoading v-if="loadingCrud" />
 			<q-card-section class="no-padding">
 				<q-carousel
@@ -11,26 +11,23 @@
 					animated
 					control-color="primary"
 					class="full-width"
-					style="height: 70vh"
+					style="height: 60vh"
 					swipeable
 					infinite
 				>
-					<!-- identitas -->
 					<q-carousel-slide
 						name="identity"
 						class="no-wrap flex-center"
 					>
-						<PersonaliaIdentity v-model="inputs" />
+						<PjgtIdentity v-model="inputs" />
 					</q-carousel-slide>
 
-					<!-- alamat -->
 					<q-carousel-slide name="alamat" class="no-wrap flex-center">
-						<CarouselAlamat v-model="inputs" @emit-route="null" />
+						<carousel-alamat v-model="inputs" />
 					</q-carousel-slide>
 
-					<!-- lain-lain -->
 					<q-carousel-slide name="others" class="no-wrap flex-center">
-						<PersonaliaOthers v-model="inputs" />
+						<PjgtOthers v-model="inputs" />
 					</q-carousel-slide>
 				</q-carousel>
 			</q-card-section>
@@ -46,23 +43,45 @@
 					/>
 				</div>
 			</q-card-section>
-
-			<FormActions
-				:btn-delete="isNew ? false : true"
-				@on-delete="handleDelete"
-			/>
+			<q-card-actions class="flex bg-green-6">
+				<q-btn
+					v-show="!$props.isNew"
+					label="Hapus"
+					class="bg-red text-red-1"
+					no-caps=""
+					@click="handleDelete"
+				/>
+				<q-space />
+				<q-btn
+					label="Tutup"
+					v-close-popup
+					class="bg-green-11"
+					no-caps=""
+					id="btn-close-form"
+				/>
+				<q-btn
+					type="submit"
+					label="Simpan"
+					class="bg-green-10 text-green-11"
+					no-caps=""
+				/>
+			</q-card-actions>
 		</q-form>
 	</q-card>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import CarouselAlamat from 'src/components/forms/carousel/CarouselAlamat.vue';
-import PersonaliaIdentity from './carousel/PersonaliaIdentity.vue';
-import PersonaliaOthers from './carousel/PersonaliaOthers.vue';
-import Aparatur from 'src/models/Aparatur';
+import PjgtIdentity from './carousel/PjgtIdentity.vue';
+import PjgtOthers from './carousel/PjgtOthers.vue';
+import UgtPjgt from 'src/models/UgtPjgt';
+
+const loadingCrud = ref(false);
 
 const props = defineProps({
 	data: Object,
+	isNew: Boolean,
 });
 const emit = defineEmits([
 	'successDelete',
@@ -71,32 +90,34 @@ const emit = defineEmits([
 	'successCreate',
 ]);
 
+const route = useRoute();
 const inputs = ref({});
-const loadingCrud = ref(false);
-const isNew = !props.data?.id;
 
 onMounted(async () => {
 	Object.assign(inputs.value, props.data);
+	if (!inputs.value.provinsi) inputs.value.provinsi = 'Jawa Timur';
 });
 
 const onSubmit = async () => {
 	const data = JSON.parse(JSON.stringify(inputs.value));
-	delete data.image;
-	delete data.aktif;
-
+	const isNew = props.isNew;
 	try {
 		loadingCrud.value = true;
 		const response = isNew
-			? await Aparatur.create({ data })
-			: await Aparatur.update({ id: props.data.id, data, confirm: true });
+			? await UgtPjgt.create({ data })
+			: await UgtPjgt.update({
+					id: route.params.id,
+					data,
+					confirm: true,
+				});
 
 		if (response) {
 			document.getElementById('btn-close-form').click();
-			emit('successSubmit', response?.aparatur);
+			emit('successSubmit', response?.pjgt);
 			if (isNew) {
-				emit('successCreate', response?.aparatur);
+				emit('successCreate', response?.pjgt);
 			} else {
-				emit('successUpdate', response?.aparatur);
+				emit('successUpdate', response?.pjgt);
 			}
 		}
 	} finally {
@@ -107,9 +128,9 @@ const onSubmit = async () => {
 const handleDelete = async () => {
 	try {
 		loadingCrud.value = true;
-		const id = props.data.id;
+		const id = route.params.id;
 
-		const result = await Aparatur.remove({ id });
+		const result = await UgtPjgt.remove({ id });
 		if (result) {
 			document.getElementById('btn-close-form').click();
 			emit('successDelete', id);

@@ -16,6 +16,7 @@
 		/>
 		<q-space />
 		<q-btn
+			v-if="btnClose"
 			label="Tutup"
 			v-close-popup
 			class="bg-green-11"
@@ -34,6 +35,7 @@
 defineProps({
 	btnDelete: Boolean,
 	btnReset: Boolean,
+	btnClose: { type: Boolean, default: true },
 });
 </script>
 <style lang=""></style>
