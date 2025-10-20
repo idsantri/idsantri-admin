@@ -2,10 +2,10 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader
-				:title="'Input List ' + kebabToTitleCase(dataInput?.key || '')"
+				:title="'Input List ' + kebabToTitleCase(data?.key || '')"
 				:is-new="isNew"
 			/>
-			<FormLoading v-if="loadingCrud" />
+			<FormLoading v-if="loading" />
 			<q-card-section class="q-pa-sm">
 				<q-input
 					label="text1"
@@ -14,8 +14,8 @@
 					outlined
 					v-model="inputs.val0"
 					autogrow=""
-					:loading="loadingCrud"
-					v-if="props.showInput.val0"
+					:loading="loading"
+					v-if="showInput.val0"
 				/>
 				<q-input
 					label="text2"
@@ -24,8 +24,8 @@
 					outlined
 					v-model="inputs.val1"
 					autogrow=""
-					:loading="loadingCrud"
-					v-if="props.showInput.val1"
+					:loading="loading"
+					v-if="showInput.val1"
 				/>
 				<q-input
 					label="text3"
@@ -34,8 +34,8 @@
 					outlined
 					v-model="inputs.val2"
 					autogrow=""
-					:loading="loadingCrud"
-					v-if="props.showInput.val2"
+					:loading="loading"
+					v-if="showInput.val2"
 				/>
 			</q-card-section>
 
@@ -44,12 +44,13 @@
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { kebabToTitleCase } from 'src/utils/format-text';
 import Lists from 'src/models/Lists';
+import useCrudForm from './utils/useCrudForm';
 
 const props = defineProps({
-	dataInput: {
+	data: {
 		type: Object,
 		required: true,
 	},
@@ -65,55 +66,29 @@ const emit = defineEmits([
 	'successCreate',
 ]);
 
-const loadingCrud = ref(false);
-const inputs = ref({});
-const isNew = !props.dataInput?.id;
+const inputs = ref({ ...props.data });
+const isNew = !props.data?.id;
 
-onMounted(() => {
-	Object.assign(inputs.value, props.dataInput);
-});
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
+	Lists,
+	{
+		emit: emit,
+		responseKey: 'list',
+	},
+);
 
 async function onSubmit() {
 	const data = JSON.parse(JSON.stringify(inputs.value));
 	delete data.id;
-
-	try {
-		loadingCrud.value = true;
-		const response = isNew
-			? await Lists.create({ data })
-			: await Lists.update({
-					id: props.dataInput.id,
-					data,
-					confirm: true,
-				});
-
-		if (response) {
-			document.getElementById('btn-close-form').click();
-			emit('successSubmit', response?.list);
-			if (isNew) {
-				emit('successCreate', response?.list);
-			} else {
-				emit('successUpdate', response?.list);
-			}
-		}
-	} finally {
-		loadingCrud.value = false;
+	if (isNew) {
+		return await handleCreate(data, true);
+	} else {
+		return await handleUpdate(props.data.id, data, true);
 	}
 }
 
 async function onDelete() {
-	try {
-		loadingCrud.value = true;
-		const id = props.dataInput.id;
-
-		const result = await Lists.remove({ id });
-		if (result) {
-			document.getElementById('btn-close-form').click();
-			emit('successDelete', id);
-		}
-	} finally {
-		loadingCrud.value = false;
-	}
+	return await handleDelete(props.data.id);
 }
 </script>
 <style lang=""></style>

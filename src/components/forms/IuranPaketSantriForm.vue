@@ -1,23 +1,23 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
-		<q-form @submit.prevent="submit">
+		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Modul Paket" :is-new="true" />
-			<FormLoading v-if="loadingCrud" />
+			<FormLoading v-if="loading" />
 			<q-card-section>
 				<input-select-santri-id
 					:active-only="true"
-					@emit-input="(val) => Object.assign(input, val)"
+					@emit-input="(val) => Object.assign(inputs, val)"
 					:data="props.data"
 					class="q-my-sm"
 				/>
 				<input-select-array
-					v-model="input.th_ajaran_h"
+					v-model="inputs.th_ajaran_h"
 					url="tahun-ajaran"
 					label="Tahun Ajaran"
 					sort="desc"
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
-					:selected="input.th_ajaran_h"
+					:selected="inputs.th_ajaran_h"
 					:disable="props.disableThAjaran"
 				/>
 				<InputSelectIuranPaket
@@ -26,7 +26,7 @@
 				/>
 				<q-input
 					label="Keterangan"
-					v-model="input.keterangan"
+					v-model="inputs.keterangan"
 					dense
 					outlined=""
 					class="q-my-sm"
@@ -37,12 +37,11 @@
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
-import listsStore from 'src/stores/lists-store';
-import apiPost from 'src/api/api-post';
+import { ref } from 'vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import InputSelectIuranPaket from '../inputs/InputSelectIuranPaket.vue';
+import Iuran from 'src/models/Iuran';
 
 const props = defineProps({
 	data: { type: Object, required: false, default: () => {} },
@@ -56,43 +55,40 @@ const emit = defineEmits([
 	'successCreate',
 ]);
 
-const input = ref({});
-const loadingCrud = ref(false);
-const tahunAjaran = ref([]);
+const inputs = ref({ ...props.data });
+const loading = ref(false);
 const paketIuran = ref([]);
-onMounted(async () => {
-	Object.assign(input.value, props.data);
-	tahunAjaran.value = listsStore().getStateByKey('tahun-ajaran');
-});
 
-const submit = async () => {
-	// console.log(paketIuran.value);
+const onSubmit = async () => {
 	const paket = paketIuran.value.map((o) => {
 		return { item: o.item, nominal: o.nominal };
 	});
-	// console.log(paket);
-	// return;
 
 	const data = {
-		santri_id: input.value.santri_id,
-		th_ajaran_h: input.value.th_ajaran_h,
-		keterangan: input.value.keterangan || '',
+		santri_id: inputs.value.santri_id,
+		th_ajaran_h: inputs.value.th_ajaran_h,
+		keterangan: inputs.value.keterangan || '',
 		paket: paket,
 	};
-	// console.log(data);
-	// return;
 
-	const response = await apiPost({
-		endPoint: 'iuran/paket',
-		data,
-		loading: loadingCrud,
-		message:
-			'PERHATIAN<br/>Jika item iuran sudah terdapat dalam daftar maka akan diabaikan.',
-	});
-	if (response) {
-		document.getElementById('btn-close-form').click();
-		emit('successSubmit', response?.iuran);
-		emit('successCreate', response?.iuran);
+	try {
+		loading.value = true;
+
+		const response = await Iuran.storePaketSantri({
+			data,
+			message:
+				'PERHATIAN<br/>Jika item iuran sudah terdapat dalam daftar maka akan diabaikan.',
+		});
+
+		if (response) {
+			document.getElementById('btn-close-form').click();
+			emit('successSubmit', response?.iuran);
+			emit('successCreate', response?.iuran);
+		}
+	} catch (error) {
+		console.error('err set paket iuran', error);
+	} finally {
+		loading.value = false;
 	}
 };
 </script>

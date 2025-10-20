@@ -2,7 +2,7 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Data Personalia" :is-new="isNew" />
-			<FormLoading v-if="loadingCrud" />
+			<FormLoading v-if="loading" />
 			<q-card-section class="no-padding">
 				<q-carousel
 					v-model="slide"
@@ -49,17 +49,18 @@
 
 			<FormActions
 				:btn-delete="isNew ? false : true"
-				@on-delete="handleDelete"
+				@on-delete="onDelete"
 			/>
 		</q-form>
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import CarouselAlamat from 'src/components/forms/carousel/CarouselAlamat.vue';
 import PersonaliaIdentity from './carousel/PersonaliaIdentity.vue';
 import PersonaliaOthers from './carousel/PersonaliaOthers.vue';
 import Aparatur from 'src/models/Aparatur';
+import useCrudForm from './utils/useCrudForm';
 
 const props = defineProps({
 	data: Object,
@@ -71,52 +72,31 @@ const emit = defineEmits([
 	'successCreate',
 ]);
 
-const inputs = ref({});
-const loadingCrud = ref(false);
+const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
 
-onMounted(async () => {
-	Object.assign(inputs.value, props.data);
-});
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
+	Aparatur,
+	{
+		emit: emit,
+		responseKey: 'aparatur',
+	},
+);
 
 const onSubmit = async () => {
 	const data = JSON.parse(JSON.stringify(inputs.value));
 	delete data.image;
 	delete data.aktif;
 
-	try {
-		loadingCrud.value = true;
-		const response = isNew
-			? await Aparatur.create({ data })
-			: await Aparatur.update({ id: props.data.id, data, confirm: true });
-
-		if (response) {
-			document.getElementById('btn-close-form').click();
-			emit('successSubmit', response?.aparatur);
-			if (isNew) {
-				emit('successCreate', response?.aparatur);
-			} else {
-				emit('successUpdate', response?.aparatur);
-			}
-		}
-	} finally {
-		loadingCrud.value = false;
+	if (isNew) {
+		return await handleCreate(data, true);
+	} else {
+		return await handleUpdate(props.data.id, data, true);
 	}
 };
 
-const handleDelete = async () => {
-	try {
-		loadingCrud.value = true;
-		const id = props.data.id;
-
-		const result = await Aparatur.remove({ id });
-		if (result) {
-			document.getElementById('btn-close-form').click();
-			emit('successDelete', id);
-		}
-	} finally {
-		loadingCrud.value = false;
-	}
+const onDelete = async () => {
+	return await handleDelete(props.data.id);
 };
 
 const slide = ref('identity');

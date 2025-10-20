@@ -39,7 +39,7 @@
 	</q-card-section>
 	<q-dialog v-model="crud">
 		<ListsForm
-			:data-input="objList"
+			:data="objList"
 			:show-input="showInput"
 			@success-delete="fetchData"
 			@success-submit="fetchData"

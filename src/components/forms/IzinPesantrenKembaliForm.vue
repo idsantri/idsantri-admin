@@ -2,19 +2,19 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="setBack">
 			<FormHeader title="Tetapkan Tanggal Kembali" :is-new="false" />
-			<FormLoading v-if="loadingCrud" />
+			<FormLoading v-if="loading" />
 			<q-card-section class="q-pa-sm">
 				<q-input
 					dense
 					:hint="
-						isDate(input.kembali_tgl)
-							? formatDateFull(input.kembali_tgl)
+						isDate(inputs.kembali_tgl)
+							? formatDateFull(inputs.kembali_tgl)
 							: ''
 					"
 					class="q-my-sm"
 					outlined
 					label="Tanggal (M)*"
-					v-model="input.kembali_tgl"
+					v-model="inputs.kembali_tgl"
 					type="datetime-local"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					error-color="negative"
@@ -29,63 +29,68 @@
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref, watch } from 'vue';
-import apiUpdate from 'src/api/api-update';
+import { ref, watch } from 'vue';
 import {
 	formatDateFull,
 	isDate,
 	formatDateTimeHtmlToSql,
 } from 'src/utils/format-date';
+import IzinPesantren from 'src/models/IzinPesantren';
 
 const props = defineProps({
 	data: Object,
 });
 const emit = defineEmits(['successSubmit']);
 
-const input = ref({});
-const loadingCrud = ref(false);
+const inputs = ref({ ...props.data });
+const loading = ref(false);
 
 async function setBack() {
-	const updated = await apiUpdate({
-		endPoint: `izin-pesantren/${input.value.id}/set-kembali`,
-		loading: loadingCrud,
-		data: {
-			kembali_tgl: input.value.kembali_tgl,
-		},
-		message: 'Tetapkan sudah kembali ke pesantren pada tanggal ini?',
-	});
-	if (updated) {
-		document.getElementById('btn-close-form').click();
-		emit('successSubmit');
+	try {
+		loading.value = true;
+
+		const response = await IzinPesantren.setKembali({
+			id: props.data.id,
+			data: { kembali_tgl: inputs.value.kembali_tgl },
+			message: 'Tetapkan sudah kembali ke pesantren pada tanggal ini?',
+		});
+
+		if (response) {
+			document.getElementById('btn-close-form').click();
+			emit('successSubmit', response?.izin_pesantren);
+		}
+	} catch (error) {
+		console.error('err set not back', error);
+	} finally {
+		loading.value = false;
 	}
-	// console.log('back');
 }
 
 async function setNotBack() {
-	const updated = await apiUpdate({
-		endPoint: `izin-pesantren/${input.value.id}/set-kembali`,
-		loading: loadingCrud,
-		data: {
-			kembali_tgl: null,
-		},
-		message: 'Tetapkan belum kembali ke pesantren?',
-	});
-	if (updated) {
-		document.getElementById('btn-close-form').click();
-		emit('successSubmit');
+	try {
+		loading.value = true;
+
+		const response = await IzinPesantren.setKembali({
+			id: props.data.id,
+			data: { kembali_tgl: null },
+			message: 'Tetapkan belum kembali ke pesantren?',
+		});
+
+		if (response) {
+			document.getElementById('btn-close-form').click();
+			emit('successSubmit', response?.izin_pesantren);
+		}
+	} catch (error) {
+		console.error('err set not back', error);
+	} finally {
+		loading.value = false;
 	}
-	// console.log('not back');
 }
 
-onMounted(() => {
-	input.value = props.data;
-	// console.log(input.value);
-});
-
 watch(
-	() => input.value.kembali_tgl,
+	() => inputs.value.kembali_tgl,
 	(newValue) => {
-		input.value.kembali_tgl = formatDateTimeHtmlToSql(newValue);
+		inputs.value.kembali_tgl = formatDateTimeHtmlToSql(newValue);
 	},
 );
 </script>

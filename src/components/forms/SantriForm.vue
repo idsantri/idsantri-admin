@@ -2,7 +2,7 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Data Santri" :is-new="isNew" />
-			<FormLoading v-if="loadingCrud" />
+			<FormLoading v-if="loading" />
 			<q-card-section class="no-padding">
 				<q-carousel
 					v-model="slide"
@@ -94,7 +94,7 @@ const route = useRoute();
 const { isNew } = reactive(santriStore());
 const { santri } = reactive(santriStore());
 const { inputs } = storeToRefs(santriStore());
-const loadingCrud = ref(false);
+const loading = ref(false);
 
 onMounted(() => {
 	inputs.value = { ...santri };
@@ -137,7 +137,7 @@ const onSubmit = async () => {
 	// return;
 
 	try {
-		loadingCrud.value = true;
+		loading.value = true;
 		const response = isNew
 			? await Santri.create({ data })
 			: await Santri.update({ id: route.params.id, data, confirm: true });
@@ -152,7 +152,7 @@ const onSubmit = async () => {
 			}
 		}
 	} finally {
-		loadingCrud.value = false;
+		loading.value = false;
 	}
 };
 
@@ -162,14 +162,14 @@ const resetOrDelete = async () => {
 		return;
 	}
 	try {
-		loadingCrud.value = true;
+		loading.value = true;
 		const response = await Santri.remove({ id: santri.id });
 		if (response) {
 			dialogStore().toggleCrudSantri(false);
 			router.push('/cari/santri');
 		}
 	} finally {
-		loadingCrud.value = false;
+		loading.value = false;
 	}
 };
 

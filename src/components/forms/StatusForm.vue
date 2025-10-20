@@ -1,24 +1,21 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
-		<q-form @submit.prevent="submit">
-			<FormHeader
-				title="Input Status"
-				:is-new="input.id ? false : true"
-			/>
-			<FormLoading v-if="loadingCrud" />
+		<q-form @submit.prevent="onSubmit">
+			<FormHeader title="Input Status" :is-new="isNew" />
+			<FormLoading v-if="loading" />
 			<q-card-section>
 				<q-input
 					dense
 					outlined
 					label="Nama"
-					:model-value="input?.nama + ' (' + input?.santri_id + ')'"
+					:model-value="inputs?.nama + ' (' + inputs?.santri_id + ')'"
 					disable=""
 					filled=""
 					class="q-my-sm"
 				/>
 
 				<input-select-array
-					v-model="input.status"
+					v-model="inputs.status"
 					url="status"
 					label="Status *"
 					class="q-my-sm"
@@ -29,24 +26,19 @@
 					class="q-my-sm"
 					outlined
 					label="Keterangan"
-					v-model="input.keterangan"
+					v-model="inputs.keterangan"
 					autogrow=""
 				/>
 			</q-card-section>
-			<FormActions
-				:btn-delete="input.id ? true : false"
-				@on-delete="onDelete"
-			/>
+			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
-		<!-- <pre>{{ input }}</pre> -->
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
-import apiPost from 'src/api/api-post';
-import apiUpdate from 'src/api/api-update';
-import apiDelete from 'src/api/api-delete';
+import { ref } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
+import Status from 'src/models/Status';
+import useCrudForm from './utils/useCrudForm';
 
 const props = defineProps({
 	data: { type: Object, required: true },
@@ -58,57 +50,31 @@ const emit = defineEmits([
 	'successCreate',
 ]);
 
-const input = ref({});
-const loadingCrud = ref(false);
+const inputs = ref({ ...props.data });
+const isNew = !props.data?.id;
 
-onMounted(async () => {
-	Object.assign(input.value, props.data);
-});
-
-const submit = async () => {
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
+	Status,
+	{
+		emit: emit,
+		responseKey: 'status',
+	},
+);
+const onSubmit = async () => {
 	const data = {
-		santri_id: input.value.santri_id,
-		status: input.value.status,
-		keterangan: input.value.keterangan,
+		santri_id: inputs.value.santri_id,
+		status: inputs.value.status,
+		keterangan: inputs.value.keterangan,
 	};
 
-	let response = null;
-	const isNew = !input.value.id;
 	if (isNew) {
-		response = await apiPost({
-			endPoint: 'status',
-			data,
-			loading: loadingCrud,
-		});
+		return await handleCreate(data, true);
 	} else {
-		response = await apiUpdate({
-			endPoint: `status/${input.value.id}`,
-			data,
-			confirm: true,
-			notify: true,
-			loading: loadingCrud,
-		});
-	}
-	if (response) {
-		document.getElementById('btn-close-form').click();
-		emit('successSubmit', response?.status);
-		if (isNew) {
-			emit('successCreate', response?.status);
-		} else {
-			emit('successUpdate', response?.status);
-		}
+		return await handleUpdate(props.data.id, data, true);
 	}
 };
 
 const onDelete = async () => {
-	const id = input.value.id;
-	const result = await apiDelete({
-		endPoint: `status/${id}`,
-		loading: loadingCrud,
-	});
-	if (result) {
-		document.getElementById('btn-close-form').click();
-		emit('successDelete', id);
-	}
+	return await handleDelete(props.data.id);
 };
 </script>

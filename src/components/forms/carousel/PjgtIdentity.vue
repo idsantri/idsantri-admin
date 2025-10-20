@@ -2,13 +2,12 @@
 	<div class="text-subtitle2">Identitas Diri</div>
 	<q-input
 		dense
-		:hint="isNew ? 'Kosongkan jika ingin diisi otomatis!' : ''"
 		class="q-my-sm"
 		outlined
 		label="ID"
 		v-model="inputs.id"
-		:rules="[(val) => !val || !isNaN(val) || 'Hanya angka!']"
-		error-color="negative"
+		disable=""
+		hint="Diisi otomatis oleh sistem"
 	/>
 	<q-input
 		dense
@@ -65,5 +64,8 @@
 </template>
 <script setup>
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
+
+defineProps({ isNew: { type: Boolean } });
+
 const inputs = defineModel();
 </script>

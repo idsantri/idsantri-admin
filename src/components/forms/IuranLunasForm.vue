@@ -2,7 +2,7 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Set Iuran Lunas" :is-new="false" />
-			<FormLoading v-if="loadingCrud" />
+			<FormLoading v-if="loading" />
 			<q-card-section>
 				<q-input
 					disable
@@ -50,10 +50,10 @@
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
-import apiUpdate from 'src/api/api-update';
+import { ref } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import InputCurrency from '../inputs/InputCurrency.vue';
+import Iuran from 'src/models/Iuran';
 
 const props = defineProps({
 	data: { type: Object, required: true },
@@ -66,29 +66,28 @@ const emit = defineEmits([
 	'successCreate',
 ]);
 
-const input = ref({});
-const loadingCrud = ref(false);
-
-onMounted(async () => {
-	Object.assign(input.value, props.data);
-	// console.log('🚀 ~ onMounted ~ props.data:', props.data);
-});
+const input = ref({ ...props.data });
+const loading = ref(false);
 
 const onSubmit = async () => {
-	const data = {
-		via: input.value.via,
-	};
-	const response = await apiUpdate({
-		endPoint: `iuran/${input.value.id}/lunas`,
-		data,
-		message: 'Iuran/tagihan lunas?',
-		notify: true,
-		loading: loadingCrud,
-	});
-	if (response) {
-		document.getElementById('btn-close-form').click();
-		emit('successSubmit', response?.iuran);
-		emit('successUpdate', response?.iuran);
+	try {
+		loading.value = true;
+
+		const response = await Iuran.setLunas({
+			id: props.data.id,
+			data: { via: input.value.via },
+			message: 'Iuran/tagihan lunas?',
+		});
+
+		if (response) {
+			document.getElementById('btn-close-form').click();
+			emit('successSubmit', response?.iuran);
+			emit('successUpdate', response?.iuran);
+		}
+	} catch (error) {
+		console.error('err set lunas ', error);
+	} finally {
+		loading.value = false;
 	}
 };
 </script>

@@ -2,7 +2,7 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Data Wali" :is-new="isNew" />
-			<FormLoading v-if="loadingCrud" />
+			<FormLoading v-if="loading" />
 			<q-card-section class="no-padding">
 				<q-carousel
 					v-model="slide"
@@ -82,7 +82,7 @@ const {
 	ortu: ortuSantri,
 	inputs: inputsSantri,
 } = santriStore();
-const loadingCrud = ref(false);
+const loading = ref(false);
 const inputs = ref({});
 
 onMounted(() => {
@@ -132,7 +132,7 @@ const onSubmit = async () => {
 	delete data.santri;
 
 	try {
-		loadingCrud.value = true;
+		loading.value = true;
 		const response = isNew
 			? await Wali.create({ data })
 			: await Wali.update({
@@ -150,7 +150,7 @@ const onSubmit = async () => {
 			}
 		}
 	} finally {
-		loadingCrud.value = false;
+		loading.value = false;
 	}
 };
 
@@ -161,7 +161,7 @@ const resetOrDelete = async () => {
 	}
 
 	try {
-		loadingCrud.value = true;
+		loading.value = true;
 		const response = await Wali.remove({
 			id: wali.id,
 			message: `<span style="color:red">Hapus Wali?</span><br/><br/>
@@ -172,7 +172,7 @@ const resetOrDelete = async () => {
 			router.push('/cari/wali');
 		}
 	} finally {
-		loadingCrud.value = false;
+		loading.value = false;
 	}
 };
 

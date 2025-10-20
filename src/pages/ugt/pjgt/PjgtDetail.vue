@@ -176,7 +176,6 @@
 
 		<q-dialog persistent="" v-model="crudGt">
 			<gt-crud
-				:is-new="true"
 				:data="{
 					pjgt_id: pjgt.id,
 					pjgt_nama: pjgt.nama,

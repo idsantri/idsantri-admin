@@ -74,7 +74,6 @@
 		</q-card>
 		<q-dialog persistent="" v-model="crudShow">
 			<PjgtForm
-				:is-new="true"
 				:data="{}"
 				@success-submit="(v) => $router.push(`/ugt/pjgt/${v.id}`)"
 				@success-delete="$router.go(-1)"

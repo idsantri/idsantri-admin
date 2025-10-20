@@ -1,27 +1,27 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
-			<FormHeader title="Input Iuran" :is-new="input.id ? false : true" />
-			<FormLoading v-if="loadingCrud" />
+			<FormHeader title="Input Iuran" :is-new="isNew" />
+			<FormLoading v-if="loading" />
 			<q-card-section>
 				<InputSelectSantriId
 					:active-only="true"
-					@emit-input="(val) => Object.assign(input, val)"
+					@emit-input="(val) => Object.assign(inputs, val)"
 					:data="props.data"
 					class="q-my-sm"
 				/>
 				<InputSelectArray
-					v-model="input.th_ajaran_h"
+					v-model="inputs.th_ajaran_h"
 					url="tahun-ajaran"
 					label="Tahun Ajaran"
 					sort="desc"
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
-					:selected="input.th_ajaran_h"
+					:selected="inputs.th_ajaran_h"
 					:disable="props.disableThAjaran"
 				/>
 				<InputSelectArray
-					v-model="input.item"
+					v-model="inputs.item"
 					url="iuran"
 					label="Nama Iuran"
 					class="q-my-sm"
@@ -31,45 +31,40 @@
 					dense
 					class="q-my-sm"
 					outlined
-					v-model="input.nominal"
+					v-model="inputs.nominal"
 					required
 					label="Nominal"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
 
 				<InputSelectArray
-					v-model="input.via"
+					v-model="inputs.via"
 					url="metode-pembayaran"
 					label="Via"
 					class="q-my-sm"
-					v-show="input.id && input.lunas"
+					v-show="inputs.id && inputs.lunas"
 				/>
 				<q-input
 					label="Keterangan"
-					v-model="input.keterangan"
+					v-model="inputs.keterangan"
 					dense
 					outlined=""
 					class="q-my-sm"
 					autogrow=""
 				/>
 			</q-card-section>
-			<FormActions
-				:btn-delete="input.id ? true : false"
-				@on-delete="onDelete"
-			/>
+			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
-		<!-- <pre>{{ props.santri }}</pre> -->
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
-import listsStore from 'src/stores/lists-store';
-import apiDelete from 'src/api/api-delete';
-import apiUpdate from 'src/api/api-update';
-import apiPost from 'src/api/api-post';
+import { ref } from 'vue';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
+import useCrudForm from './utils/useCrudForm';
+import Iuran from 'src/models/Iuran';
+import listsStore from 'src/stores/lists-store';
 
 const props = defineProps({
 	data: { type: Object, required: false, default: () => {} },
@@ -84,71 +79,43 @@ const emit = defineEmits([
 	'successCreate',
 ]);
 
-const input = ref({});
-const loadingCrud = ref(false);
-const tahunAjaran = ref([]);
-const iuran = ref([]);
+const iuranStore = listsStore().getStateByKey('iuran');
+const inputs = ref({ ...props.data });
+const iuran = ref([...iuranStore]);
+const isNew = !props.data?.id;
 
-onMounted(async () => {
-	Object.assign(input.value, props.data);
-	tahunAjaran.value = listsStore().getStateByKey('tahun-ajaran');
-	iuran.value = listsStore().getStateByKey('iuran');
-	// console.log('🚀 ~ onMounted ~ props.data:', props.data);
-});
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
+	Iuran,
+	{
+		emit: emit,
+		responseKey: 'iuran',
+	},
+);
 
 const setNominal = (val) => {
 	const selectedOption = iuran.value.find((item) => item.val0 === val);
 	if (selectedOption) {
-		input.value.nominal = selectedOption.val1;
+		inputs.value.nominal = selectedOption.val1;
 	}
 };
 
 const onSubmit = async () => {
 	const data = {
-		santri_id: input.value.santri_id,
-		th_ajaran_h: input.value.th_ajaran_h,
-		item: input.value.item,
-		nominal: input.value.nominal,
-		via: input.value.via,
-		keterangan: input.value.keterangan,
+		santri_id: inputs.value.santri_id,
+		th_ajaran_h: inputs.value.th_ajaran_h,
+		item: inputs.value.item,
+		nominal: inputs.value.nominal,
+		via: inputs.value.via,
+		keterangan: inputs.value.keterangan,
 	};
-	let response = null;
-	const isNew = !input.value.id;
 	if (isNew) {
-		response = await apiPost({
-			endPoint: 'iuran',
-			data,
-			loading: loadingCrud,
-		});
+		return await handleCreate(data, true);
 	} else {
-		response = await apiUpdate({
-			endPoint: `iuran/${input.value.id}`,
-			data,
-			confirm: true,
-			notify: true,
-			loading: loadingCrud,
-		});
-	}
-	if (response) {
-		document.getElementById('btn-close-form').click();
-		emit('successSubmit', response?.iuran);
-		if (isNew) {
-			emit('successCreate', response?.iuran);
-		} else {
-			emit('successUpdate', response?.iuran);
-		}
+		return await handleUpdate(props.data.id, data, true);
 	}
 };
 
 const onDelete = async () => {
-	const id = input.value.id;
-	const result = await apiDelete({
-		endPoint: `iuran/${id}`,
-		loading: loadingCrud,
-	});
-	if (result) {
-		document.getElementById('btn-close-form').click();
-		emit('successDelete', id);
-	}
+	return await handleDelete(props.data.id);
 };
 </script>
