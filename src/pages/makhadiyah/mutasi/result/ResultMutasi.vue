@@ -151,11 +151,10 @@
 			</q-card-actions>
 		</q-card>
 		<q-dialog v-model="showEdit">
-			<EditNewDomisili
+			<MutasiForm
 				:data="mutasiItem"
-				:api="true"
-				@on-delete="loadData"
-				@on-submit="loadData"
+				@success-delete="loadData"
+				@success-submit="loadData"
 			/>
 		</q-dialog>
 	</q-page>
@@ -164,11 +163,11 @@
 import apiDelete from 'src/api/api-delete';
 import apiGet from 'src/api/api-get';
 import { onMounted, ref, toRefs } from 'vue';
-import EditNewDomisili from 'pages/makhadiyah/mutasi/EditMutasi.vue';
 import apiPost from 'src/api/api-post';
 import loadingStore from 'src/stores/loading-store';
 import { notifyWarning } from 'src/utils/notify';
 import CardHeader from 'src/components/CardHeader.vue';
+import MutasiForm from 'src/components/forms/MutasiForm.vue';
 
 const santri = ref([]);
 const loading = ref(false);

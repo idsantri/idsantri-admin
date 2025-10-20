@@ -89,6 +89,10 @@
 	</q-card>
 </template>
 <script setup>
+/**
+ * TODO:
+ * use pop up input
+ */
 import { onMounted, ref } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import apiDelete from 'src/api/api-delete';

@@ -30,8 +30,7 @@
 					style="width: 300px"
 					v-model="tingkatId"
 					label="Tingkat Pendidikan"
-					:selected="tingkatId"
-					class=""
+					:with-hint="false"
 				/>
 			</q-card-actions>
 			<q-card-section class="q-pa-sm">
@@ -92,9 +91,8 @@
 		</q-card>
 		<!-- <pre>{{ mapel }}</pre> -->
 		<q-dialog v-model="crudShow">
-			<mapel-crud
+			<MapelForm
 				:data="mapelObj"
-				title="Input Mata Pelajaran"
 				@success-submit="(val) => loadData(val.tingkat_id)"
 				@success-delete="(val) => loadData(val.tingkat_id)"
 			/>
@@ -104,7 +102,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 import apiGet from 'src/api/api-get';
-import MapelCrud from 'pages/madrasah/mapel/MapelCrud.vue';
+import MapelForm from 'src/components/forms/MapelForm.vue';
 import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingkatPendidikan.vue';
 
 const mapel = ref([]);

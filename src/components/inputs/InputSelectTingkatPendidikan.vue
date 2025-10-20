@@ -11,9 +11,12 @@
 		:loading="loading"
 		behavior="menu"
 		clearable
-		:hint="hint"
 		v-model="input"
+		:bottom-slots="withHint"
 	>
+		<template v-slot:hint>
+			<div>{{ hint }}</div>
+		</template>
 		<template v-slot:after>
 			<drop-down-after
 				v-if="btnSetting"
@@ -33,6 +36,10 @@ import Lists from 'src/models/Lists';
 const input = defineModel();
 defineProps({
 	btnSetting: {
+		type: Boolean,
+		default: true,
+	},
+	withHint: {
 		type: Boolean,
 		default: true,
 	},

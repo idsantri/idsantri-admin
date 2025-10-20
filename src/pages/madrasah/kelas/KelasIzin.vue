@@ -8,10 +8,8 @@
 		@print="handlePrint"
 	/>
 	<q-dialog v-model="crudShow">
-		<kelas-izin-crud
+		<IzinMadrasahForm
 			:data="izinObj"
-			:is-new="isNew"
-			title="Input Izin Madrasah"
 			@success-submit="loadData"
 			@success-delete="loadData"
 		/>
@@ -30,7 +28,7 @@ import { formatHijri, m2h } from 'src/utils/hijri';
 import { getObjectById } from 'src/utils/array-object';
 import apiGet from 'src/api/api-get';
 import TempArray from 'src/pages/santri/relations/TemplateArray.vue';
-import KelasIzinCrud from 'src/pages/madrasah/kelas/KelasIzinCrud.vue';
+import IzinMadrasahForm from 'src/components/forms/IzinMadrasahForm.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
 
 const route = useRoute();
@@ -39,7 +37,6 @@ const izin = ref([]);
 const izinMap = ref([]);
 const izinObj = ref({});
 const loading = ref(false);
-const isNew = ref(false);
 const crudShow = ref(false);
 const kelas = ref({});
 const urlReport = ref('');
@@ -81,7 +78,6 @@ const handleAdd = () => {
 	izinObj.value.kelas = kelas.value.kelas;
 	izinObj.value.kelas_id = kelas.value.id;
 
-	isNew.value = true;
 	crudShow.value = true;
 };
 
@@ -95,7 +91,6 @@ const handleEdit = ({ id }) => {
 	izinObj.value.tingkat_id = kelas.value.tingkat_id;
 	izinObj.value.kelas = kelas.value.kelas;
 
-	isNew.value = false;
 	crudShow.value = true;
 };
 
