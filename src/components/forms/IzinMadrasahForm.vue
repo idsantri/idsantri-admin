@@ -2,7 +2,6 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Izin Madrasah" :is-new="isNew" />
-			<FormLoading v-if="loading" />
 			<q-card-section>
 				<q-input
 					dense
@@ -85,7 +84,6 @@
 import { onMounted, ref } from 'vue';
 import { formatDateFull, isDate } from 'src/utils/format-date';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
-import FormHeader from 'src/components/forms/parts/FormHeader.vue';
 import useCrudForm from './utils/useCrudForm';
 import IzinMadrasah from 'src/models/IzinMadrasah';
 

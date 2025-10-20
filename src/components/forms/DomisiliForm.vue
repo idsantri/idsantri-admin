@@ -31,7 +31,6 @@
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
-		<!-- <pre>{{ input }}</pre> -->
 	</q-card>
 </template>
 <script setup>

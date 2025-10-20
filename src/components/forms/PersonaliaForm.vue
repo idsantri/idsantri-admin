@@ -46,7 +46,6 @@
 					/>
 				</div>
 			</q-card-section>
-
 			<FormActions
 				:btn-delete="isNew ? false : true"
 				@on-delete="onDelete"

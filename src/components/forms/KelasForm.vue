@@ -2,6 +2,7 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Kelas" :is-new="isNew" />
+			<FormLoading v-if="loading" />
 			<q-card-section>
 				<q-input
 					dense
@@ -48,7 +49,6 @@
 				/>
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
-			<FormLoading v-if="loading" />
 		</q-form>
 	</q-card>
 </template>

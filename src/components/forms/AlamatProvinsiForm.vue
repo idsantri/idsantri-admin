@@ -3,7 +3,6 @@
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Provinsi" :is-new="isNew" />
 			<FormLoading v-if="loading" />
-
 			<q-card-section>
 				<q-input
 					v-model="inputs.id"

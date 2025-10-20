@@ -57,7 +57,6 @@
 					autogrow=""
 				/>
 			</q-card-section>
-
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
 	</q-card>
