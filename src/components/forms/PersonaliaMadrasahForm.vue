@@ -23,21 +23,16 @@
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
-				<InputSelectArray
+				<InputSelectTahunAjaran
 					v-model="inputs.th_ajaran_h"
-					url="tahun-ajaran"
-					label="Tahun Ajaran *"
-					sort="desc"
-					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
-					:selected="inputs.th_ajaran_h"
+					class="q-my-sm"
 				/>
 
 				<InputSelectTingkatPendidikan
 					v-model="inputs.tingkat_id"
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
-					:selected="inputs.tingkat_id"
 				/>
 				<input-select-array
 					v-model="inputs.kelas"
@@ -73,6 +68,7 @@ import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingk
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import useCrudForm from './utils/useCrudForm';
 import AparaturMadrasah from 'src/models/AparaturMadrasah';
+import InputSelectTahunAjaran from '../inputs/InputSelectTahunAjaran.vue';
 
 const props = defineProps({
 	data: { type: Object, required: true, default: () => {} },

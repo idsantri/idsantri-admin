@@ -8,7 +8,7 @@
 		:loading="loading"
 		behavior="menu"
 		clearable
-		:hint="textHint()"
+		v-model="input"
 	>
 		<template v-slot:after>
 			<drop-down-after
@@ -24,8 +24,8 @@ import listsStore from 'src/stores/lists-store';
 import { onMounted, ref } from 'vue';
 import DropDownAfter from './DropDownAfter.vue';
 import Lists from 'src/models/Lists';
-import ArrayCrud from 'src/models/ArrayCrud';
 
+const input = defineModel();
 const props = defineProps({
 	url: {
 		type: String,
@@ -34,10 +34,6 @@ const props = defineProps({
 	sort: {
 		type: String,
 		default: 'asc',
-	},
-	selected: {
-		type: String,
-		default: '',
 	},
 	btnSetting: {
 		type: Boolean,
@@ -50,23 +46,13 @@ const options = ref([]);
 const store = listsStore();
 const key = props.url.replace(/-/g, '_');
 
-function textHint() {
-	let result = '';
-	if (props.selected && props.url == 'tahun-ajaran') {
-		const data = store.getStateByKey(key);
-		result = data.find((th) => th.val0 === props.selected)?.val1;
-	}
-	return result;
-}
-
 onMounted(async () => {
-	const data = store.getStateByKey_Arr(key);
+	const data = store.getStateByKey_Arr(key, props.sort);
 	if (data.length) {
-		options.value = ArrayCrud.sort(data, 'val0', props.sort);
+		options.value = data;
 	} else {
 		await fetchList();
-		const data = store.getStateByKey_Arr(key);
-		options.value = ArrayCrud.sort(data, 'val0', props.sort);
+		options.value = store.getStateByKey_Arr(key, props.sort);
 	}
 });
 

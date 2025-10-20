@@ -11,7 +11,8 @@
 		:loading="loading"
 		behavior="menu"
 		clearable
-		:hint="textHint()"
+		:hint="hint"
+		v-model="input"
 	>
 		<template v-slot:after>
 			<drop-down-after
@@ -25,15 +26,12 @@
 </template>
 <script setup>
 import listsStore from 'src/stores/lists-store';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import DropDownAfter from './DropDownAfter.vue';
 import Lists from 'src/models/Lists';
 
-const props = defineProps({
-	selected: {
-		type: String,
-		default: '',
-	},
+const input = defineModel();
+defineProps({
 	btnSetting: {
 		type: Boolean,
 		default: true,
@@ -46,16 +44,14 @@ const store = listsStore();
 const url = 'tingkat-pendidikan';
 const key = url.replace(/-/g, '_');
 
-function textHint() {
-	if (props.selected) {
-		const tingkat = options.value?.find(
-			(tk) => tk?.val0 === props.selected,
-		);
+const hint = computed(() => {
+	if (input.value) {
+		const tingkat = options.value?.find((tk) => tk?.val0 === input.value);
 		return 'Tingkat ID: ' + tingkat?.val0 || '';
 	} else {
 		return 'Pilih tingkat pendidikan';
 	}
-}
+});
 
 onMounted(async () => {
 	const data = store.getStateByKey(key);

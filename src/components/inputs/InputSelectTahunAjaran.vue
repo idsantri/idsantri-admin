@@ -2,19 +2,24 @@
 	<q-select
 		dense
 		outlined
-		label="Pasal dilanggar"
+		label="Tahun Ajaran *"
 		emit-value
 		map-options
+		option-value="val0"
+		option-label="val0"
 		:options="options"
 		:loading="loading"
 		behavior="menu"
 		clearable
-		multiple
 		:hint="hint"
 		v-model="input"
 	>
 		<template v-slot:after>
-			<drop-down-after route-to="tatib-santri" @reload="fetchList" />
+			<drop-down-after
+				v-if="btnSetting"
+				:route-to="url"
+				@reload="fetchList"
+			/>
 		</template>
 	</q-select>
 </template>
@@ -25,51 +30,39 @@ import DropDownAfter from './DropDownAfter.vue';
 import Lists from 'src/models/Lists';
 
 const input = defineModel();
-
-const hint = computed(() => {
-	if (input.value) {
-		return extractDataInBrackets(input.value.join('; '));
-	} else {
-		return 'Pilih pasal dilanggar';
-	}
+const props = defineProps({
+	sort: {
+		type: String,
+		default: () => 'desc',
+	},
+	btnSetting: {
+		type: Boolean,
+		default: true,
+	},
 });
-
-function extractDataInBrackets(inputText) {
-	let extractedData = '';
-	const regex = /\[(.*?)\]/g;
-	const matches = inputText.match(regex);
-
-	if (matches) {
-		extractedData = matches.map((match) => match.slice(1, -1)).join(', ');
-	}
-
-	return extractedData;
-}
 
 const loading = ref(false);
 const options = ref([]);
 const store = listsStore();
-const url = 'tatib-santri';
+const url = 'tahun-ajaran';
 const key = url.replace(/-/g, '_');
 
-function mapData(data) {
-	let result = [];
-	if (data.length) {
-		result = data
-			.filter((d) => d.val0.length != 1)
-			.map((d) => `[${d.val0}] ${d.val1}`);
+const hint = computed(() => {
+	if (input.value) {
+		const tahun = options.value?.find((th) => th?.val0 === input.value);
+		return tahun?.val1;
+	} else {
+		return 'Pilih Tahun Ajaran';
 	}
-	return result;
-}
+});
 
 onMounted(async () => {
-	const data = store.getStateByKey(key);
+	const data = store.getStateByKey(key, props.sort);
 	if (data.length) {
-		options.value = mapData(data);
+		options.value = data;
 	} else {
 		await fetchList();
-		const result = store.getStateByKey(key);
-		options.value = mapData(result);
+		options.value = store.getStateByKey(key, props.sort);
 	}
 });
 

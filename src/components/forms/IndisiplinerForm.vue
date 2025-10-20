@@ -75,7 +75,6 @@
 					class="q-my-sm"
 					v-model="inputs.pasal"
 					:rules="[(val) => !!val || 'Harus diisi!']"
-					:selected="inputs.pasal ? inputs.pasal.join('; ') : ''"
 				/>
 				<q-input
 					dense

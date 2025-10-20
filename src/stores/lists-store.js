@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import ArrayCrud from 'src/models/ArrayCrud';
 import listData from 'src/pages/settings/lists/lists-data';
 
 function organizeData(data) {
@@ -33,12 +34,14 @@ export default defineStore('lists-input', {
 			}
 		},
 
-		getStateByKey(key) {
-			return this[key];
+		getStateByKey(key, sort) {
+			const result = this[key];
+			return ArrayCrud.sort(result, 'val0', sort);
 		},
 
-		getStateByKey_Arr(key) {
-			return this[key].map((v) => v.val0);
+		getStateByKey_Arr(key, sort) {
+			const result = this[key].map((v) => v.val0);
+			return ArrayCrud.sortPrimitiveArray(result, sort);
 		},
 	},
 
