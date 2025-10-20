@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import ArrayCrud from 'src/models/ArrayCrud';
-import listData from 'src/pages/settings/lists/lists-data';
+import listData from 'src/stores/lists-data';
 
 function organizeData(data) {
 	const organizedData = {};
@@ -20,7 +20,9 @@ export default defineStore('lists-input', {
 		// };
 	},
 
-	getters: {},
+	getters: {
+		listData: () => listData,
+	},
 
 	actions: {
 		checkState(key) {

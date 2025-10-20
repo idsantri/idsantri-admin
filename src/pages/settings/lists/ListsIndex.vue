@@ -32,14 +32,15 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
-import listData from './lists-data';
 import { useRoute, useRouter } from 'vue-router';
 import CardHeader from 'src/components/CardHeader.vue';
+import listsStore from 'src/stores/lists-store';
 
 const router = useRouter();
 const { params } = useRoute();
-
 const listKey = params.listKey;
+
+const { listData } = listsStore();
 const listModel = ref(listData.find(({ url }) => url == listKey));
 const options = ref([]);
 
