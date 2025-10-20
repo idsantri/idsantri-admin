@@ -25,6 +25,7 @@
 				@update:model-value="onInput"
 				:disable="input.santri_id ? true : false"
 				behavior="menu"
+				debounce="500"
 			>
 				<template v-slot:option="scope">
 					<q-item v-bind="scope.itemProps">
@@ -55,6 +56,7 @@
 </template>
 <script setup>
 import Santri from 'src/models/Santri';
+import { notifyWarning } from 'src/utils/notify';
 import { onMounted, ref } from 'vue';
 
 const props = defineProps({
@@ -95,6 +97,11 @@ async function getLists(val) {
 			active_only: props.activeOnly ? true : false,
 			q: val,
 		});
+
+		if (!response.lists.length) {
+			notifyWarning('ID Santri tidak ditemukan');
+		}
+
 		return response.lists;
 	} finally {
 		loading.value = false;

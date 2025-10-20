@@ -73,8 +73,7 @@
 			</q-card-section>
 		</q-card>
 		<q-dialog persistent="" v-model="crudShow">
-			<gt-crud
-				:is-new="true"
+			<UgtGtForm
 				:data="{}"
 				@success-submit="(v) => $router.push(`/ugt/gt/${v.id}`)"
 				@success-delete="$router.go(-1)"
@@ -88,7 +87,7 @@
 import { ref, onMounted } from 'vue';
 import apiGet from 'src/api/api-get';
 import { getListsCustom } from 'src/api/api-get-lists';
-import GtCrud from 'src/pages/ugt/gt/GtCrud.vue';
+import UgtGtForm from 'src/components/forms/UgtGtForm.vue';
 
 const gt = ref([]);
 const gtFiltered = ref([]);
