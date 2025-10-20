@@ -104,7 +104,7 @@
 											no-caps
 											dense
 											class="q-my-xs q-mx-sm q-px-sm"
-											@click="showUserModal"
+											@click="crudShow = true"
 										/>
 										<q-btn
 											label="Password"
@@ -148,64 +148,7 @@
 
 		<!-- MODAL -->
 		<q-dialog v-model="crudShow">
-			<q-card class="full-width" style="max-width: 425px">
-				<q-form @submit.prevent="submit">
-					<q-card-section class="bg-green-7 text-green-11 q-pa-sm">
-						Update Username
-					</q-card-section>
-					<q-card-section>
-						<div v-if="loadingCrud">
-							<q-dialog v-model="loadingCrud" persistent="">
-								<q-spinner-cube
-									color="green-12"
-									size="8em"
-									class="flex q-ma-lg q-mx-auto"
-								/>
-							</q-dialog>
-						</div>
-						<q-input
-							dense
-							outlined
-							label="Nama"
-							v-model="newUser.name"
-							hint=""
-						/>
-						<q-input
-							class="q-mt-sm"
-							dense
-							outlined
-							label="Username"
-							v-model="newUser.username"
-							hint="Anda bisa login dengan username atau email"
-						/>
-
-						<q-input
-							class="q-mt-sm"
-							dense
-							outlined
-							label="Nomor Telepon"
-							v-model="newUser.phone"
-							hint="08123456789"
-						/>
-					</q-card-section>
-					<q-card-actions class="flex bg-green-6">
-						<q-space />
-						<q-btn
-							label="Tutup"
-							v-close-popup
-							class="bg-green-11"
-							no-caps=""
-							id="btn-close"
-						/>
-						<q-btn
-							type="submit"
-							label="Simpan"
-							class="bg-green-10 text-green-11"
-							no-caps=""
-						/>
-					</q-card-actions>
-				</q-form>
-			</q-card>
+			<UserForm :data="user" @success-submit="loadData" />
 		</q-dialog>
 		<upload-image
 			:show-uploader="showUploader"
@@ -221,17 +164,15 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import apiGet from 'src/api/api-get';
-import apiUpdate from 'src/api/api-update';
 import { titleCase } from 'src/utils/format-text';
 import { notifyAlert } from 'src/utils/notify';
 import UploadImage from 'src/components/ImageUploader.vue';
+import UserForm from 'src/components/forms/UserForm.vue';
 
 const user = ref({});
 const loading = ref(false);
 const loadingImage = ref(false);
 const crudShow = ref(false);
-const loadingCrud = ref(false);
-const newUser = ref({});
 
 const showUploader = ref(false);
 const updateUploader = (val) => (showUploader.value = val);
@@ -257,30 +198,6 @@ onMounted(async () => {
 	await loadData();
 	await loadImage();
 });
-
-async function submit() {
-	const response = await apiUpdate({
-		endPoint: 'user',
-		data: {
-			username: newUser.value.username,
-			name: newUser.value.name,
-			phone: newUser.value.phone,
-		},
-		confirm: true,
-		notify: true,
-		loading: loadingCrud,
-	});
-	if (response) {
-		document.getElementById('btn-close').click();
-		await loadData();
-		await loadImage();
-	}
-}
-
-function showUserModal() {
-	Object.assign(newUser.value, user.value);
-	crudShow.value = true;
-}
 
 const changePassword = async () => {
 	await notifyAlert(
