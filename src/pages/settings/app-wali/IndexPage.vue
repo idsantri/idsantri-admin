@@ -47,7 +47,6 @@ import { ref } from 'vue';
 import PanelProfile from './PanelProfile.vue';
 import PanelCs from './PanelCs.vue';
 import PanelBanner from './PanelBanner.vue';
-import CardHeader from 'src/components/cards/CardHeader.vue';
 
 const tab = ref('banner');
 </script>

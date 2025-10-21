@@ -29,7 +29,6 @@
 	</q-page>
 </template>
 <script setup>
-import CardHeader from 'src/components/cards/CardHeader.vue';
 import DataLeft from './LeftCard.vue';
 import DataRight from './RightCard.vue';
 import { onMounted } from 'vue';

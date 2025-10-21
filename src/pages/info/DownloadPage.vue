@@ -17,7 +17,5 @@
 		</q-card>
 	</q-page>
 </template>
-<script setup>
-import CardHeader from 'src/components/cards/CardHeader.vue';
-</script>
+<script setup></script>
 <style lang=""></style>

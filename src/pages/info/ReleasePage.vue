@@ -34,7 +34,6 @@
 	</q-page>
 </template>
 <script setup>
-import CardHeader from 'src/components/cards/CardHeader.vue';
 import config from 'src/config';
 
 const releases = [

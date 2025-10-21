@@ -12,13 +12,7 @@
 						class="q-ml-sm q-px-sm"
 						to="/mutasi/start"
 					/>
-					<q-btn-dropdown
-						flat
-						dense
-						dropdown-icon="more_vert"
-						class="q-ml-sm"
-						color="green-11"
-					>
+					<q-btn-dropdown flat dense dropdown-icon="more_vert" class="q-ml-sm" color="green-11">
 						<q-list>
 							<q-item v-close-popup to="/info/download">
 								<q-item-section>
@@ -29,11 +23,7 @@
 								</q-item-section>
 							</q-item>
 
-							<q-item
-								v-close-popup
-								@click="downloadMutasi"
-								clickable
-							>
+							<q-item v-close-popup @click="downloadMutasi" clickable>
 								<q-item-section>
 									<q-item-label>Unduh/Download</q-item-label>
 								</q-item-section>
@@ -64,23 +54,11 @@
 				>
 					<template v-slot:header="props">
 						<q-tr :props="props">
-							<q-th
-								key="santri_id"
-								:props="props"
-								class="text-left"
-							>
-								ID Santri
-							</q-th>
+							<q-th key="santri_id" :props="props" class="text-left"> ID Santri </q-th>
 							<q-th key="nama" :props="props"> Nama </q-th>
-							<q-th key="tk" :props="props">
-								Tingkat &mdash; Kelas
-							</q-th>
-							<q-th key="domisili" :props="props">
-								Domisili (Asal)
-							</q-th>
-							<q-th key="new_domisili" :props="props">
-								Domisili (Baru)
-							</q-th>
+							<q-th key="tk" :props="props"> Tingkat &mdash; Kelas </q-th>
+							<q-th key="domisili" :props="props"> Domisili (Asal) </q-th>
+							<q-th key="new_domisili" :props="props"> Domisili (Baru) </q-th>
 							<q-th class="text-center">
 								<!-- <q-btn
 									icon="edit"
@@ -93,11 +71,7 @@
 					</template>
 					<template v-slot:body="props">
 						<q-tr :props="props">
-							<q-td
-								key="santri_id"
-								:props="props"
-								class="text-left"
-							>
+							<q-td key="santri_id" :props="props" class="text-left">
 								<q-btn
 									:label="props.row.santri_id"
 									outline
@@ -120,12 +94,7 @@
 								{{ props.row.new_domisili }}
 							</q-td>
 							<q-td key="id" :props="props" class="text-center">
-								<q-btn
-									icon="edit"
-									flat
-									color="green-10"
-									@click="edit(props.row)"
-								/>
+								<q-btn icon="edit" flat color="green-10" @click="edit(props.row)" />
 							</q-td>
 						</q-tr>
 					</template>
@@ -133,8 +102,8 @@
 			</q-card-section>
 			<q-card-actions class="q-pa-sm bg-green-7 text-green-11 row">
 				<div class="col text-italic">
-					1) Teliti kembali sebelum Anda menekan tombol Update; 2)
-					Lakukan backup data dengan menekan tombol download!;
+					1) Teliti kembali sebelum Anda menekan tombol Update; 2) Lakukan backup data dengan menekan tombol
+					download!;
 				</div>
 				<q-btn
 					style="max-width: 150px"
@@ -151,11 +120,7 @@
 			</q-card-actions>
 		</q-card>
 		<q-dialog v-model="showEdit">
-			<MutasiForm
-				:data="mutasiItem"
-				@success-delete="loadData"
-				@success-submit="loadData"
-			/>
+			<MutasiForm :data="mutasiItem" @success-delete="loadData" @success-submit="loadData" />
 		</q-dialog>
 	</q-page>
 </template>
@@ -166,7 +131,6 @@ import { onMounted, ref, toRefs } from 'vue';
 import apiPost from 'src/api/api-post';
 import loadingStore from 'src/stores/loading-store';
 import { notifyWarning } from 'src/utils/notify';
-import CardHeader from 'src/components/CardHeader.vue';
 import MutasiForm from 'src/components/forms/MutasiForm.vue';
 
 const santri = ref([]);

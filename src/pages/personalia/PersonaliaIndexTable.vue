@@ -50,7 +50,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import apiGet from 'src/api/api-get';
-import CardHeader from 'src/components/cards/CardHeader.vue';
 import PersonaliaForm from 'src/components/forms/PersonaliaForm.vue';
 
 const loading = ref(false);

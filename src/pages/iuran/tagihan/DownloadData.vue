@@ -48,7 +48,6 @@
 	</q-page>
 </template>
 <script setup>
-import CardHeader from 'src/components/cards/CardHeader.vue';
 import apiGet from 'src/api/api-get';
 import { ref, onMounted } from 'vue';
 import { notifyError } from 'src/utils/notify';

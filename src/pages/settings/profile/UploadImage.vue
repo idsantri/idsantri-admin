@@ -54,7 +54,6 @@ import { computed, ref } from 'vue';
 import UploadImage from 'src/components/ImageUploader.vue';
 import api from 'src/api';
 import config from 'src/config';
-import CardHeader from 'src/components/cards/CardHeader.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { notifyError } from 'src/utils/notify';
 

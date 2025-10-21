@@ -149,14 +149,12 @@
 				</q-card-actions>
 			</q-card>
 		</q-form>
-		<!-- <pre>{{ profile }}</pre> -->
 	</q-page>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
 import apiGet from 'src/api/api-get';
 import apiPost from 'src/api/api-post';
-import CardHeader from 'src/components/cards/CardHeader.vue';
 
 const loading = ref(false);
 // init data

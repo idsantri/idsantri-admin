@@ -31,7 +31,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import CardHeader from 'src/components/cards/CardHeader.vue';
 import listsStore from 'src/stores/lists-store';
 
 const router = useRouter();

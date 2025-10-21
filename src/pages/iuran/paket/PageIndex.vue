@@ -89,7 +89,6 @@
 import { onMounted, ref } from 'vue';
 import apiGet from 'src/api/api-get';
 import IuranPaketForm from 'src/components/forms/IuranPaketForm.vue';
-import CardHeader from 'src/components/cards/CardHeader.vue';
 
 const loading = ref(false);
 const iuranPaket = ref([]);
