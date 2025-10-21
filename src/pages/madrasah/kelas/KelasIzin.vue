@@ -1,24 +1,20 @@
 <template lang="">
-	<temp-array
-		:data="izinMap"
-		:spinner="loading"
-		:btn-print="true"
-		@add="handleAdd"
-		@edit="handleEdit"
-		@print="handlePrint"
-	/>
-	<q-dialog v-model="crudShow">
-		<IzinMadrasahForm
-			:data="izinObj"
-			@success-submit="loadData"
-			@success-delete="loadData"
+	<div>
+		<temp-array
+			:data="izinMap"
+			:spinner="loading"
+			:btn-print="true"
+			@add="handleAdd"
+			@edit="handleEdit"
+			@print="handlePrint"
 		/>
-	</q-dialog>
-	<q-dialog v-model="showViewer">
-		<ReportViewer :url="urlReport" />
-	</q-dialog>
-
-	<!-- <pre>{{ izin }}	</pre> -->
+		<q-dialog v-model="crudShow">
+			<IzinMadrasahForm :data="izinObj" @success-submit="loadData" @success-delete="loadData" />
+		</q-dialog>
+		<q-dialog v-model="showViewer">
+			<ReportViewer :url="urlReport" />
+		</q-dialog>
+	</div>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
@@ -50,14 +46,9 @@ async function loadData() {
 		izin.value = data.izin_madrasah;
 		kelas.value = data.kelas;
 		izinMap.value = data.izin_madrasah.map((v) => ({
-			Tanggal:
-				formatDateShort(v.dari_tgl) +
-				' | ' +
-				formatHijri(m2h(v.dari_tgl)),
+			Tanggal: formatDateShort(v.dari_tgl) + ' | ' + formatHijri(m2h(v.dari_tgl)),
 			Durasi: v.durasi + ' hari',
-			Keperluan:
-				v.keperluan +
-				`${v.keterangan?.length > 0 ? ' (' + v.keterangan + ')' : ''}`,
+			Keperluan: v.keperluan + `${v.keterangan?.length > 0 ? ' (' + v.keterangan + ')' : ''}`,
 			Catatan: v.catatan,
 			id: v.id,
 		}));

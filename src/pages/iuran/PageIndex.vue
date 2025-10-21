@@ -47,6 +47,11 @@
 			</CardHeader>
 			<q-card-section class="q-pa-sm">
 				<router-view />
+				<!-- <router-view v-slot="{ Component }">
+					<transition name="fade" mode="out-in">
+						<component :is="Component" />
+					</transition>
+				</router-view> -->
 			</q-card-section>
 		</q-card>
 	</q-page>

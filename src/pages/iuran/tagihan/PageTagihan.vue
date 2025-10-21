@@ -117,9 +117,6 @@
 				</div>
 			</q-card-section>
 		</q-card>
-		<!-- <q-card flat bordered>
-			<pre>{{ iuranPaket }}</pre>
-		</q-card> -->
 	</q-page>
 </template>
 <script setup>

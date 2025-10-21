@@ -1,16 +1,10 @@
 <template lang="">
 	<q-page class="q-pa-sm">
-		<filter-tanggal
-			:showBulanUjian="true"
-			start-url="/keamanan/indisipliner"
-			@dataFilter="dataEmit"
-		>
+		<filter-tanggal :showBulanUjian="true" start-url="/keamanan/indisipliner" @dataFilter="dataEmit">
 			<DropDownMenu />
 		</filter-tanggal>
 		<q-card class="q-mt-sm">
-			<q-card-section
-				class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center"
-			>
+			<q-card-section class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
 				<span v-html="dataFilter.display || ''"></span>
 				<q-space />
 				<q-btn
@@ -34,24 +28,13 @@
 				no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
 				row-key="name"
 				flat
-				@row-click="
-					(evt, row, index) =>
-						$router.push(`/keamanan/indisipliner/${row.id}`)
-				"
+				@row-click="(evt, row, index) => $router.push(`/keamanan/indisipliner/${row.id}`)"
 			>
 				<template v-slot:top-left>
-					<div class="text-subtitle1 text-green-10">
-						Data Perizinan
-					</div>
+					<div class="text-subtitle1 text-green-10">Data Perizinan</div>
 				</template>
 				<template v-slot:top-right>
-					<q-input
-						outlined
-						dense
-						debounce="300"
-						v-model="filter"
-						placeholder="Cari"
-					>
+					<q-input outlined dense debounce="300" v-model="filter" placeholder="Cari">
 						<template v-slot:append>
 							<q-icon name="search" />
 						</template>
@@ -59,17 +42,14 @@
 				</template>
 			</q-table>
 		</q-card>
+		<q-dialog v-model="crudShow">
+			<IndisiplinerForm
+				:data="{}"
+				@success-delete="null"
+				@success-submit="(v) => $router.push(`/keamanan/indisipliner/${v.id}`)"
+			/>
+		</q-dialog>
 	</q-page>
-
-	<q-dialog v-model="crudShow">
-		<IndisiplinerForm
-			:data="{}"
-			@success-delete="null"
-			@success-submit="
-				(v) => $router.push(`/keamanan/indisipliner/${v.id}`)
-			"
-		/>
-	</q-dialog>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';

@@ -4,15 +4,7 @@
 			<!-- <q-btn flat label="Homepage" /> -->
 			<div class="text-subtitle1">Cari &hellip;</div>
 			<q-space />
-			<q-btn
-				label="Excel"
-				outline=""
-				class="q-px-md"
-				no-caps=""
-				icon="download"
-				dense
-				to="/santri/export"
-			/>
+			<q-btn label="Excel" outline="" class="q-px-md" no-caps="" icon="download" dense to="/santri/export" />
 			<div class="q-px-sm"></div>
 			<q-tabs shrink stretch class="text-green-11">
 				<q-route-tab name="santri" label="Santri" to="santri" exact />
@@ -22,23 +14,11 @@
 		</q-toolbar>
 
 		<router-view class="q-mt-sm" />
-		<!-- <q-tab-panels
-			animated
-			v-model="tab"
-			class="bg-green-1 rounded-borders q-card--bordered q-pa-sm"
-		>
-			<q-tab-panel name="santri" class="no-padding">
-				<santri-search />
-			</q-tab-panel>
-
-			<q-tab-panel name="wali" class="no-padding">
-				<wali-search />
-			</q-tab-panel>
-
-			<q-tab-panel name="ortu" class="no-padding">
-				<ortu-search />
-			</q-tab-panel>
-		</q-tab-panels> -->
+		<!-- <router-view v-slot="{ Component }">
+			<transition name="fade" mode="out-in">
+				<component :is="Component" class="q-mt-sm" />
+			</transition>
+		</router-view> -->
 	</q-page>
 </template>
 

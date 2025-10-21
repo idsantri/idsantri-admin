@@ -27,24 +27,9 @@
 			<q-card-section class="no-padding">
 				<div class="row" style="max-width: 1024px">
 					<div class="col-12 col-md-6 q-pa-sm">
-						<card-column
-							:data="identity"
-							:loading="loading"
-							title="Identitas"
-							class="q-mb-sm"
-						/>
-						<card-column
-							:data="dataAyah"
-							:loading="loading"
-							title="Data Ayah"
-							class="q-mb-sm"
-						/>
-						<card-column
-							:data="dataIbu"
-							:loading="loading"
-							title="Data Ibu"
-							class="q-mb-sm"
-						/>
+						<card-column :data="identity" :loading="loading" title="Identitas" class="q-mb-sm" />
+						<card-column :data="dataAyah" :loading="loading" title="Data Ayah" class="q-mb-sm" />
+						<card-column :data="dataIbu" :loading="loading" title="Data Ibu" class="q-mb-sm" />
 					</div>
 					<div class="col-12 col-md-6 q-pa-sm">
 						<card-list-santri
@@ -57,7 +42,6 @@
 				</div>
 			</q-card-section>
 		</q-card>
-		<!-- <pre>{{ ortu }}</pre> -->
 	</q-page>
 </template>
 <script setup>

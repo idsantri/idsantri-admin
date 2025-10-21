@@ -5,18 +5,12 @@
 				<div class="row">
 					<div v-if="loadingDownload">
 						<q-dialog v-model="loadingDownload" persistent="">
-							<q-spinner-cube
-								color="green-12"
-								size="8em"
-								class="flex q-ma-lg q-mx-auto"
-							/>
+							<q-spinner-cube color="green-12" size="8em" class="flex q-ma-lg q-mx-auto" />
 						</q-dialog>
 					</div>
 					<div class="col-12 col-md-3 q-pa-sm">
 						<q-card bordered flat>
-							<q-card-section class="bg-green-11 q-pa-sm">
-								Pilih Kelas
-							</q-card-section>
+							<q-card-section class="bg-green-11 q-pa-sm"> Pilih Kelas </q-card-section>
 							<q-card-section class="no-padding">
 								<q-select
 									class="q-pa-sm"
@@ -67,9 +61,7 @@
 					</div>
 					<div class="col-12 col-md-3 q-pa-sm">
 						<q-card bordered flat>
-							<q-card-section class="bg-green-11 q-pa-sm">
-								Atur Absensi
-							</q-card-section>
+							<q-card-section class="bg-green-11 q-pa-sm"> Atur Absensi </q-card-section>
 							<q-card-section class="no-padding">
 								<q-select
 									class="q-pa-sm"
@@ -110,11 +102,7 @@
 							</q-card-section>
 							<q-card-section class="no-padding">
 								<div class="row">
-									<q-toggle
-										class="q-pa-sm col-4"
-										label="Perpekan"
-										v-model="perpekan"
-									/>
+									<q-toggle class="q-pa-sm col-4" label="Perpekan" v-model="perpekan" />
 									<q-input
 										class="q-pa-sm col-4"
 										dense
@@ -218,25 +206,23 @@
 				/>
 			</q-card-actions>
 		</q-form>
+		<q-dialog v-model="showViewer">
+			<ReportViewer :url="urlReport" />
+		</q-dialog>
+		<!-- TEST -->
+		<div v-if="false">
+			<q-btn
+				label="Proses"
+				icon="download"
+				color="green-11"
+				class="q-px-md text-green-10"
+				dense
+				no-caps
+				@click="onProses"
+			/>
+			<TestPrint :data-murid="murid" />
+		</div>
 	</q-card>
-	<q-dialog v-model="showViewer">
-		<ReportViewer :url="urlReport" />
-	</q-dialog>
-	<!-- TEST -->
-	<div v-if="false">
-		<q-btn
-			label="Proses"
-			icon="download"
-			color="green-11"
-			class="q-px-md text-green-10"
-			dense
-			no-caps
-			@click="onProses"
-		/>
-		<TestPrint :data-murid="murid" />
-	</div>
-	<!-- <pre>{{ input }}</pre>
-	<pre>download: {{ loadingDownload }}</pre> -->
 </template>
 <script setup>
 import { getListsCustom } from 'src/api/api-get-lists';
@@ -381,10 +367,7 @@ watch(
 			lists.value['tingkat'] = data;
 			// console.log(newValue.substring(0, 4));
 			// console.log(newValue.substring(5));
-			optionsTahun.value = [
-				newValue.substring(0, 4),
-				newValue.substring(5),
-			];
+			optionsTahun.value = [newValue.substring(0, 4), newValue.substring(5)];
 		}
 	},
 );

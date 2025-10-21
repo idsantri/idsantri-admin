@@ -44,6 +44,11 @@
 							<q-spinner-cube color="green-12" size="8em" class="flex q-ma-lg q-mx-auto" />
 						</q-dialog>
 						<router-view :key="$route.fullPath" />
+						<!-- <router-view v-slot="{ Component }">
+							<transition name="fade" mode="out-in">
+								<component :is="Component" :key="$route.fullPath" />
+							</transition>
+						</router-view> -->
 					</q-card-section>
 				</q-card>
 			</q-card-section>

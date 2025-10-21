@@ -1,36 +1,37 @@
 <template>
-	<q-btn @click="createPDF">generate pdf</q-btn>
+	<div>
+		<q-btn @click="createPDF">generate pdf</q-btn>
 
-	<div id="pdf-element">
-		<div>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem
-			distinctio at ipsa numquam possimus deserunt, debitis explicabo
-			corrupti eos sint! Assumenda provident impedit corrupti velit in
-			dolore saepe eaque pariatur.
+		<div id="pdf-element">
+			<div>
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem distinctio at ipsa numquam possimus
+				deserunt, debitis explicabo corrupti eos sint! Assumenda provident impedit corrupti velit in dolore
+				saepe eaque pariatur.
 
-			<table>
-				<tbody>
-					<tr v-for="(item, index) in murid" :key="index">
-						<td>{{ item.nama }}</td>
-					</tr>
-				</tbody>
-			</table>
+				<table>
+					<tbody>
+						<tr v-for="(item, index) in murid" :key="index">
+							<td>{{ item.nama }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
+		<q-dialog v-model="showPdf">
+			<q-card style="width: 600px; height: 800px">
+				<q-card-section style="width: 100%; height: 100%" class="q-pa-sm">
+					<iframe
+						:src="srcPdf"
+						style="height: 100%; width: 100%"
+						frameborder="0"
+						loading="lazy"
+						scrolling="no"
+						seamless="seamless"
+					></iframe>
+				</q-card-section>
+			</q-card>
+		</q-dialog>
 	</div>
-	<q-dialog v-model="showPdf">
-		<q-card style="width: 600px; height: 800px">
-			<q-card-section style="width: 100%; height: 100%" class="q-pa-sm">
-				<iframe
-					:src="srcPdf"
-					style="height: 100%; width: 100%"
-					frameborder="0"
-					loading="lazy"
-					scrolling="no"
-					seamless="seamless"
-				></iframe>
-			</q-card-section>
-		</q-card>
-	</q-dialog>
 </template>
 <script setup>
 import { ref } from 'vue';
