@@ -1,1 +1,0 @@
-import{_ as o}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{f as r,o as e}from"./index-DwrbA0R8.js";const t={};function c(n,s,a,i,p,_){return e(),r("div",null,"id murid")}const m=o(t,[["render",c]]);export{m as default};
