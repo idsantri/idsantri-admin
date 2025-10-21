@@ -69,17 +69,10 @@
 						/>
 					</template>
 				</q-input>
-				<q-btn
-					type="submit"
-					class="full-width q-pa-sm text-green-10"
-					color="green-3"
-					label="Ganti Password"
-				/>
+				<q-btn type="submit" class="full-width q-pa-sm text-green-10" color="green-3" label="Ganti Password" />
 
 				<q-card class="my-card" flat>
-					<q-card-section
-						class="text-green-10 text-center bg-green-2 q-pa-sm"
-					>
+					<q-card-section class="text-green-10 text-center bg-green-2 q-pa-sm">
 						<q-btn
 							outline
 							color="green-10"
@@ -92,13 +85,8 @@
 				</q-card>
 			</div>
 		</form>
+		<q-spinner-cube v-show="showSpinner" color="green-12" size="14em" class="absolute-center" />
 	</div>
-	<q-spinner-cube
-		v-show="showSpinner"
-		color="green-12"
-		size="14em"
-		class="absolute-center"
-	/>
 </template>
 
 <script setup>
@@ -137,12 +125,7 @@ const reset = async () => {
 		await notification; // tunggu notifikasi ditutup
 		router.push({ name: 'Login' });
 	} catch (error) {
-		emit(
-			'errors',
-			toArray(
-				error.response?.data?.message || 'Terjadi sebuah kesalahan',
-			),
-		);
+		emit('errors', toArray(error.response?.data?.message || 'Terjadi sebuah kesalahan'));
 	} finally {
 		showSpinner.value = false;
 	}

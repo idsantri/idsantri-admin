@@ -1,14 +1,10 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
 	<div class="">
 		<q-card class="q-mb-lg" flat>
 			<q-card-section class="no-padding no-margin">
-				<p
-					class="q-pa-sm no-margin text-green-10 text-justify bg-green-2 rounded-borders"
-				>
-					Tidak masalah. Masukkan email/surel Anda di bawah ini dan
-					kami akan mengirimkan instruksi untuk mengatur ulang kata
-					sandi Anda.
+				<p class="q-pa-sm no-margin text-green-10 text-justify bg-green-2 rounded-borders">
+					Tidak masalah. Masukkan email/surel Anda di bawah ini dan kami akan mengirimkan instruksi untuk
+					mengatur ulang kata sandi Anda.
 				</p>
 			</q-card-section>
 		</q-card>
@@ -24,17 +20,10 @@
 					placeholder="Masukkan email/surel Anda!"
 					type="email"
 				/>
-				<q-btn
-					type="submit"
-					class="full-width q-pa-sm text-green-10"
-					color="green-3"
-					label="Kirim instruksi"
-				/>
+				<q-btn type="submit" class="full-width q-pa-sm text-green-10" color="green-3" label="Kirim instruksi" />
 
 				<q-card class="" flat>
-					<q-card-section
-						class="text-green-10 text-center bg-green-2 q-pa-sm"
-					>
+					<q-card-section class="text-green-10 text-center bg-green-2 q-pa-sm">
 						<q-btn
 							outline
 							color="green-10"
@@ -55,13 +44,8 @@
 				</q-card>
 			</div>
 		</form>
+		<q-spinner-cube v-show="showSpinner" color="green-12" size="14em" class="absolute-center" />
 	</div>
-	<q-spinner-cube
-		v-show="showSpinner"
-		color="green-12"
-		size="14em"
-		class="absolute-center"
-	/>
 </template>
 
 <script setup>
@@ -90,12 +74,7 @@ const reset = async () => {
 		await notification; // tunggu notifikasi ditutup
 		router.push('/reset-password');
 	} catch (error) {
-		emit(
-			'errors',
-			toArray(
-				error.response?.data?.message || 'Terjadi sebuah kesalahan',
-			),
-		);
+		emit('errors', toArray(error.response?.data?.message || 'Terjadi sebuah kesalahan'));
 	} finally {
 		showSpinner.value = false;
 	}
