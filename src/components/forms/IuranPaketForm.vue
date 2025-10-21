@@ -1,14 +1,14 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
-			<FormHeader title="Input Paket Iuran" :is-new="!input.id" />
-			<FormLoading v-if="loadingCrud" />
+			<FormHeader title="Input Paket Iuran" :is-new="isNew" />
+			<FormLoading v-if="loading" />
 			<q-card-section>
 				<q-input
 					dense
 					class="q-my-sm"
 					outlined
-					v-model="input.urut"
+					v-model="inputs.urut"
 					label="Nomor Urut"
 					:rules="[(val) => !val || !isNaN(val) || 'Hanya angka']"
 				/>
@@ -17,13 +17,13 @@
 					dense
 					class="q-my-sm"
 					outlined
-					v-model="input.paket"
+					v-model="inputs.paket"
 					required
 					label="Nama Paket"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
 				<InputSelectArray
-					v-model="input.item"
+					v-model="inputs.item"
 					url="iuran"
 					label="Nama Iuran"
 					class="q-my-sm"
@@ -33,28 +33,23 @@
 					dense
 					class="q-my-sm"
 					outlined
-					v-model="input.nominal"
+					v-model="inputs.nominal"
 					required
 					label="Nominal"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
 			</q-card-section>
-			<FormActions
-				:btn-delete="input.id ? true : false"
-				@on-delete="onDelete"
-			/>
+			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
-		<!-- <pre>{{ props.santri }}</pre> -->
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import listsStore from 'src/stores/lists-store';
-import apiDelete from 'src/api/api-delete';
-import apiUpdate from 'src/api/api-update';
-import apiPost from 'src/api/api-post';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
+import IuranPaket from 'src/models/IuranPaket';
+import useCrudForm from './utils/useCrudForm';
 
 const props = defineProps({
 	data: { type: Object, required: false, default: () => {} },
@@ -67,64 +62,38 @@ const emit = defineEmits([
 	'successCreate',
 ]);
 
-const input = ref({});
-const loadingCrud = ref(false);
-const iuran = ref([]);
+const iuranStore = listsStore().getStateByKey('iuran');
+const inputs = ref({ ...props.data });
+const iuran = ref([...iuranStore]);
+const isNew = !props.data?.id;
 
-onMounted(async () => {
-	Object.assign(input.value, props.data);
-	iuran.value = listsStore().getStateByKey('iuran');
-});
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
+	IuranPaket,
+	{
+		emit: emit,
+		responseKey: 'iuran_paket',
+	},
+);
 
 const setNominal = (val) => {
 	const selectedOption = iuran.value.find((item) => item.val0 === val);
 	if (selectedOption) {
-		input.value.nominal = selectedOption.val1;
+		inputs.value.nominal = selectedOption.val1;
 	}
 };
 
 const onSubmit = async () => {
-	const data = JSON.parse(JSON.stringify(input.value));
+	const data = JSON.parse(JSON.stringify(inputs.value));
 	delete data.id;
-	// return console.log(data);
 
-	let response = null;
-	const isNew = !input.value.id;
 	if (isNew) {
-		response = await apiPost({
-			endPoint: 'iuran-paket',
-			data,
-			loading: loadingCrud,
-		});
+		return await handleCreate(data, true);
 	} else {
-		response = await apiUpdate({
-			endPoint: `iuran-paket/${input.value.id}`,
-			data,
-			confirm: true,
-			notify: true,
-			loading: loadingCrud,
-		});
-	}
-	if (response) {
-		document.getElementById('btn-close-form').click();
-		emit('successSubmit', response?.iuran_paket);
-		if (isNew) {
-			emit('successCreate', response?.iuran_paket);
-		} else {
-			emit('successUpdate', response?.iuran_paket);
-		}
+		return await handleUpdate(props.data.id, data, true);
 	}
 };
 
 const onDelete = async () => {
-	const id = input.value.id;
-	const result = await apiDelete({
-		endPoint: `iuran-paket/${id}`,
-		loading: loadingCrud,
-	});
-	if (result) {
-		document.getElementById('btn-close-form').click();
-		emit('successDelete', id);
-	}
+	return await handleDelete(props.data.id);
 };
 </script>

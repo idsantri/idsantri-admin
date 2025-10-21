@@ -10,7 +10,8 @@
 		behavior="menu"
 		clearable
 		multiple
-		:hint="textHint()"
+		:hint="hint"
+		v-model="input"
 	>
 		<template v-slot:after>
 			<drop-down-after route-to="tatib-santri" @reload="fetchList" />
@@ -19,23 +20,19 @@
 </template>
 <script setup>
 import listsStore from 'src/stores/lists-store';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import DropDownAfter from './DropDownAfter.vue';
 import Lists from 'src/models/Lists';
 
-const props = defineProps({
-	selected: {
-		type: String,
-	},
-});
+const input = defineModel();
 
-function textHint() {
-	let result = '';
-	if (props.selected) {
-		result = extractDataInBrackets(props.selected);
+const hint = computed(() => {
+	if (input.value) {
+		return extractDataInBrackets(input.value.join('; '));
+	} else {
+		return 'Pilih pasal dilanggar';
 	}
-	return result;
-}
+});
 
 function extractDataInBrackets(inputText) {
 	let extractedData = '';

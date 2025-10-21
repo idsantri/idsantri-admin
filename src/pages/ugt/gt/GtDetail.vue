@@ -220,8 +220,7 @@
 			</div>
 		</div>
 		<q-dialog persistent="" v-model="crudShow">
-			<gt-crud
-				:is-new="false"
+			<UgtGtForm
 				:data="gt"
 				@success-submit="loadGt()"
 				@success-delete="$router.go(-1)"
@@ -238,7 +237,7 @@ import apiGet from 'src/api/api-get';
 import { digitSeparator } from 'src/utils/format-number';
 import { onMounted, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
-import GtCrud from 'src/pages/ugt/gt/GtCrud.vue';
+import UgtGtForm from 'src/components/forms/UgtGtForm.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
 import apiDownload from 'src/api/api-download';
 import loadingStore from 'src/stores/loading-store';

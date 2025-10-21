@@ -1,8 +1,8 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
-		<q-form @submit.prevent="submit">
+		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Desa/Kelurahan" :is-new="isNew" />
-			<FormLoading v-if="loadingCrud" />
+			<FormLoading v-if="loading" />
 			<q-card-section>
 				<q-input
 					v-model="inputs.kecamatan_id"
@@ -46,8 +46,9 @@
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import Alamat from 'src/models/Alamat';
+import useCrudForm from './utils/useCrudForm';
 
 const props = defineProps({
 	data: { type: Object, required: false, default: () => {} },
@@ -60,53 +61,29 @@ const emit = defineEmits([
 	'successCreate',
 ]);
 
-const inputs = ref({});
-const loadingCrud = ref(false);
+const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
 
-onMounted(async () => {
-	Object.assign(inputs.value, props.data);
-});
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
+	Alamat.Desa,
+	{
+		emit: emit,
+		responseKey: 'desa',
+	},
+);
 
-const submit = async (e) => {
+const onSubmit = async (e) => {
 	const formData = new FormData(e.target);
 	const data = Object.fromEntries(formData.entries());
-	try {
-		loadingCrud.value = true;
-		const response = isNew
-			? await Alamat.Desa.create({ data })
-			: await Alamat.Desa.update({
-					id: props.data.id,
-					data,
-					confirm: true,
-				});
 
-		if (response) {
-			document.getElementById('btn-close-form').click();
-			emit('successSubmit', response?.desa);
-			if (isNew) {
-				emit('successCreate', response?.desa);
-			} else {
-				emit('successUpdate', response?.desa);
-			}
-		}
-	} finally {
-		loadingCrud.value = false;
+	if (isNew) {
+		return await handleCreate(data, true);
+	} else {
+		return await handleUpdate(props.data.id, data, true);
 	}
 };
 
 const onDelete = async () => {
-	try {
-		loadingCrud.value = true;
-		const id = props.data.id;
-
-		const result = await Alamat.Desa.remove({ id });
-		if (result) {
-			document.getElementById('btn-close-form').click();
-			emit('successDelete', id);
-		}
-	} finally {
-		loadingCrud.value = false;
-	}
+	return await handleDelete(props.data.id);
 };
 </script>

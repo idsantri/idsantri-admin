@@ -134,6 +134,37 @@ const ArrayCrud = (() => {
 		}
 		return newArray;
 	}
+	/**
+	 * Mengurutkan array string secara case-insensitive (mengabaikan huruf besar/kecil).
+	 *
+	 * @param {string[]} dataArray - Array string primitif yang akan diurutkan.
+	 * @param {string} [order='asc'] - Urutan pengurutan: 'asc' (ascending) atau 'desc' (descending).
+	 * @returns {string[]} Array yang sudah diurutkan.
+	 */
+	function sortPrimitiveArray(dataArray, order = 'asc') {
+		// Buat salinan array agar fungsi tidak memodifikasi array asli (immutable)
+		const sortedData = [...dataArray];
+
+		sortedData.sort((a, b) => {
+			// Menggunakan localeCompare untuk perbandingan string yang baik.
+			// Opsi { sensitivity: 'base' } memastikan perbandingan case-insensitive
+			// (mengabaikan huruf besar/kecil dan aksen).
+			const comparisonResult = a.localeCompare(b, undefined, {
+				sensitivity: 'base',
+			});
+
+			// Tentukan hasil pengurutan berdasarkan parameter 'order'
+			if (order.toLowerCase() === 'desc') {
+				// Untuk descending, balikkan hasil perbandingan
+				return -comparisonResult;
+			} else {
+				// Untuk ascending (default), gunakan hasil perbandingan aslinya
+				return comparisonResult;
+			}
+		});
+
+		return sortedData;
+	}
 
 	return {
 		create,
@@ -143,6 +174,7 @@ const ArrayCrud = (() => {
 		exists,
 		filter,
 		sort,
+		sortPrimitiveArray,
 	};
 })();
 export default ArrayCrud;

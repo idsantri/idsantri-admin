@@ -1,8 +1,8 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
-			<FormHeader title="Input Data PJGT" :is-new="props.isNew" />
-			<FormLoading v-if="loadingCrud" />
+			<FormHeader title="Input Data PJGT" :is-new="isNew" />
+			<FormLoading v-if="loading" />
 			<q-card-section class="no-padding">
 				<q-carousel
 					v-model="slide"
@@ -19,7 +19,7 @@
 						name="identity"
 						class="no-wrap flex-center"
 					>
-						<PjgtIdentity v-model="inputs" />
+						<PjgtIdentity v-model="inputs" :is-new="isNew" />
 					</q-carousel-slide>
 
 					<q-carousel-slide name="alamat" class="no-wrap flex-center">
@@ -43,25 +43,22 @@
 					/>
 				</div>
 			</q-card-section>
-
-			<FormActions :btn-delete="!isNew" @on-delete="handleDelete" />
+			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
 	</q-card>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
 import CarouselAlamat from 'src/components/forms/carousel/CarouselAlamat.vue';
 import PjgtIdentity from './carousel/PjgtIdentity.vue';
 import PjgtOthers from './carousel/PjgtOthers.vue';
 import UgtPjgt from 'src/models/UgtPjgt';
-
-const loadingCrud = ref(false);
+import useCrudForm from './utils/useCrudForm';
 
 const props = defineProps({
 	data: Object,
-	isNew: Boolean,
 });
+
 const emit = defineEmits([
 	'successDelete',
 	'successSubmit',
@@ -69,8 +66,16 @@ const emit = defineEmits([
 	'successCreate',
 ]);
 
-const route = useRoute();
 const inputs = ref({});
+const isNew = !props.data?.id;
+
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
+	UgtPjgt,
+	{
+		emit: emit,
+		responseKey: 'pjgt',
+	},
+);
 
 onMounted(async () => {
 	Object.assign(inputs.value, props.data);
@@ -79,44 +84,16 @@ onMounted(async () => {
 
 const onSubmit = async () => {
 	const data = JSON.parse(JSON.stringify(inputs.value));
-	const isNew = props.isNew;
-	try {
-		loadingCrud.value = true;
-		const response = isNew
-			? await UgtPjgt.create({ data })
-			: await UgtPjgt.update({
-					id: route.params.id,
-					data,
-					confirm: true,
-				});
 
-		if (response) {
-			document.getElementById('btn-close-form').click();
-			emit('successSubmit', response?.pjgt);
-			if (isNew) {
-				emit('successCreate', response?.pjgt);
-			} else {
-				emit('successUpdate', response?.pjgt);
-			}
-		}
-	} finally {
-		loadingCrud.value = false;
+	if (isNew) {
+		return await handleCreate(data, true);
+	} else {
+		return await handleUpdate(props.data.id, data, true);
 	}
 };
 
-const handleDelete = async () => {
-	try {
-		loadingCrud.value = true;
-		const id = route.params.id;
-
-		const result = await UgtPjgt.remove({ id });
-		if (result) {
-			document.getElementById('btn-close-form').click();
-			emit('successDelete', id);
-		}
-	} finally {
-		loadingCrud.value = false;
-	}
+const onDelete = async () => {
+	return await handleDelete(props.data.id);
 };
 
 const slide = ref('identity');

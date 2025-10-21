@@ -66,7 +66,7 @@
 <script setup>
 import { computed, ref, toRef } from 'vue';
 import mutasiStore from 'src/stores/mutasi-store';
-import EditNewDomisili from 'pages/makhadiyah/mutasi/EditMutasi.vue';
+import EditNewDomisili from './EditMutasi.vue';
 
 const props = defineProps({
 	onLoading: { type: Boolean, default: false },

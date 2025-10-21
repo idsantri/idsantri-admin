@@ -1,10 +1,7 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card class="">
-			<CardHeader
-				title="Modul Pendidikan Tajwid al-Quran"
-				:showReload="false"
-			>
+			<CardHeader title="Modul Pendidikan Tajwid al-Quran" :showReload="false">
 				<!-- <template v-slot:left>
 					<q-btn
 						dense
@@ -20,24 +17,9 @@
 			</CardHeader>
 			<q-card-section class="q-pa-sm">
 				<q-tabs dense align="left">
-					<q-route-tab
-						label="Santri"
-						to="/quran/santri"
-						exact
-						no-caps
-					/>
-					<q-route-tab
-						label="Mutaallim"
-						to="/quran/mutaallim"
-						exact
-						no-caps
-					/>
-					<q-route-tab
-						label="Muallim"
-						to="/quran/muallim"
-						exact
-						no-caps
-					/>
+					<q-route-tab label="Santri" to="/quran/santri" exact no-caps />
+					<q-route-tab label="Mutaallim" to="/quran/mutaallim" exact no-caps />
+					<q-route-tab label="Muallim" to="/quran/muallim" exact no-caps />
 					<q-space />
 					<q-btn
 						dense
@@ -71,7 +53,6 @@
 </template>
 <script setup>
 import apiGet from 'src/api/api-get';
-import CardHeader from 'src/components/CardHeader.vue';
 import loadingStore from 'src/stores/loading-store';
 import { toRefs } from 'vue';
 

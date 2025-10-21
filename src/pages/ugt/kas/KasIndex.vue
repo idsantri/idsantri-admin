@@ -109,8 +109,7 @@
 			</q-card-section>
 		</q-card>
 		<q-dialog persistent="" v-model="crudShow">
-			<kas-crud
-				:is-new="isNew"
+			<UgtKasForm
 				:data="kasObj"
 				@success-submit="loadData()"
 				@success-delete="loadData()"
@@ -119,22 +118,19 @@
 		<q-dialog v-model="showViewer">
 			<ReportViewer :url="urlReport" />
 		</q-dialog>
-		<!-- <pre>{{ kas[0] }}</pre> -->
-		<!-- <pre>{{ wilayah }}</pre> -->
 	</q-page>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
 import apiGet from 'src/api/api-get';
 import { digitSeparator } from 'src/utils/format-number';
-import KasCrud from 'src/pages/ugt/kas/KasCrud.vue';
+import UgtKasForm from 'src/components/forms/UgtKasForm.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
 
 const kas = ref([]);
 const loading = ref(false);
 const filter = ref('');
 const crudShow = ref(false);
-const isNew = ref(false);
 const kasObj = ref({});
 const urlReport = ref('');
 
@@ -148,7 +144,6 @@ async function loadData() {
 
 function addKas() {
 	kasObj.value = {};
-	isNew.value = true;
 	crudShow.value = true;
 }
 
@@ -171,7 +166,6 @@ function editKas(row) {
 		nominal: nominal,
 	};
 	kasObj.value = data;
-	isNew.value = false;
 	crudShow.value = true;
 }
 

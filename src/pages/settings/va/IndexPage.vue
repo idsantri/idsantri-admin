@@ -2,10 +2,7 @@
 	<q-page class="q-pa-sm">
 		<q-form @submit.prevent="onSubmit">
 			<q-card class="q-mt-sm" style="max-width: 600px">
-				<CardHeader
-					title="Virtual Account Iuran Santri"
-					@onReload="loadData"
-				/>
+				<CardHeader title="Virtual Account Iuran Santri" @onReload="loadData" />
 
 				<q-card-section class="q-pa-sm">
 					<q-input
@@ -48,24 +45,17 @@
 					/>
 				</q-card-section>
 				<q-card-actions align="right" class="bg-green-7">
-					<q-btn
-						label="Simpan"
-						type="submit"
-						no-caps
-						icon="save"
-						class="bg-green-11"
-					/>
+					<q-btn label="Simpan" type="submit" no-caps icon="save" class="bg-green-11" />
 				</q-card-actions>
+				<CardLoading :showing="loading" />
 			</q-card>
 		</q-form>
-		<!-- <pre>{{ profile }}</pre> -->
 	</q-page>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
 import apiGet from 'src/api/api-get';
 import apiPost from 'src/api/api-post';
-import CardHeader from 'src/components/CardHeader.vue';
 
 const loading = ref(false);
 // init data

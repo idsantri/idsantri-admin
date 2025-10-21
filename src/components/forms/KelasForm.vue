@@ -1,36 +1,30 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
-		<q-form @submit.prevent="submit">
-			<FormHeader title="Input Kelas" :is-new="input.id ? false : true" />
-			<FormLoading v-if="loadingCrud" />
+		<q-form @submit.prevent="onSubmit">
+			<FormHeader title="Input Kelas" :is-new="isNew" />
+			<FormLoading v-if="loading" />
 			<q-card-section>
 				<q-input
 					dense
 					outlined
 					label="Nama"
-					:model-value="input?.nama + ' (' + input?.santri_id + ')'"
+					:model-value="inputs?.nama + ' (' + inputs?.santri_id + ')'"
 					disable=""
 					filled=""
 					class="q-my-sm"
 				/>
-				<InputSelectArray
-					v-model="input.th_ajaran_h"
-					url="tahun-ajaran"
-					label="Tahun Ajaran *"
-					sort="desc"
-					class="q-my-sm"
+				<InputSelectTahunAjaran
+					v-model="inputs.th_ajaran_h"
 					:rules="[(val) => !!val || 'Harus diisi!']"
-					:selected="input.th_ajaran_h"
+					class="q-my-sm"
 				/>
-
 				<InputSelectTingkatPendidikan
-					v-model="input.tingkat_id"
+					v-model="inputs.tingkat_id"
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
-					:selected="input.tingkat_id"
 				/>
 				<input-select-array
-					v-model="input.kelas"
+					v-model="inputs.kelas"
 					url="kelas"
 					label="Kelas *"
 					:rules="[(val) => !!val || 'Harus diisi!']"
@@ -42,7 +36,7 @@
 					class="q-my-sm"
 					outlined
 					label="Nomor Absen"
-					v-model="input.no_absen"
+					v-model="inputs.no_absen"
 					type="number"
 				/>
 				<q-input
@@ -50,26 +44,21 @@
 					class="q-my-sm"
 					outlined
 					label="Keterangan"
-					v-model="input.keterangan"
+					v-model="inputs.keterangan"
 					autogrow=""
 				/>
 			</q-card-section>
-			<FormActions
-				:btn-delete="input.id ? true : false"
-				@on-delete="onDelete"
-			/>
+			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
-		<!-- <pre>{{ input }}</pre> -->
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
-import listsStore from 'src/stores/lists-store';
-import apiPost from 'src/api/api-post';
-import apiUpdate from 'src/api/api-update';
-import apiDelete from 'src/api/api-delete';
+import { ref } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingkatPendidikan.vue';
+import Kelas from 'src/models/Kelas';
+import useCrudForm from 'src/components/forms/utils/useCrudForm';
+import InputSelectTahunAjaran from '../inputs/InputSelectTahunAjaran.vue';
 
 const props = defineProps({
 	data: { type: Object, required: true },
@@ -82,64 +71,34 @@ const emit = defineEmits([
 	'successCreate',
 ]);
 
-const input = ref({});
-const loadingCrud = ref(false);
-const tahunAjaran = ref([]);
-const tingkat = ref([]);
+const inputs = ref({ ...props.data });
+const isNew = !props.data?.id;
 
-onMounted(async () => {
-	Object.assign(input.value, props.data);
-	tahunAjaran.value = listsStore().getStateByKey('tahun-ajaran');
-	tingkat.value = listsStore().getStateByKey('tingkat-pendidikan');
-});
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
+	Kelas,
+	{
+		emit: emit,
+		responseKey: 'kelas',
+	},
+);
 
-const submit = async () => {
+const onSubmit = async () => {
 	const data = {
-		santri_id: input.value.santri_id,
-		th_ajaran_h: input.value.th_ajaran_h,
-		tingkat_id: input.value.tingkat_id,
-		kelas: input.value.kelas,
-		no_absen: input.value.no_absen,
-		keterangan: input.value.keterangan,
+		santri_id: inputs.value.santri_id,
+		th_ajaran_h: inputs.value.th_ajaran_h,
+		tingkat_id: inputs.value.tingkat_id,
+		kelas: inputs.value.kelas,
+		no_absen: inputs.value.no_absen,
+		keterangan: inputs.value.keterangan,
 	};
-
-	let response = null;
-	const isNew = !input.value.id;
 	if (isNew) {
-		response = await apiPost({
-			endPoint: 'kelas',
-			data,
-			loading: loadingCrud,
-		});
+		return await handleCreate(data, true);
 	} else {
-		response = await apiUpdate({
-			endPoint: `kelas/${input.value.id}`,
-			data,
-			confirm: true,
-			notify: true,
-			loading: loadingCrud,
-		});
-	}
-	if (response) {
-		document.getElementById('btn-close-form').click();
-		emit('successSubmit', response?.kelas);
-		if (isNew) {
-			emit('successCreate', response?.kelas);
-		} else {
-			emit('successUpdate', response?.kelas);
-		}
+		return await handleUpdate(props.data.id, data, true);
 	}
 };
 
 const onDelete = async () => {
-	const id = input.value.id;
-	const result = await apiDelete({
-		endPoint: `kelas/${id}`,
-		loading: loadingCrud,
-	});
-	if (result) {
-		document.getElementById('btn-close-form').click();
-		emit('successDelete', id);
-	}
+	return await handleDelete(props.data.id);
 };
 </script>

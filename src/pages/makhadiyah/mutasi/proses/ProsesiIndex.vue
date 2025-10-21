@@ -12,14 +12,7 @@
 						class="q-ml-sm q-px-sm"
 						to="/mutasi/result"
 					/>
-					<q-btn
-						disable
-						flat
-						dense
-						icon="more_vert"
-						class="q-ml-sm"
-						color="green-11"
-					/>
+					<q-btn disable flat dense icon="more_vert" class="q-ml-sm" color="green-11" />
 				</template>
 			</CardHeader>
 			<q-card-section class="no-padding">
@@ -36,7 +29,6 @@
 	</q-page>
 </template>
 <script setup>
-import CardHeader from 'src/components/CardHeader.vue';
 import DataLeft from './LeftCard.vue';
 import DataRight from './RightCard.vue';
 import { onMounted } from 'vue';

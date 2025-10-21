@@ -39,7 +39,7 @@
 	</q-card-section>
 	<q-dialog v-model="crud">
 		<ListsForm
-			:data-input="objList"
+			:data="objList"
 			:show-input="showInput"
 			@success-delete="fetchData"
 			@success-submit="fetchData"
@@ -49,7 +49,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import listData from './lists-data';
 
 import ListsForm from 'src/components/forms/ListsForm.vue';
 import ListsSingle from './ListsStyleSingle.vue';
@@ -65,6 +64,7 @@ const listGet = ref([]);
 const objList = ref({});
 const showInput = ref({});
 const store = listsStore();
+const { listData } = store;
 
 onMounted(async () => {
 	await fetchData();

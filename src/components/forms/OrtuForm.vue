@@ -2,7 +2,7 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Data Orang Tua" :is-new="isNew" />
-			<FormLoading v-if="loadingCrud" />
+			<FormLoading v-if="loading" />
 			<q-card-section class="no-padding">
 				<q-carousel
 					v-model="slide"
@@ -69,7 +69,7 @@ import Ortu from 'src/models/Ortu';
 const router = useRouter();
 const { ortu } = reactive(ortuStore());
 const { isNew } = reactive(ortuStore());
-const loadingCrud = ref(false);
+const loading = ref(false);
 const inputs = ref({ ...ortu });
 
 const onSubmit = async () => {
@@ -77,7 +77,7 @@ const onSubmit = async () => {
 	delete data.santri;
 
 	try {
-		loadingCrud.value = true;
+		loading.value = true;
 
 		const response = isNew
 			? await Ortu.create({ data })
@@ -97,7 +97,7 @@ const onSubmit = async () => {
 			}
 		}
 	} finally {
-		loadingCrud.value = false;
+		loading.value = false;
 	}
 };
 
@@ -108,7 +108,7 @@ const resetOrDelete = async () => {
 	}
 
 	try {
-		loadingCrud.value = true;
+		loading.value = true;
 		const response = await Ortu.remove({
 			id: ortu.id,
 			message: `<span style="color:red">Hapus Orang Tua?</span><br/><br/>
@@ -119,7 +119,7 @@ const resetOrDelete = async () => {
 			router.push('/cari/ortu');
 		}
 	} finally {
-		loadingCrud.value = false;
+		loading.value = false;
 	}
 };
 
