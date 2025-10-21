@@ -1,4 +1,3 @@
-/* eslint-disable */
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card style="max-width: 600px">

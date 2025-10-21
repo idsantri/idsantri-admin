@@ -7,14 +7,11 @@
 			title="Filter Data: <span class='text-weight-medium'>Nilai Mapel (Rerata)</span>"
 		/>
 		<q-card class="q-mt-sm">
-			<q-card-section
-				class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center"
-			>
+			<q-card-section class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
 				<span
 					v-html="
 						textFilter +
-							' ➡️ <em class=\'text-weight-light\'>Kategori: </em> <strong>Nilai Rapor</strong>' ||
-						''
+							' ➡️ <em class=\'text-weight-light\'>Kategori: </em> <strong>Nilai Rapor</strong>' || ''
 					"
 				></span>
 				<q-space />
@@ -35,14 +32,7 @@
 					to="/madrasah/nilai-mapel/upload"
 				/>
 
-				<q-btn-dropdown
-					outline
-					no-caps
-					class="text-green-11 q-px-md"
-					size=""
-					dense
-					dropdown-icon="more_vert"
-				>
+				<q-btn-dropdown outline no-caps class="text-green-11 q-px-md" size="" dense dropdown-icon="more_vert">
 					<q-list>
 						<q-item v-close-popup to="/madrasah/mapel">
 							<q-item-section>
@@ -63,12 +53,7 @@
 					</q-list>
 				</q-btn-dropdown>
 			</q-card-section>
-			<q-card-section
-				v-if="
-					!params.th_ajaran_h || !params.tingkat_id || !params.kelas
-				"
-				class="q-pa-sm"
-			>
+			<q-card-section v-if="!params.th_ajaran_h || !params.tingkat_id || !params.kelas" class="q-pa-sm">
 				<div class="text-center q-pa-lg text-negative text-italic">
 					Tentukan Tahun Ajaran, Tingkat Pendidikan, dan Kelas!
 				</div>
@@ -111,11 +96,7 @@
 							</q-tr>
 							<q-tr :props="props">
 								<q-th auto-width>!</q-th>
-								<q-th
-									v-for="col in props.cols"
-									:key="col.name"
-									:props="props"
-								>
+								<q-th v-for="col in props.cols" :key="col.name" :props="props">
 									{{ col.label }}
 								</q-th>
 							</q-tr>
@@ -132,11 +113,7 @@
 										:icon="props.expand ? 'remove' : 'add'"
 									/>
 								</q-td>
-								<q-td
-									v-for="col in props.cols"
-									:key="col.name"
-									:props="props"
-								>
+								<q-td v-for="col in props.cols" :key="col.name" :props="props">
 									<span v-if="col.name == 'kelas_id'">
 										<q-btn
 											:label="col.value"
@@ -162,65 +139,32 @@
 							</q-tr>
 							<q-tr v-show="props.expand" :props="props">
 								<q-td colspan="100%">
-									<div
-										v-if="loadingDetail[props.row.kelas_id]"
-									>
+									<div v-if="loadingDetail[props.row.kelas_id]">
 										<q-skeleton height="100px" />
 									</div>
 									<div v-else>
 										<div
-											v-if="
-												nilaiDetail[props.row.kelas_id]
-													?.length == 0
-											"
+											v-if="nilaiDetail[props.row.kelas_id]?.length == 0"
 											class="text-italic text-negative"
 										>
 											Tidak ada data untuk ditampilkan!
 										</div>
 										<div v-else>
-											<q-markup-table
-												flat
-												dense
-												class="bg-green-1"
-												separator="cell"
-											>
-												<thead
-													class="bg-green-2 text-weight-medium text-right"
-												>
+											<q-markup-table flat dense class="bg-green-1" separator="cell">
+												<thead class="bg-green-2 text-weight-medium text-right">
 													<tr>
-														<td
-															class="text-left"
-															style="width: 80px"
-														>
-															ID (Kode)
-														</td>
-														<td class="text-left">
-															Mata Pelajaran
-														</td>
-														<td style="width: 50px">
-															N-1
-														</td>
-														<td style="width: 50px">
-															N-2
-														</td>
-														<td style="width: 50px">
-															N-3
-														</td>
-														<td style="width: 50px">
-															N-4
-														</td>
-														<td style="width: 65px">
-															Rerata
-														</td>
+														<td class="text-left" style="width: 80px">ID (Kode)</td>
+														<td class="text-left">Mata Pelajaran</td>
+														<td style="width: 50px">N-1</td>
+														<td style="width: 50px">N-2</td>
+														<td style="width: 50px">N-3</td>
+														<td style="width: 50px">N-4</td>
+														<td style="width: 65px">Rerata</td>
 													</tr>
 												</thead>
 												<tbody>
 													<tr
-														v-for="(
-															item, index
-														) in nilaiDetail[
-															props.row.kelas_id
-														]"
+														v-for="(item, index) in nilaiDetail[props.row.kelas_id]"
 														:key="index"
 													>
 														<td class="text-left">
@@ -243,35 +187,18 @@
 														</td>
 														<td class="text-right">
 															{{
-																item.rerata
-																	? parseFloat(
-																			item.rerata,
-																		).toFixed(
-																			1,
-																		)
-																	: null
+																item.rerata ? parseFloat(item.rerata).toFixed(1) : null
 															}}
 														</td>
 													</tr>
 												</tbody>
-												<tfoot
-													class="bg-green-2 text-weight-bold text-right text-green-10"
-												>
+												<tfoot class="bg-green-2 text-weight-bold text-right text-green-10">
 													<tr>
-														<td
-															colspan="2"
-															class="text-left"
-														>
-															Rerata
-														</td>
+														<td colspan="2" class="text-left">Rerata</td>
 														<td>
 															{{
 																hitungRataRata(
-																	nilaiDetail[
-																		props
-																			.row
-																			.kelas_id
-																	],
+																	nilaiDetail[props.row.kelas_id],
 																	'nilai_1',
 																)
 															}}
@@ -279,11 +206,7 @@
 														<td>
 															{{
 																hitungRataRata(
-																	nilaiDetail[
-																		props
-																			.row
-																			.kelas_id
-																	],
+																	nilaiDetail[props.row.kelas_id],
 																	'nilai_2',
 																)
 															}}
@@ -291,11 +214,7 @@
 														<td>
 															{{
 																hitungRataRata(
-																	nilaiDetail[
-																		props
-																			.row
-																			.kelas_id
-																	],
+																	nilaiDetail[props.row.kelas_id],
 																	'nilai_3',
 																)
 															}}
@@ -303,11 +222,7 @@
 														<td>
 															{{
 																hitungRataRata(
-																	nilaiDetail[
-																		props
-																			.row
-																			.kelas_id
-																	],
+																	nilaiDetail[props.row.kelas_id],
 																	'nilai_4',
 																)
 															}}
@@ -315,11 +230,7 @@
 														<td>
 															{{
 																hitungRataRata(
-																	nilaiDetail[
-																		props
-																			.row
-																			.kelas_id
-																	],
+																	nilaiDetail[props.row.kelas_id],
 																	'rerata',
 																)
 															}}
@@ -387,8 +298,7 @@ const columns = [
 		name: 'rerata_1',
 		label: 'Rerata-1',
 		align: 'right',
-		field: (row) =>
-			row.rerata_1 ? parseFloat(row.rerata_1).toFixed(1) : null,
+		field: (row) => (row.rerata_1 ? parseFloat(row.rerata_1).toFixed(1) : null),
 		// format: (val) => `${val}`,
 		sortable: true,
 	},
@@ -396,8 +306,7 @@ const columns = [
 		name: 'rerata_2',
 		label: 'Rerata-2',
 		align: 'right',
-		field: (row) =>
-			row.rerata_2 ? parseFloat(row.rerata_2).toFixed(1) : null,
+		field: (row) => (row.rerata_2 ? parseFloat(row.rerata_2).toFixed(1) : null),
 		// format: (val) => `${val}`,
 		sortable: true,
 	},
@@ -405,8 +314,7 @@ const columns = [
 		name: 'rerata_3',
 		label: 'Rerata-3',
 		align: 'right',
-		field: (row) =>
-			row.rerata_3 ? parseFloat(row.rerata_3).toFixed(1) : null,
+		field: (row) => (row.rerata_3 ? parseFloat(row.rerata_3).toFixed(1) : null),
 		// format: (val) => `${val}`,
 		sortable: true,
 	},
@@ -414,8 +322,7 @@ const columns = [
 		name: 'rerata_4',
 		label: 'Rerata-4',
 		align: 'right',
-		field: (row) =>
-			row.rerata_4 ? parseFloat(row.rerata_4).toFixed(1) : null,
+		field: (row) => (row.rerata_4 ? parseFloat(row.rerata_4).toFixed(1) : null),
 		// format: (val) => `${val}`,
 		sortable: true,
 	},
@@ -423,8 +330,7 @@ const columns = [
 		name: 'rerata_akhir',
 		label: 'R. Akhir',
 		align: 'right',
-		field: (row) =>
-			row.rerata_akhir ? parseFloat(row.rerata_akhir).toFixed(1) : null,
+		field: (row) => (row.rerata_akhir ? parseFloat(row.rerata_akhir).toFixed(1) : null),
 		// format: (val) => `${val.toFixed(1)}`,
 		sortable: true,
 	},

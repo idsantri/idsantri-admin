@@ -1,50 +1,42 @@
 <template>
-	<q-card-section
-		class="bg-green-7 text-green-11 text-subtitle1 q-pa-sm flex flex-center"
-	>
-		{{ selected?.label || 'List' }}
-		<q-space />
-		<q-btn
-			icon="add"
-			label="Baru"
-			no-caps
-			dense
-			class="q-px-md"
-			outline
-			@click="handleAdd"
-		/>
-	</q-card-section>
-	<q-card-section class="q-pa-sm">
-		<ListsSingle
-			v-if="selected.style == 'single'"
-			:data="listGet"
-			:loading="loading"
-			@handle-edit="handleEdit"
-		/>
-
-		<ListsDouble
-			v-if="selected.style == 'double'"
-			:data="listGet"
-			:loading="loading"
-			@handle-edit="handleEdit"
-		/>
-		<div v-if="selected.style == 'triple'">
-			<ListsTriple
+	<div>
+		<q-card-section class="bg-green-7 text-green-11 text-subtitle1 q-pa-sm flex flex-center">
+			{{ selected?.label || 'List' }}
+			<q-space />
+			<q-btn icon="add" label="Baru" no-caps dense class="q-px-md" outline @click="handleAdd" />
+		</q-card-section>
+		<q-card-section class="q-pa-sm">
+			<ListsSingle
+				v-if="selected.style == 'single'"
 				:data="listGet"
-				@update-list="handleUpdate"
-				@delete-list="handleDelete"
-				@add-list="handleAdd"
+				:loading="loading"
+				@handle-edit="handleEdit"
 			/>
-		</div>
-	</q-card-section>
-	<q-dialog v-model="crud">
-		<ListsForm
-			:data="objList"
-			:show-input="showInput"
-			@success-delete="fetchData"
-			@success-submit="fetchData"
-		/>
-	</q-dialog>
+
+			<ListsDouble
+				v-if="selected.style == 'double'"
+				:data="listGet"
+				:loading="loading"
+				@handle-edit="handleEdit"
+			/>
+			<div v-if="selected.style == 'triple'">
+				<ListsTriple
+					:data="listGet"
+					@update-list="handleUpdate"
+					@delete-list="handleDelete"
+					@add-list="handleAdd"
+				/>
+			</div>
+		</q-card-section>
+		<q-dialog v-model="crud">
+			<ListsForm
+				:data="objList"
+				:show-input="showInput"
+				@success-delete="fetchData"
+				@success-submit="fetchData"
+			/>
+		</q-dialog>
+	</div>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';

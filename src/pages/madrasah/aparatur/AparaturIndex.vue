@@ -7,9 +7,7 @@
 			@data-filter="(v) => (textFilter = v)"
 		/>
 		<q-card class="q-mt-sm">
-			<q-card-section
-				class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center"
-			>
+			<q-card-section class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
 				<span v-html="textFilter || ''"></span>
 				<q-space />
 				<q-btn
@@ -24,6 +22,11 @@
 			</q-card-section>
 			<q-card-section class="q-pa-sm">
 				<router-view :key="$route.fullPath" />
+				<!-- <router-view v-slot="{ Component, route }">
+					<transition name="slide-right" mode="out-in">
+						<component :is="Component" :key="route.fullPath" />
+					</transition>
+				</router-view> -->
 			</q-card-section>
 		</q-card>
 	</q-page>

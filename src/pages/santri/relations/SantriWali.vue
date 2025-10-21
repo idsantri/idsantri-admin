@@ -1,9 +1,5 @@
 <template>
-	<temp-object
-		:data="dataObj"
-		:spinner="spinner"
-		:route="'/wali/' + dataObj['ID Wali']"
-	/>
+	<temp-object :data="dataObj" :spinner="spinner" :route="'/wali/' + dataObj['ID Wali']" />
 </template>
 
 <script setup>
@@ -36,7 +32,7 @@ async function loadData() {
 
 const dataObj = computed(() => ({
 	'ID Wali': wali.value.id,
-	Nama: `${wali.value.nama} (${wali.value?.sex?.toUpperCase()})`,
+	Nama: `${wali.value?.nama || ''} (${wali.value?.sex?.toUpperCase() ?? ''})`,
 	Status: wali.value.wali_status,
 	Telepon: wali.value.telepon || '-',
 }));

@@ -44,7 +44,6 @@
 				@success-delete="$router.go(-1)"
 			/>
 		</q-dialog>
-		<!-- <pre>{{ personalia }}</pre> -->
 	</q-page>
 </template>
 <script setup>

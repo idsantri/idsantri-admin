@@ -18,19 +18,13 @@
 			</q-card-section>
 		</q-card>
 		<q-card class="q-mt-sm">
-			<q-card-section
-				class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm"
-			>
+			<q-card-section class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm">
 				Tingkat Pendidikan: {{ modelTingkatId.val1 }}
 			</q-card-section>
 			<q-card-section class="q-pa-sm">
 				<div v-if="modelTingkatId">
 					<div v-if="spinner" class="q-pa-md">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-mx-auto"
-						/>
+						<q-spinner-cube color="green-12" size="8em" class="flex q-mx-auto" />
 					</div>
 					<div v-else>
 						<div v-for="item in bulanUjian" :key="item.id">
@@ -48,12 +42,8 @@
 												required
 												mask="#"
 												:rules="[
-													(val) =>
-														!!val || 'Harus diisi!',
-													(val) =>
-														(val >= 1 &&
-															val <= 3) ||
-														'1, 2, atau 3!',
+													(val) => !!val || 'Harus diisi!',
+													(val) => (val >= 1 && val <= 3) || '1, 2, atau 3!',
 												]"
 											/>
 
@@ -66,12 +56,8 @@
 												required
 												mask="##"
 												:rules="[
-													(val) =>
-														!!val || 'Harus diisi!',
-													(val) =>
-														(val >= 1 &&
-															val <= 12) ||
-														'1 hingga 12!',
+													(val) => !!val || 'Harus diisi!',
+													(val) => (val >= 1 && val <= 12) || '1 hingga 12!',
 												]"
 											/>
 											<q-input
@@ -79,27 +65,16 @@
 												dense
 												outlined
 												:model-value="
-													listsBulanHijri.find(
-														(b) =>
-															Number(b.val2) ==
-															Number(item.bulan),
-													)?.val1 || ''
+													listsBulanHijri.find((b) => Number(b.val2) == Number(item.bulan))
+														?.val1 || ''
 												"
 												readonly=""
 											/>
 										</div>
 									</q-item-section>
-									<q-item-section
-										side
-										class="no-padding q-ml-sm"
-									>
+									<q-item-section side class="no-padding q-ml-sm">
 										<q-btn-group push class="q-mb-lg">
-											<q-btn
-												color="positive"
-												glossy
-												icon="save"
-												type="submit"
-											/>
+											<q-btn color="positive" glossy icon="save" type="submit" />
 											<q-btn
 												color="negative"
 												glossy
@@ -111,14 +86,8 @@
 								</q-item>
 							</q-form>
 						</div>
-						<q-form
-							@submit.prevent="addSetting"
-							@reset="newSetting = {}"
-						>
-							<q-item
-								class="no-padding"
-								style="justify-content: start"
-							>
+						<q-form @submit.prevent="addSetting" @reset="newSetting = {}">
+							<q-item class="no-padding" style="justify-content: start">
 								<q-item-section>
 									<div class="row">
 										<q-input
@@ -130,11 +99,8 @@
 											required
 											mask="#"
 											:rules="[
-												(val) =>
-													!!val || 'Harus diisi!',
-												(val) =>
-													(val >= 1 && val <= 3) ||
-													'1, 2, atau 3!',
+												(val) => !!val || 'Harus diisi!',
+												(val) => (val >= 1 && val <= 3) || '1, 2, atau 3!',
 											]"
 										/>
 
@@ -147,11 +113,8 @@
 											required
 											mask="##"
 											:rules="[
-												(val) =>
-													!!val || 'Harus diisi!',
-												(val) =>
-													(val >= 1 && val <= 12) ||
-													'1 hingga 12!',
+												(val) => !!val || 'Harus diisi!',
+												(val) => (val >= 1 && val <= 12) || '1 hingga 12!',
 											]"
 										/>
 										<q-input
@@ -160,31 +123,16 @@
 											outlined
 											readonly=""
 											:model-value="
-												listsBulanHijri.find(
-													(b) =>
-														Number(b.val2) ==
-														Number(
-															newSetting.bulan,
-														),
-												)?.val1 || ''
+												listsBulanHijri.find((b) => Number(b.val2) == Number(newSetting.bulan))
+													?.val1 || ''
 											"
 										/>
 									</div>
 								</q-item-section>
 								<q-item-section side class="no-padding q-ml-sm">
 									<q-btn-group push class="q-mb-lg">
-										<q-btn
-											color="positive"
-											glossy
-											icon="save"
-											type="submit"
-										/>
-										<q-btn
-											color="negative"
-											glossy
-											icon="undo"
-											type="reset"
-										/>
+										<q-btn color="positive" glossy icon="save" type="submit" />
+										<q-btn color="negative" glossy icon="undo" type="reset" />
 									</q-btn-group>
 								</q-item-section>
 							</q-item>
@@ -192,22 +140,14 @@
 					</div>
 					<!-- {{ newSetting }} -->
 				</div>
-				<div v-else class="q-my-md text-center">
-					Silakan pilih list tingkat pendidikan!
-				</div>
+				<div v-else class="q-my-md text-center">Silakan pilih list tingkat pendidikan!</div>
 			</q-card-section>
-			<q-card-section
-				class="bg-green-7 text-green-1 text-caption text-italic q-pa-sm"
-			>
-				Ujian (1, 2) jika menganut sistem semester atau kuartal (mid
-				semester) <br />
+			<q-card-section class="bg-green-7 text-green-1 text-caption text-italic q-pa-sm">
+				Ujian (1, 2) jika menganut sistem semester atau kuartal (mid semester) <br />
 				Ujian (1, 2, 3) jika menganut sistem catur wulan
 			</q-card-section>
 		</q-card>
 	</div>
-
-	<!-- <pre>list model:{{ listModel }}</pre> -->
-	<!-- <pre>list data:{{ listData }}</pre> -->
 </template>
 <script setup>
 import apiDelete from 'src/api/api-delete';

@@ -13,51 +13,29 @@
 					id="toggle-drawer"
 				/>
 
-				<q-toolbar-title class="text-green-11">
-					ID Santri: {{ config.INS_SHORT }}
-				</q-toolbar-title>
+				<q-toolbar-title class="text-green-11"> ID Santri: {{ config.INS_SHORT }} </q-toolbar-title>
 
 				<ToolbarButton />
 			</q-toolbar>
 		</q-header>
 
-		<q-drawer
-			v-model="leftDrawerOpen"
-			show-if-above
-			bordered
-			class="bg-green-7"
-		>
-			<suspense>
-				<template #default>
-					<side-bar />
-				</template>
-				<template #fallback>
-					<div class="spinner">
-						<q-spinner-cube color="green-8" size="8em" />
-					</div>
-				</template>
-			</suspense>
+		<q-drawer v-model="leftDrawerOpen" show-if-above bordered class="bg-green-7">
+			<side-bar />
 		</q-drawer>
 
 		<q-page-container :key="componentKey">
-			<suspense>
-				<template #default>
-					<!-- ROUTER -->
-					<router-view :key="$route.fullPath" />
-				</template>
-				<template #fallback>
-					<div class="spinner">
-						<q-spinner-cube color="green-8" size="8em" />
-					</div>
-				</template>
-			</suspense>
+			<router-view :key="$route.fullPath" />
+
+			<!-- <router-view v-slot="{ Component, route }">
+				<transition name="fade" mode="out-in">
+					<component :is="Component" :key="route.fullPath" />
+				</transition>
+			</router-view> -->
 		</q-page-container>
 
 		<!-- hidden elements -->
 		<div style="display: none">
-			<button @click="forceRerender" id="btn-force-rerender">
-				rerender
-			</button>
+			<button @click="forceRerender" id="btn-force-rerender">rerender</button>
 		</div>
 
 		<!-- inject modal -->
@@ -65,21 +43,12 @@
 
 		<div v-if="loadingMain">
 			<q-dialog v-model="loadingMain" persistent>
-				<q-spinner-cube
-					color="green-12"
-					size="8em"
-					class="flex q-ma-lg q-mx-auto"
-				/>
+				<q-spinner-cube color="green-12" size="8em" class="flex q-ma-lg q-mx-auto" />
 			</q-dialog>
 		</div>
 
 		<q-footer bordered class="bg-green-6 text-green-12">
 			<p class="text-center no-margin q-pa-xs">© by idsantri</p>
-			<!-- <q-btn
-				label="loading"
-				icon="user"
-				@click="setLoadingSpinner(true)"
-			/> -->
 		</q-footer>
 	</q-layout>
 </template>

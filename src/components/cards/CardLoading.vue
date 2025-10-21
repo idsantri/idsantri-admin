@@ -7,8 +7,8 @@
 		- QInnerLoading must be the last element inside its parent so it can appear on top of the other content.
 	-->
 	<q-inner-loading :showing="showing">
-		<q-spinner-puff size="8em" color="green-14" />
-		<div class="text-subtitle2 text-green-10">Tunggu sebentar …</div>
+		<q-spinner-puff size="8em" color="green-14" class="col" />
+		<div v-if="message" class="text-subtitle2 text-green-10">{{ message }}</div>
 	</q-inner-loading>
 </template>
 <script setup>
@@ -16,6 +16,10 @@ defineProps({
 	showing: {
 		type: Boolean,
 		default: false,
+	},
+	message: {
+		type: String,
+		default: 'Tunggu sebentar …',
 	},
 });
 </script>

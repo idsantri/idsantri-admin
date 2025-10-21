@@ -1,12 +1,6 @@
 <template>
 	<q-card :key="keySantriRelations">
-		<button
-			@click="keySantriRelations++"
-			id="btn-rerender-santri-relations"
-			style="display: none"
-		>
-			rerender
-		</button>
+		<button @click="keySantriRelations++" id="btn-rerender-santri-relations" style="display: none">rerender</button>
 		<q-tabs
 			no-caps
 			outside-arrows
@@ -16,31 +10,11 @@
 			indicator-color="green-13"
 			align="left"
 		>
-			<q-route-tab
-				name="wali"
-				label="Wali"
-				:to="'/santri/' + props.santriId + '/wali'"
-			/>
-			<q-route-tab
-				name="ortu"
-				label="Ortu"
-				:to="'/santri/' + props.santriId + '/ortu'"
-			/>
-			<q-route-tab
-				name="status"
-				label="Status"
-				:to="'/santri/' + props.santriId + '/status'"
-			/>
-			<q-route-tab
-				name="kelas"
-				label="Kelas"
-				:to="'/santri/' + props.santriId + '/kelas'"
-			/>
-			<q-route-tab
-				name="domisili"
-				label="Domisili"
-				:to="'/santri/' + props.santriId + '/domisili'"
-			/>
+			<q-route-tab name="wali" label="Wali" :to="'/santri/' + props.santriId + '/wali'" />
+			<q-route-tab name="ortu" label="Ortu" :to="'/santri/' + props.santriId + '/ortu'" />
+			<q-route-tab name="status" label="Status" :to="'/santri/' + props.santriId + '/status'" />
+			<q-route-tab name="kelas" label="Kelas" :to="'/santri/' + props.santriId + '/kelas'" />
+			<q-route-tab name="domisili" label="Domisili" :to="'/santri/' + props.santriId + '/domisili'" />
 			<!-- <q-route-tab
 				name="iuran-total"
 				label="Iuran"
@@ -56,18 +30,9 @@
 				:to="'/bendahara/iuran/santri/' + props.santriId"
 			/> -->
 
-			<q-btn-dropdown
-				flat
-				dense
-				dropdown-icon="more_vert"
-				class="q-pl-md"
-				color="green-11"
-			>
+			<q-btn-dropdown flat dense dropdown-icon="more_vert" class="q-pl-md" color="green-11">
 				<q-list>
-					<q-item
-						v-close-popup
-						:to="'/iuran/santri/' + props.santriId"
-					>
+					<q-item v-close-popup :to="'/iuran/santri/' + props.santriId">
 						<q-item-section>
 							<q-item-label>Iuran</q-item-label>
 						</q-item-section>
@@ -75,12 +40,7 @@
 							<q-icon name="payments" flat />
 						</q-item-section>
 					</q-item>
-					<q-item
-						v-close-popup
-						:to="
-							'/keamanan/izin-pesantren/santri/' + props.santriId
-						"
-					>
+					<q-item v-close-popup :to="'/keamanan/izin-pesantren/santri/' + props.santriId">
 						<q-item-section>
 							<q-item-label>Izin Pesantren</q-item-label>
 						</q-item-section>
@@ -88,10 +48,7 @@
 							<q-icon name="transfer_within_a_station" flat />
 						</q-item-section>
 					</q-item>
-					<q-item
-						v-close-popup
-						:to="'/keamanan/indisipliner/santri/' + props.santriId"
-					>
+					<q-item v-close-popup :to="'/keamanan/indisipliner/santri/' + props.santriId">
 						<q-item-section>
 							<q-item-label>Indisipliner</q-item-label>
 						</q-item-section>
@@ -103,20 +60,13 @@
 			</q-btn-dropdown>
 		</q-tabs>
 		<q-card-section class="q-pa-sm">
-			<!-- swipe tak jalan -->
-			<!-- <router-view /> -->
-			<suspense>
-				<template #default>
-					<router-view />
-				</template>
-				<template #fallback>
-					<q-spinner-cube
-						color="green-12"
-						size="8em"
-						class="flex q-mx-auto"
-					/>
-				</template>
-			</suspense>
+			<router-view />
+
+			<!-- <router-view v-slot="{ Component }">
+				<transition name="fade" mode="out-in">
+					<component :is="Component" />
+				</transition>
+			</router-view> -->
 		</q-card-section>
 	</q-card>
 </template>
