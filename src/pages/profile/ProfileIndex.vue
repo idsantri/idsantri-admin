@@ -9,140 +9,105 @@
 			</q-card-section>
 
 			<q-card-section class="q-pa-sm">
-				<div v-if="loading">
-					<q-spinner-cube
-						color="green-12"
-						size="8em"
-						class="flex q-ma-lg q-mx-auto"
+				<div class="absolute-top-right q-ma-sm">
+					<q-btn
+						icon="camera"
+						round
+						no-caps
+						dense
+						glossy
+						class="q-ma-xs q-px-sm"
+						@click="showUploader = true"
 					/>
 				</div>
-				<div v-else>
-					<div>
-						<div class="absolute-top-right q-ma-sm">
-							<q-btn
-								icon="camera"
-								round
-								no-caps
-								dense
-								glossy
-								class="q-ma-xs q-px-sm"
-								@click="showUploader = true"
-							/>
-						</div>
-						<div style="max-width: 150px" class="q-mx-auto">
-							<q-img
-								:src="user.image"
-								:ratio="1"
-								alt="user"
-								:img-style="{
-									borderRadius: '50%',
-									border: '3px',
-									borderColor: 'green',
-									borderStyle: 'solid',
-								}"
-							/>
-						</div>
-					</div>
-					<div v-if="!user.confirmed_at">
-						<div class="text-center q-my-lg">
-							<div
-								class="q-pa-md text-negative bg-red-1"
-								style="border-radius: 10px"
-							>
-								<div>Akun Anda belum terkonfirmasi.</div>
-								<div>Silakan hubungi Admin!</div>
-							</div>
-						</div>
-					</div>
-					<q-list bordered separator class="q-mt-sm">
-						<q-item class="q-pa-sm">
-							<q-item-section>
-								<q-item-label overline>User</q-item-label>
-								<q-item-label>
-									<table>
-										<tbody>
-											<tr>
-												<td
-													class="text-italic text-caption"
-												>
-													Nama
-												</td>
-												<td>{{ user.name }}</td>
-											</tr>
-											<tr>
-												<td
-													class="text-italic text-caption"
-												>
-													Email
-												</td>
-												<td>{{ user.email }}</td>
-											</tr>
-											<tr>
-												<td
-													class="text-italic text-caption"
-												>
-													Username
-												</td>
-												<td>{{ user.username }}</td>
-											</tr>
-											<tr>
-												<td
-													class="text-italic text-caption"
-												>
-													Telepon
-												</td>
-												<td>{{ user.phone || '-' }}</td>
-											</tr>
-										</tbody>
-									</table>
-								</q-item-label>
-								<q-item-label class="bg-green-1">
-									<div class="float-right">
-										<q-btn
-											label="User"
-											icon="edit"
-											no-caps
-											dense
-											class="q-my-xs q-mx-sm q-px-sm"
-											@click="crudShow = true"
-										/>
-										<q-btn
-											label="Password"
-											icon="edit"
-											no-caps
-											dense
-											class="q-my-xs q-mx-sm q-px-sm"
-											@click="changePassword"
-										/>
-									</div>
-								</q-item-label>
-							</q-item-section>
-						</q-item>
-						<q-item class="q-pa-sm">
-							<q-item-section>
-								<q-item-label overline>User Group</q-item-label>
-								<q-item-label>
-									<div
-										class="fit row wrap justify-start items-start content-start"
-									>
-										<div
-											v-for="(item, index) in user.roles"
-											:key="index"
-											class="col-6"
-										>
-											<q-toggle
-												:model-value="item"
-												color="green"
-												:label="titleCase(index)"
-												disable
-											/>
-										</div>
-									</div>
-								</q-item-label>
-							</q-item-section>
-						</q-item>
-					</q-list>
+				<div style="max-width: 150px" class="q-mx-auto">
+					<q-img
+						:src="user.image"
+						:ratio="1"
+						alt="user"
+						:img-style="{
+							borderRadius: '50%',
+							border: '3px',
+							borderColor: 'green',
+							borderStyle: 'solid',
+						}"
+					/>
 				</div>
+				<div v-if="!user.confirmed_at">
+					<div class="text-center q-my-lg">
+						<div class="q-pa-md text-negative bg-red-1" style="border-radius: 10px">
+							<div>Akun Anda belum terkonfirmasi.</div>
+							<div>Silakan hubungi Admin!</div>
+						</div>
+					</div>
+				</div>
+				<q-list bordered separator class="q-mt-sm">
+					<q-item class="q-pa-sm">
+						<q-item-section>
+							<q-item-label overline>User</q-item-label>
+							<q-item-label>
+								<table>
+									<tbody>
+										<tr>
+											<td class="text-italic text-caption">Nama</td>
+											<td>{{ user.name }}</td>
+										</tr>
+										<tr>
+											<td class="text-italic text-caption">Email</td>
+											<td>{{ user.email }}</td>
+										</tr>
+										<tr>
+											<td class="text-italic text-caption">Username</td>
+											<td>{{ user.username }}</td>
+										</tr>
+										<tr>
+											<td class="text-italic text-caption">Telepon</td>
+											<td>{{ user.phone || '-' }}</td>
+										</tr>
+									</tbody>
+								</table>
+							</q-item-label>
+							<q-item-label class="bg-green-1">
+								<div class="float-right">
+									<q-btn
+										label="User"
+										icon="edit"
+										no-caps
+										dense
+										class="q-my-xs q-mx-sm q-px-sm"
+										@click="crudShow = true"
+									/>
+									<q-btn
+										label="Password"
+										icon="edit"
+										no-caps
+										dense
+										class="q-my-xs q-mx-sm q-px-sm"
+										@click="changePassword"
+									/>
+								</div>
+							</q-item-label>
+						</q-item-section>
+					</q-item>
+					<q-item class="q-pa-sm">
+						<q-item-section>
+							<q-item-label overline>User Group</q-item-label>
+							<q-item-label>
+								<div class="fit row wrap justify-start items-start content-start">
+									<div v-for="(item, index) in user.roles" :key="index" class="col-6">
+										<q-toggle :model-value="item" color="green" :label="titleCase(index)" disable />
+									</div>
+								</div>
+							</q-item-label>
+						</q-item-section>
+					</q-item>
+				</q-list>
+				<q-inner-loading
+					:showing="loading"
+					label="Sedang memuat data …"
+					label-class="text-green-10"
+					label-style="font-size: 1.1em"
+				/>
 			</q-card-section>
 		</q-card>
 
@@ -168,6 +133,7 @@ import { titleCase } from 'src/utils/format-text';
 import { notifyAlert } from 'src/utils/notify';
 import UploadImage from 'src/components/ImageUploader.vue';
 import UserForm from 'src/components/forms/UserForm.vue';
+import User from 'src/models/User';
 
 const user = ref({});
 const loading = ref(false);
@@ -183,8 +149,15 @@ async function successUpload() {
 }
 
 async function loadData() {
-	const data = await apiGet({ endPoint: 'user', loading });
-	user.value = data.user;
+	try {
+		loading.value = true;
+		const response = await User.get();
+		user.value = response.user;
+	} catch (error) {
+		console.log('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
+	}
 }
 
 async function loadImage() {
