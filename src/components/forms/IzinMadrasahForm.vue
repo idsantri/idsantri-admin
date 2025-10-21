@@ -2,6 +2,7 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Izin Madrasah" :is-new="isNew" />
+			<FormLoading v-if="loading" />
 			<q-card-section>
 				<q-input
 					dense

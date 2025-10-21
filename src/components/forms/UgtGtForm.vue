@@ -90,12 +90,7 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
-import apiGet from 'src/api/api-get';
-import apiPost from 'src/api/api-post';
-import apiUpdate from 'src/api/api-update';
-import apiDelete from 'src/api/api-delete';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
-import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import useCrudForm from './utils/useCrudForm';
 import UgtGt from 'src/models/UgtGt';
 import InputSelectTahunAjaran from '../inputs/InputSelectTahunAjaran.vue';
