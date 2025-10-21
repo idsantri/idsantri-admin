@@ -1,0 +1,1 @@
+import{d as a}from"./index-DwrbA0R8.js";import{a as i}from"./index-BlZcD66n.js";import{a as r}from"./index-B6LiMDVO.js";const f=a(({app:o})=>{o.config.globalProperties.$axios=i,o.config.globalProperties.$api=r});export{r as api,f as default};

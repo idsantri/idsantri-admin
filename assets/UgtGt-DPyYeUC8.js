@@ -1,0 +1,1 @@
+import{A as a}from"./ApiCrud-KwrbSuI8.js";class e extends a{constructor(){super("ugt/gt")}async listTahunAjaran({notifySuccess:s=!0}){const t=await this._apiGet({endPoint:`${this._path}/lists/th-ajaran-h`});return s&&this._showSuccess(t.message),t.data}}const i=new e;export{i as U};
