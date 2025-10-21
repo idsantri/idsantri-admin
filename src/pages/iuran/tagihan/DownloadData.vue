@@ -2,10 +2,7 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card style="max-width: 600px">
-			<CardHeader
-				title="Download Data Tagihan (VA)"
-				@onReload="loadData"
-			/>
+			<CardHeader title="Download Data Tagihan (VA)" @onReload="loadData" />
 			<q-card-section class="q-pa-sm">
 				<q-scroll-area style="height: 700px">
 					<q-spinner-facebook
@@ -15,16 +12,10 @@
 						class="flex q-ma-md q-mx-auto flex items-center justify-center"
 					/>
 					<q-list v-else bordered separator>
-						<q-item
-							tag="label"
-							v-for="(item, index) in trx"
-							:key="index"
-						>
+						<q-item tag="label" v-for="(item, index) in trx" :key="index">
 							<q-item-section>
 								<q-item-label>{{ item.va_group }}</q-item-label>
-								<q-item-label caption>
-									{{ item.count }} item
-								</q-item-label>
+								<q-item-label caption> {{ item.count }} item </q-item-label>
 							</q-item-section>
 							<q-item-section avatar>
 								<q-toggle
@@ -39,18 +30,8 @@
 				</q-scroll-area>
 				<!-- <pre>{{ trx }}</pre> -->
 			</q-card-section>
-			<q-card-actions
-				class="flex items-center justify-between q-pa-sm bg-green-7"
-			>
-				<q-btn
-					no-caps
-					outline
-					glossy
-					color="green-11"
-					label="Atur VA"
-					icon="settings"
-					to="/settings/va"
-				/>
+			<q-card-actions class="flex items-center justify-between q-pa-sm bg-green-7">
+				<q-btn no-caps outline glossy color="green-11" label="Atur VA" icon="settings" to="/settings/va" />
 				<q-btn
 					no-caps
 					color="green-11"
@@ -67,7 +48,7 @@
 	</q-page>
 </template>
 <script setup>
-import CardHeader from 'src/components/CardHeader.vue';
+import CardHeader from 'src/components/cards/CardHeader.vue';
 import apiGet from 'src/api/api-get';
 import { ref, onMounted } from 'vue';
 import { notifyError } from 'src/utils/notify';
@@ -89,9 +70,7 @@ onMounted(async () => {
 });
 
 async function onDownload() {
-	const selectedItems = trx.value
-		.filter((item) => item.selected)
-		.map((item) => item.va_group);
+	const selectedItems = trx.value.filter((item) => item.selected).map((item) => item.va_group);
 	if (selectedItems.length === 0) {
 		notifyError('Pilih minimal satu VA Group untuk diunduh');
 		return;

@@ -3,9 +3,7 @@
 		<q-card>
 			<CardHeader :showReload="false" title="Download" />
 			<q-card-section>
-				<p>
-					Beberapa fitur print-out dilayani dengan MS Office Access.
-				</p>
+				<p>Beberapa fitur print-out dilayani dengan MS Office Access.</p>
 				<p class="">
 					Download aplikasinya di sini:
 					<a
@@ -20,6 +18,6 @@
 	</q-page>
 </template>
 <script setup>
-import CardHeader from 'src/components/CardHeader.vue';
+import CardHeader from 'src/components/cards/CardHeader.vue';
 </script>
 <style lang=""></style>

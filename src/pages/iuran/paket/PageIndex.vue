@@ -39,38 +39,23 @@
 					</thead>
 					<tbody>
 						<tr v-if="loading">
-							<td
-								colspan="7"
-								class="text-center bg-grey-1 no-padding"
-							>
+							<td colspan="7" class="text-center bg-grey-1 no-padding">
 								<q-spinner-facebook color="green" size="md" />
 							</td>
 						</tr>
 
 						<tr v-else-if="!iuranPaket.length && !loading">
-							<td
-								colspan="7"
-								class="text-center text-italic text-negative bg-red-2"
-							>
+							<td colspan="7" class="text-center text-italic text-negative bg-red-2">
 								Tidak ada data untuk ditampikan!<br />
 								Silakan Tambahkan data baru!
 							</td>
 						</tr>
 
 						<tr v-else-if="!filterModel">
-							<td
-								colspan="7"
-								class="text-center text-italic text-negative bg-red-1"
-							>
-								Pilih filter!
-							</td>
+							<td colspan="7" class="text-center text-italic text-negative bg-red-1">Pilih filter!</td>
 						</tr>
 
-						<tr
-							v-else
-							v-for="(item, index) in filterPaket()"
-							:key="index"
-						>
+						<tr v-else v-for="(item, index) in filterPaket()" :key="index">
 							<td class="text-center">{{ item.urut }}</td>
 							<td class="text-left">{{ item.paket }}</td>
 							<td class="text-left">{{ item.item }}</td>
@@ -78,20 +63,13 @@
 								{{ item.nominal.toRupiah() }}
 							</td>
 							<td class="text-center">
-								<q-btn
-									icon="edit"
-									flat
-									color="green-10"
-									@click="editPaket(item)"
-								/>
+								<q-btn icon="edit" flat color="green-10" @click="editPaket(item)" />
 							</td>
 						</tr>
 					</tbody>
 					<tfoot>
 						<tr class="bg-green-1">
-							<td class="text-right text-italic" colspan="3">
-								Total
-							</td>
+							<td class="text-right text-italic" colspan="3">Total</td>
 							<td class="text-right text-bold">
 								{{ calculateTotal().toRupiah() }}
 							</td>
@@ -103,11 +81,7 @@
 		</q-card>
 		<q-dialog v-model="crudShow">
 			<!-- add new -->
-			<IuranPaketForm
-				:data="dataPaket"
-				@success-submit="getData()"
-				@success-delete="getData()"
-			/>
+			<IuranPaketForm :data="dataPaket" @success-submit="getData()" @success-delete="getData()" />
 		</q-dialog>
 	</q-page>
 </template>
@@ -115,7 +89,7 @@
 import { onMounted, ref } from 'vue';
 import apiGet from 'src/api/api-get';
 import IuranPaketForm from 'src/components/forms/IuranPaketForm.vue';
-import CardHeader from 'src/components/CardHeader.vue';
+import CardHeader from 'src/components/cards/CardHeader.vue';
 
 const loading = ref(false);
 const iuranPaket = ref([]);

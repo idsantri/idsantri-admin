@@ -1,11 +1,7 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card style="max-width: 600px">
-			<CardHeader
-				:title="`Upload ${selected.label}`"
-				:showReload="false"
-				:showBack="true"
-			/>
+			<CardHeader :title="`Upload ${selected.label}`" :showReload="false" :showBack="true" />
 			<q-card-section horizontal>
 				<q-card-section class="q-pa-sm">
 					<div style="width: 200px">
@@ -58,7 +54,7 @@ import { computed, ref } from 'vue';
 import UploadImage from 'src/components/ImageUploader.vue';
 import api from 'src/api';
 import config from 'src/config';
-import CardHeader from 'src/components/CardHeader.vue';
+import CardHeader from 'src/components/cards/CardHeader.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { notifyError } from 'src/utils/notify';
 
@@ -91,10 +87,7 @@ switch (params?.image?.toLocaleLowerCase()) {
 		};
 		break;
 	default:
-		notifyError(
-			'Halaman tidak ditemukan',
-			'Halaman yang anda cari tidak ditemukan',
-		);
+		notifyError('Halaman tidak ditemukan', 'Halaman yang anda cari tidak ditemukan');
 		selected = {
 			label: 'Halaman tidak ditemukan',
 			url: 'not-found',
@@ -111,9 +104,7 @@ const showUploader = ref(false);
 const updateUploader = (val) => (showUploader.value = val);
 const imgFormat = 'png';
 
-const computedSrc = computed(
-	() => `${url}${selected.url}.${imgFormat}?timestamp=${timestamp.value}`,
-);
+const computedSrc = computed(() => `${url}${selected.url}.${imgFormat}?timestamp=${timestamp.value}`);
 
 async function successUpload() {
 	showUploader.value = false;

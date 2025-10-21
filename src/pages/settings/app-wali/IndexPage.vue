@@ -1,10 +1,7 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card>
-			<CardHeader
-				title="Pengaturan Aplikasi Wali Santri"
-				:showReload="false"
-			/>
+			<CardHeader title="Pengaturan Aplikasi Wali Santri" :showReload="false" />
 			<q-card-section class="q-pa-sm">
 				<q-tabs
 					v-model="tab"
@@ -29,11 +26,7 @@
 						disabled
 					/> -->
 				</q-tabs>
-				<q-tab-panels
-					v-model="tab"
-					animated
-					class="rounded-borders q-card--bordered"
-				>
+				<q-tab-panels v-model="tab" animated class="rounded-borders q-card--bordered">
 					<q-tab-panel name="banner" class="q-pa-sm">
 						<PanelBanner />
 					</q-tab-panel>
@@ -54,7 +47,7 @@ import { ref } from 'vue';
 import PanelProfile from './PanelProfile.vue';
 import PanelCs from './PanelCs.vue';
 import PanelBanner from './PanelBanner.vue';
-import CardHeader from 'src/components/CardHeader.vue';
+import CardHeader from 'src/components/cards/CardHeader.vue';
 
 const tab = ref('banner');
 </script>

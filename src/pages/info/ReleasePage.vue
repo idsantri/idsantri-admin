@@ -5,41 +5,21 @@
 			<q-card-section>
 				<div class="text-subtitle2 text-weight-bold">ID Santri</div>
 				<div class="text-subtitle1">{{ config.INS_SHORT }}</div>
-				<div class="text-caption">
-					{{ config.INS_DESC }} {{ config.INS_NAME }}
-				</div>
+				<div class="text-caption">{{ config.INS_DESC }} {{ config.INS_NAME }}</div>
 			</q-card-section>
 			<q-card-section class="q-pt-none">
-				<div
-					v-for="(item, index) in releases"
-					:key="index"
-					class="q-mb-sm"
-				>
+				<div v-for="(item, index) in releases" :key="index" class="q-mb-sm">
 					<q-list bordered separator>
-						<q-item-label
-							header
-							class="bg-green-1 q-pa-sm text-italic"
-						>
+						<q-item-label header class="bg-green-1 q-pa-sm text-italic">
 							ver. {{ item.ver }}
-							<span class="text-caption">
-								({{ item.date }})
-							</span>
+							<span class="text-caption"> ({{ item.date }}) </span>
 						</q-item-label>
 
-						<q-item
-							v-for="(item, index) in item.release"
-							:key="index"
-						>
+						<q-item v-for="(item, index) in item.release" :key="index">
 							<q-item-section>
 								<q-item-label> {{ index }} </q-item-label>
 								<q-item-label caption>
-									<ul
-										class="no-margin"
-										style="
-											padding-inline-start: 16px;
-											list-style-type: disc;
-										"
-									>
+									<ul class="no-margin" style="padding-inline-start: 16px; list-style-type: disc">
 										<li v-for="(it, id) in item" :key="id">
 											{{ it }}
 										</li>
@@ -54,7 +34,7 @@
 	</q-page>
 </template>
 <script setup>
-import CardHeader from 'src/components/CardHeader.vue';
+import CardHeader from 'src/components/cards/CardHeader.vue';
 import config from 'src/config';
 
 const releases = [
@@ -93,11 +73,7 @@ const releases = [
 		ver: '1.3.1',
 		date: 'Mei 2025',
 		release: {
-			'Fitur Baru': [
-				'Upload stempel lembaga',
-				'Setting Aplikasi Wali Santri',
-				'Sertifikat GT',
-			],
+			'Fitur Baru': ['Upload stempel lembaga', 'Setting Aplikasi Wali Santri', 'Sertifikat GT'],
 		},
 	},
 	{
@@ -132,10 +108,7 @@ const releases = [
 		date: 'September 2024',
 		release: {
 			'Fitur Baru': ['Pembayaran paket iuran', 'Setting alamat'],
-			Improve: [
-				'Local storage pada input alamat',
-				'Perbaikan dan peningkatan performa',
-			],
+			Improve: ['Local storage pada input alamat', 'Perbaikan dan peningkatan performa'],
 		},
 	},
 	{
@@ -156,10 +129,7 @@ const releases = [
 				'Filter by ID Santri',
 				'Tambah field pengajuan (baru/perpanjangan)',
 			],
-			Indisipliner: [
-				'Riwayat indisipliner santri',
-				'Filter by ID Santri',
-			],
+			Indisipliner: ['Riwayat indisipliner santri', 'Filter by ID Santri'],
 			Improve: ['Nilai default pada input Wali'],
 		},
 	},
@@ -168,10 +138,7 @@ const releases = [
 		date: 'Juni 2024',
 		release: {
 			'Fitur Baru': ['Nilai Mapel', 'Nilai Ahwal'],
-			Improve: [
-				'Filter Madrasah: session storage',
-				'All Lists: local storage',
-			],
+			Improve: ['Filter Madrasah: session storage', 'All Lists: local storage'],
 		},
 	},
 	{
@@ -179,10 +146,7 @@ const releases = [
 		date: 'April 2024',
 		release: {
 			PJGT: ['Perbaikan input alamat PJGT'],
-			Absensi: [
-				'Perbaikian dan penyempurnaan',
-				'Print absensi di arahkan ke MS Access',
-			],
+			Absensi: ['Perbaikian dan penyempurnaan', 'Print absensi di arahkan ke MS Access'],
 			'Lists Auto Complete': ['Abaikan huruf besar kecil dalam sort'],
 		},
 	},

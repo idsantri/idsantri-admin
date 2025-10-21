@@ -1,13 +1,7 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card class="" style="max-width: 600px">
-			<q-card-section class="bg-green-7 text-green-11 q-pa-sm">
-				<div class="flex items-center">
-					<div class="text-subtitle2">Profil Pengguna</div>
-					<q-space />
-				</div>
-			</q-card-section>
-
+			<CardHeader title="Profil Pengguna" @onReload="loadData" />
 			<q-card-section class="q-pa-sm">
 				<div class="absolute-top-right q-ma-sm">
 					<q-btn
@@ -102,12 +96,7 @@
 						</q-item-section>
 					</q-item>
 				</q-list>
-				<q-inner-loading
-					:showing="loading"
-					label="Sedang memuat data …"
-					label-class="text-green-10"
-					label-style="font-size: 1.1em"
-				/>
+				<CardLoading :showing="loading" />
 			</q-card-section>
 		</q-card>
 
@@ -148,7 +137,7 @@ async function successUpload() {
 	await loadImage();
 }
 
-async function loadData() {
+async function loadUser() {
 	try {
 		loading.value = true;
 		const response = await User.get();
@@ -167,9 +156,14 @@ async function loadImage() {
 	});
 	user.value.image = img.image_url || '/user-default.png';
 }
+
+async function loadData() {
+	await loadUser();
+	await loadImage();
+}
+
 onMounted(async () => {
 	await loadData();
-	await loadImage();
 });
 
 const changePassword = async () => {

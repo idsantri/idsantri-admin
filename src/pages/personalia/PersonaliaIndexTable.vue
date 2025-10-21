@@ -25,19 +25,10 @@
 					no-data-label="Tidak ada data untuk ditampilkan!"
 					no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
 					row-key="name"
-					@row-click="
-						(evt, row, index) =>
-							$router.push(`/personalia/${row.id}`)
-					"
+					@row-click="(evt, row, index) => $router.push(`/personalia/${row.id}`)"
 				>
 					<template v-slot:top-right>
-						<q-input
-							outlined
-							dense
-							debounce="300"
-							v-model="filter"
-							placeholder="Cari"
-						>
+						<q-input outlined dense debounce="300" v-model="filter" placeholder="Cari">
 							<template v-slot:append>
 								<q-icon name="search" />
 							</template>
@@ -59,7 +50,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import apiGet from 'src/api/api-get';
-import CardHeader from 'src/components/CardHeader.vue';
+import CardHeader from 'src/components/cards/CardHeader.vue';
 import PersonaliaForm from 'src/components/forms/PersonaliaForm.vue';
 
 const loading = ref(false);

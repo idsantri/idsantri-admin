@@ -5,11 +5,7 @@
 				<CardHeader title="Profil Lembaga" @onReload="loadData" />
 				<q-card-section class="q-pa-sm">
 					<q-card>
-						<q-card-section
-							class="q-pa-sm bg-green-1 text-weight-medium"
-						>
-							Pesantren
-						</q-card-section>
+						<q-card-section class="q-pa-sm bg-green-1 text-weight-medium"> Pesantren </q-card-section>
 						<q-card-section class="q-pa-sm">
 							<q-input
 								dense
@@ -38,9 +34,7 @@
 						</q-card-section>
 					</q-card>
 					<q-card class="q-mt-sm">
-						<q-card-section class="q-pa-sm bg-green-1">
-							Madrasah
-						</q-card-section>
+						<q-card-section class="q-pa-sm bg-green-1"> Madrasah </q-card-section>
 						<q-card-section class="q-pa-sm">
 							<q-input
 								dense
@@ -69,9 +63,7 @@
 						</q-card-section>
 					</q-card>
 					<q-card class="q-mt-sm">
-						<q-card-section class="q-pa-sm bg-green-1">
-							Alamat
-						</q-card-section>
+						<q-card-section class="q-pa-sm bg-green-1"> Alamat </q-card-section>
 						<q-card-section class="q-pa-sm">
 							<q-input
 								dense
@@ -103,12 +95,7 @@
 						<q-card-section class="q-pa-sm bg-green-1 flex">
 							Personalia
 							<q-space />
-							<q-btn-dropdown
-								label="Upload"
-								outline
-								no-caps
-								icon="upload"
-							>
+							<q-btn-dropdown label="Upload" outline no-caps icon="upload">
 								<q-list>
 									<q-item
 										v-for="(item, index) in uploadRoutes"
@@ -158,13 +145,7 @@
 					</q-card>
 				</q-card-section>
 				<q-card-actions align="right" class="bg-green-7">
-					<q-btn
-						label="Simpan"
-						type="submit"
-						no-caps
-						icon="save"
-						class="bg-green-11"
-					/>
+					<q-btn label="Simpan" type="submit" no-caps icon="save" class="bg-green-11" />
 				</q-card-actions>
 			</q-card>
 		</q-form>
@@ -175,7 +156,7 @@
 import { ref, onMounted } from 'vue';
 import apiGet from 'src/api/api-get';
 import apiPost from 'src/api/api-post';
-import CardHeader from 'src/components/CardHeader.vue';
+import CardHeader from 'src/components/cards/CardHeader.vue';
 
 const loading = ref(false);
 // init data

@@ -26,7 +26,7 @@
 	</q-page>
 </template>
 <script setup>
-import CardHeader from 'src/components/CardHeader.vue';
+import CardHeader from 'src/components/cards/CardHeader.vue';
 import CardIdentitas from './CardIdentitas.vue';
 import CardJabatan from './CardJabatan.vue';
 import { provide, ref } from 'vue';
