@@ -1,30 +1,9 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card>
-			<q-card-section
-				class="q-pa-sm bg-green-8 text-green-11 text-subtitle1 flex"
-			>
-				Pengaturan Alamat
-
-				<q-space />
-				<q-btn
-					no-caps
-					label="Kembali"
-					icon="reply"
-					dense
-					class="q-px-md"
-					outline
-					@click="$router.go(-1)"
-				/>
-			</q-card-section>
-			<q-card-section
-				class="no-padding full-width row no-wrap justify-start items-start content-start scroll"
-			>
-				<TableProvinsi
-					class="q-ma-sm"
-					style="min-width: 400px; max-width: 400px"
-					@on-select="selectProvinsi"
-				/>
+			<CardHeader title="Pengaturan Alamat" :showReload="false" />
+			<q-card-section class="no-padding full-width row no-wrap justify-start items-start content-start scroll">
+				<TableProvinsi class="q-ma-sm" style="min-width: 400px; max-width: 400px" @on-select="selectProvinsi" />
 				<TableKabupaten
 					class="q-ma-sm"
 					style="min-width: 400px; max-width: 400px"

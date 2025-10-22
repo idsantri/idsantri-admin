@@ -1,18 +1,9 @@
 <template lang="">
 	<q-card>
-		<q-card-section
-			class="q-pa-sm bg-green-7 text-green-11 text-subtitle1 flex flex-center"
-		>
+		<q-card-section class="q-pa-sm bg-green-7 text-green-11 text-subtitle1 flex flex-center">
 			Kecamatan/Distrik
 			<q-space />
-			<q-btn
-				@click="fetchData"
-				icon="sync"
-				round
-				dense
-				flat
-				class="q-mr-md"
-			/>
+			<q-btn @click="fetchData" icon="sync" round dense flat class="q-mr-md" />
 			<q-btn @click="onAdd" icon="add" round dense flat />
 		</q-card-section>
 		<TableAlamat
@@ -23,21 +14,17 @@
 			@on-edit="onEdit"
 		/>
 		<q-dialog v-model="crudShow">
-			<AlamatKecamatanForm
-				:data="alamat"
-				@success-delete="fetchData"
-				@success-submit="fetchData"
-			/>
+			<AlamatKecamatanForm :data="alamat" @success-delete="fetchData" @success-submit="fetchData" />
 		</q-dialog>
 	</q-card>
 </template>
 <script setup>
 import { ref, watch } from 'vue';
 import alamatStore from 'src/stores/alamat-store';
-import apiGet from 'src/api/api-get';
 import { notifyWarning } from 'src/utils/notify';
 import TableAlamat from './TableAlamat.vue';
 import AlamatKecamatanForm from 'src/components/forms/AlamatKecamatanForm.vue';
+import Alamat from 'src/models/Alamat';
 
 const props = defineProps({
 	provinsi_id: { type: String, required: true, default: '' },
@@ -55,14 +42,18 @@ async function fetchData() {
 	const { provinsi_id, kabupaten_id } = props;
 	if (!kabupaten_id || !provinsi_id) return;
 
-	const data = await apiGet({
-		endPoint: 'alamat/kecamatan',
-		loading,
-		params: { kabupaten_id },
-	});
-	if (data && data.kecamatan) {
-		state.setKecamatan(data.kecamatan, { provinsi_id, kabupaten_id });
-		rows.value = state.getKecamatan({ provinsi_id, kabupaten_id });
+	try {
+		loading.value = true;
+		const data = await Alamat.Kecamatan.getAll({ params: { kabupaten_id } });
+		if (data && data.kecamatan) {
+			state.setKecamatan(data.kecamatan, { provinsi_id, kabupaten_id });
+			rows.value = state.getKecamatan({ provinsi_id, kabupaten_id });
+		}
+	} catch (_err) {
+		// console.error(_err);
+		console.log('error get kecamatan');
+	} finally {
+		loading.value = false;
 	}
 }
 
