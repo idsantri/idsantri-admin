@@ -26,24 +26,38 @@ import Lists from 'src/models/Lists';
 
 const input = defineModel();
 
-const hint = computed(() => {
-	if (input.value) {
-		return extractDataInBrackets(input.value.join('; '));
-	} else {
-		return 'Pilih pasal dilanggar';
+const hint = computed(() => extractData(input.value));
+
+function extractData(inputValue) {
+	try {
+		// Jika input kosong/null/undefined, kembalikan string ...
+		if (!inputValue) {
+			return 'Pilih pasal dilanggar';
+		}
+
+		// Normalisasi ke array
+		const values = Array.isArray(inputValue) ? inputValue : [inputValue];
+
+		// Gabungkan menjadi satu string dengan pemisah
+		const joined = values.join('; ');
+
+		// Ekstraksi konten di dalam tanda kurung []
+		const regex = /\[(.*?)\]/g;
+		const matches = joined.match(regex);
+
+		// Jika tidak ada match, kembalikan string kosong
+		if (!matches) {
+			return '';
+		}
+
+		// Bersihkan tanda kurung [] dan gabungkan hasilnya
+		const extractedData = matches.map((match) => match.slice(1, -1)).join(', ');
+		return '[' + extractedData + ']';
+	} catch (error) {
+		// Tangani error secara aman
+		console.error(error);
+		return '';
 	}
-});
-
-function extractDataInBrackets(inputText) {
-	let extractedData = '';
-	const regex = /\[(.*?)\]/g;
-	const matches = inputText.match(regex);
-
-	if (matches) {
-		extractedData = matches.map((match) => match.slice(1, -1)).join(', ');
-	}
-
-	return extractedData;
 }
 
 const loading = ref(false);
@@ -55,9 +69,7 @@ const key = url.replace(/-/g, '_');
 function mapData(data) {
 	let result = [];
 	if (data.length) {
-		result = data
-			.filter((d) => d.val0.length != 1)
-			.map((d) => `[${d.val0}] ${d.val1}`);
+		result = data.filter((d) => d.val0.length != 1).map((d) => `[${d.val0}] ${d.val1}`);
 	}
 	return result;
 }

@@ -5,6 +5,13 @@ class Kelas extends ApiCrud {
 		super('kelas');
 	}
 
+	async santri(santriId) {
+		const resData = await this._apiGet({
+			endPoint: `${this._path}/santri/${santriId}`,
+		});
+
+		return resData.data;
+	}
 	// TODO: other methods
 }
 export default new Kelas();

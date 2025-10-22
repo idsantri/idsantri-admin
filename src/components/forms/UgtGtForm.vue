@@ -34,9 +34,7 @@
 									>{{ scope.opt.id }} &mdash;
 									{{ scope.opt.nama }}
 								</q-item-label>
-								<q-item-label caption>{{
-									scope.opt.wilayah
-								}}</q-item-label>
+								<q-item-label caption>{{ scope.opt.wilayah }}</q-item-label>
 							</q-item-section>
 						</q-item>
 					</template>
@@ -68,21 +66,8 @@
 					:rules="[(val) => !val || !isNaN(val) || 'Hanya angka!']"
 					error-color="negative"
 				/>
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Email GT"
-					v-model="inputs.email"
-				/>
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Keterangan"
-					v-model="inputs.keterangan"
-					autogrow=""
-				/>
+				<q-input dense class="q-my-sm" outlined label="Email GT" v-model="inputs.email" />
+				<q-input dense class="q-my-sm" outlined label="Keterangan" v-model="inputs.keterangan" autogrow="" />
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
@@ -99,26 +84,12 @@ import UgtPjgt from 'src/models/UgtPjgt';
 const props = defineProps({
 	data: Object,
 });
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({ ...props.data });
 const pjgtList = ref([]);
 const pjgtLoading = ref(false);
 const isNew = !props.data?.id;
-
-function onInputPjgt() {
-	inputs.value.pjgt_nama = pjgtList.value.find(
-		(o) => o.id == inputs.value?.pjgt_id,
-	)?.nama;
-	inputs.value.pjgt_wilayah = pjgtList.value.find(
-		(o) => o.id == inputs.value?.pjgt_id,
-	)?.wilayah;
-}
 
 async function getPjgt() {
 	try {
@@ -136,10 +107,12 @@ onMounted(async () => {
 	await getPjgt();
 });
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	UgtGt,
-	{ emit, responseKey: 'gt' },
-);
+function onInputPjgt() {
+	inputs.value.pjgt_nama = pjgtList.value.find((o) => o.id == inputs.value?.pjgt_id)?.nama;
+	inputs.value.pjgt_wilayah = pjgtList.value.find((o) => o.id == inputs.value?.pjgt_id)?.wilayah;
+}
+
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(UgtGt, { emit, responseKey: 'gt' });
 
 async function onSubmit() {
 	const data = {

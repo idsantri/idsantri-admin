@@ -16,9 +16,7 @@
 				/>
 				<q-card class="q-my-sm" flat bordered>
 					<q-card-section class="q-pa-sm">
-						<div class="text-caption">
-							Jika terkait dengan administrasi GT
-						</div>
+						<div class="text-caption">Jika terkait dengan administrasi GT</div>
 						<q-input
 							dense
 							class="q-my-sm"
@@ -50,13 +48,7 @@
 						/>
 					</q-card-section>
 				</q-card>
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Keperluan"
-					v-model="inputs.keperluan"
-				/>
+				<q-input dense class="q-my-sm" outlined label="Keperluan" v-model="inputs.keperluan" />
 				<q-select
 					dense
 					class="q-my-sm"
@@ -72,29 +64,15 @@
 					error-color="negative"
 					behavior="menu"
 				/>
-				<input-currency
-					dense
-					class="q-my-sm"
-					outlined
-					v-model="inputs.nominal"
-					required
-					label="Nominal"
-				/>
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Keterangan"
-					v-model="inputs.keterangan"
-					autogrow
-				/>
+				<input-currency dense class="q-my-sm" outlined v-model="inputs.nominal" required label="Nominal" />
+				<q-input dense class="q-my-sm" outlined label="Keterangan" v-model="inputs.keterangan" autogrow />
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 import useCrudForm from './utils/useCrudForm';
 import UgtKas from 'src/models/UgtKas';
@@ -103,30 +81,19 @@ import UgtGt from 'src/models/UgtGt';
 const props = defineProps({
 	data: Object,
 });
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({
 	keperluan: 'Biaya Administrasi GT',
 	keterangan: 'Lunas',
 	flag: '+',
+	...props.data,
 });
 const loadingGt = ref(false);
 const gt = ref({});
 const isNew = !props.data?.id;
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	UgtKas,
-	{ emit, responseKey: 'kas' },
-);
-
-onMounted(async () => {
-	Object.assign(inputs.value, props.data);
-});
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(UgtKas, { emit, responseKey: 'kas' });
 
 const onSubmit = async () => {
 	const data = JSON.parse(JSON.stringify(inputs.value));

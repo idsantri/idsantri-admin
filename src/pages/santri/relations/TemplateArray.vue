@@ -76,7 +76,7 @@
 </template>
 <script setup>
 defineProps({
-	data: Object,
+	data: Array,
 	spinner: { type: Boolean, default: () => false },
 	btnPrint: Boolean,
 	link: {

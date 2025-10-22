@@ -18,23 +18,13 @@
 					class="q-my-sm"
 					outlined
 					label="Data Kelas"
-					:model-value="
-						inputs?.th_ajaran_h +
-						' | ' +
-						inputs?.tingkat_id +
-						' | ' +
-						inputs?.kelas
-					"
+					:model-value="inputs?.th_ajaran_h + ' | ' + inputs?.tingkat_id + ' | ' + inputs?.kelas"
 					disable=""
 					filled=""
 				/>
 				<q-input
 					dense
-					:hint="
-						isDate(inputs.dari_tgl)
-							? formatDateFull(inputs.dari_tgl)
-							: ''
-					"
+					:hint="isDate(inputs.dari_tgl) ? formatDateFull(inputs.dari_tgl) : ''"
 					class="q-my-sm"
 					outlined
 					label="Tanggal (M)*"
@@ -49,10 +39,7 @@
 					outlined
 					label="Durasi (hari)*"
 					v-model="inputs.durasi"
-					:rules="[
-						(val) => !!val || 'Harus diisi!',
-						(val) => !val || !isNaN(val) || 'Hanya angka',
-					]"
+					:rules="[(val) => !!val || 'Harus diisi!', (val) => !val || !isNaN(val) || 'Hanya angka']"
 					error-color="negative"
 				/>
 				<input-select-array
@@ -68,21 +55,14 @@
 					label="Keterangan"
 					class="q-my-sm"
 				/>
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Catatan"
-					v-model="inputs.catatan"
-					autogrow=""
-				/>
+				<q-input dense class="q-my-sm" outlined label="Catatan" v-model="inputs.catatan" autogrow="" />
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { formatDateFull, isDate } from 'src/utils/format-date';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import useCrudForm from './utils/useCrudForm';
@@ -91,23 +71,14 @@ import IzinMadrasah from 'src/models/IzinMadrasah';
 const props = defineProps({
 	data: { type: Object, required: true },
 });
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
-const inputs = ref({ keperluan: 'Sakit', durasi: 1 });
+const inputs = ref({ keperluan: 'Sakit', durasi: 1, ...props.data });
 const isNew = !props.data?.id;
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	IzinMadrasah,
-	{ emit, responseKey: 'izin_madrasah' },
-);
-
-onMounted(async () => {
-	Object.assign(inputs.value, props.data);
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(IzinMadrasah, {
+	emit,
+	responseKey: 'izin_madrasah',
 });
 
 const onSubmit = async () => {

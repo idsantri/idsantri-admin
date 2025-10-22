@@ -1,11 +1,6 @@
 <template>
 	<div>
-		<temp-array
-			:data="dataMap"
-			:spinner="spinner"
-			@add="handleAdd"
-			@edit="handleEdit"
-		/>
+		<temp-array :data="dataMap" :spinner="spinner" @add="handleAdd" @edit="handleEdit" />
 
 		<q-dialog v-model="crudShow">
 			<DomisiliForm
@@ -25,8 +20,8 @@ import { formatDate } from 'src/utils/format-date.js';
 import { m2hFormat } from 'src/utils/hijri.js';
 import { deleteById, getObjectById, replaceById } from 'src/utils/array-object';
 import { useRoute } from 'vue-router';
-import apiGet from 'src/api/api-get';
 import DomisiliForm from 'src/components/forms/DomisiliForm.vue';
+import Domisili from 'src/models/Domisili';
 
 const spinner = ref(false);
 const crudShow = ref(false);
@@ -36,22 +31,22 @@ const santri = ref({});
 const { params } = useRoute();
 
 async function loadData() {
-	const data = await apiGet({
-		endPoint: `domisili/santri/${params.id}`,
-		loading: spinner,
-	});
-	if (data.domisili) {
-		dataArr.value = data.domisili;
-		santri.value = data.santri;
+	try {
+		spinner.value = true;
+		const response = await Domisili.santri(params.id);
+		dataArr.value = response.domisili;
+		santri.value = response.santri;
+	} catch (_err) {
+		// console.error(_err);
+		console.log('error get domisili');
+	} finally {
+		spinner.value = false;
 	}
 }
 
 const dataMap = computed(() =>
 	dataArr.value.map((v) => ({
-		Tanggal:
-			formatDate(v.created_at, 'dd-MM-yyyy') +
-			' | ' +
-			m2hFormat(formatDate(v.created_at, 'yyyy-MM-dd')),
+		Tanggal: formatDate(v.created_at, 'dd-MM-yyyy') + ' | ' + m2hFormat(formatDate(v.created_at, 'yyyy-MM-dd')),
 		Domisili: v.domisili,
 		Keterangan: v.keterangan || '-',
 		id: v.id,

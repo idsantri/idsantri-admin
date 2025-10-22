@@ -11,24 +11,18 @@
 					animated
 					control-color="primary"
 					class="full-width"
-					style="height: 70vh"
+					style="min-height: 65vh"
 					swipeable
 					infinite
 				>
 					<!-- identitas -->
-					<q-carousel-slide
-						name="identity"
-						class="no-wrap flex-center"
-					>
+					<q-carousel-slide name="identity" class="no-wrap flex-center">
 						<CarouselIdentity v-model="inputs" />
 					</q-carousel-slide>
 
 					<!-- alamat -->
 					<q-carousel-slide name="alamat" class="no-wrap flex-center">
-						<CarouselAlamat
-							v-model="inputs"
-							@emit-route="closeModal"
-						/>
+						<CarouselAlamat v-model="inputs" @emit-route="closeModal" />
 					</q-carousel-slide>
 
 					<!-- pendidikan -->
@@ -52,11 +46,7 @@
 				</div>
 			</q-card-section>
 
-			<FormActions
-				:btn-delete="true"
-				:label-delete="isNew ? 'Reset' : 'Hapus'"
-				@onDelete="resetOrDelete"
-			/>
+			<FormActions :btn-delete="true" :label-delete="isNew ? 'Reset' : 'Hapus'" @onDelete="resetOrDelete" />
 		</q-form>
 	</q-card>
 </template>
@@ -77,13 +67,9 @@ const router = useRouter();
 const { wali } = reactive(waliStore());
 const { isNew } = reactive(waliStore());
 const { ortu, isNew: newOrtu } = reactive(ortuStore());
-const {
-	isNew: newSantri,
-	ortu: ortuSantri,
-	inputs: inputsSantri,
-} = santriStore();
+const { isNew: newSantri, ortu: ortuSantri, inputs: inputsSantri } = santriStore();
 const loading = ref(false);
-const inputs = ref({});
+const inputs = ref({ ...wali });
 
 onMounted(() => {
 	if (isNew && newSantri && newOrtu && ortuSantri.ayah == ortu.ayah) {

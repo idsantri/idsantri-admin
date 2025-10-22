@@ -14,9 +14,7 @@
 					dense
 					:hint="
 						isDate(inputs.tgl_kasus)
-							? formatDateFull(inputs.tgl_kasus) +
-								' | ' +
-								bacaHijri(m2h(inputs.tgl_kasus))
+							? formatDateFull(inputs.tgl_kasus) + ' | ' + bacaHijri(m2h(inputs.tgl_kasus))
 							: ''
 					"
 					class="q-my-sm"
@@ -32,9 +30,7 @@
 					dense
 					:hint="
 						isDate(inputs.tgl_sidang)
-							? formatDateFull(inputs.tgl_sidang) +
-								' | ' +
-								bacaHijri(m2h(inputs.tgl_sidang))
+							? formatDateFull(inputs.tgl_sidang) + ' | ' + bacaHijri(m2h(inputs.tgl_sidang))
 							: ''
 					"
 					class="q-my-sm"
@@ -76,14 +72,7 @@
 					v-model="inputs.pasal"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Deskripsi"
-					v-model="inputs.deskripsi"
-					autogrow=""
-				/>
+				<q-input dense class="q-my-sm" outlined label="Deskripsi" v-model="inputs.deskripsi" autogrow="" />
 				<q-input
 					dense
 					class="q-my-sm"
@@ -93,13 +82,7 @@
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					error-color="negative"
 				/>
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Saksi"
-					v-model="inputs.saksi"
-				/>
+				<q-input dense class="q-my-sm" outlined label="Saksi" v-model="inputs.saksi" />
 				<input-select-array
 					v-model="inputs.takzir"
 					url="takzir-santri"
@@ -107,14 +90,7 @@
 					class="q-my-sm"
 					multiple
 				/>
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Keterangan"
-					v-model="inputs.keterangan"
-					autogrow=""
-				/>
+				<q-input dense class="q-my-sm" outlined label="Keterangan" v-model="inputs.keterangan" autogrow="" />
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
@@ -134,23 +110,15 @@ const props = defineProps({
 	data: Object,
 });
 
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
-const inputs = ref({ kategori: 3 });
+const inputs = ref({ kategori: 3, ...props.data });
 const isNew = !props.data?.id;
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	Indisipliner,
-	{
-		emit: emit,
-		responseKey: 'indisipliner',
-	},
-);
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Indisipliner, {
+	emit: emit,
+	responseKey: 'indisipliner',
+});
 
 async function onSubmit() {
 	const data = {
@@ -177,8 +145,6 @@ const onDelete = async () => {
 };
 
 onMounted(async () => {
-	Object.assign(inputs.value, props.data);
-	// console.log(inputs.value);
 	if (inputs.value.pasal) {
 		inputs.value.pasal = inputs.value.pasal.split(',');
 	}

@@ -1,35 +1,35 @@
 <template>
 	<q-page class="q-pa-sm">
 		<q-card class="">
-			<q-card-section class="bg-green-8 text-green-11 q-pa-sm">
-				<div class="flex items-center">
-					<div class="text-subtitle1">Data Orang Tua</div>
-					<q-space />
+			<CardHeader title="Data Orang Tua" @on-reload="loadData">
+				<template #right>
 					<q-btn
-						label="Cari"
+						:label="$q.screen.lt.sm ? '' : 'Cari'"
 						@click="searchOrtu = true"
-						size="sm"
 						color="green-2"
-						class="text-green-10 q-mr-sm"
+						no-caps
+						dense
+						class="q-px-sm text-green-10 q-ml-sm"
 						icon="search"
 					/>
 					<q-btn
 						no-caps
-						size="sm"
 						color="green-2"
-						class="text-green-10"
+						dense
+						class="q-px-sm text-green-10 q-ml-sm"
 						icon="edit"
-						label="Edit"
+						:label="$q.screen.lt.sm ? '' : 'Edit'"
 						@click="editOrtu"
 					/>
-				</div>
-			</q-card-section>
+				</template>
+			</CardHeader>
+
 			<q-card-section class="no-padding">
 				<div class="row" style="max-width: 1024px">
 					<div class="col-12 col-md-6 q-pa-sm">
-						<card-column :data="identity" :loading="loading" title="Identitas" class="q-mb-sm" />
-						<card-column :data="dataAyah" :loading="loading" title="Data Ayah" class="q-mb-sm" />
-						<card-column :data="dataIbu" :loading="loading" title="Data Ibu" class="q-mb-sm" />
+						<CardListTabel :data="identity" :loading="loading" title="Identitas" class="q-mb-sm" />
+						<CardListTabel :data="dataAyah" :loading="loading" title="Data Ayah" class="q-mb-sm" />
+						<CardListTabel :data="dataIbu" :loading="loading" title="Data Ibu" class="q-mb-sm" />
 					</div>
 					<div class="col-12 col-md-6 q-pa-sm">
 						<card-list-santri
@@ -47,12 +47,12 @@
 <script setup>
 import { computed, onMounted, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
-import CardColumn from '../../components/CardColumn.vue';
 import CardListSantri from 'src/components/santri/CardSantriLists.vue';
 import ortuStore from 'src/stores/ortu-store.js';
 import dialogStore from 'src/stores/dialog-store';
 import { storeToRefs } from 'pinia';
 import Ortu from 'src/models/Ortu';
+import CardListTabel from 'src/components/cards/CardListTabel.vue';
 
 const { ortu } = storeToRefs(ortuStore());
 const route = useRoute();
@@ -81,22 +81,28 @@ async function loadData() {
 	}
 }
 
-const identity = computed(() => ({
-	ID: ortu.value.id,
-	'Jumlah Anak': ortu.value.jumlah_anak,
-}));
+const identity = computed(() => {
+	return [
+		{ label: 'ID', value: ortu.value.id },
+		{ label: 'Jumlah Anak', value: ortu.value.jumlah_anak },
+	];
+});
 
-const dataAyah = computed(() => ({
-	Ayah: ortu.value.ayah?.toUpperCase(),
-	NIK: ortu.value.a_nik,
-	Hidup: ortu.value.a_hidup ? 'Ya' : 'Tidak',
-}));
+const dataAyah = computed(() => {
+	return [
+		{ label: 'Ayah', value: ortu.value.ayah?.toUpperCase() },
+		{ label: 'NIK', value: ortu.value.a_nik },
+		{ label: 'Hidup', value: ortu.value.a_hidup ? 'Ya' : 'Tidak' },
+	];
+});
 
-const dataIbu = computed(() => ({
-	Ibu: ortu.value.ibu?.toUpperCase(),
-	NIK: ortu.value.i_nik,
-	Hidup: ortu.value.i_hidup ? 'Ya' : 'Tidak',
-}));
+const dataIbu = computed(() => {
+	return [
+		{ label: 'Ibu', value: ortu.value.ibu?.toUpperCase() },
+		{ label: 'NIK', value: ortu.value.i_nik },
+		{ label: 'Hidup', value: ortu.value.i_hidup ? 'Ya' : 'Tidak' },
+	];
+});
 
 onMounted(async () => {
 	await loadData();

@@ -1,35 +1,28 @@
 <template lang="">
-	<q-page>
-		<div class="row" style="max-width: 1200px">
-			<div class="col-12 col-md-6 q-pt-sm">
-				<q-card class="q-mx-sm">
-					<q-card-section class="bg-green-8 no-padding">
-						<q-toolbar class="no-padding no-margin">
-							<q-toolbar-title
-								class="text-subtitle1 q-ml-sm text-green-11"
-							>
-								Data GT
-							</q-toolbar-title>
-							<q-btn
-								dense
-								class="q-px-md q-mr-sm text-green-10"
-								label="Edit"
-								no-caps=""
-								icon="edit"
-								color="green-2"
-								@click="crudShow = true"
-							/>
-						</q-toolbar>
-					</q-card-section>
-					<q-card-section class="q-pa-sm">
-						<div v-if="loadingGt">
-							<q-spinner-cube
-								color="green-12"
-								size="8em"
-								class="flex q-ma-lg q-mx-auto"
-							/>
-						</div>
-						<div v-else>
+	<q-page class="q-pa-sm">
+		<q-card class="">
+			<CardHeader title="Data Guru Tugas" @on-reload="loadData" />
+			<div class="row" style="max-width: 1200px">
+				<div class="col-12 col-md-6 q-my-sm">
+					<!-- GT -->
+					<q-card class="q-mx-sm" flat bordered>
+						<q-card-section class="bg-green-7 no-padding">
+							<q-toolbar class="no-padding no-margin">
+								<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11">
+									Identitas GT
+								</q-toolbar-title>
+								<q-btn
+									dense
+									class="q-px-md q-mr-sm text-green-10"
+									label="Edit"
+									no-caps=""
+									icon="edit"
+									color="green-2"
+									@click="crudShow = true"
+								/>
+							</q-toolbar>
+						</q-card-section>
+						<q-card-section class="q-pa-sm">
 							<q-markup-table flat class="text-green-10">
 								<tbody>
 									<tr>
@@ -78,88 +71,67 @@
 									</tr>
 								</tbody>
 							</q-markup-table>
-						</div>
-					</q-card-section>
-					<q-card-actions
-						class="bg-green-7 flex items-center justify-between q-pt-none q-gutter-y-sm"
-					>
-						<div class="flex q-gutter-x-sm">
-							<q-btn
-								label="Sertifikat"
-								dense
-								no-caps
-								icon="download"
-								color="green-11"
-								class="q-px-md text-green-10"
-								@click="downloadSertifikat"
-								title="Cetak Sertifikat"
-							/>
-							<q-btn
-								label="Surat Tugas"
-								dense
-								no-caps
-								icon="download"
-								color="green-11"
-								class="q-px-md text-green-10"
-								@click="downloadSuratTugas"
-								title="Cetak Surat Tugas"
-							/>
-						</div>
-						<div class="flex q-gutter-x-sm">
-							<q-btn
-								label="Sertifikat"
-								dense
-								no-caps
-								icon="print"
-								color="green-11"
-								class="q-px-md text-green-10"
-								@click="viewSertifikat"
-								title="Cetak Sertifikat"
-							/>
-							<q-btn
-								label="Surat Tugas"
-								dense
-								no-caps
-								icon="print"
-								color="green-11"
-								class="q-px-md text-green-10"
-								@click="viewSuratTugas"
-								title="Cetak Surat Tugas"
-							/>
-						</div>
-					</q-card-actions>
-				</q-card>
-			</div>
-			<!-- pjgt -->
-			<div class="col-12 col-md-6 q-pt-sm">
-				<q-card class="q-mx-sm">
-					<q-card-section class="bg-green-8 no-padding">
-						<q-toolbar class="no-padding no-margin">
-							<q-toolbar-title
-								class="text-subtitle1 q-ml-sm text-green-11"
-							>
-								Data PJGT
-							</q-toolbar-title>
-							<!-- <q-btn
-							dense
-							class="q-px-md q-mr-sm text-green-10"
-							label="Edit"
-							no-caps=""
-							icon="edit"
-							color="green-2"
-							@click="crudShow = true"
-						/> -->
-						</q-toolbar>
-					</q-card-section>
-					<q-card-section class="q-pa-sm">
-						<div v-if="loadingGt">
-							<q-spinner-cube
-								color="green-12"
-								size="8em"
-								class="flex q-ma-lg q-mx-auto"
-							/>
-						</div>
-						<div v-else>
+							<CardLoading :showing="loading" />
+						</q-card-section>
+						<q-card-actions class="bg-green-7 flex items-center justify-between q-pt-none q-gutter-y-sm">
+							<div class="flex q-gutter-x-sm">
+								<q-btn
+									label="Sertifikat"
+									dense
+									no-caps
+									icon="download"
+									color="green-11"
+									class="q-px-md text-green-10"
+									@click="downloadSertifikat"
+									title="Cetak Sertifikat"
+								/>
+								<q-btn
+									label="Surat Tugas"
+									dense
+									no-caps
+									icon="download"
+									color="green-11"
+									class="q-px-md text-green-10"
+									@click="downloadSuratTugas"
+									title="Cetak Surat Tugas"
+								/>
+							</div>
+							<div class="flex q-gutter-x-sm">
+								<q-btn
+									label="Sertifikat"
+									dense
+									no-caps
+									icon="print"
+									color="green-11"
+									class="q-px-md text-green-10"
+									@click="viewSertifikat"
+									title="Cetak Sertifikat"
+								/>
+								<q-btn
+									label="Surat Tugas"
+									dense
+									no-caps
+									icon="print"
+									color="green-11"
+									class="q-px-md text-green-10"
+									@click="viewSuratTugas"
+									title="Cetak Surat Tugas"
+								/>
+							</div>
+						</q-card-actions>
+					</q-card>
+				</div>
+				<div class="col-12 col-md-6 q-my-sm">
+					<!-- pjgt -->
+					<q-card class="q-mx-sm" flat bordered>
+						<q-card-section class="bg-green-7 no-padding">
+							<q-toolbar class="no-padding no-margin">
+								<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11">
+									Data PJGT
+								</q-toolbar-title>
+							</q-toolbar>
+						</q-card-section>
+						<q-card-section class="q-pa-sm">
 							<q-markup-table flat class="text-green-10">
 								<tbody>
 									<tr>
@@ -203,28 +175,22 @@
 									<tr>
 										<td>Administrasi</td>
 										<td>
-											Rp{{
-												digitSeparator(
-													gt.administrasi_nominal ||
-														0,
-												)
-											}}
-											({{ gt.administrasi_count || 0 }}x)
+											Rp{{ digitSeparator(gt.administrasi_nominal || 0) }} ({{
+												gt.administrasi_count || 0
+											}}x)
 										</td>
 									</tr>
 								</tbody>
 							</q-markup-table>
-						</div>
-					</q-card-section>
-				</q-card>
+							<CardLoading :showing="loading" />
+						</q-card-section>
+					</q-card>
+				</div>
 			</div>
-		</div>
+		</q-card>
+
 		<q-dialog persistent="" v-model="crudShow">
-			<UgtGtForm
-				:data="gt"
-				@success-submit="loadGt()"
-				@success-delete="$router.go(-1)"
-			/>
+			<UgtGtForm :data="gt" @success-submit="loadData()" @success-delete="$router.go(-1)" />
 		</q-dialog>
 		<q-dialog v-model="showViewer">
 			<ReportViewer :url="urlReport" />
@@ -233,7 +199,6 @@
 	</q-page>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
 import { digitSeparator } from 'src/utils/format-number';
 import { onMounted, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
@@ -241,25 +206,31 @@ import UgtGtForm from 'src/components/forms/UgtGtForm.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
 import apiDownload from 'src/api/api-download';
 import loadingStore from 'src/stores/loading-store';
+import UgtGt from 'src/models/UgtGt';
 
 const route = useRoute();
 const id = route.params.id;
-const loadingGt = ref(false);
+const loading = ref(false);
 const gt = ref({});
 const crudShow = ref(false);
 const urlReport = ref('');
 const { loadingMain } = toRefs(loadingStore());
 
-async function loadGt() {
-	const data = await apiGet({
-		endPoint: `ugt/gt/${id}`,
-		loading: loadingGt,
-	});
-	gt.value = data.gt;
+async function loadData() {
+	try {
+		loading.value = true;
+		const data = await UgtGt.getById({ id, notifySuccess: true });
+		gt.value = data.gt;
+	} catch (_err) {
+		// console.error(_err);
+		console.log('error get gt');
+	} finally {
+		loading.value = false;
+	}
 }
 
 onMounted(async () => {
-	await loadGt();
+	await loadData();
 });
 
 const showViewer = ref(false);
@@ -293,4 +264,9 @@ async function downloadSertifikat() {
 	});
 }
 </script>
-<style lang=""></style>
+<style scoped>
+td {
+	white-space: normal;
+	word-wrap: break-word;
+}
+</style>

@@ -8,23 +8,13 @@
 					dense
 					outlined
 					label="Nama"
-					:model-value="
-						inputs?.nama + ' (' + inputs?.aparatur_id + ')'
-					"
+					:model-value="inputs?.nama + ' (' + inputs?.aparatur_id + ')'"
 					disable=""
 					filled=""
 					class="q-my-sm"
 				/>
 
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					filled
-					label="Jabatan"
-					v-model="inputs.jabatan"
-					disable
-				/>
+				<q-input dense class="q-my-sm" outlined filled label="Jabatan" v-model="inputs.jabatan" disable />
 				<InputSelectArray
 					v-model="inputs.th_ajaran_h"
 					url="tahun-ajaran"
@@ -44,35 +34,17 @@
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:options="['Ula', 'Wustho', 'Ulya']"
 				/>
-				<input-select-array
-					v-model="inputs.faslah"
-					url="faslah-quran"
-					label="Faslah/Kelas"
-					class="q-my-sm"
-				/>
+				<input-select-array v-model="inputs.faslah" url="faslah-quran" label="Faslah/Kelas" class="q-my-sm" />
 
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Ruang"
-					v-model="inputs.ruang"
-				/>
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Keterangan"
-					v-model="inputs.keterangan"
-					autogrow=""
-				/>
+				<q-input dense class="q-my-sm" outlined label="Ruang" v-model="inputs.ruang" />
+				<q-input dense class="q-my-sm" outlined label="Keterangan" v-model="inputs.keterangan" autogrow="" />
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import useCrudForm from './utils/useCrudForm';
 import AparaturQuran from 'src/models/AparaturQuran';
@@ -81,26 +53,14 @@ const props = defineProps({
 	data: { type: Object, required: true, default: () => {} },
 });
 
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
-const inputs = ref({ jabatan: 'Muallim' });
+const inputs = ref({ jabatan: 'Muallim', ...props.data });
 const isNew = !props.data?.id;
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	AparaturQuran,
-	{
-		emit: emit,
-		responseKey: 'aparatur_quran',
-	},
-);
-
-onMounted(async () => {
-	Object.assign(inputs.value, props.data);
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(AparaturQuran, {
+	emit: emit,
+	responseKey: 'aparatur_quran',
 });
 
 const onSubmit = async () => {

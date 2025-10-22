@@ -34,13 +34,7 @@
 					v-model="inputs.name"
 					hint="Hanya huruf dan spasi"
 				/>
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Mata Pelajaran (Alias)"
-					v-model="inputs.alias"
-				/>
+				<q-input dense class="q-my-sm" outlined label="Mata Pelajaran (Alias)" v-model="inputs.alias" />
 				<q-select
 					dense
 					class="q-my-sm"
@@ -54,12 +48,7 @@
 				/>
 				<q-card bordered flat class="q-px-sm q-my-sm">
 					Tampilkan:
-					<q-toggle
-						v-model="inputs.show"
-						color="green"
-						:true-value="1"
-						:false-value="0"
-					/>
+					<q-toggle v-model="inputs.show" color="green" :true-value="1" :false-value="0" />
 				</q-card>
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
@@ -67,7 +56,7 @@
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingkatPendidikan.vue';
 import useCrudForm from './utils/useCrudForm';
 import Mapel from 'src/models/Mapel';
@@ -75,24 +64,12 @@ import Mapel from 'src/models/Mapel';
 const props = defineProps({
 	data: { type: Object, required: true },
 });
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
-const inputs = ref({ category: 'Fan Dasar', show: 1 });
+const inputs = ref({ category: 'Fan Dasar', show: 1, ...props.data });
 const isNew = !props.data?.id;
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	Mapel,
-	{ emit, responseKey: 'mapel' },
-);
-
-onMounted(async () => {
-	Object.assign(inputs.value, props.data);
-});
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Mapel, { emit, responseKey: 'mapel' });
 
 const onSubmit = async () => {
 	const data = {
