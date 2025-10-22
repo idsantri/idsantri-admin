@@ -8,7 +8,7 @@ export default class ApiCrud extends Api {
 	 * @param {boolean} options.notifySuccess - Whether to show success notification
 	 * @returns {Promise<Object>} Response data
 	 */
-	async getAll({ params = {}, notifySuccess = true }) {
+	async getAll({ params = {}, notifySuccess = true } = {}) {
 		const resData = await this._apiGet({
 			endPoint: this._path,
 			params,
@@ -50,17 +50,9 @@ export default class ApiCrud extends Api {
 	 * @param {boolean} options.notifySuccess - Whether to show success notification
 	 * @returns {Promise<Object>} Response data
 	 */
-	async create({
-		data,
-		params = {},
-		notifySuccess = true,
-		confirm = false,
-		message = '',
-	}) {
+	async create({ data, params = {}, notifySuccess = true, confirm = false, message = '' }) {
 		if (message || confirm) {
-			const isConfirmed = await this._notifyConfirm(
-				message || 'Simpan data ini?',
-			);
+			const isConfirmed = await this._notifyConfirm(message || 'Simpan data ini?');
 			if (!isConfirmed) {
 				return false;
 			}
@@ -89,18 +81,9 @@ export default class ApiCrud extends Api {
 	 * @param {string} options.message - Custom confirmation message
 	 * @returns {Promise<Object>} Response data
 	 */
-	async update({
-		id,
-		data,
-		params = {},
-		notifySuccess = true,
-		confirm = false,
-		message = '',
-	}) {
+	async update({ id, data, params = {}, notifySuccess = true, confirm = false, message = '' }) {
 		if (message || confirm) {
-			const isConfirmed = await this._notifyConfirm(
-				message || 'Update data ini?',
-			);
+			const isConfirmed = await this._notifyConfirm(message || 'Update data ini?');
 
 			if (!isConfirmed) {
 				return false;
@@ -129,17 +112,9 @@ export default class ApiCrud extends Api {
 	 * @param {string} options.message - Custom confirmation message
 	 * @returns {Promise<Object>} Response data
 	 */
-	async remove({
-		id,
-		params = {},
-		notifySuccess = true,
-		confirm = true,
-		message = '',
-	}) {
+	async remove({ id, params = {}, notifySuccess = true, confirm = true, message = '' }) {
 		if (message || confirm) {
-			const isConfirmed = await this._notifyConfirm(
-				message || '<span style="color: red">Hapus data ini?</span>',
-			);
+			const isConfirmed = await this._notifyConfirm(message || '<span style="color: red">Hapus data ini?</span>');
 
 			if (!isConfirmed) {
 				return false;

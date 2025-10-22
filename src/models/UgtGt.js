@@ -4,14 +4,10 @@ class UgtGt extends ApiCrud {
 	constructor() {
 		super('ugt/gt');
 	}
-	async listTahunAjaran({ notifySuccess = true }) {
+	async listTahunAjaran() {
 		const resData = await this._apiGet({
 			endPoint: `${this._path}/lists/th-ajaran-h`,
 		});
-
-		if (notifySuccess) {
-			this._showSuccess(resData.message);
-		}
 
 		return resData.data;
 	}

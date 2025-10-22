@@ -91,6 +91,7 @@ import DropDownPrint from './DropDownPrint.vue';
 import { storeToRefs } from 'pinia';
 import Santri from 'src/models/Santri';
 import CardListTabel from 'src/components/cards/CardListTabel.vue';
+import { formatAlamatLengkap } from 'src/utils/format-text';
 
 const { santri } = storeToRefs(santriStore());
 
@@ -149,14 +150,16 @@ const register = computed(() => {
 
 const identity = computed(() => ({
 	Nama: `${santri.value.nama ? santri.value.nama?.toUpperCase() : ''} (${santri.value.sex?.toUpperCase()})`,
-	Alamat: `${santri.value.jl || ' '} RT ${String(santri.value.rt || 0).padStart(
-		3,
-		0,
-	)} RW ${String(santri.value.rw || 0).padStart(3, '0')} ${
-		santri.value.desa || ' '
-	} ${santri.value.kecamatan || ' '} ${santri.value.kabupaten || ' '} ${
-		santri.value.provinsi || ' '
-	} ${santri.value.kode_pos || ' '}`.replace(/\s\s+/g, ' '),
+	Alamat: formatAlamatLengkap(
+		santri.value.jl,
+		santri.value.rt,
+		santri.value.rw,
+		santri.value.desa,
+		santri.value.kecamatan,
+		santri.value.kabupaten,
+		santri.value.provinsi,
+		santri.value.kode_pos,
+	),
 	Kelahiran: `${santri.value.tmp_lahir || '-'}, ${formatDateFull(santri.value.tgl_lahir)}`,
 	'Data Akhir': santri.value.data_akhir || '-',
 }));

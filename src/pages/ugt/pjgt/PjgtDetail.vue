@@ -1,36 +1,28 @@
 <template lang="">
-	<q-page>
-		<div class="row" style="max-width: 1200px">
-			<div class="col-12 col-md-6 q-pt-sm">
-				<!-- PJGT -->
-				<q-card class="q-mx-sm">
-					<q-card-section class="bg-green-8 no-padding">
-						<q-toolbar class="no-padding no-margin">
-							<q-toolbar-title
-								class="text-subtitle1 q-ml-sm text-green-11"
-							>
-								Data PJGT
-							</q-toolbar-title>
-							<q-btn
-								dense
-								class="q-px-md q-mr-sm text-green-10"
-								label="Edit"
-								no-caps=""
-								icon="edit"
-								color="green-2"
-								@click="crudShow = true"
-							/>
-						</q-toolbar>
-					</q-card-section>
-					<q-card-section class="q-pa-sm">
-						<div v-if="loadingPjgt">
-							<q-spinner-cube
-								color="green-12"
-								size="8em"
-								class="flex q-ma-lg q-mx-auto"
-							/>
-						</div>
-						<div v-else>
+	<q-page class="q-pa-sm">
+		<q-card class="">
+			<CardHeader title="Data Penanggung Jawab Guru Tugas" @on-reload="loadData" />
+			<div class="row" style="max-width: 1200px">
+				<div class="col-12 col-md-6 q-my-sm">
+					<!-- PJGT -->
+					<q-card class="q-mx-sm" flat bordered>
+						<q-card-section class="bg-green-7 no-padding">
+							<q-toolbar class="no-padding no-margin">
+								<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11">
+									Data PJGT
+								</q-toolbar-title>
+								<q-btn
+									dense
+									class="q-px-md q-mr-sm text-green-10"
+									label="Edit"
+									no-caps=""
+									icon="edit"
+									color="green-2"
+									@click="crudShow = true"
+								/>
+							</q-toolbar>
+						</q-card-section>
+						<q-card-section class="q-pa-sm">
 							<q-markup-table flat class="text-green-10">
 								<tbody>
 									<tr>
@@ -79,53 +71,35 @@
 									</tr>
 								</tbody>
 							</q-markup-table>
-						</div>
-					</q-card-section>
-				</q-card>
-			</div>
-			<div class="col-12 col-md-6 q-pt-sm">
-				<!-- GT -->
-				<q-card class="q-mx-sm">
-					<q-card-section class="bg-green-8 no-padding">
-						<q-toolbar class="no-padding no-margin">
-							<q-toolbar-title
-								class="text-subtitle1 q-ml-sm text-green-11"
-							>
-								Data GT
-							</q-toolbar-title>
-							<q-btn
-								dense
-								class="q-px-md q-mr-sm text-green-10"
-								label="Tambah"
-								no-caps=""
-								icon="add"
-								color="green-2"
-								@click="crudGt = true"
-							/>
-						</q-toolbar>
-					</q-card-section>
-					<q-card-section class="q-pa-sm">
-						<div v-if="loadingGt">
-							<q-spinner-cube
-								color="green-12"
-								size="8em"
-								class="flex q-ma-md q-mx-auto"
-							/>
-						</div>
-						<div v-else>
-							<div
-								v-if="!gt.length"
-								class="text-center text-negative bg-red-1"
-							>
-								<p class="no-margin q-pa-md">
-									Tidak ada data untuk ditampilkan!
-								</p>
+							<CardLoading :showing="loadingPjgt" />
+						</q-card-section>
+					</q-card>
+				</div>
+				<div class="col-12 col-md-6 q-my-sm">
+					<!-- GT -->
+					<q-card class="q-mx-sm" flat bordered>
+						<q-card-section class="bg-green-7 no-padding">
+							<q-toolbar class="no-padding no-margin">
+								<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11">
+									Data GT
+								</q-toolbar-title>
+								<q-btn
+									dense
+									class="q-px-md q-mr-sm text-green-10"
+									label="Tambah"
+									no-caps=""
+									icon="add"
+									color="green-2"
+									@click="crudGt = true"
+								/>
+							</q-toolbar>
+						</q-card-section>
+						<q-card-section class="q-pa-sm">
+							<div v-if="!gt.length" class="text-center text-negative bg-red-1 q-py-md">
+								<p class="no-margin q-pa-md">Tidak ada data untuk ditampilkan!</p>
 							</div>
 							<q-list v-else bordered separator>
-								<q-item
-									v-for="(item, index) in gt"
-									:key="index"
-								>
+								<q-item v-for="(item, index) in gt" :key="index">
 									<q-item-section>
 										<q-item-label overline>
 											{{ item.th_ajaran_h }}
@@ -133,19 +107,15 @@
 										<q-item-label caption>
 											<em>
 												GT ID:
-												<strong> {{ item.id }} </strong
-												>; Santri ID:
-												<strong>{{
-													item.santri_id
-												}}</strong>
+												<strong> {{ item.id }} </strong>; Santri ID:
+												<strong>{{ item.santri_id }}</strong>
 											</em>
 										</q-item-label>
 										<q-item-label>
 											{{ item.nama?.toUpperCase() }}
 										</q-item-label>
 										<q-item-label caption>
-											Telepon: {{ item.telepon || '-' }};
-											Email: {{ item.email || '-' }}
+											Telepon: {{ item.telepon || '-' }}; Email: {{ item.email || '-' }}
 										</q-item-label>
 									</q-item-section>
 									<q-item-section avatar>
@@ -160,18 +130,15 @@
 									</q-item-section>
 								</q-item>
 							</q-list>
-						</div>
-					</q-card-section>
-				</q-card>
+							<CardLoading :showing="loadingGt" />
+						</q-card-section>
+					</q-card>
+				</div>
 			</div>
-		</div>
+		</q-card>
+
 		<q-dialog persistent="" v-model="crudShow">
-			<UgtPjgtForm
-				:is-new="false"
-				:data="pjgt"
-				@success-submit="loadPjgt()"
-				@success-delete="$router.go(-1)"
-			/>
+			<UgtPjgtForm :is-new="false" :data="pjgt" @success-submit="loadPjgt()" @success-delete="$router.go(-1)" />
 		</q-dialog>
 
 		<q-dialog persistent="" v-model="crudGt">
@@ -182,21 +149,19 @@
 					pjgt_wilayah: pjgt.wilayah,
 				}"
 				@success-submit="loadGt()"
-				@success-delete="$router.go(-1)"
+				@success-delete="null"
 			/>
 		</q-dialog>
-
-		<!-- <pre>{{ pjgt }}</pre> -->
-		<!-- <pre>{{ gt }}</pre> -->
 	</q-page>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
 import { formatAlamatLengkap } from 'src/utils/format-text';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import UgtPjgtForm from 'src/components/forms/UgtPjgtForm.vue';
 import UgtGtForm from 'src/components/forms/UgtGtForm.vue';
+import UgtPjgt from 'src/models/UgtPjgt';
+import UgtGt from 'src/models/UgtGt';
 
 const route = useRoute();
 const id = route.params.id;
@@ -208,26 +173,42 @@ const crudShow = ref(false);
 const crudGt = ref(false);
 
 async function loadPjgt() {
-	const data = await apiGet({
-		endPoint: `ugt/pjgt/${id}`,
-		loading: loadingPjgt,
-	});
-	pjgt.value = data.pjgt;
+	try {
+		loadingPjgt.value = true;
+		const data = await UgtPjgt.getById({ id, notifySuccess: true });
+		pjgt.value = data.pjgt;
+	} catch (_err) {
+		// console.error(_err);
+		console.log('error get pjgt by id');
+	} finally {
+		loadingPjgt.value = false;
+	}
 }
 async function loadGt() {
-	const data = await apiGet({
-		endPoint: 'ugt/gt',
-		loading: loadingGt,
-		params: {
-			pjgt_id: id,
-		},
-	});
-	gt.value = data.gt;
+	try {
+		loadingGt.value = true;
+		const data = await UgtGt.getAll({ params: { pjgt_id: id } });
+		gt.value = data.gt;
+	} catch (_err) {
+		// console.error(_err);
+		console.log('error get gt by pjgt id');
+	} finally {
+		loadingGt.value = false;
+	}
+}
+
+async function loadData() {
+	await loadPjgt();
+	await loadGt();
 }
 
 onMounted(async () => {
-	await loadPjgt();
-	await loadGt();
+	await loadData();
 });
 </script>
-<style lang=""></style>
+<style scoped>
+td {
+	white-space: normal;
+	word-wrap: break-word;
+}
+</style>

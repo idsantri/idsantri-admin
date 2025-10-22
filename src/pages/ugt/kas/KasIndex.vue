@@ -1,25 +1,19 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card class="">
-			<q-card-section class="bg-green-8 no-padding">
-				<q-toolbar class="no-padding no-margin">
-					<q-toolbar-title
-						class="text-subtitle1 q-ml-sm text-green-11"
-					>
-						Kas UGT
-					</q-toolbar-title>
-
+			<CardHeader title="Kas UGT" @on-reload="loadData">
+				<template #right>
 					<q-btn
 						dense
-						class="q-px-md q-mr-sm text-green-10"
+						class="q-px-md q-ml-sm text-green-10"
 						label="Tambah"
 						no-caps=""
 						icon="add"
 						color="green-2"
 						@click="addKas"
 					/>
-				</q-toolbar>
-			</q-card-section>
+				</template>
+			</CardHeader>
 
 			<q-card-section class="no-padding">
 				<q-table
@@ -36,13 +30,7 @@
 					@row-click="(evt, row, index) => editKas(evt, row, index)"
 				>
 					<template v-slot:top-right>
-						<q-input
-							outlined
-							dense
-							debounce="300"
-							v-model="filter"
-							placeholder="Cari"
-						>
+						<q-input outlined dense debounce="300" v-model="filter" placeholder="Cari">
 							<template v-slot:append>
 								<q-icon name="search" />
 							</template>
@@ -53,8 +41,8 @@
 							<q-td key="id" :props="props">
 								{{ props.row.id }}
 							</q-td>
-							<q-td key="tgl_m" :props="props">
-								{{ props.row.tgl_m }}
+							<q-td key="tgl_m" :props="props" title="format tanggal dd/mm/yyyy">
+								{{ formatDate(props.row.tgl_m, 'dd/MM/yyyy') }}
 							</q-td>
 							<q-td key="keperluan" :props="props">
 								{{
@@ -97,9 +85,7 @@
 										dense
 										class="q-px-md"
 										@click="print(props.row)"
-										:disable="
-											props.row.gt_id ? false : true
-										"
+										:disable="props.row.gt_id ? false : true"
 									/>
 								</div>
 							</q-td>
@@ -109,11 +95,7 @@
 			</q-card-section>
 		</q-card>
 		<q-dialog persistent="" v-model="crudShow">
-			<UgtKasForm
-				:data="kasObj"
-				@success-submit="loadData()"
-				@success-delete="loadData()"
-			/>
+			<UgtKasForm :data="kasObj" @success-submit="loadData()" @success-delete="loadData()" />
 		</q-dialog>
 		<q-dialog v-model="showViewer">
 			<ReportViewer :url="urlReport" />
@@ -122,10 +104,11 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-import apiGet from 'src/api/api-get';
 import { digitSeparator } from 'src/utils/format-number';
 import UgtKasForm from 'src/components/forms/UgtKasForm.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
+import UgtKas from 'src/models/UgtKas';
+import { formatDate } from 'src/utils/format-date';
 
 const kas = ref([]);
 const loading = ref(false);
@@ -135,10 +118,15 @@ const kasObj = ref({});
 const urlReport = ref('');
 
 async function loadData() {
-	crudShow.value = false;
-	const data = await apiGet({ endPoint: 'ugt/kas', loading });
-	if (data) {
-		kas.value = data.kas;
+	try {
+		loading.value = true;
+		const response = await UgtKas.getAll();
+		kas.value = response.kas;
+	} catch (_err) {
+		// console.error(_err);
+		console.log('error get kas ugt');
+	} finally {
+		loading.value = false;
 	}
 }
 
@@ -239,4 +227,9 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style scoped>
+td {
+	white-space: normal;
+	word-wrap: break-word;
+}
+</style>

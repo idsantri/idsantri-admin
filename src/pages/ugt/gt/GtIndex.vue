@@ -1,25 +1,19 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card class="">
-			<q-card-section class="bg-green-8 no-padding">
-				<q-toolbar class="no-padding no-margin">
-					<q-toolbar-title
-						class="text-subtitle1 q-ml-sm text-green-11"
-					>
-						Data Guru Tugas
-					</q-toolbar-title>
-
+			<CardHeader title="Data Guru Tugas" @on-reload="loadData">
+				<template #right>
 					<q-btn
 						dense
-						class="q-px-md q-mr-sm text-green-10"
+						class="q-px-md q-ml-sm text-green-10"
 						label="Tambah"
 						no-caps=""
 						icon="add"
 						color="green-2"
 						@click="crudShow = true"
 					/>
-				</q-toolbar>
-			</q-card-section>
+				</template>
+			</CardHeader>
 
 			<q-card-section class="no-padding">
 				<q-table
@@ -32,9 +26,7 @@
 					no-data-label="Tidak ada data untuk ditampilkan!"
 					no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
 					row-key="name"
-					@row-click="
-						(evt, row, index) => $router.push(`/ugt/gt/${row.id}`)
-					"
+					@row-click="(evt, row, index) => $router.push(`/ugt/gt/${row.id}`)"
 				>
 					<template v-slot:top-left>
 						<div style="width: 250px">
@@ -79,15 +71,12 @@
 				@success-delete="$router.go(-1)"
 			/>
 		</q-dialog>
-		<!-- <pre>{{ gt }}</pre> -->
-		<!-- <pre>{{ wilayah }}</pre> -->
 	</q-page>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-import apiGet from 'src/api/api-get';
-import { getListsCustom } from 'src/api/api-get-lists';
 import UgtGtForm from 'src/components/forms/UgtGtForm.vue';
+import UgtGt from 'src/models/UgtGt';
 
 const gt = ref([]);
 const gtFiltered = ref([]);
@@ -99,10 +88,16 @@ const loadingThAjaran = ref(false);
 const optionsThAjaran = ref([]);
 
 async function loadData() {
-	const data = await apiGet({ endPoint: 'ugt/gt', loading });
-	if (data) {
-		gt.value = data.gt;
+	try {
+		loading.value = true;
+		const response = await UgtGt.getAll();
+		gt.value = response.gt;
 		gtFiltered.value = gt.value;
+	} catch (_err) {
+		// console.error(_err);
+		console.log('error get gt');
+	} finally {
+		loading.value = false;
 	}
 }
 
@@ -114,16 +109,22 @@ function filterThAjaranH(v) {
 	}
 }
 
+async function getListsThAjaran() {
+	try {
+		loadingThAjaran.value = true;
+		const response = await UgtGt.listTahunAjaran();
+		optionsThAjaran.value = response.th_ajaran_h;
+	} catch (_err) {
+		// console.error(_err);
+		console.log('error get th ajaran gt');
+	} finally {
+		loadingThAjaran.value = false;
+	}
+}
+
 onMounted(async () => {
 	await loadData();
-	const data = await getListsCustom({
-		url: 'ugt/gt/lists/th-ajaran-h',
-		key: 'th_ajaran_h',
-		loading: loadingThAjaran,
-	});
-	if (data) {
-		optionsThAjaran.value = data;
-	}
+	await getListsThAjaran();
 });
 
 const columns = [
@@ -154,6 +155,7 @@ const columns = [
 		align: 'left',
 		field: 'nama',
 		sortable: true,
+		style: 'white-space: normal; word-wrap: break-word;',
 	},
 	{
 		name: 'data_akhir',
@@ -161,6 +163,7 @@ const columns = [
 		align: 'left',
 		field: 'data_akhir',
 		sortable: true,
+		style: 'white-space: normal; word-wrap: break-word;',
 	},
 	{
 		name: 'pjgt_nama',
@@ -168,6 +171,7 @@ const columns = [
 		align: 'left',
 		field: 'pjgt_nama',
 		sortable: true,
+		style: 'white-space: normal; word-wrap: break-word;',
 	},
 	{
 		name: 'pjgt_lembaga',
@@ -175,6 +179,7 @@ const columns = [
 		align: 'left',
 		field: 'pjgt_lembaga',
 		sortable: true,
+		style: 'white-space: normal; word-wrap: break-word;',
 	},
 	{
 		name: 'pjgt_wilayah',
@@ -182,7 +187,10 @@ const columns = [
 		align: 'left',
 		field: 'pjgt_wilayah',
 		sortable: true,
+		style: (_row) => {
+			return 'white-space: normal; word-wrap: break-word;';
+		},
 	},
 ];
 </script>
-<style lang=""></style>
+<style scoped></style>
