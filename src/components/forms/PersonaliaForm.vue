@@ -11,15 +11,12 @@
 					animated
 					control-color="primary"
 					class="full-width"
-					style="height: 70vh"
+					style="min-height: 65vh"
 					swipeable
 					infinite
 				>
 					<!-- identitas -->
-					<q-carousel-slide
-						name="identity"
-						class="no-wrap flex-center"
-					>
+					<q-carousel-slide name="identity" class="no-wrap flex-center">
 						<PersonaliaIdentity v-model="inputs" />
 					</q-carousel-slide>
 
@@ -46,10 +43,7 @@
 					/>
 				</div>
 			</q-card-section>
-			<FormActions
-				:btn-delete="isNew ? false : true"
-				@on-delete="onDelete"
-			/>
+			<FormActions :btn-delete="isNew ? false : true" @on-delete="onDelete" />
 		</q-form>
 	</q-card>
 </template>
@@ -64,23 +58,15 @@ import useCrudForm from './utils/useCrudForm';
 const props = defineProps({
 	data: Object,
 });
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	Aparatur,
-	{
-		emit: emit,
-		responseKey: 'aparatur',
-	},
-);
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Aparatur, {
+	emit: emit,
+	responseKey: 'aparatur',
+});
 
 const onSubmit = async () => {
 	const data = JSON.parse(JSON.stringify(inputs.value));

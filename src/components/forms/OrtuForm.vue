@@ -11,15 +11,12 @@
 					animated
 					control-color="primary"
 					class="full-width"
-					style="height: 70vh"
+					style="min-height: 65vh"
 					swipeable
 					infinite
 				>
 					<!-- identitas -->
-					<q-carousel-slide
-						name="identity"
-						class="no-wrap flex-center"
-					>
+					<q-carousel-slide name="identity" class="no-wrap flex-center">
 						<CarouselRegister v-model="inputs" />
 					</q-carousel-slide>
 
@@ -47,11 +44,7 @@
 					/>
 				</div>
 			</q-card-section>
-			<FormActions
-				:btn-delete="true"
-				:label-delete="isNew ? 'Reset' : 'Hapus'"
-				@onDelete="resetOrDelete"
-			/>
+			<FormActions :btn-delete="true" :label-delete="isNew ? 'Reset' : 'Hapus'" @onDelete="resetOrDelete" />
 		</q-form>
 	</q-card>
 </template>

@@ -11,47 +11,32 @@
 					animated
 					control-color="primary"
 					class="full-width"
-					style="height: 70vh"
+					style="min-height: 65vh"
 					swipeable
 					infinite
 				>
 					<!-- registrasi -->
-					<q-carousel-slide
-						name="register"
-						class="no-wrap flex-center"
-					>
+					<q-carousel-slide name="register" class="no-wrap flex-center">
 						<CarouselRegister v-model="inputs" />
 					</q-carousel-slide>
 
 					<!-- identitas -->
-					<q-carousel-slide
-						name="identity"
-						class="no-wrap flex-center"
-					>
+					<q-carousel-slide name="identity" class="no-wrap flex-center">
 						<CarouselIdentity v-model="inputs" />
 					</q-carousel-slide>
 
 					<!-- alamat -->
 					<q-carousel-slide name="alamat" class="no-wrap flex-center">
-						<CarouselAlamat
-							v-model="inputs"
-							@emit-route="closeModal"
-						/>
+						<CarouselAlamat v-model="inputs" @emit-route="closeModal" />
 					</q-carousel-slide>
 
 					<!-- pendidikan -->
-					<q-carousel-slide
-						name="pendidikan"
-						class="no-wrap flex-center"
-					>
+					<q-carousel-slide name="pendidikan" class="no-wrap flex-center">
 						<CarouselPendidikanAkhir v-model="inputs" />
 					</q-carousel-slide>
 
 					<!-- ortu wali -->
-					<q-carousel-slide
-						name="ortu_wali"
-						class="no-wrap flex-center"
-					>
+					<q-carousel-slide name="ortu_wali" class="no-wrap flex-center">
 						<CarouselOrtuWali v-model="inputs" />
 					</q-carousel-slide>
 				</q-carousel>
@@ -68,11 +53,7 @@
 					/>
 				</div>
 			</q-card-section>
-			<FormActions
-				:btn-delete="true"
-				:label-delete="isNew ? 'Reset' : 'Hapus'"
-				@onDelete="resetOrDelete"
-			/>
+			<FormActions :btn-delete="true" :label-delete="isNew ? 'Reset' : 'Hapus'" @onDelete="resetOrDelete" />
 		</q-form>
 	</q-card>
 </template>

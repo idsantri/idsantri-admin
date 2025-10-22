@@ -11,7 +11,7 @@
 					animated
 					control-color="primary"
 					class="full-width"
-					style="height: 70vh"
+					style="min-height: 65vh"
 					swipeable
 					infinite
 				>

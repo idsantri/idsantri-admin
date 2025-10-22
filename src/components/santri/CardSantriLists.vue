@@ -1,5 +1,5 @@
 <template>
-	<q-card>
+	<q-card bordered flat>
 		<q-card-section class="bg-green-7 text-green-11 q-pa-sm">
 			<div class="flex items-center">
 				<div class="text-subtitle2">{{ title }}</div>
