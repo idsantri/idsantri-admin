@@ -1,7 +1,7 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template lang="">
 	<q-card flat bordered class="">
-		<q-card-section class="bg-green-8 no-padding">
+		<q-card-section class="bg-green-7 no-padding">
 			<q-toolbar class="no-padding no-margin">
 				<q-btn
 					icon="sync"

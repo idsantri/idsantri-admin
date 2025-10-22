@@ -5,7 +5,7 @@
 			<div class="row" style="max-width: 1200px">
 				<div class="col-xs-12 col-sm-6">
 					<q-card class="q-ma-sm" flat bordered>
-						<q-card-section class="bg-green-8 no-padding">
+						<q-card-section class="bg-green-7 no-padding">
 							<q-toolbar class="no-padding no-margin">
 								<q-btn
 									icon="sync"

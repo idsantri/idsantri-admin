@@ -8,7 +8,7 @@
 				</filter-tanggal>
 
 				<q-card class="q-mt-sm" flat bordered>
-					<q-card-section class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
+					<q-card-section class="bg-green-7 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
 						<span v-html="dataFilter.display || ''"></span>
 						<q-space />
 						<q-btn
