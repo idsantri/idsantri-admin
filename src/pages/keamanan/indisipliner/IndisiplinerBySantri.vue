@@ -1,21 +1,24 @@
 <template lang="">
-	<q-page class="">
-		<div class="row" style="max-width: 1200px">
-			<div class="col-xs-12 col-sm-6">
-				<CardSantri class="q-ma-sm" :id="params.santri_id" />
-			</div>
+	<q-page class="q-pa-sm">
+		<q-card>
+			<CardHeader title="Riwayat Indisipliner" :show-reload="false" />
+			<div class="row" style="max-width: 1200px">
+				<div class="col-xs-12 col-sm-6">
+					<CardSantri class="q-ma-sm" :id="params.santri_id" />
+				</div>
 
-			<div class="col-xs-12 col-sm-6">
-				<IndisiplinerRiwayat class="q-ma-sm" :santri_id="santri_id" />
+				<div class="col-xs-12 col-sm-6">
+					<IndisiplinerRiwayat class="q-ma-sm" :santri_id="santri_id" />
+				</div>
 			</div>
-		</div>
+		</q-card>
 	</q-page>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import CardSantri from 'components/santri/CardSantri.vue';
-import IndisiplinerRiwayat from './IndisiplinerRiwayat.vue';
+import IndisiplinerRiwayat from './part/IndisiplinerRiwayat.vue';
 
 const { params } = useRoute();
 const santri_id = ref(params.santri_id);

@@ -25,7 +25,7 @@ export default [
 	// indisipliner
 	{
 		path: 'indisipliner/:startDate?/:endDate?',
-		component: (): Component => import('src/pages/keamanan/indisipliner/filter/IndisiplinerByDate.vue'),
+		component: (): Component => import('src/pages/keamanan/indisipliner/IndisiplinerByDate.vue'),
 	},
 	{
 		path: 'indisipliner/santri/:santri_id',

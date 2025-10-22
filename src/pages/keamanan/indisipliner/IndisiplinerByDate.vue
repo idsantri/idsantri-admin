@@ -1,47 +1,54 @@
 <template lang="">
 	<q-page class="q-pa-sm">
-		<filter-tanggal :showBulanUjian="true" start-url="/keamanan/indisipliner" @dataFilter="dataEmit">
-			<DropDownMenu />
-		</filter-tanggal>
-		<q-card class="q-mt-sm">
-			<q-card-section class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
-				<span v-html="dataFilter.display || ''"></span>
-				<q-space />
-				<q-btn
-					dense=""
-					icon="add"
-					label="Baru"
-					no-caps
-					color="green-11 q-px-md"
-					class="text-green-10"
-					@click="crudShow = true"
-				/>
-			</q-card-section>
-			<q-table
-				class="dt q-pa-sm"
-				:rows="indisipliner"
-				:columns="columns"
-				:loading="loading"
-				:filter="filter"
-				:rows-per-page-options="[10, 25, 50, 75, 100, 0]"
-				no-data-label="Silakan tentukan filter tanggal!"
-				no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
-				row-key="name"
-				flat
-				@row-click="(evt, row, index) => $router.push(`/keamanan/indisipliner/${row.id}`)"
-			>
-				<template v-slot:top-left>
-					<div class="text-subtitle1 text-green-10">Data Perizinan</div>
-				</template>
-				<template v-slot:top-right>
-					<q-input outlined dense debounce="300" v-model="filter" placeholder="Cari">
-						<template v-slot:append>
-							<q-icon name="search" />
+		<q-card>
+			<CardHeader title="Data Santri Indisipliner" :show-reload="false" />
+			<q-card-section class="q-pa-sm">
+				<filter-tanggal :showBulanUjian="true" start-url="/keamanan/indisipliner" @dataFilter="dataEmit">
+					<DropDownMenu />
+				</filter-tanggal>
+
+				<q-card class="q-mt-sm" flat bordered>
+					<q-card-section class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
+						<span v-html="dataFilter.display || ''"></span>
+						<q-space />
+						<q-btn
+							dense=""
+							icon="add"
+							label="Baru"
+							no-caps
+							color="green-11 q-px-md"
+							class="text-green-10"
+							@click="crudShow = true"
+						/>
+					</q-card-section>
+					<q-table
+						class="dt q-pa-sm"
+						:rows="indisipliner"
+						:columns="columns"
+						:loading="loading"
+						:filter="filter"
+						:rows-per-page-options="[10, 25, 50, 75, 100, 0]"
+						no-data-label="Silakan tentukan filter tanggal!"
+						no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
+						row-key="name"
+						flat
+						@row-click="(evt, row, index) => $router.push(`/keamanan/indisipliner/${row.id}`)"
+					>
+						<template v-slot:top-left>
+							<div class="text-subtitle1 text-green-10">Data Perizinan</div>
 						</template>
-					</q-input>
-				</template>
-			</q-table>
+						<template v-slot:top-right>
+							<q-input outlined dense debounce="300" v-model="filter" placeholder="Cari">
+								<template v-slot:append>
+									<q-icon name="search" />
+								</template>
+							</q-input>
+						</template>
+					</q-table>
+				</q-card>
+			</q-card-section>
 		</q-card>
+
 		<q-dialog v-model="crudShow">
 			<IndisiplinerForm
 				:data="{}"
@@ -57,7 +64,7 @@ import { useRoute } from 'vue-router';
 import apiGet from 'src/api/api-get';
 import { formatDateShort, isDate } from 'src/utils/format-date';
 import FilterTanggal from 'src/components/filters/FilterTanggal.vue';
-import DropDownMenu from './DropDownMenu.vue';
+import DropDownMenu from './part/DropDownMenu.vue';
 import IndisiplinerForm from 'src/components/forms/IndisiplinerForm.vue';
 
 const indisipliner = ref([{}]);
