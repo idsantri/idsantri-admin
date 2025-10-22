@@ -1,11 +1,12 @@
 <template lang="">
 	<q-btn-dropdown
 		color="green-10"
-		label="Cetak"
+		:label="$q.screen.lt.sm ? '' : 'Cetak'"
 		icon="print"
 		no-caps
-		class="text-green-11 q-px-md"
-		size="sm"
+		dense
+		outline
+		class="q-px-sm text-green-11"
 	>
 		<q-list>
 			<q-item v-close-popup>

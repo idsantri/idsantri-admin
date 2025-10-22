@@ -1,38 +1,33 @@
 <template>
 	<q-page class="q-pa-sm">
 		<q-card class="">
-			<q-card-section class="bg-green-8 text-green-11 q-pa-sm">
-				<div class="flex items-center">
-					<div class="text-subtitle1">Data Wali</div>
-					<q-space />
+			<CardHeader title="Data Wali" @on-reload="loadData">
+				<template #right>
 					<q-btn
-						label="Cari"
+						:label="$q.screen.lt.sm ? '' : 'Cari'"
 						@click="searchWali = true"
-						size="sm"
 						color="green-2"
-						class="text-green-10 q-mr-sm"
+						no-caps
+						dense
+						class="q-px-sm text-green-10 q-ml-sm"
 						icon="search"
 					/>
 					<q-btn
 						no-caps
-						size="sm"
 						color="green-2"
-						class="text-green-10"
+						dense
+						class="q-px-sm text-green-10 q-ml-sm"
 						icon="edit"
-						label="Edit"
+						:label="$q.screen.lt.sm ? '' : 'Edit'"
 						@click="editWali"
 					/>
-				</div>
-			</q-card-section>
+				</template>
+			</CardHeader>
+
 			<q-card-section class="no-padding">
 				<div class="row" style="max-width: 1024px">
 					<div class="col-12 col-md-6 q-pa-sm">
-						<card-column
-							:data="identity"
-							:loading="loading"
-							title="Identitas"
-							class="q-mb-sm"
-						/>
+						<CardListTabel :data="identity" :loading="loading" title="Identitas" class="q-mb-sm" />
 					</div>
 					<div class="col-12 col-md-6 q-pa-sm">
 						<card-list-santri
@@ -52,13 +47,13 @@
 import { computed, onMounted, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import { formatDateFull } from '../../utils/format-date';
-import CardColumn from '../../components/CardColumn.vue';
 import CardListSantri from 'src/components/santri/CardSantriLists.vue';
 import waliStore from 'src/stores/wali-store';
 import { formatAlamatLengkap } from 'src/utils/format-text';
 import dialogStore from 'src/stores/dialog-store';
 import Wali from 'src/models/Wali';
 import { storeToRefs } from 'pinia';
+import CardListTabel from 'src/components/cards/CardListTabel.vue';
 
 const { wali } = storeToRefs(waliStore());
 const route = useRoute();
@@ -87,24 +82,32 @@ async function loadData() {
 	}
 }
 
-const identity = computed(() => ({
-	ID: wali.value.id,
-	Nama: `${wali.value.nama?.toUpperCase()} (${wali.value.sex.toUpperCase()})`,
-	NIK: wali.value.nik || '-',
-	Alamat: formatAlamatLengkap(
-		wali.value.jl,
-		wali.value.rt,
-		wali.value.rw,
-		wali.value.desa,
-		wali.value.kecamatan,
-		wali.value.kabupaten,
-		wali.value.provinsi,
-		wali.value.kode_pos,
-	),
-	Kelahiran: `${wali.value.tmp_lahir || '-'}, ${formatDateFull(wali.value.tgl_lahir)}`,
-	Pekerjaan: wali.value.pekerjaan || '-',
-	Kontak: (wali.value.telepon || '-') + '; ' + (wali.value.email || '-'),
-}));
+const identity = computed(() => {
+	return [
+		{ label: 'ID', value: wali.value.id },
+		{
+			label: 'Nama',
+			value: `${wali.value?.nama || ''} (${wali.value?.sex?.toUpperCase() ?? ''})`,
+		},
+		{ label: 'NIK', value: wali.value?.nik || '-' },
+		{
+			label: 'Alamat',
+			value: formatAlamatLengkap(
+				wali.value.jl,
+				wali.value.rt,
+				wali.value.rw,
+				wali.value.desa,
+				wali.value.kecamatan,
+				wali.value.kabupaten,
+				wali.value.provinsi,
+				wali.value.kode_pos,
+			),
+		},
+		{ label: 'Kelahiran', value: `${wali.value?.tmp_lahir || ''}, ${formatDateFull(wali.value?.tgl_lahir)}` },
+		{ label: 'Pekerjaan', value: wali.value?.pekerjaan || '-' },
+		{ label: 'Kontak', value: `${wali.value?.telepon || ''}; ${wali.value?.email || ''}` },
+	];
+});
 
 onMounted(async () => {
 	await loadData();

@@ -10,12 +10,12 @@
 		<q-card-section class="no-padding">
 			<q-markup-table flat class="q-px-sm">
 				<tbody>
-					<tr class="" v-for="(value, key) in data" :key="key">
-						<td class="text-caption text-italic q-pr-sm">
-							{{ key }}
+					<tr class="" v-for="(item, i) in data" :key="i">
+						<td class="text-caption text-italic" style="width: 120px">
+							{{ item.label }}
 						</td>
 						<td class="">
-							{{ value }}
+							{{ item.value }}
 						</td>
 					</tr>
 				</tbody>
@@ -24,14 +24,13 @@
 		</q-card-section>
 	</q-card>
 </template>
-
 <script setup>
-/**
- * @deprecated use CardListTabel
- */
 defineProps({
 	title: String,
-	data: Object,
+	data: {
+		type: Array,
+		required: true,
+	},
 	loading: Boolean,
 });
 </script>
