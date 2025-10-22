@@ -1,7 +1,7 @@
 <template>
 	<q-page class="q-pa-sm">
 		<q-card style="max-width: 600px">
-			<CardHeader title="Input Auto Complete" :show-reload="false" />
+			<CardHeader title="Pengaturan Input Auto Complete" :show-reload="false" />
 			<q-card-section class="q-pa-sm">
 				<q-select
 					dense

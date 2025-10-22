@@ -2,21 +2,7 @@
 	<q-page class="q-pa-sm">
 		<q-card style="max-width: 600px">
 			<q-form @submit.prevent="onSubmit">
-				<q-card-section
-					class="q-pa-sm bg-green-8 text-green-11 text-subtitle1 flex"
-				>
-					Report (Print Out)
-					<q-space />
-					<q-btn
-						no-caps
-						label="Kembali"
-						icon="reply"
-						dense
-						class="q-px-md"
-						outline
-						@click="$router.go(-1)"
-					/>
-				</q-card-section>
+				<CardHeader title="Pengaturan Report (Print Out)" @onReload="loadData" />
 				<q-card-section class="q-pa-sm">
 					<q-select
 						v-model="selected"
@@ -49,18 +35,11 @@
 					/>
 				</q-card-section>
 				<q-card-actions align="right" class="bg-green-7">
-					<q-btn
-						label="Simpan"
-						type="submit"
-						no-caps
-						icon="save"
-						class="bg-green-11"
-					/>
+					<q-btn label="Simpan" type="submit" no-caps icon="save" class="bg-green-11" />
 				</q-card-actions>
+				<CardLoading :showing="loading" />
 			</q-form>
 		</q-card>
-		<!-- <pre>{{ reports }}</pre> -->
-		<!-- <pre>{{ lists }}</pre> -->
 	</q-page>
 </template>
 <script setup>

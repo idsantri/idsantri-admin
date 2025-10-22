@@ -67,16 +67,12 @@
 		</div>
 
 		<div v-if="!showFormAdd">
-			<div v-if="loading">
-				<q-separator class="q-my-sm" />
-				<q-spinner-cube size="4em" class="flex q-ma-lg q-mx-auto" />
-			</div>
-			<div v-else-if="!loading && banners.length === 0">
+			<div v-if="!banners.length">
 				<div class="text-center text-italic q-pa-lg text-negative">
 					Tidak ada data <br />Silakan tambahkan banner baru
 				</div>
 			</div>
-			<div v-else-if="!loading && banners.length > 0">
+			<div v-else>
 				<CardBanner
 					v-for="(banner, index) in banners"
 					:key="banner.id"
@@ -86,9 +82,8 @@
 					@onDelete="onDelete"
 					:errorUpdate="errorUpdate"
 				/>
-
-				<!-- <pre>{{ banners }}</pre> -->
 			</div>
+			<CardLoading :showing="loading" />
 		</div>
 	</div>
 </template>

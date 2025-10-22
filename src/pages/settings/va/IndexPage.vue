@@ -2,7 +2,7 @@
 	<q-page class="q-pa-sm">
 		<q-form @submit.prevent="onSubmit">
 			<q-card class="q-mt-sm" style="max-width: 600px">
-				<CardHeader title="Virtual Account Iuran Santri" @onReload="loadData" />
+				<CardHeader title="Pengaturan Virtual Account Iuran Santri" @onReload="loadData" />
 
 				<q-card-section class="q-pa-sm">
 					<q-input

@@ -2,7 +2,7 @@
 	<q-page class="q-pa-sm">
 		<q-form @submit.prevent="onSubmit">
 			<q-card style="max-width: 600px">
-				<CardHeader title="Profil Lembaga" @onReload="loadData" />
+				<CardHeader title="Pengaturan Profil Lembaga" @onReload="loadData" />
 				<q-card-section class="q-pa-sm">
 					<q-card>
 						<q-card-section class="q-pa-sm bg-green-1 text-weight-medium"> Pesantren </q-card-section>

@@ -1,7 +1,7 @@
 <template>
 	<q-page class="q-pa-sm">
 		<q-card>
-			<CardHeader title="Data Pengguna" @on-reload="loadData" />
+			<CardHeader title="Pengaturan Pengguna" @on-reload="loadData" />
 			<q-table
 				class="q-px-sm"
 				:rows="users"
