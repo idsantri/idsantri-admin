@@ -15,10 +15,7 @@
 					swipeable
 					infinite
 				>
-					<q-carousel-slide
-						name="identity"
-						class="no-wrap flex-center"
-					>
+					<q-carousel-slide name="identity" class="no-wrap flex-center">
 						<PjgtIdentity v-model="inputs" :is-new="isNew" />
 					</q-carousel-slide>
 
@@ -48,7 +45,7 @@
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import CarouselAlamat from 'src/components/forms/carousel/CarouselAlamat.vue';
 import PjgtIdentity from './carousel/PjgtIdentity.vue';
 import PjgtOthers from './carousel/PjgtOthers.vue';
@@ -59,27 +56,14 @@ const props = defineProps({
 	data: Object,
 });
 
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
-const inputs = ref({});
+const inputs = ref({ provinsi: 'Jawa Timur', ...props.data });
 const isNew = !props.data?.id;
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	UgtPjgt,
-	{
-		emit: emit,
-		responseKey: 'pjgt',
-	},
-);
-
-onMounted(async () => {
-	Object.assign(inputs.value, props.data);
-	if (!inputs.value.provinsi) inputs.value.provinsi = 'Jawa Timur';
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(UgtPjgt, {
+	emit: emit,
+	responseKey: 'pjgt',
 });
 
 const onSubmit = async () => {

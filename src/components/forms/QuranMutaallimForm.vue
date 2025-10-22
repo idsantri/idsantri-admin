@@ -54,7 +54,7 @@
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import useCrudForm from './utils/useCrudForm';
 import Mutaallim from 'src/models/Mutaallim';
@@ -62,23 +62,14 @@ import Mutaallim from 'src/models/Mutaallim';
 const props = defineProps({
 	data: { type: Object, required: true },
 });
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
-const inputs = ref({ marhalah: 'Ula', faslah: null, no_absen: null, aktif: 1 });
+const inputs = ref({ marhalah: 'Ula', faslah: null, no_absen: null, aktif: 1, ...props.data });
 const isNew = !props.data?.id;
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	Mutaallim,
-	{ emit, responseKey: 'mutaallim' },
-);
-
-onMounted(async () => {
-	Object.assign(inputs.value, props.data);
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Mutaallim, {
+	emit,
+	responseKey: 'mutaallim',
 });
 
 const onSubmit = async () => {
