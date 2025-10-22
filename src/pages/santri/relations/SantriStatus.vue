@@ -1,11 +1,6 @@
 <template>
 	<div>
-		<temp-array
-			:data="dataMap"
-			:spinner="spinner"
-			@add="handleAdd"
-			@edit="handleEdit"
-		/>
+		<temp-array :data="dataMap" :spinner="spinner" @add="handleAdd" @edit="handleEdit" />
 
 		<q-dialog v-model="crudShow">
 			<StatusForm
@@ -23,9 +18,9 @@ import TempArray from 'src/pages/santri/relations/TemplateArray.vue';
 import { formatDate } from 'src/utils/format-date.js';
 import { m2hFormat } from 'src/utils/hijri.js';
 import { deleteById, getObjectById, replaceById } from 'src/utils/array-object';
-import apiGet from 'src/api/api-get';
 import StatusForm from 'src/components/forms/StatusForm.vue';
 import { useRoute } from 'vue-router';
+import Status from 'src/models/Status';
 
 const spinner = ref(false);
 const crudShow = ref(false);
@@ -35,22 +30,22 @@ const santri = ref({});
 const { params } = useRoute();
 
 async function loadData() {
-	const data = await apiGet({
-		endPoint: `status/santri/${params.id}`,
-		loading: spinner,
-	});
-	if (data.status) {
-		dataArr.value = data.status;
-		santri.value = data.santri;
+	try {
+		spinner.value = true;
+		const response = await Status.santri(params.id);
+		dataArr.value = response.status;
+		santri.value = response.santri;
+	} catch (_err) {
+		// console.error(_err);
+		console.log('error get status');
+	} finally {
+		spinner.value = false;
 	}
 }
 
 const dataMap = computed(() =>
 	dataArr.value.map((v) => ({
-		Tanggal:
-			formatDate(v.created_at, 'dd-MM-yyyy') +
-			' | ' +
-			m2hFormat(formatDate(v.created_at, 'yyyy-MM-dd')),
+		Tanggal: formatDate(v.created_at, 'dd-MM-yyyy') + ' | ' + m2hFormat(formatDate(v.created_at, 'yyyy-MM-dd')),
 		Status: v.status,
 		Keterangan: v.keterangan || '-',
 		id: v.id,
