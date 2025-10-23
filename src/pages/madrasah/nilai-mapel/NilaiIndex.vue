@@ -2,7 +2,7 @@
 	<q-page class="q-pa-sm">
 		<q-card>
 			<CardHeader title="Data Nilai Mata Pelajaran" :show-reload="false">
-				<template #right>
+				<template #buttons>
 					<q-btn
 						icon="settings_accessibility"
 						label="Nilai Ahwal"
@@ -10,21 +10,20 @@
 						outline=""
 						dense
 						no-caps=""
-						class="q-px-sm q-ml-sm"
+						class="q-px-sm"
 					/>
-
-					<q-btn-dropdown flat no-caps class="text-green-11 q-ml-sm" dense dropdown-icon="more_vert">
-						<q-list>
-							<q-item v-close-popup to="/madrasah/mapel">
-								<q-item-section>
-									<q-item-label> Mata Pelajaran </q-item-label>
-								</q-item-section>
-								<q-item-section avatar>
-									<q-icon name="settings" />
-								</q-item-section>
-							</q-item>
-						</q-list>
-					</q-btn-dropdown>
+				</template>
+				<template #more>
+					<q-list>
+						<q-item v-close-popup to="/madrasah/mapel">
+							<q-item-section>
+								<q-item-label> Mata Pelajaran </q-item-label>
+							</q-item-section>
+							<q-item-section avatar>
+								<q-icon name="settings" />
+							</q-item-section>
+						</q-item>
+					</q-list>
 				</template>
 			</CardHeader>
 			<q-card-section class="q-pa-sm">

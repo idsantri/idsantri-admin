@@ -2,10 +2,10 @@
 	<q-page class="q-pa-sm">
 		<q-card class="">
 			<CardHeader title="Kas UGT" @on-reload="loadData">
-				<template #right>
+				<template #buttons>
 					<q-btn
 						dense
-						class="q-px-md q-ml-sm text-green-10"
+						class="q-px-md text-green-10"
 						label="Tambah"
 						no-caps=""
 						icon="add"

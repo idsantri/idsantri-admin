@@ -2,9 +2,9 @@
 	<q-page class="q-pa-sm">
 		<q-card>
 			<CardHeader title="Daftar Mata Pelajaran" @on-reload="loadData(tingkatId)" :show-reload="!!tingkatId">
-				<template #right>
+				<template #buttons>
 					<q-btn
-						class="text-green-10 q-px-sm q-ml-sm"
+						class="text-green-10 q-px-sm"
 						label="Baru"
 						icon="add"
 						no-caps

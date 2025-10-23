@@ -1,20 +1,7 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card class="">
-			<CardHeader title="Modul Pendidikan Tajwid al-Quran" :showReload="false">
-				<!-- <template v-slot:left>
-					<q-btn
-						dense
-						color="green-11"
-						glossy
-						class="q-px-sm q-mr-sm text-green-10"
-						label="Cetak"
-						no-caps=""
-						icon="print"
-						to="/info/download"
-					/>
-				</template> -->
-			</CardHeader>
+			<CardHeader title="Modul Pendidikan Tajwid al-Quran" :showReload="false" />
 			<q-card-section class="q-pa-sm">
 				<q-tabs dense align="left">
 					<q-route-tab label="Santri" to="/quran/santri" exact no-caps />

@@ -2,19 +2,17 @@
 	<q-page class="q-pa-sm">
 		<q-card class="">
 			<CardHeader title="Data Murid" :show-reload="false">
-				<template #right>
-					<q-btn-dropdown flat dense dropdown-icon="more_vert" class="q-ml-sm" color="green-11">
-						<q-list>
-							<q-item v-close-popup to="/madrasah/kenaikan-kelas">
-								<q-item-section>
-									<q-item-label>Kenaikan Kelas</q-item-label>
-								</q-item-section>
-								<q-item-section avatar>
-									<q-icon name="trending_up" flat />
-								</q-item-section>
-							</q-item>
-						</q-list>
-					</q-btn-dropdown>
+				<template #more>
+					<q-list>
+						<q-item v-close-popup to="/madrasah/kenaikan-kelas">
+							<q-item-section>
+								<q-item-label>Kenaikan Kelas</q-item-label>
+							</q-item-section>
+							<q-item-section avatar>
+								<q-icon name="trending_up" flat />
+							</q-item-section>
+						</q-item>
+					</q-list>
 				</template>
 			</CardHeader>
 			<q-card-section class="q-pa-sm">

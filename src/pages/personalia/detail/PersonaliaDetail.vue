@@ -2,14 +2,14 @@
 	<q-page class="q-pa-sm">
 		<q-card>
 			<CardHeader title="Detail Personalia" :showReload="false">
-				<template v-slot:left>
+				<template v-slot:buttons>
 					<q-btn
 						no-caps
 						label="Personalia"
 						icon="badge"
 						dense
 						color="green-13"
-						class="q-px-md q-mr-sm text-green-10"
+						class="q-px-md text-green-10"
 						to="/personalia"
 					/>
 				</template>

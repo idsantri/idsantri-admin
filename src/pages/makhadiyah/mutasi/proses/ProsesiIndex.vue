@@ -2,14 +2,14 @@
 	<q-page class="q-pa-sm">
 		<q-card class="" style="min-width: 1200px">
 			<CardHeader title="Modul Mutasi Domisili" :showReload="false">
-				<template v-slot:right>
+				<template v-slot:buttons>
 					<q-btn
 						icon="visibility"
 						label="Hasil Mutasi"
 						dense
 						outline
 						no-caps
-						class="q-ml-sm q-px-sm"
+						class="q-px-sm"
 						to="/mutasi/result"
 					/>
 					<q-btn disable flat dense icon="more_vert" class="q-ml-sm" color="green-11" />

@@ -2,45 +2,37 @@
 	<q-page class="q-pa-sm">
 		<q-card class="">
 			<CardHeader title="Data Mutasi Domisili" @on-reload="loadData">
-				<template v-slot:right>
-					<q-btn
-						icon="tune"
-						label="Atur Mutasi"
-						dense
-						outline
-						no-caps
-						class="q-ml-sm q-px-sm"
-						to="/mutasi/start"
-					/>
-					<q-btn-dropdown flat dense dropdown-icon="more_vert" class="q-ml-sm" color="green-11">
-						<q-list>
-							<q-item v-close-popup to="/info/download">
-								<q-item-section>
-									<q-item-label>Cetak</q-item-label>
-								</q-item-section>
-								<q-item-section avatar>
-									<q-icon name="print" flat />
-								</q-item-section>
-							</q-item>
+				<template v-slot:buttons>
+					<q-btn icon="tune" label="Atur Mutasi" dense outline no-caps class="q-px-sm" to="/mutasi/start" />
+				</template>
+				<template v-slot:more>
+					<q-list>
+						<q-item v-close-popup to="/info/download">
+							<q-item-section>
+								<q-item-label>Cetak</q-item-label>
+							</q-item-section>
+							<q-item-section avatar>
+								<q-icon name="print" flat />
+							</q-item-section>
+						</q-item>
 
-							<q-item v-close-popup @click="downloadMutasi" clickable>
-								<q-item-section>
-									<q-item-label>Unduh/Download</q-item-label>
-								</q-item-section>
-								<q-item-section avatar>
-									<q-icon name="download" flat />
-								</q-item-section>
-							</q-item>
-							<q-item v-close-popup @click="deleteAll" clickable>
-								<q-item-section>
-									<q-item-label>Hapus Semua</q-item-label>
-								</q-item-section>
-								<q-item-section avatar>
-									<q-icon name="delete_forever" flat />
-								</q-item-section>
-							</q-item>
-						</q-list>
-					</q-btn-dropdown>
+						<q-item v-close-popup @click="downloadMutasi" clickable>
+							<q-item-section>
+								<q-item-label>Unduh/Download</q-item-label>
+							</q-item-section>
+							<q-item-section avatar>
+								<q-icon name="download" flat />
+							</q-item-section>
+						</q-item>
+						<q-item v-close-popup @click="deleteAll" clickable>
+							<q-item-section>
+								<q-item-label>Hapus Semua</q-item-label>
+							</q-item-section>
+							<q-item-section avatar>
+								<q-icon name="delete_forever" flat />
+							</q-item-section>
+						</q-item>
+					</q-list>
 				</template>
 			</CardHeader>
 			<q-card-section class="q-pa-sm">

@@ -2,8 +2,8 @@
 	<q-page class="q-pa-sm">
 		<q-card>
 			<CardHeader title="Modul Iuran" :show-reload="false">
-				<template #left>
-					<q-card flat class="q-mr-md bg-green-6">
+				<template #buttons>
+					<q-card flat class="bg-green-6">
 						<q-tabs shrink stretch dense no-caps active-bg-color="green-10" v-model="tab">
 							<q-route-tab
 								name="santri"
@@ -31,18 +31,16 @@
 						</q-tabs>
 					</q-card>
 				</template>
-				<template #right>
-					<q-btn-dropdown flat round dense dropdown-icon="more_vert" class="q-pa-sm q-ml-sm" color="green-11">
-						<q-list>
-							<!-- input -->
-							<q-item clickable v-close-popup to="/iuran/tagihan">
-								<q-item-section avatar>
-									<q-icon color="green" name="receipt_long" />
-								</q-item-section>
-								<q-item-section> Buat Tagihan </q-item-section>
-							</q-item>
-						</q-list>
-					</q-btn-dropdown>
+				<template #more>
+					<q-list>
+						<!-- input -->
+						<q-item clickable v-close-popup to="/iuran/tagihan">
+							<q-item-section avatar>
+								<q-icon color="green" name="receipt_long" />
+							</q-item-section>
+							<q-item-section> Buat Tagihan </q-item-section>
+						</q-item>
+					</q-list>
 				</template>
 			</CardHeader>
 			<q-card-section class="q-pa-sm">

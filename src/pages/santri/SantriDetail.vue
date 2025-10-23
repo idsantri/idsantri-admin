@@ -2,28 +2,26 @@
 	<q-page class="q-pa-sm">
 		<q-card class="">
 			<CardHeader title="Data Santri" @on-reload="loadData">
-				<template #right>
+				<template #buttons>
 					<q-btn
 						:label="$q.screen.lt.sm ? '' : 'Cari'"
 						@click="searchSantri = true"
 						color="green-2"
 						no-caps
 						dense
-						class="q-px-sm text-green-10 q-ml-sm"
+						class="q-px-sm text-green-10"
 						icon="search"
 					/>
 					<q-btn
 						no-caps
 						color="green-2"
 						dense
-						class="q-px-sm text-green-10 q-ml-sm"
+						class="q-px-sm text-green-10"
 						icon="edit"
 						:label="$q.screen.lt.sm ? '' : 'Edit'"
 						@click="editSantri"
 					/>
-					<div class="q-ml-sm">
-						<drop-down-print :santri="santri" />
-					</div>
+					<drop-down-print :santri="santri" />
 				</template>
 			</CardHeader>
 

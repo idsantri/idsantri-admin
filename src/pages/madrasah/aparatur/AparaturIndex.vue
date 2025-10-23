@@ -2,10 +2,10 @@
 	<q-page class="q-pa-sm">
 		<q-card>
 			<CardHeader title="Data Aparatur Madrasah" :show-reload="false">
-				<template #right>
+				<template #buttons>
 					<q-btn
 						dense=""
-						class="q-px-sm text-green-10 q-ml-sm"
+						class="q-px-sm text-green-10"
 						color="green-11"
 						label="Data Pesonalia"
 						no-caps

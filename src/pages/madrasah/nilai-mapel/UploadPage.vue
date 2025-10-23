@@ -2,14 +2,14 @@
 	<q-page class="q-pa-sm">
 		<q-card>
 			<CardHeader title="Upload Nilai" :show-reload="false">
-				<template #right>
+				<template #buttons>
 					<q-btn
 						label="Nilai Mapel"
 						to="/madrasah/nilai-mapel"
 						dense
 						outline
 						no-caps
-						class="q-px-sm q-ml-sm"
+						class="q-px-sm"
 						icon="show_chart"
 					/>
 					<q-btn
@@ -19,7 +19,7 @@
 						outline
 						no-caps
 						icon="upload"
-						class="q-px-sm q-ml-sm"
+						class="q-px-sm"
 					/>
 				</template>
 			</CardHeader>

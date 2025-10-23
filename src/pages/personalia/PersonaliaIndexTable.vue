@@ -2,10 +2,10 @@
 	<q-page class="q-pa-sm">
 		<q-card class="">
 			<CardHeader title="Data Personalia" @onReload="loadData">
-				<template v-slot:left>
+				<template v-slot:buttons>
 					<q-btn
 						dense
-						class="q-px-md text-green-10 q-mr-sm"
+						class="q-px-md text-green-10"
 						label="Tambah"
 						no-caps=""
 						icon="add"

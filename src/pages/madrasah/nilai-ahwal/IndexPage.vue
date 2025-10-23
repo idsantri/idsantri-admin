@@ -2,7 +2,7 @@
 	<q-page class="q-pa-sm">
 		<q-card>
 			<CardHeader title="Data Nilai Ahwal (Kepribadian)" :show-reload="false">
-				<template #right>
+				<template #buttons>
 					<q-btn
 						icon="show_chart"
 						label="Nilai Mapel"
@@ -10,7 +10,7 @@
 						outline=""
 						dense
 						no-caps=""
-						class="q-px-sm q-ml-sm"
+						class="q-px-sm"
 					/>
 				</template>
 			</CardHeader>
