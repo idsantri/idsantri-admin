@@ -1,7 +1,8 @@
 <template lang="">
 	<q-card-section class="bg-green-8 text-green-11 q-pa-sm">
-		<div class="flex items-center justify-between">
-			<div class="text-subtitle2 flex items-center">
+		<div class="tw:flex tw:items-center tw:justify-between tw:gap-2">
+			<!-- child 1 -->
+			<div class="text-subtitle2 tw:flex tw:items-center">
 				<q-btn
 					v-if="showReload"
 					icon="sync"
@@ -13,9 +14,10 @@
 					title="Muat ulang"
 				/>
 				<img v-else src="/idsantri.svg" class="q-mr-xs" style="height: 24px" title="ID Santri" />
-				<span v-html="title"></span>
+				<div v-html="title"></div>
 			</div>
-			<div class="tw:flex tw:items-center tw:gap-2">
+			<!-- child 2 -->
+			<div class="tw:flex tw:items-center tw:gap-2 tw:justify-end">
 				<div class="tw:flex tw:items-center tw:gap-2">
 					<slot name="buttons"> </slot>
 				</div>

@@ -1,18 +1,9 @@
 <template lang="">
-	<q-card class="">
+	<q-card class="" flat bordered>
 		<q-card-section class="q-pa-sm bg-green-7">
 			<q-toolbar class="no-padding text-green-11" style="min-height: 0">
-				<q-toolbar-title class="text-subtitle1">
-					Data Santri
-				</q-toolbar-title>
-				<q-btn
-					icon="sync"
-					dense
-					flat
-					class="q-mr-xs"
-					@click="null"
-					disable
-				/>
+				<q-toolbar-title class="text-subtitle1"> Data Santri </q-toolbar-title>
+				<q-btn icon="sync" dense flat class="q-mr-xs" @click="null" disable />
 			</q-toolbar>
 		</q-card-section>
 		<q-card-section class="q-pa-sm">
@@ -31,12 +22,7 @@
 					:disable="input.tingkat_id ? false : true"
 				/>
 			</div>
-			<input-select-array
-				v-model="input.domisili"
-				url="domisili"
-				label="Domisili"
-				class="q-mt-sm no-padding"
-			/>
+			<input-select-array v-model="input.domisili" url="domisili" label="Domisili" class="q-mt-sm no-padding" />
 		</q-card-section>
 		<q-separator />
 		<q-card-section class="q-pa-sm">
@@ -46,8 +32,7 @@
 		<q-card-actions class="bg-green-1">
 			<div class="text-caption text-italic">
 				Total: {{ santri?.length || 0 }} santri<br />
-				Hanya menampilkan santri yang statusnya &ldquo;Aktif&rdquo; dan
-				belum masuk ke tabel mutasi
+				Hanya menampilkan santri yang statusnya &ldquo;Aktif&rdquo; dan belum masuk ke tabel mutasi
 			</div>
 			<q-space />
 			<div>
@@ -84,9 +69,7 @@ onMounted(() => {
 });
 
 function removeBottomRow() {
-	const el = document.querySelectorAll(
-		'div.q-field__bottom.row.items-start.q-field__bottom',
-	);
+	const el = document.querySelectorAll('div.q-field__bottom.row.items-start.q-field__bottom');
 	el.forEach((e) => e.remove());
 }
 

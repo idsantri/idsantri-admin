@@ -2,7 +2,7 @@
 	<div class="text-subtitle2">Orang Tua dan Wali</div>
 	<div class="text-overline q-mt-sm">Orang Tua</div>
 
-	<q-input hint="" dense outlined label="ID Orang Tua*" v-model="inputs.ortu_id" class="q-my-sm">
+	<q-input dense outlined label="ID Orang Tua*" v-model="inputs.ortu_id" class="q-my-sm">
 		<template v-slot:append>
 			<q-btn dense flat color="green-10" icon="content_paste" @click="pasteOrtu()" label="Tempel" no-caps="" />
 		</template>
@@ -19,7 +19,6 @@
 	</q-input>
 
 	<q-input
-		hint=""
 		dense
 		class="q-my-sm"
 		outlined
@@ -40,14 +39,14 @@
 		</template>
 	</q-input>
 
-	<q-input hint="" dense class="q-my-sm" outlined label="Anak ke?" v-model="inputs.anak_ke">
+	<q-input dense class="q-my-sm" outlined label="Anak ke?" v-model="inputs.anak_ke">
 		<template #after>
 			<div class="text-body2 slot-after">dari {{ ortu?.jumlah_anak || '?' }} bersaudara</div>
 		</template>
 	</q-input>
 
 	<div class="text-overline q-mt-sm">Wali</div>
-	<q-input hint="" dense class="q-my-sm" outlined label="ID Wali*" v-model="inputs.wali_id">
+	<q-input dense class="q-my-sm" outlined label="ID Wali*" v-model="inputs.wali_id">
 		<template v-slot:append>
 			<q-btn dense flat color="green-10" icon="content_paste" label="Tempel" no-caps="" @click="pasteWali()" />
 		</template>
@@ -64,7 +63,6 @@
 	</q-input>
 
 	<q-input
-		hint=""
 		dense
 		class="q-my-sm"
 		outlined
