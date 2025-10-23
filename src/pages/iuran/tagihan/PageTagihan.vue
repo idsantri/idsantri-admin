@@ -1,5 +1,5 @@
 <template lang="">
-	<q-page class="q-pa-sm" style="min-width: 1024px">
+	<q-page class="q-pa-sm">
 		<q-card>
 			<CardHeader :show-reload="false" title="Modul Tagihan" />
 			<q-card-section class="q-pa-sm">
@@ -10,7 +10,7 @@
 					start-url="/iuran/tagihan"
 					@data-filter="(v) => (textFilter = v)"
 				/>
-				<div class="row">
+				<div class="row" style="min-width: 1024px">
 					<div class="col-7 q-mt-sm">
 						<q-table
 							flat

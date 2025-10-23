@@ -1,154 +1,161 @@
 <template lang="">
 	<q-page class="q-pa-sm">
-		<q-form @submit.prevent="onSubmit">
-			<q-card style="max-width: 600px">
-				<CardHeader title="Pengaturan Profil Lembaga" @onReload="loadData" />
-				<q-card-section class="q-pa-sm">
-					<q-card>
-						<q-card-section class="q-pa-sm bg-green-1 text-weight-medium"> Pesantren </q-card-section>
+		<q-card class="">
+			<CardHeader title="Pengaturan Profil Lembaga" @onReload="loadData" />
+
+			<q-card-section class="q-pa-sm">
+				<q-form @submit.prevent="onSubmit">
+					<q-card style="max-width: 600px" flat bordered>
 						<q-card-section class="q-pa-sm">
-							<q-input
-								dense
-								class=""
-								outlined
-								label="Lembaga"
-								v-model="profile.pesantren[0]"
-								:loading="loading"
-							/>
-							<q-input
-								dense
-								class="q-mt-sm"
-								outlined
-								label="Nama"
-								v-model="profile.pesantren[1]"
-								:loading="loading"
-							/>
-							<q-input
-								dense
-								class="q-mt-sm"
-								outlined
-								label="Akronim/Singkatan"
-								v-model="profile.pesantren[2]"
-								:loading="loading"
-							/>
+							<q-card>
+								<q-card-section class="q-pa-sm bg-green-1 text-weight-medium">
+									Pesantren
+								</q-card-section>
+								<q-card-section class="q-pa-sm">
+									<q-input
+										dense
+										class=""
+										outlined
+										label="Lembaga"
+										v-model="profile.pesantren[0]"
+										:loading="loading"
+									/>
+									<q-input
+										dense
+										class="q-mt-sm"
+										outlined
+										label="Nama"
+										v-model="profile.pesantren[1]"
+										:loading="loading"
+									/>
+									<q-input
+										dense
+										class="q-mt-sm"
+										outlined
+										label="Akronim/Singkatan"
+										v-model="profile.pesantren[2]"
+										:loading="loading"
+									/>
+								</q-card-section>
+							</q-card>
+							<q-card class="q-mt-sm">
+								<q-card-section class="q-pa-sm bg-green-1"> Madrasah </q-card-section>
+								<q-card-section class="q-pa-sm">
+									<q-input
+										dense
+										class=""
+										outlined
+										label="Lembaga"
+										v-model="profile.madrasah[0]"
+										:loading="loading"
+									/>
+									<q-input
+										dense
+										class="q-mt-sm"
+										outlined
+										label="Nama"
+										v-model="profile.madrasah[1]"
+										:loading="loading"
+									/>
+									<q-input
+										dense
+										class="q-mt-sm"
+										outlined
+										label="Akronim/Singkatan"
+										v-model="profile.madrasah[2]"
+										:loading="loading"
+									/>
+								</q-card-section>
+							</q-card>
+							<q-card class="q-mt-sm">
+								<q-card-section class="q-pa-sm bg-green-1"> Alamat </q-card-section>
+								<q-card-section class="q-pa-sm">
+									<q-input
+										dense
+										class=""
+										outlined
+										label="Alamat (baris-1)"
+										v-model="profile.alamat[0]"
+										:loading="loading"
+									/>
+									<q-input
+										dense
+										class="q-mt-sm"
+										outlined
+										label="Alamat (baris-2)"
+										v-model="profile.alamat[1]"
+										:loading="loading"
+									/>
+									<q-input
+										dense
+										class="q-mt-sm"
+										outlined
+										label="Kota (Surat)"
+										v-model="profile.alamat[2]"
+										:loading="loading"
+									/>
+								</q-card-section>
+							</q-card>
+							<q-card class="q-mt-sm">
+								<q-card-section class="q-pa-sm bg-green-1 flex">
+									Personalia
+									<q-space />
+									<q-btn-dropdown label="Upload" outline no-caps icon="upload">
+										<q-list>
+											<q-item
+												v-for="(item, index) in uploadRoutes"
+												:key="index"
+												clickable
+												v-close-popup
+												:to="item.to"
+											>
+												<q-item-section avatar>
+													<q-icon :name="item.icon" />
+												</q-item-section>
+												<q-item-section>
+													<q-item-label>
+														{{ item.label }}
+													</q-item-label>
+												</q-item-section>
+											</q-item>
+										</q-list>
+									</q-btn-dropdown>
+								</q-card-section>
+								<q-card-section class="q-pa-sm">
+									<q-input
+										dense
+										class=""
+										outlined
+										label="Pengasuh"
+										v-model="profile.personalia.pengasuh"
+										:loading="loading"
+									/>
+									<q-input
+										dense
+										class="q-mt-sm"
+										outlined
+										label="Ketua"
+										v-model="profile.personalia.ketua"
+										:loading="loading"
+									/>
+									<q-input
+										dense
+										class="q-mt-sm"
+										outlined
+										label="Sekretaris"
+										v-model="profile.personalia.sekretaris"
+										:loading="loading"
+									/>
+								</q-card-section>
+							</q-card>
 						</q-card-section>
+						<q-card-actions align="right" class="bg-green-7">
+							<q-btn label="Simpan" type="submit" no-caps icon="save" class="bg-green-11" />
+						</q-card-actions>
 					</q-card>
-					<q-card class="q-mt-sm">
-						<q-card-section class="q-pa-sm bg-green-1"> Madrasah </q-card-section>
-						<q-card-section class="q-pa-sm">
-							<q-input
-								dense
-								class=""
-								outlined
-								label="Lembaga"
-								v-model="profile.madrasah[0]"
-								:loading="loading"
-							/>
-							<q-input
-								dense
-								class="q-mt-sm"
-								outlined
-								label="Nama"
-								v-model="profile.madrasah[1]"
-								:loading="loading"
-							/>
-							<q-input
-								dense
-								class="q-mt-sm"
-								outlined
-								label="Akronim/Singkatan"
-								v-model="profile.madrasah[2]"
-								:loading="loading"
-							/>
-						</q-card-section>
-					</q-card>
-					<q-card class="q-mt-sm">
-						<q-card-section class="q-pa-sm bg-green-1"> Alamat </q-card-section>
-						<q-card-section class="q-pa-sm">
-							<q-input
-								dense
-								class=""
-								outlined
-								label="Alamat (baris-1)"
-								v-model="profile.alamat[0]"
-								:loading="loading"
-							/>
-							<q-input
-								dense
-								class="q-mt-sm"
-								outlined
-								label="Alamat (baris-2)"
-								v-model="profile.alamat[1]"
-								:loading="loading"
-							/>
-							<q-input
-								dense
-								class="q-mt-sm"
-								outlined
-								label="Kota (Surat)"
-								v-model="profile.alamat[2]"
-								:loading="loading"
-							/>
-						</q-card-section>
-					</q-card>
-					<q-card class="q-mt-sm">
-						<q-card-section class="q-pa-sm bg-green-1 flex">
-							Personalia
-							<q-space />
-							<q-btn-dropdown label="Upload" outline no-caps icon="upload">
-								<q-list>
-									<q-item
-										v-for="(item, index) in uploadRoutes"
-										:key="index"
-										clickable
-										v-close-popup
-										:to="item.to"
-									>
-										<q-item-section avatar>
-											<q-icon :name="item.icon" />
-										</q-item-section>
-										<q-item-section>
-											<q-item-label>
-												{{ item.label }}
-											</q-item-label>
-										</q-item-section>
-									</q-item>
-								</q-list>
-							</q-btn-dropdown>
-						</q-card-section>
-						<q-card-section class="q-pa-sm">
-							<q-input
-								dense
-								class=""
-								outlined
-								label="Pengasuh"
-								v-model="profile.personalia.pengasuh"
-								:loading="loading"
-							/>
-							<q-input
-								dense
-								class="q-mt-sm"
-								outlined
-								label="Ketua"
-								v-model="profile.personalia.ketua"
-								:loading="loading"
-							/>
-							<q-input
-								dense
-								class="q-mt-sm"
-								outlined
-								label="Sekretaris"
-								v-model="profile.personalia.sekretaris"
-								:loading="loading"
-							/>
-						</q-card-section>
-					</q-card>
-				</q-card-section>
-				<q-card-actions align="right" class="bg-green-7">
-					<q-btn label="Simpan" type="submit" no-caps icon="save" class="bg-green-11" />
-				</q-card-actions>
-			</q-card>
-		</q-form>
+				</q-form>
+			</q-card-section>
+		</q-card>
 	</q-page>
 </template>
 <script setup>

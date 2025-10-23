@@ -1,41 +1,45 @@
 <template lang="">
 	<q-page class="q-pa-sm">
-		<q-card style="max-width: 600px">
+		<q-card>
 			<CardHeader :title="`Upload ${selected.label}`" :showReload="false" :showBack="true" />
-			<q-card-section horizontal>
-				<q-card-section class="q-pa-sm">
-					<div style="width: 200px">
-						<q-img
-							:src="computedSrc"
-							:ratio="1"
-							alt="user"
-							:img-style="{
-								border: '1px',
-								borderColor: 'green',
-								borderStyle: 'solid',
-							}"
-						/>
-						<q-btn
-							icon="upload"
-							label="Upload"
-							no-caps
-							dense
-							outline
-							class="full-width q-mt-md"
-							@click="showUploader = true"
-						/>
-					</div>
-				</q-card-section>
+			<q-card-section class="q-pa-sm">
+				<q-card bordered flat style="max-width: 600px">
+					<q-card-section horizontal>
+						<q-card-section class="q-pa-sm">
+							<div style="width: 200px">
+								<q-img
+									:src="computedSrc"
+									:ratio="1"
+									alt="user"
+									:img-style="{
+										border: '1px',
+										borderColor: 'green',
+										borderStyle: 'solid',
+									}"
+								/>
+								<q-btn
+									icon="upload"
+									label="Upload"
+									no-caps
+									dense
+									outline
+									class="full-width q-mt-md"
+									@click="showUploader = true"
+								/>
+							</div>
+						</q-card-section>
 
-				<q-separator vertical />
+						<q-separator vertical />
 
-				<q-card-section class="q-pa-sm">
-					<div class="text-subtitle1">{{ selected.label }}</div>
-					<ul class="text-italic q-mt-sm">
-						<li>Pastikan gambar sudah transparan</li>
-						<li>Gunakan file dengan ekstensi PNG</li>
-					</ul>
-				</q-card-section>
+						<q-card-section class="q-pa-sm">
+							<div class="text-subtitle1">{{ selected.label }}</div>
+							<ul class="text-italic q-mt-sm">
+								<li>Pastikan gambar sudah transparan</li>
+								<li>Gunakan file dengan ekstensi PNG</li>
+							</ul>
+						</q-card-section>
+					</q-card-section>
+				</q-card>
 			</q-card-section>
 		</q-card>
 		<upload-image
