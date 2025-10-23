@@ -1,5 +1,5 @@
 <template lang="">
-	<q-card class="">
+	<q-card class="" flat bordered>
 		<q-card-section class="q-pa-sm bg-green-7">
 			<q-toolbar class="no-padding text-green-11" style="min-height: 0">
 				<q-toolbar-title class="text-subtitle1"> Kelas Baru </q-toolbar-title>

@@ -6,7 +6,7 @@
 					dense=""
 					class="q-px-sm text-green-10"
 					color="green-11"
-					label="Data Pesonalia"
+					label="Pesonalia"
 					no-caps
 					icon="badge"
 					to="/personalia"

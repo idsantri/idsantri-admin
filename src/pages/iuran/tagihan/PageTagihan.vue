@@ -1,5 +1,5 @@
 <template lang="">
-	<CardPage style="min-width: 1024px">
+	<CardPage>
 		<CardHeader :show-reload="false" title="Modul Tagihan" />
 		<q-card-section class="q-pa-sm">
 			<FilterKelas
@@ -9,8 +9,8 @@
 				start-url="/iuran/tagihan"
 				@data-filter="(v) => (textFilter = v)"
 			/>
-			<div class="row">
-				<div class="col-7 q-mt-sm">
+			<div class="no-padding full-width row no-wrap justify-between items-start content-start scroll">
+				<div class="q-mt-sm" style="min-width: 500px; width: 100%">
 					<q-table
 						flat
 						bordered
@@ -46,7 +46,7 @@
 						</template>
 					</q-table>
 				</div>
-				<div class="col-5 q-mt-sm">
+				<div class="q-mt-sm" style="min-width: 400px; width: 70%">
 					<q-card bordered flat class="q-ml-sm scroll" style="height: 635px">
 						<q-card-section class="q-px-sm q-py-md bg-green-2 text-green-10 text-subtitle2">
 							Buat Tagihan Massal

@@ -1,17 +1,9 @@
 <template lang="">
-	<q-card class="">
+	<q-card class="" flat bordered>
 		<q-card-section class="q-pa-sm bg-green-7">
 			<q-toolbar class="no-padding text-green-11" style="min-height: 0">
-				<q-toolbar-title class="text-subtitle1">
-					Kelas Lama
-				</q-toolbar-title>
-				<q-btn
-					icon="sync"
-					dense
-					flat
-					class="q-mr-xs"
-					@click="reload = !reload"
-				/>
+				<q-toolbar-title class="text-subtitle1"> Kelas Lama </q-toolbar-title>
+				<q-btn icon="sync" dense flat class="q-mr-xs" @click="reload = !reload" />
 			</q-toolbar>
 		</q-card-section>
 		<q-card-section class="q-pa-sm">
@@ -41,11 +33,7 @@
 				<tbody>
 					<tr v-for="(item, index) in muridFalse" :key="index">
 						<td class="text-center">
-							{{
-								item.no_absen
-									? String(item.no_absen).padStart(2, '0')
-									: ''
-							}}
+							{{ item.no_absen ? String(item.no_absen).padStart(2, '0') : '' }}
 						</td>
 						<td>
 							{{ item.nama }}

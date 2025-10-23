@@ -1,6 +1,6 @@
 <template>
 	<CardPage>
-		<CardHeader title="Pencarian …" :show-reload="false">
+		<CardHeader title="Pencarian…" :show-reload="false">
 			<template #buttons>
 				<q-card flat class="bg-green-6">
 					<q-tabs

@@ -1,5 +1,5 @@
 <template lang="">
-	<CardPage style="min-width: 1200px">
+	<CardPage>
 		<CardHeader title="Modul Mutasi Domisili" :showReload="false">
 			<template v-slot:buttons>
 				<q-btn
@@ -13,14 +13,14 @@
 				/>
 			</template>
 		</CardHeader>
-		<q-card-section class="no-padding">
-			<div class="row">
-				<div class="col q-pa-sm">
-					<DataLeft />
-				</div>
-				<div class="col q-pa-sm">
-					<DataRight />
-				</div>
+		<q-card-section
+			class="no-padding full-width row no-wrap justify-between items-start content-start scroll q-gutter-x-sm"
+		>
+			<div class="col q-py-sm" style="min-width: 400px">
+				<DataLeft />
+			</div>
+			<div class="col q-py-sm" style="min-width: 500px">
+				<DataRight />
 			</div>
 		</q-card-section>
 	</CardPage>

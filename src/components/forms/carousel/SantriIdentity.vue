@@ -2,21 +2,16 @@
 	<div class="text-subtitle2">Identitas Diri</div>
 	<q-input
 		dense
-		hint=""
 		class="q-my-sm"
 		outlined
 		label="Nama*"
 		v-model="inputs.nama"
-		:rules="[
-			(val) => !!val || 'Harus diisi!',
-			(val) => val?.length >= 3 || 'Setidaknya 3 huruf!',
-		]"
+		:rules="[(val) => !!val || 'Harus diisi!', (val) => val?.length >= 3 || 'Setidaknya 3 huruf!']"
 		error-color="negative"
 		autocapitalize="words"
 	/>
 	<q-input
 		dense
-		hint=""
 		class="q-my-sm"
 		outlined
 		label="Nomor Induk Siswa Nasional"
@@ -26,28 +21,20 @@
 	/>
 	<q-input
 		dense
-		hint=""
 		class="q-my-sm"
 		outlined
 		label="Nomor Kartu Keluarga"
 		v-model="inputs.nkk"
-		:rules="[
-			(val) =>
-				!val || (val?.length == 16 && !isNaN(val)) || '16 digit angka!',
-		]"
+		:rules="[(val) => !val || (val?.length == 16 && !isNaN(val)) || '16 digit angka!']"
 		error-color="negative"
 	/>
 	<q-input
 		dense
-		hint=""
 		class="q-my-sm"
 		outlined
 		label="Nomor Induk Kependudukan"
 		v-model="inputs.nik"
-		:rules="[
-			(val) =>
-				!val || (val?.length == 16 && !isNaN(val)) || '16 digit angka!',
-		]"
+		:rules="[(val) => !val || (val?.length == 16 && !isNaN(val)) || '16 digit angka!']"
 		error-color="negative"
 	/>
 	<input-select-kota-lahir v-model="inputs.tmp_lahir" />
@@ -55,11 +42,7 @@
 	<q-input
 		dense
 		:hint="
-			isDate(inputs.tgl_lahir)
-				? formatDateFull(inputs.tgl_lahir) +
-					' | ' +
-					bacaHijri(m2h(inputs.tgl_lahir))
-				: ''
+			isDate(inputs.tgl_lahir) ? formatDateFull(inputs.tgl_lahir) + ' | ' + bacaHijri(m2h(inputs.tgl_lahir)) : ''
 		"
 		class="q-my-sm"
 		outlined
@@ -70,13 +53,7 @@
 
 	<q-select
 		dense
-		:hint="
-			inputs.sex == 'L'
-				? 'Laki-Laki'
-				: inputs.sex == 'P'
-					? 'Perempuan'
-					: ''
-		"
+		:hint="inputs.sex == 'L' ? 'Laki-Laki' : inputs.sex == 'P' ? 'Perempuan' : ''"
 		class="q-my-sm"
 		outlined
 		label="Jenis Kelamin"

@@ -8,7 +8,6 @@
 		url="pendidikan-akhir-formal"
 		label="Pendidikan Akhir Formal"
 		class="q-my-sm"
-		hint=""
 		use-input=""
 		new-value-mode="add"
 	/>
@@ -17,7 +16,6 @@
 		url="kelas"
 		label="Kelas"
 		class="q-my-sm"
-		hint=""
 		use-input=""
 		new-value-mode="add"
 	/>
@@ -38,7 +36,6 @@
 		url="pendidikan-akhir-diniyah"
 		label="Pendidikan Akhir Diniyah"
 		class="q-my-sm"
-		hint=""
 		use-input=""
 		new-value-mode="add"
 	/>
@@ -48,7 +45,6 @@
 		url="kelas"
 		label="Kelas"
 		class="q-my-sm"
-		hint=""
 		use-input=""
 		new-value-mode="add"
 	/>
