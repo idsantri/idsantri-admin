@@ -1,8 +1,6 @@
 <template>
-	<q-card style="width: 100%">
-		<q-card-section
-			class="bg-green-8 text-green-1 q-pa-sm flex items-center"
-		>
+	<q-card style="width: 100%" flat>
+		<q-card-section class="bg-green-7 text-green-1 q-pa-sm flex items-center">
 			<h2 class="text-subtitle1 no-margin text-green-11">Cari Santri</h2>
 			<q-space />
 			<q-btn
@@ -16,19 +14,11 @@
 			/>
 		</q-card-section>
 		<q-card-section>
-			<data-table
-				class="display table nowrap dt"
-				:options="options"
-				style="overflow: hidden"
-				id="tabel"
-			/>
+			<data-table class="display table nowrap dt" :options="options" style="overflow: hidden" id="tabel" />
 		</q-card-section>
-		<q-card-actions class="bg-green-7">
+		<q-card-actions class="bg-green-6">
 			<div class="text-body2 text-green-11 text-italic">
-				<div>
-					▪️ Cari berdsarkan ID, nama santri, NIK, alamat, atau data
-					akhir
-				</div>
+				<div>▪️ Cari berdsarkan ID, nama santri, NIK, alamat, atau data akhir</div>
 				<div>▪️ simbol % = karakter apapun</div>
 			</div>
 			<q-space />
@@ -135,8 +125,7 @@ const options = ref({
 	],
 	language: {
 		search: 'Cari:',
-		zeroRecords:
-			'Tidak data data untuk ditampilkan. Coba kata kunci yang lain!',
+		zeroRecords: 'Tidak data data untuk ditampilkan. Coba kata kunci yang lain!',
 		info: 'Menampilkan _START_ hingga _END_, dari total _TOTAL_ data',
 		// info: 'Halaman _PAGE_ dari _PAGES_ halaman',
 		infoFiltered: '(disaring dari _MAX_ total data)',

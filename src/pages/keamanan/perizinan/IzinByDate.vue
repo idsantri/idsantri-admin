@@ -1,52 +1,50 @@
 <template lang="">
-	<q-page class="q-pa-sm">
-		<q-card>
-			<CardHeader title="Data Izin Pesantren" :show-reload="false" />
-			<q-card-section class="q-pa-sm">
-				<filter-tanggal :showBulanUjian="true" start-url="/keamanan/izin-pesantren" @dataFilter="dataEmit">
-					<DropDownMenu />
-				</filter-tanggal>
-				<q-card class="q-mt-sm" flat bordered>
-					<q-card-section class="bg-green-7 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
-						<span v-html="dataFilter.display || ''"></span>
-						<q-space />
-						<q-btn
-							dense=""
-							icon="add"
-							label="Baru"
-							no-caps
-							color="green-11 q-px-md"
-							class="text-green-10"
-							@click="crudShow = true"
-						/>
-					</q-card-section>
-					<q-table
-						class="dt q-pa-sm"
-						:rows="izin"
-						:columns="columns"
-						:loading="loading"
-						:filter="filter"
-						:rows-per-page-options="[10, 25, 50, 75, 100, 0]"
-						no-data-label="Silakan tentukan filter tanggal!"
-						no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
-						row-key="name"
-						flat
-						@row-click="(evt, row, index) => $router.push(`/keamanan/izin-pesantren/${row.id}`)"
-					>
-						<template v-slot:top-left>
-							<div class="text-subtitle1 text-green-10">Data Perizinan</div>
-						</template>
-						<template v-slot:top-right>
-							<q-input outlined dense debounce="300" v-model="filter" placeholder="Cari">
-								<template v-slot:append>
-									<q-icon name="search" />
-								</template>
-							</q-input>
-						</template>
-					</q-table>
-				</q-card>
-			</q-card-section>
-		</q-card>
+	<CardPage>
+		<CardHeader title="Data Izin Pesantren" :show-reload="false" />
+		<q-card-section class="q-pa-sm">
+			<filter-tanggal :showBulanUjian="true" start-url="/keamanan/izin-pesantren" @dataFilter="dataEmit">
+				<DropDownMenu />
+			</filter-tanggal>
+			<q-card class="q-mt-sm" flat bordered>
+				<q-card-section class="bg-green-7 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
+					<span v-html="dataFilter.display || ''"></span>
+					<q-space />
+					<q-btn
+						dense=""
+						icon="add"
+						label="Baru"
+						no-caps
+						color="green-11 q-px-md"
+						class="text-green-10"
+						@click="crudShow = true"
+					/>
+				</q-card-section>
+				<q-table
+					class="dt q-pa-sm"
+					:rows="izin"
+					:columns="columns"
+					:loading="loading"
+					:filter="filter"
+					:rows-per-page-options="[10, 25, 50, 75, 100, 0]"
+					no-data-label="Silakan tentukan filter tanggal!"
+					no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
+					row-key="name"
+					flat
+					@row-click="(evt, row, index) => $router.push(`/keamanan/izin-pesantren/${row.id}`)"
+				>
+					<template v-slot:top-left>
+						<div class="text-subtitle1 text-green-10">Data Perizinan</div>
+					</template>
+					<template v-slot:top-right>
+						<q-input outlined dense debounce="300" v-model="filter" placeholder="Cari">
+							<template v-slot:append>
+								<q-icon name="search" />
+							</template>
+						</q-input>
+					</template>
+				</q-table>
+			</q-card>
+		</q-card-section>
 
 		<q-dialog v-model="crudShow">
 			<IzinPesantrenForm
@@ -55,7 +53,7 @@
 				@success-submit="(v) => $router.push(`/keamanan/izin-pesantren/${v.id}`)"
 			/>
 		</q-dialog>
-	</q-page>
+	</CardPage>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';

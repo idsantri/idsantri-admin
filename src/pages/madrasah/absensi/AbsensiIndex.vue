@@ -1,132 +1,130 @@
 <template>
-	<q-page class="q-pa-sm">
-		<q-card>
-			<CardHeader :title="`Absensi: ${route.name}`" :show-reload="false">
-				<template #buttons>
-					<q-btn
-						dense
-						class="q-px-md text-green-10"
-						label="Cetak"
-						no-caps=""
-						icon="print"
-						color="green-2"
-						to="/info/download"
-					/>
-				</template>
-				<template #more>
-					<q-list>
-						<!-- input -->
-						<q-item
-							:disable="!showButton(`madrasah/absensi/input/sekolah`)"
-							clickable
-							v-close-popup
-							to="/madrasah/absensi/input/sekolah"
-						>
-							<q-item-section avatar>
-								<q-icon color="green" name="edit_square" />
-							</q-item-section>
-							<q-item-section> Input Sekolah </q-item-section>
-						</q-item>
-						<q-item
-							:disable="!showButton(`madrasah/absensi/input/musyawarah`)"
-							clickable
-							v-close-popup
-							to="/madrasah/absensi/input/musyawarah"
-						>
-							<q-item-section avatar>
-								<q-icon color="green" name="edit_square" />
-							</q-item-section>
-							<q-item-section> Input Musyawarah </q-item-section>
-						</q-item>
-						<q-separator />
-						<!-- rekap bulanan -->
-						<q-item
-							:disable="!showButton(`madrasah/absensi/laporan/sekolah`)"
-							clickable
-							v-close-popup
-							to="/madrasah/absensi/laporan/sekolah"
-						>
-							<q-item-section avatar>
-								<q-icon color="green" name="summarize" />
-							</q-item-section>
-							<q-item-section> Laporan Sekolah </q-item-section>
-						</q-item>
-						<q-item
-							:disable="!showButton(`madrasah/absensi/laporan/musyawarah`)"
-							clickable
-							v-close-popup
-							to="/madrasah/absensi/laporan/musyawarah"
-						>
-							<q-item-section avatar>
-								<q-icon color="green" name="summarize" />
-							</q-item-section>
-							<q-item-section> Laporan Musyawarah </q-item-section>
-						</q-item>
-						<q-separator />
-						<!-- rekap ujian -->
-						<q-item
-							:disable="!showButton(`madrasah/absensi/rekap-ujian/sekolah`)"
-							clickable
-							v-close-popup
-							to="/madrasah/absensi/rekap-ujian/sekolah"
-						>
-							<q-item-section avatar>
-								<q-icon color="green" name="summarize" />
-							</q-item-section>
-							<q-item-section> Rekap Ujian Sekolah </q-item-section>
-						</q-item>
-						<q-item
-							:disable="!showButton(`madrasah/absensi/rekap-ujian/musyawarah`)"
-							clickable
-							v-close-popup
-							to="/madrasah/absensi/rekap-ujian/musyawarah"
-						>
-							<q-item-section avatar>
-								<q-icon color="green" name="summarize" />
-							</q-item-section>
-							<q-item-section> Rekap Ujian Musyawarah </q-item-section>
-						</q-item>
-						<q-separator />
+	<CardPage>
+		<CardHeader :title="`Absensi: ${route.name}`" :show-reload="false">
+			<template #buttons>
+				<q-btn
+					dense
+					class="q-px-md text-green-10"
+					label="Cetak"
+					no-caps=""
+					icon="print"
+					color="green-2"
+					to="/info/download"
+				/>
+			</template>
+			<template #more>
+				<q-list>
+					<!-- input -->
+					<q-item
+						:disable="!showButton(`madrasah/absensi/input/sekolah`)"
+						clickable
+						v-close-popup
+						to="/madrasah/absensi/input/sekolah"
+					>
+						<q-item-section avatar>
+							<q-icon color="green" name="edit_square" />
+						</q-item-section>
+						<q-item-section> Input Sekolah </q-item-section>
+					</q-item>
+					<q-item
+						:disable="!showButton(`madrasah/absensi/input/musyawarah`)"
+						clickable
+						v-close-popup
+						to="/madrasah/absensi/input/musyawarah"
+					>
+						<q-item-section avatar>
+							<q-icon color="green" name="edit_square" />
+						</q-item-section>
+						<q-item-section> Input Musyawarah </q-item-section>
+					</q-item>
+					<q-separator />
+					<!-- rekap bulanan -->
+					<q-item
+						:disable="!showButton(`madrasah/absensi/laporan/sekolah`)"
+						clickable
+						v-close-popup
+						to="/madrasah/absensi/laporan/sekolah"
+					>
+						<q-item-section avatar>
+							<q-icon color="green" name="summarize" />
+						</q-item-section>
+						<q-item-section> Laporan Sekolah </q-item-section>
+					</q-item>
+					<q-item
+						:disable="!showButton(`madrasah/absensi/laporan/musyawarah`)"
+						clickable
+						v-close-popup
+						to="/madrasah/absensi/laporan/musyawarah"
+					>
+						<q-item-section avatar>
+							<q-icon color="green" name="summarize" />
+						</q-item-section>
+						<q-item-section> Laporan Musyawarah </q-item-section>
+					</q-item>
+					<q-separator />
+					<!-- rekap ujian -->
+					<q-item
+						:disable="!showButton(`madrasah/absensi/rekap-ujian/sekolah`)"
+						clickable
+						v-close-popup
+						to="/madrasah/absensi/rekap-ujian/sekolah"
+					>
+						<q-item-section avatar>
+							<q-icon color="green" name="summarize" />
+						</q-item-section>
+						<q-item-section> Rekap Ujian Sekolah </q-item-section>
+					</q-item>
+					<q-item
+						:disable="!showButton(`madrasah/absensi/rekap-ujian/musyawarah`)"
+						clickable
+						v-close-popup
+						to="/madrasah/absensi/rekap-ujian/musyawarah"
+					>
+						<q-item-section avatar>
+							<q-icon color="green" name="summarize" />
+						</q-item-section>
+						<q-item-section> Rekap Ujian Musyawarah </q-item-section>
+					</q-item>
+					<q-separator />
 
-						<!-- nomor absen -->
-						<q-item
-							:disable="!showButton(`madrasah/absensi/penomoran`)"
-							clickable
-							v-close-popup
-							to="/madrasah/absensi/penomoran"
-						>
-							<q-item-section avatar>
-								<q-icon color="green" name="format_list_numbered" />
-							</q-item-section>
-							<q-item-section> Atur Nomor Absen </q-item-section>
-						</q-item>
+					<!-- nomor absen -->
+					<q-item
+						:disable="!showButton(`madrasah/absensi/penomoran`)"
+						clickable
+						v-close-popup
+						to="/madrasah/absensi/penomoran"
+					>
+						<q-item-section avatar>
+							<q-icon color="green" name="format_list_numbered" />
+						</q-item-section>
+						<q-item-section> Atur Nomor Absen </q-item-section>
+					</q-item>
 
-						<!-- setting -->
-						<q-item
-							:disable="!showButton(`madrasah/absensi/setting`)"
-							clickable
-							v-close-popup
-							to="/madrasah/absensi/setting"
-						>
-							<q-item-section avatar>
-								<q-icon color="green" name="settings" />
-							</q-item-section>
-							<q-item-section> Pengaturan Absensi </q-item-section>
-						</q-item>
-					</q-list>
-				</template>
-			</CardHeader>
+					<!-- setting -->
+					<q-item
+						:disable="!showButton(`madrasah/absensi/setting`)"
+						clickable
+						v-close-popup
+						to="/madrasah/absensi/setting"
+					>
+						<q-item-section avatar>
+							<q-icon color="green" name="settings" />
+						</q-item-section>
+						<q-item-section> Pengaturan Absensi </q-item-section>
+					</q-item>
+				</q-list>
+			</template>
+		</CardHeader>
 
-			<q-card-section class="q-pa-sm">
-				<router-view :key="$route.fullPath" />
-				<!-- <router-view v-slot="{ Component }">
+		<q-card-section class="q-pa-sm">
+			<router-view :key="$route.fullPath" />
+			<!-- <router-view v-slot="{ Component }">
 					<transition name="fade" mode="out-in">
 						<component :is="Component" :key="$route.fullPath" />
 					</transition>
 				</router-view> -->
-			</q-card-section>
-		</q-card>
-	</q-page>
+		</q-card-section>
+	</CardPage>
 </template>
 <script setup>
 import { useRoute } from 'vue-router';

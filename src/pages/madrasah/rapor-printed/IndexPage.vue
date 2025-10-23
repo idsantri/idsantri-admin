@@ -1,65 +1,63 @@
 <template lang="">
-	<q-page class="q-pa-sm">
-		<q-card>
-			<CardHeader title="Rapor (Printed)" @onReload="loadData" />
-			<q-card-section class="q-pa-sm">
-				<q-card style="max-width: 1024px" flat bordered>
-					<q-table
-						:rows="rapor"
-						:loading="loading"
-						:columns="columns"
-						:rows-per-page-options="[10, 25, 50, 100, 0]"
-						row-key="name"
-						:filter="filter"
-					>
-						<template v-slot:top>
-							<div class="text-green-10">
-								<div class="text-subtitle1">Daftar Rapor yang Sudah Dicetak</div>
-								<div class="text-caption text-italic" style="line-height: 1rem">
-									Hapus data berikut agar DATA RAPOR (Nilai Mapel, Nilai Ahwal, dan Absensi) tidak
-									terkunci!
-								</div>
-								<div class="text-overline q-mb-sm" style="line-height: 1.5rem">(Akses Admin)</div>
+	<CardPage>
+		<CardHeader title="Rapor (Printed)" @onReload="loadData" />
+		<q-card-section class="q-pa-sm">
+			<q-card style="max-width: 1024px" flat bordered>
+				<q-table
+					:rows="rapor"
+					:loading="loading"
+					:columns="columns"
+					:rows-per-page-options="[10, 25, 50, 100, 0]"
+					row-key="name"
+					:filter="filter"
+				>
+					<template v-slot:top>
+						<div class="text-green-10">
+							<div class="text-subtitle1">Daftar Rapor yang Sudah Dicetak</div>
+							<div class="text-caption text-italic" style="line-height: 1rem">
+								Hapus data berikut agar DATA RAPOR (Nilai Mapel, Nilai Ahwal, dan Absensi) tidak
+								terkunci!
 							</div>
-							<q-space />
-							<q-input outlined dense debounce="300" color="primary" placeholder="Cari" v-model="filter">
-								<template v-slot:append>
-									<q-icon name="search" />
-								</template>
-							</q-input>
-						</template>
+							<div class="text-overline q-mb-sm" style="line-height: 1.5rem">(Akses Admin)</div>
+						</div>
+						<q-space />
+						<q-input outlined dense debounce="300" color="primary" placeholder="Cari" v-model="filter">
+							<template v-slot:append>
+								<q-icon name="search" />
+							</template>
+						</q-input>
+					</template>
 
-						<template v-slot:header="props">
-							<q-tr :props="props">
-								<q-th v-for="col in props.cols" :key="col.name" :props="props">
-									{{ col.label }}
-								</q-th>
-								<q-th class="text-center">
-									<q-btn icon="delete" color="negative" dense flat disable title="Hapus" />
-								</q-th>
-							</q-tr>
-						</template>
-						<template v-slot:body="props">
-							<q-tr :props="props">
-								<q-td v-for="col in props.cols" :key="col.name" :props="props">
-									{{ col.value }}
-								</q-td>
-								<q-td class="text-center">
-									<q-btn
-										icon="sym_o_delete"
-										color="negative"
-										dense
-										flat
-										@click="deleteRow(props.row.id)"
-									/>
-								</q-td>
-							</q-tr>
-						</template>
-					</q-table>
-				</q-card>
-			</q-card-section>
-		</q-card>
-	</q-page>
+					<template v-slot:header="props">
+						<q-tr :props="props">
+							<q-th v-for="col in props.cols" :key="col.name" :props="props">
+								{{ col.label }}
+							</q-th>
+							<q-th class="text-center">
+								<q-btn icon="delete" color="negative" dense flat disable title="Hapus" />
+							</q-th>
+						</q-tr>
+					</template>
+					<template v-slot:body="props">
+						<q-tr :props="props">
+							<q-td v-for="col in props.cols" :key="col.name" :props="props">
+								{{ col.value }}
+							</q-td>
+							<q-td class="text-center">
+								<q-btn
+									icon="sym_o_delete"
+									color="negative"
+									dense
+									flat
+									@click="deleteRow(props.row.id)"
+								/>
+							</q-td>
+						</q-tr>
+					</template>
+				</q-table>
+			</q-card>
+		</q-card-section>
+	</CardPage>
 </template>
 <script setup>
 import apiDelete from 'src/api/api-delete';

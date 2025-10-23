@@ -1,22 +1,20 @@
 <template lang="">
-	<q-page class="q-pa-sm">
-		<q-card>
-			<CardHeader title="Riwayat Izin" :show-reload="false" />
-			<div class="row" style="max-width: 1200px">
-				<div class="col-xs-12 col-sm-6">
-					<div class="q-ma-sm">
-						<CardSantri :id="params.santri_id" />
-					</div>
-				</div>
-
-				<div class="col-xs-12 col-sm-6">
-					<div class="q-ma-sm">
-						<IzinRiwayat :santri_id="santri_id" />
-					</div>
+	<CardPage>
+		<CardHeader title="Riwayat Izin" :show-reload="false" />
+		<div class="row" style="max-width: 1200px">
+			<div class="col-xs-12 col-sm-6">
+				<div class="q-ma-sm">
+					<CardSantri :id="params.santri_id" />
 				</div>
 			</div>
-		</q-card>
-	</q-page>
+
+			<div class="col-xs-12 col-sm-6">
+				<div class="q-ma-sm">
+					<IzinRiwayat :santri_id="santri_id" />
+				</div>
+			</div>
+		</div>
+	</CardPage>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';

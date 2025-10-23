@@ -1,8 +1,8 @@
 <template lang="">
-	<q-page class="q-pa-sm">
-		<q-card style="max-width: 600px">
-			<CardHeader title="Ekspor Data Santri" @on-reload="loadData" />
-			<div class="relative-position">
+	<CardPage>
+		<CardHeader title="Ekspor Data Santri" @on-reload="loadData" />
+		<q-card-section class="q-pa-sm">
+			<q-card flat bordered class="relative-position" style="max-width: 600px">
 				<q-card-section class="q-pa-sm" style="min-height: 200px">
 					<h2 class="text-subtitle1 text-italic q-pl-md">
 						Tentukan status akhir santri yang ingin didownload
@@ -26,9 +26,9 @@
 					/>
 				</q-card-actions>
 				<CardLoading :showing="loading" />
-			</div>
-		</q-card>
-	</q-page>
+			</q-card>
+		</q-card-section>
+	</CardPage>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';

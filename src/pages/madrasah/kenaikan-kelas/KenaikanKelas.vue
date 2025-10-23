@@ -1,20 +1,18 @@
 <template lang="">
-	<q-page class="q-pa-sm">
-		<q-card class="" style="min-width: 1200px">
-			<CardHeader title="Modul Kenaikan Kelas" :show-reload="false" />
+	<CardPage style="min-width: 1200px">
+		<CardHeader title="Modul Kenaikan Kelas" :show-reload="false" />
 
-			<q-card-section class="no-padding">
-				<div class="row">
-					<div class="col-6 q-pa-sm">
-						<DataLeft />
-					</div>
-					<div class="col-6 q-pa-sm">
-						<DataRight />
-					</div>
+		<q-card-section class="no-padding">
+			<div class="row">
+				<div class="col-6 q-pa-sm">
+					<DataLeft />
 				</div>
-			</q-card-section>
-		</q-card>
-	</q-page>
+				<div class="col-6 q-pa-sm">
+					<DataRight />
+				</div>
+			</div>
+		</q-card-section>
+	</CardPage>
 </template>
 <script setup>
 import { onMounted } from 'vue';

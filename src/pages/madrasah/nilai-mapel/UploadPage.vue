@@ -1,187 +1,173 @@
 <template lang="">
-	<q-page class="q-pa-sm">
-		<q-card>
-			<CardHeader title="Upload Nilai" :show-reload="false">
-				<template #buttons>
-					<q-btn
-						label="Nilai Mapel"
-						to="/madrasah/nilai-mapel"
+	<CardPage>
+		<CardHeader title="Upload Nilai" :show-reload="false">
+			<template #buttons>
+				<q-btn
+					label="Nilai Mapel"
+					to="/madrasah/nilai-mapel"
+					dense
+					outline
+					no-caps
+					class="q-px-sm"
+					icon="show_chart"
+				/>
+				<q-btn
+					label="Download"
+					to="/madrasah/nilai-mapel/download"
+					dense
+					outline
+					no-caps
+					icon="upload"
+					class="q-px-sm"
+				/>
+			</template>
+		</CardHeader>
+
+		<q-card-section class="no-padding">
+			<q-stepper
+				v-model="step"
+				ref="stepper"
+				done-color="green-8"
+				active-color="green-10"
+				animated
+				flat
+				header-nav
+			>
+				<q-step :name="1" title="Pilih File" caption="*.xls, *.xlsx" icon="create_new_folder" :done="step > 1">
+					<q-separator class="q-mb-md" />
+
+					<q-file
+						@input="handleFileChange"
+						outlined
+						bottom-slots
+						v-model="inputFile"
+						label="Pilih file excel"
+						counter
 						dense
-						outline
-						no-caps
-						class="q-px-sm"
-						icon="show_chart"
-					/>
-					<q-btn
-						label="Download"
-						to="/madrasah/nilai-mapel/download"
-						dense
-						outline
-						no-caps
-						icon="upload"
-						class="q-px-sm"
-					/>
-				</template>
-			</CardHeader>
-
-			<q-card-section class="no-padding">
-				<q-stepper
-					v-model="step"
-					ref="stepper"
-					done-color="green-8"
-					active-color="green-10"
-					animated
-					flat
-					header-nav
-				>
-					<q-step
-						:name="1"
-						title="Pilih File"
-						caption="*.xls, *.xlsx"
-						icon="create_new_folder"
-						:done="step > 1"
+						style="max-width: 500px"
 					>
-						<q-separator class="q-mb-md" />
+						<template v-slot:prepend>
+							<q-icon name="cloud_upload" @click.stop.prevent />
+						</template>
+						<template v-slot:after>
+							<q-icon name="close" @click.stop.prevent="inputFile = null" class="cursor-pointer" />
+						</template>
 
-						<q-file
-							@input="handleFileChange"
-							outlined
-							bottom-slots
-							v-model="inputFile"
-							label="Pilih file excel"
-							counter
-							dense
-							style="max-width: 500px"
-						>
-							<template v-slot:prepend>
-								<q-icon name="cloud_upload" @click.stop.prevent />
-							</template>
-							<template v-slot:after>
-								<q-icon name="close" @click.stop.prevent="inputFile = null" class="cursor-pointer" />
-							</template>
+						<template v-slot:hint>
+							<span class="text-green text-italic"> Hanya membaca sheet pertama </span>
+						</template>
+					</q-file>
+				</q-step>
 
-							<template v-slot:hint>
-								<span class="text-green text-italic"> Hanya membaca sheet pertama </span>
-							</template>
-						</q-file>
-					</q-step>
+				<q-step :name="2" title="Cek Data" caption="Konfirmasi" icon="assignment_turned_in" :done="step > 2">
+					<q-separator class="q-mb-md" />
 
-					<q-step
-						:name="2"
-						title="Cek Data"
-						caption="Konfirmasi"
-						icon="assignment_turned_in"
-						:done="step > 2"
+					<q-table
+						:rows="nilaiPivot"
+						flat
+						bordered
+						class=""
+						:rows-per-page-options="[10, 25, 50, 75, 100, 0]"
 					>
-						<q-separator class="q-mb-md" />
-
-						<q-table
-							:rows="nilaiPivot"
-							flat
-							bordered
-							class=""
-							:rows-per-page-options="[10, 25, 50, 75, 100, 0]"
-						>
-							<template v-slot:header="props">
-								<q-tr :props="props">
-									<q-th
-										v-for="col in props.cols"
-										:key="col.name"
-										:props="props"
-										class="text-bold"
-										:title="
-											mapel.find((m) => m.id.toLowerCase() == col.label.toLowerCase())?.name || ''
+						<template v-slot:header="props">
+							<q-tr :props="props">
+								<q-th
+									v-for="col in props.cols"
+									:key="col.name"
+									:props="props"
+									class="text-bold"
+									:title="
+										mapel.find((m) => m.id.toLowerCase() == col.label.toLowerCase())?.name || ''
+									"
+								>
+									{{ col.label.toLowerCase() }}
+									<q-icon
+										v-if="
+											mapel.find((m) => m.id.toLowerCase() == col.label.toLowerCase()) ||
+											col.label.toLowerCase() == 'kelas_id'
 										"
-									>
-										{{ col.label.toLowerCase() }}
-										<q-icon
-											v-if="
-												mapel.find((m) => m.id.toLowerCase() == col.label.toLowerCase()) ||
-												col.label.toLowerCase() == 'kelas_id'
-											"
-											name="check_circle"
-											color="green"
-											size="1.3em"
-										/>
-									</q-th>
-								</q-tr>
-							</template>
-						</q-table>
-					</q-step>
+										name="check_circle"
+										color="green"
+										size="1.3em"
+									/>
+								</q-th>
+							</q-tr>
+						</template>
+					</q-table>
+				</q-step>
 
-					<q-step :name="3" title="Lengkapi Data" caption="Langkah Terakhir" icon="article">
-						<q-separator class="q-mb-md" />
-						<div class="row">
-							<div class="col-sm-6 col-xs-12">
-								<q-card bordered flat class="q-ma-xs">
-									<q-card-section>
-										<q-form style="max-width: 500px" @submit.prevent="onSubmit">
-											<q-select
-												dense
-												class="q-mt-sm"
-												outlined
-												label="Kategori Nilai"
-												v-model="input.category"
-												required
-												hint="Kesalahan karena hal ini berakibat fatal"
-												:options="[
-													{
-														value: 'ujian',
-														label: 'Nilai Ujian',
-													},
-													{
-														value: 'harian',
-														label: 'Nilai Harian',
-													},
-												]"
-												emit-value
-												map-options
-											/>
-											<q-input
-												dense
-												class="q-mt-sm"
-												outlined
-												label="Ujian Ke"
-												v-model="input.ujian_ke"
-												required
-												type="number"
-												hint="Kesalahan karena hal ini berakibat fatal"
-												:rules="[(val) => (val > 0 && val < 5) || 'antara 1 s.d. 4']"
-											/>
-											<q-btn
-												type="submit"
-												label="Simpan"
-												icon="save"
-												dense
-												class="q-mt-sm q-px-sm"
-												no-caps
-											/>
-										</q-form>
-									</q-card-section>
-								</q-card>
-							</div>
-							<div class="col-sm-6 col-xs-12">
-								<q-card flat bordered class="q-ma-xs">
-									<q-card-section class="">
-										Pastikan data berikut sudah benar:
-										<ul>
-											<li>Kelas ID</li>
-											<li>Mapel ID</li>
-											<li>Kategori Nilai</li>
-											<li>Ujian Ke-?</li>
-										</ul>
-										<br />
-										Kesalahan karena hal ini akan susah diperbaiki.
-									</q-card-section>
-								</q-card>
-							</div>
+				<q-step :name="3" title="Lengkapi Data" caption="Langkah Terakhir" icon="article">
+					<q-separator class="q-mb-md" />
+					<div class="row">
+						<div class="col-sm-6 col-xs-12">
+							<q-card bordered flat class="q-ma-xs">
+								<q-card-section>
+									<q-form style="max-width: 500px" @submit.prevent="onSubmit">
+										<q-select
+											dense
+											class="q-mt-sm"
+											outlined
+											label="Kategori Nilai"
+											v-model="input.category"
+											required
+											hint="Kesalahan karena hal ini berakibat fatal"
+											:options="[
+												{
+													value: 'ujian',
+													label: 'Nilai Ujian',
+												},
+												{
+													value: 'harian',
+													label: 'Nilai Harian',
+												},
+											]"
+											emit-value
+											map-options
+										/>
+										<q-input
+											dense
+											class="q-mt-sm"
+											outlined
+											label="Ujian Ke"
+											v-model="input.ujian_ke"
+											required
+											type="number"
+											hint="Kesalahan karena hal ini berakibat fatal"
+											:rules="[(val) => (val > 0 && val < 5) || 'antara 1 s.d. 4']"
+										/>
+										<q-btn
+											type="submit"
+											label="Simpan"
+											icon="save"
+											dense
+											class="q-mt-sm q-px-sm"
+											no-caps
+										/>
+									</q-form>
+								</q-card-section>
+							</q-card>
 						</div>
-					</q-step>
-				</q-stepper>
-				<CardLoading :showing="loading" />
-			</q-card-section>
-		</q-card>
-	</q-page>
+						<div class="col-sm-6 col-xs-12">
+							<q-card flat bordered class="q-ma-xs">
+								<q-card-section class="">
+									Pastikan data berikut sudah benar:
+									<ul>
+										<li>Kelas ID</li>
+										<li>Mapel ID</li>
+										<li>Kategori Nilai</li>
+										<li>Ujian Ke-?</li>
+									</ul>
+									<br />
+									Kesalahan karena hal ini akan susah diperbaiki.
+								</q-card-section>
+							</q-card>
+						</div>
+					</div>
+				</q-step>
+			</q-stepper>
+			<CardLoading :showing="loading" />
+		</q-card-section>
+	</CardPage>
 </template>
 <script setup>
 import apiGet from 'src/api/api-get';

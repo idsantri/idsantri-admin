@@ -1,18 +1,16 @@
 <template lang="">
-	<q-page class="q-pa-sm">
-		<q-card>
-			<CardHeader title="Riwayat Indisipliner" :show-reload="false" />
-			<div class="row" style="max-width: 1200px">
-				<div class="col-xs-12 col-sm-6">
-					<CardSantri class="q-ma-sm" :id="params.santri_id" />
-				</div>
-
-				<div class="col-xs-12 col-sm-6">
-					<IndisiplinerRiwayat class="q-ma-sm" :santri_id="santri_id" />
-				</div>
+	<CardPage>
+		<CardHeader title="Riwayat Indisipliner" :show-reload="false" />
+		<div class="row" style="max-width: 1200px">
+			<div class="col-xs-12 col-sm-6">
+				<CardSantri class="q-ma-sm" :id="params.santri_id" />
 			</div>
-		</q-card>
-	</q-page>
+
+			<div class="col-xs-12 col-sm-6">
+				<IndisiplinerRiwayat class="q-ma-sm" :santri_id="santri_id" />
+			</div>
+		</div>
+	</CardPage>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';

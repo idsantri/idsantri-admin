@@ -1,47 +1,39 @@
 <template>
-	<q-page class="q-pa-sm">
-		<q-card class="">
-			<CardHeader title="Data Wali" @on-reload="loadData">
-				<template #buttons>
-					<q-btn
-						:label="$q.screen.lt.sm ? '' : 'Cari'"
-						@click="searchWali = true"
-						color="green-2"
-						no-caps
-						dense
-						class="q-px-sm text-green-10"
-						icon="search"
-					/>
-					<q-btn
-						no-caps
-						color="green-2"
-						dense
-						class="q-px-sm text-green-10"
-						icon="edit"
-						:label="$q.screen.lt.sm ? '' : 'Edit'"
-						@click="editWali"
-					/>
-				</template>
-			</CardHeader>
+	<CardPage>
+		<CardHeader title="Data Wali" @on-reload="loadData">
+			<template #buttons>
+				<q-btn
+					:label="$q.screen.lt.sm ? '' : 'Cari'"
+					@click="searchWali = true"
+					color="green-2"
+					no-caps
+					dense
+					class="q-px-sm text-green-10"
+					icon="search"
+				/>
+				<q-btn
+					no-caps
+					color="green-2"
+					dense
+					class="q-px-sm text-green-10"
+					icon="edit"
+					:label="$q.screen.lt.sm ? '' : 'Edit'"
+					@click="editWali"
+				/>
+			</template>
+		</CardHeader>
 
-			<q-card-section class="no-padding">
-				<div class="row" style="max-width: 1024px">
-					<div class="col-12 col-md-6 q-pa-sm">
-						<CardListTabel :data="identity" :loading="loading" title="Identitas" class="q-mb-sm" />
-					</div>
-					<div class="col-12 col-md-6 q-pa-sm">
-						<card-list-santri
-							:data="santri"
-							:loading="loading"
-							title="Data Santri (Anak)"
-							class="q-mb-sm"
-						/>
-					</div>
+		<q-card-section class="no-padding">
+			<div class="row" style="max-width: 1024px">
+				<div class="col-12 col-md-6 q-pa-sm">
+					<CardListTabel :data="identity" :loading="loading" title="Identitas" class="q-mb-sm" />
 				</div>
-			</q-card-section>
-		</q-card>
-		<!-- <pre>{{ wali }}</pre> -->
-	</q-page>
+				<div class="col-12 col-md-6 q-pa-sm">
+					<card-list-santri :data="santri" :loading="loading" title="Data Santri (Anak)" class="q-mb-sm" />
+				</div>
+			</div>
+		</q-card-section>
+	</CardPage>
 </template>
 <script setup>
 import { computed, onMounted, ref, toRefs } from 'vue';
