@@ -1,20 +1,18 @@
 <template>
 	<q-page class="q-pa-sm">
 		<q-card>
-			<q-card-section class="bg-green-8 text-green-11 q-px-sm q-py-none">
-				<q-toolbar class="no-padding no-margin">
-					<q-toolbar-title class="text-subtitle1"> Absensi: {{ $route.name }} </q-toolbar-title>
-
+			<CardHeader :title="`Absensi: ${route.name}`" :show-reload="false">
+				<template #right>
 					<q-btn
 						dense
-						class="q-px-md q-mr-sm text-green-10"
+						class="q-px-md q-ml-sm text-green-10"
 						label="Cetak"
 						no-caps=""
 						icon="print"
 						color="green-2"
 						to="/info/download"
 					/>
-					<q-btn-dropdown flat round dense dropdown-icon="more_vert" class="q-pl-sm" color="green-11">
+					<q-btn-dropdown flat dense dropdown-icon="more_vert" class="q-ml-sm" color="green-11">
 						<q-list>
 							<!-- input -->
 							<q-item
@@ -116,8 +114,8 @@
 							</q-item>
 						</q-list>
 					</q-btn-dropdown>
-				</q-toolbar>
-			</q-card-section>
+				</template>
+			</CardHeader>
 
 			<q-card-section class="q-pa-sm">
 				<router-view :key="$route.fullPath" />

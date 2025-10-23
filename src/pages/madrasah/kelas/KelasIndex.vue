@@ -1,11 +1,8 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card class="">
-			<q-card-section class="bg-green-8 text-green-11 q-pa-sm">
-				<div class="flex items-center">
-					<div class="text-subtitle1">Data Murid</div>
-				</div>
-			</q-card-section>
+			<CardHeader title="Data Murid" @onReload="loadData" />
+
 			<q-card-section class="no-padding">
 				<div class="row" style="max-width: 1400px">
 					<div class="col-12 col-md-6 q-pa-sm">
@@ -36,50 +33,45 @@
 										no-caps
 									/>
 								</q-toolbar>
-								<div v-if="spinner" class="q-pa-md">
-									<q-spinner-cube color="green-12" size="8em" class="flex q-mx-auto" />
-								</div>
-
-								<div v-else>
-									<q-markup-table flat>
-										<tbody>
-											<tr>
-												<td class="text-italic">Tahun Ajaran</td>
-												<td>
-													{{ kelas.th_ajaran_h + ' | ' + kelas.th_ajaran_m }}
-												</td>
-											</tr>
-											<tr>
-												<td class="text-italic">Tingkat</td>
-												<td>{{ kelas.tingkat }}</td>
-											</tr>
-											<tr>
-												<td class="text-italic">Kelas</td>
-												<td>{{ kelas.kelas }}</td>
-											</tr>
-											<tr>
-												<td class="text-italic">Nomor Absen</td>
-												<td>{{ kelas.no_absen }}</td>
-											</tr>
-											<tr>
-												<td class="text-italic">Aktif</td>
-												<td>
-													<q-toggle
-														v-model="kelas.aktif"
-														color="green"
-														@update:model-value="updateAktif"
-														:true-value="1"
-														:false-value="0"
-													/>
-												</td>
-											</tr>
-											<tr>
-												<td class="text-italic">Keterangan</td>
-												<td>{{ kelas.keterangan }}</td>
-											</tr>
-										</tbody>
-									</q-markup-table>
-								</div>
+								<q-markup-table flat>
+									<tbody>
+										<tr>
+											<td class="text-italic">Tahun Ajaran</td>
+											<td>
+												{{ kelas.th_ajaran_h + ' | ' + kelas.th_ajaran_m }}
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Tingkat</td>
+											<td>{{ kelas.tingkat }}</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Kelas</td>
+											<td>{{ kelas.kelas }}</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Nomor Absen</td>
+											<td>{{ kelas.no_absen }}</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Aktif</td>
+											<td>
+												<q-toggle
+													v-model="kelas.aktif"
+													color="green"
+													@update:model-value="updateAktif"
+													:true-value="1"
+													:false-value="0"
+												/>
+											</td>
+										</tr>
+										<tr>
+											<td class="text-italic">Keterangan</td>
+											<td>{{ kelas.keterangan }}</td>
+										</tr>
+									</tbody>
+								</q-markup-table>
+								<CardLoading :showing="spinner" />
 							</q-card-section>
 						</q-card>
 					</div>

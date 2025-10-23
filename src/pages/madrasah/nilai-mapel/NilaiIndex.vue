@@ -1,250 +1,266 @@
 <template>
 	<q-page class="q-pa-sm">
-		<filter-kelas
-			:show-ujian-ke="false"
-			start-url="/madrasah/nilai-mapel/rerata"
-			@data-filter="(v) => (textFilter = v)"
-			title="Filter Data: <span class='text-weight-medium'>Nilai Mapel (Rerata)</span>"
-		/>
-		<q-card class="q-mt-sm">
-			<q-card-section class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
-				<span
-					v-html="
-						textFilter +
-							' ➡️ <em class=\'text-weight-light\'>Kategori: </em> <strong>Nilai Rapor</strong>' || ''
-					"
-				></span>
-				<q-space />
-				<q-btn
-					dense=""
-					icon="download"
-					label="Excel"
-					no-caps=""
-					class="bg-green-11 text-green-10 q-px-md q-mr-sm"
-					to="/madrasah/nilai-mapel/download"
-				/>
-				<q-btn
-					dense=""
-					icon="upload"
-					label="Excel"
-					no-caps=""
-					class="bg-green-11 text-green-10 q-px-md q-mr-sm"
-					to="/madrasah/nilai-mapel/upload"
-				/>
+		<q-card>
+			<CardHeader title="Data Nilai Mata Pelajaran" :show-reload="false">
+				<template #right>
+					<q-btn
+						icon="settings_accessibility"
+						label="Nilai Ahwal"
+						to="/madrasah/nilai-ahwal"
+						outline=""
+						dense
+						no-caps=""
+						class="q-px-sm q-ml-sm"
+					/>
 
-				<q-btn-dropdown outline no-caps class="text-green-11 q-px-md" size="" dense dropdown-icon="more_vert">
-					<q-list>
-						<q-item v-close-popup to="/madrasah/mapel">
-							<q-item-section>
-								<q-item-label> Mata Pelajaran </q-item-label>
-							</q-item-section>
-							<q-item-section avatar>
-								<q-icon name="settings" />
-							</q-item-section>
-						</q-item>
-						<q-item v-close-popup to="/madrasah/nilai-ahwal">
-							<q-item-section>
-								<q-item-label> Nilai Ahwal </q-item-label>
-							</q-item-section>
-							<q-item-section avatar>
-								<q-icon name="settings_accessibility" />
-							</q-item-section>
-						</q-item>
-					</q-list>
-				</q-btn-dropdown>
+					<q-btn-dropdown flat no-caps class="text-green-11 q-ml-sm" dense dropdown-icon="more_vert">
+						<q-list>
+							<q-item v-close-popup to="/madrasah/mapel">
+								<q-item-section>
+									<q-item-label> Mata Pelajaran </q-item-label>
+								</q-item-section>
+								<q-item-section avatar>
+									<q-icon name="settings" />
+								</q-item-section>
+							</q-item>
+						</q-list>
+					</q-btn-dropdown>
+				</template>
+			</CardHeader>
+			<q-card-section class="q-pa-sm">
+				<filter-kelas
+					:show-ujian-ke="false"
+					start-url="/madrasah/nilai-mapel/rerata"
+					@data-filter="(v) => (textFilter = v)"
+					title="Filter Data: <span class='text-weight-medium'>Nilai Mapel (Rerata)</span>"
+				/>
 			</q-card-section>
-			<q-card-section v-if="!params.th_ajaran_h || !params.tingkat_id || !params.kelas" class="q-pa-sm">
-				<div class="text-center q-pa-lg text-negative text-italic">
-					Tentukan Tahun Ajaran, Tingkat Pendidikan, dan Kelas!
-				</div>
-			</q-card-section>
-			<q-card-section v-else class="q-pa-sm">
-				<div v-if="loading">
-					<q-skeleton type="text" height="4rem" />
-				</div>
-				<div v-else>
-					<q-table
-						flat
-						:rows="nilai"
-						:columns="columns"
-						row-key="kelas_id"
-						:rows-per-page-options="[10, 25, 50, 100, 0]"
-						class="my-sticky-header-table"
-					>
-						<template v-slot:header="props">
-							<q-tr :props="props" class="">
-								<q-th> </q-th>
-								<q-th> </q-th>
-								<q-th> </q-th>
-								<q-th> </q-th>
-								<q-th class="text-left">Retata Kelas</q-th>
-								<q-th class="text-right">
-									{{ hitungRataRata(nilai, 'rerata_1') }}
-								</q-th>
-								<q-th class="text-right">
-									{{ hitungRataRata(nilai, 'rerata_2') }}
-								</q-th>
-								<q-th class="text-right">
-									{{ hitungRataRata(nilai, 'rerata_3') }}
-								</q-th>
-								<q-th class="text-right">
-									{{ hitungRataRata(nilai, 'rerata_4') }}
-								</q-th>
-								<q-th class="text-right">
-									{{ hitungRataRata(nilai, 'rerata_akhir') }}
-								</q-th>
-							</q-tr>
-							<q-tr :props="props">
-								<q-th auto-width>!</q-th>
-								<q-th v-for="col in props.cols" :key="col.name" :props="props">
-									{{ col.label }}
-								</q-th>
-							</q-tr>
-						</template>
-						<template v-slot:body="props">
-							<q-tr :props="props">
-								<q-td auto-width>
-									<q-btn
-										size="sm"
-										color="green"
-										round
-										dense
-										@click="expand(props)"
-										:icon="props.expand ? 'remove' : 'add'"
-									/>
-								</q-td>
-								<q-td v-for="col in props.cols" :key="col.name" :props="props">
-									<span v-if="col.name == 'kelas_id'">
-										<q-btn
-											:label="col.value"
-											dense
-											outline
-											class="q-px-md text-green-10"
-											:to="`/madrasah/kelas/${col.value}/nilai-mapel`"
-										/>
-									</span>
-									<span v-else-if="col.name == 'santri_id'">
-										<q-btn
-											:label="col.value"
-											dense
-											outline
-											class="q-px-md text-green-10"
-											:to="`/santri/${col.value}`"
-										/>
-									</span>
-									<span v-else>
-										{{ col.value }}
-									</span>
-								</q-td>
-							</q-tr>
-							<q-tr v-show="props.expand" :props="props">
-								<q-td colspan="100%">
-									<div v-if="loadingDetail[props.row.kelas_id]">
-										<q-skeleton height="100px" />
-									</div>
-									<div v-else>
-										<div
-											v-if="nilaiDetail[props.row.kelas_id]?.length == 0"
-											class="text-italic text-negative"
-										>
-											Tidak ada data untuk ditampilkan!
-										</div>
-										<div v-else>
-											<q-markup-table flat dense class="bg-green-1" separator="cell">
-												<thead class="bg-green-2 text-weight-medium text-right">
-													<tr>
-														<td class="text-left" style="width: 80px">ID (Kode)</td>
-														<td class="text-left">Mata Pelajaran</td>
-														<td style="width: 50px">N-1</td>
-														<td style="width: 50px">N-2</td>
-														<td style="width: 50px">N-3</td>
-														<td style="width: 50px">N-4</td>
-														<td style="width: 65px">Rerata</td>
-													</tr>
-												</thead>
-												<tbody>
-													<tr
-														v-for="(item, index) in nilaiDetail[props.row.kelas_id]"
-														:key="index"
-													>
-														<td class="text-left">
-															{{ item.id }}
-														</td>
-														<td class="text-left">
-															{{ item.name }}
-														</td>
-														<td class="text-right">
-															{{ item.nilai_1 }}
-														</td>
-														<td class="text-right">
-															{{ item.nilai_2 }}
-														</td>
-														<td class="text-right">
-															{{ item.nilai_3 }}
-														</td>
-														<td class="text-right">
-															{{ item.nilai_4 }}
-														</td>
-														<td class="text-right">
-															{{
-																item.rerata ? parseFloat(item.rerata).toFixed(1) : null
-															}}
-														</td>
-													</tr>
-												</tbody>
-												<tfoot class="bg-green-2 text-weight-bold text-right text-green-10">
-													<tr>
-														<td colspan="2" class="text-left">Rerata</td>
-														<td>
-															{{
-																hitungRataRata(
-																	nilaiDetail[props.row.kelas_id],
-																	'nilai_1',
-																)
-															}}
-														</td>
-														<td>
-															{{
-																hitungRataRata(
-																	nilaiDetail[props.row.kelas_id],
-																	'nilai_2',
-																)
-															}}
-														</td>
-														<td>
-															{{
-																hitungRataRata(
-																	nilaiDetail[props.row.kelas_id],
-																	'nilai_3',
-																)
-															}}
-														</td>
-														<td>
-															{{
-																hitungRataRata(
-																	nilaiDetail[props.row.kelas_id],
-																	'nilai_4',
-																)
-															}}
-														</td>
-														<td>
-															{{
-																hitungRataRata(
-																	nilaiDetail[props.row.kelas_id],
-																	'rerata',
-																)
-															}}
-														</td>
-													</tr>
-												</tfoot>
-											</q-markup-table>
-										</div>
-									</div>
-								</q-td>
-							</q-tr>
-						</template>
-					</q-table>
-				</div>
+			<q-card-section class="q-pa-sm">
+				<q-card class="" bordered flat>
+					<q-card-section class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
+						<span
+							v-html="
+								textFilter +
+									' ➡️ <em class=\'text-weight-light\'>Kategori: </em> <strong>Nilai Rapor</strong>' ||
+								''
+							"
+						></span>
+						<q-space />
+						<q-btn
+							dense=""
+							icon="download"
+							label="Excel"
+							no-caps=""
+							class="bg-green-11 text-green-10 q-px-md q-mr-sm"
+							to="/madrasah/nilai-mapel/download"
+						/>
+						<q-btn
+							dense=""
+							icon="upload"
+							label="Excel"
+							no-caps=""
+							class="bg-green-11 text-green-10 q-px-md"
+							to="/madrasah/nilai-mapel/upload"
+						/>
+					</q-card-section>
+					<q-card-section v-if="!params.th_ajaran_h || !params.tingkat_id || !params.kelas" class="q-pa-sm">
+						<div class="text-center q-pa-lg text-negative text-italic">
+							Tentukan Tahun Ajaran, Tingkat Pendidikan, dan Kelas!
+						</div>
+					</q-card-section>
+					<q-card-section v-else class="q-pa-sm">
+						<div v-if="loading">
+							<q-skeleton type="text" height="4rem" />
+						</div>
+						<div v-else>
+							<q-table
+								flat
+								:rows="nilai"
+								:columns="columns"
+								row-key="kelas_id"
+								:rows-per-page-options="[10, 25, 50, 100, 0]"
+								class="my-sticky-header-table"
+							>
+								<template v-slot:header="props">
+									<q-tr :props="props" class="">
+										<q-th> </q-th>
+										<q-th> </q-th>
+										<q-th> </q-th>
+										<q-th> </q-th>
+										<q-th class="text-left">Retata Kelas</q-th>
+										<q-th class="text-right">
+											{{ hitungRataRata(nilai, 'rerata_1') }}
+										</q-th>
+										<q-th class="text-right">
+											{{ hitungRataRata(nilai, 'rerata_2') }}
+										</q-th>
+										<q-th class="text-right">
+											{{ hitungRataRata(nilai, 'rerata_3') }}
+										</q-th>
+										<q-th class="text-right">
+											{{ hitungRataRata(nilai, 'rerata_4') }}
+										</q-th>
+										<q-th class="text-right">
+											{{ hitungRataRata(nilai, 'rerata_akhir') }}
+										</q-th>
+									</q-tr>
+									<q-tr :props="props">
+										<q-th auto-width>!</q-th>
+										<q-th v-for="col in props.cols" :key="col.name" :props="props">
+											{{ col.label }}
+										</q-th>
+									</q-tr>
+								</template>
+								<template v-slot:body="props">
+									<q-tr :props="props">
+										<q-td auto-width>
+											<q-btn
+												size="sm"
+												color="green"
+												round
+												dense
+												@click="expand(props)"
+												:icon="props.expand ? 'remove' : 'add'"
+											/>
+										</q-td>
+										<q-td v-for="col in props.cols" :key="col.name" :props="props">
+											<span v-if="col.name == 'kelas_id'">
+												<q-btn
+													:label="col.value"
+													dense
+													outline
+													class="q-px-md text-green-10"
+													:to="`/madrasah/kelas/${col.value}/nilai-mapel`"
+												/>
+											</span>
+											<span v-else-if="col.name == 'santri_id'">
+												<q-btn
+													:label="col.value"
+													dense
+													outline
+													class="q-px-md text-green-10"
+													:to="`/santri/${col.value}`"
+												/>
+											</span>
+											<span v-else>
+												{{ col.value }}
+											</span>
+										</q-td>
+									</q-tr>
+									<q-tr v-show="props.expand" :props="props">
+										<q-td colspan="100%">
+											<div v-if="loadingDetail[props.row.kelas_id]">
+												<q-skeleton height="100px" />
+											</div>
+											<div v-else>
+												<div
+													v-if="nilaiDetail[props.row.kelas_id]?.length == 0"
+													class="text-italic text-negative"
+												>
+													Tidak ada data untuk ditampilkan!
+												</div>
+												<div v-else>
+													<q-markup-table flat dense class="bg-green-1" separator="cell">
+														<thead class="bg-green-2 text-weight-medium text-right">
+															<tr>
+																<td class="text-left" style="width: 80px">ID (Kode)</td>
+																<td class="text-left">Mata Pelajaran</td>
+																<td style="width: 50px">N-1</td>
+																<td style="width: 50px">N-2</td>
+																<td style="width: 50px">N-3</td>
+																<td style="width: 50px">N-4</td>
+																<td style="width: 65px">Rerata</td>
+															</tr>
+														</thead>
+														<tbody>
+															<tr
+																v-for="(item, index) in nilaiDetail[props.row.kelas_id]"
+																:key="index"
+															>
+																<td class="text-left">
+																	{{ item.id }}
+																</td>
+																<td class="text-left">
+																	{{ item.name }}
+																</td>
+																<td class="text-right">
+																	{{ item.nilai_1 }}
+																</td>
+																<td class="text-right">
+																	{{ item.nilai_2 }}
+																</td>
+																<td class="text-right">
+																	{{ item.nilai_3 }}
+																</td>
+																<td class="text-right">
+																	{{ item.nilai_4 }}
+																</td>
+																<td class="text-right">
+																	{{
+																		item.rerata
+																			? parseFloat(item.rerata).toFixed(1)
+																			: null
+																	}}
+																</td>
+															</tr>
+														</tbody>
+														<tfoot
+															class="bg-green-2 text-weight-bold text-right text-green-10"
+														>
+															<tr>
+																<td colspan="2" class="text-left">Rerata</td>
+																<td>
+																	{{
+																		hitungRataRata(
+																			nilaiDetail[props.row.kelas_id],
+																			'nilai_1',
+																		)
+																	}}
+																</td>
+																<td>
+																	{{
+																		hitungRataRata(
+																			nilaiDetail[props.row.kelas_id],
+																			'nilai_2',
+																		)
+																	}}
+																</td>
+																<td>
+																	{{
+																		hitungRataRata(
+																			nilaiDetail[props.row.kelas_id],
+																			'nilai_3',
+																		)
+																	}}
+																</td>
+																<td>
+																	{{
+																		hitungRataRata(
+																			nilaiDetail[props.row.kelas_id],
+																			'nilai_4',
+																		)
+																	}}
+																</td>
+																<td>
+																	{{
+																		hitungRataRata(
+																			nilaiDetail[props.row.kelas_id],
+																			'rerata',
+																		)
+																	}}
+																</td>
+															</tr>
+														</tfoot>
+													</q-markup-table>
+												</div>
+											</div>
+										</q-td>
+									</q-tr>
+								</template>
+							</q-table>
+						</div>
+					</q-card-section>
+				</q-card>
 			</q-card-section>
 		</q-card>
 	</q-page>

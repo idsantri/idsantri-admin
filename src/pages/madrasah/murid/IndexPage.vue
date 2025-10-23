@@ -5,7 +5,7 @@
 				<template #right>
 					<q-btn-dropdown flat dense dropdown-icon="more_vert" class="q-ml-sm" color="green-11">
 						<q-list>
-							<q-item v-close-popup to="/madrasah/kelas/kenaikan">
+							<q-item v-close-popup to="/madrasah/kenaikan-kelas">
 								<q-item-section>
 									<q-item-label>Kenaikan Kelas</q-item-label>
 								</q-item-section>

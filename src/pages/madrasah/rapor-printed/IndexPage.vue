@@ -1,21 +1,8 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card style="max-width: 1000px">
-			<q-card-section
-				class="q-pa-sm bg-green-8 text-green-11 text-subtitle1 flex"
-			>
-				Rapor (Printed)
-				<q-space />
-				<q-btn
-					no-caps
-					label="Kembali"
-					icon="reply"
-					dense
-					class="q-px-md"
-					outline
-					@click="$router.go(-1)"
-				/>
-			</q-card-section>
+			<CardHeader title="Rapor (Printed)" @onReload="loadData" />
+
 			<q-table
 				class="q-ma-sm"
 				:rows="rapor"
@@ -27,32 +14,14 @@
 			>
 				<template v-slot:top>
 					<div class="text-green-10">
-						<div class="text-subtitle1">
-							Daftar Rapor yang Sudah Dicetak
+						<div class="text-subtitle1">Daftar Rapor yang Sudah Dicetak</div>
+						<div class="text-caption text-italic" style="line-height: 1rem">
+							Hapus data berikut agar DATA RAPOR (Nilai Mapel, Nilai Ahwal, dan Absensi) tidak terkunci!
 						</div>
-						<div
-							class="text-caption text-italic"
-							style="line-height: 1rem"
-						>
-							Hapus data berikut agar DATA RAPOR (Nilai Mapel,
-							Nilai Ahwal, dan Absensi) tidak terkunci!
-						</div>
-						<div
-							class="text-overline q-mb-sm"
-							style="line-height: 1.5rem"
-						>
-							(Akses Admin)
-						</div>
+						<div class="text-overline q-mb-sm" style="line-height: 1.5rem">(Akses Admin)</div>
 					</div>
 					<q-space />
-					<q-input
-						outlined
-						dense
-						debounce="300"
-						color="primary"
-						placeholder="Cari"
-						v-model="filter"
-					>
+					<q-input outlined dense debounce="300" color="primary" placeholder="Cari" v-model="filter">
 						<template v-slot:append>
 							<q-icon name="search" />
 						</template>
@@ -61,42 +30,21 @@
 
 				<template v-slot:header="props">
 					<q-tr :props="props">
-						<q-th
-							v-for="col in props.cols"
-							:key="col.name"
-							:props="props"
-						>
+						<q-th v-for="col in props.cols" :key="col.name" :props="props">
 							{{ col.label }}
 						</q-th>
 						<q-th class="text-center">
-							<q-btn
-								icon="delete"
-								color="negative"
-								dense
-								flat
-								disable
-								title="Hapus"
-							/>
+							<q-btn icon="delete" color="negative" dense flat disable title="Hapus" />
 						</q-th>
 					</q-tr>
 				</template>
 				<template v-slot:body="props">
 					<q-tr :props="props">
-						<q-td
-							v-for="col in props.cols"
-							:key="col.name"
-							:props="props"
-						>
+						<q-td v-for="col in props.cols" :key="col.name" :props="props">
 							{{ col.value }}
 						</q-td>
 						<q-td class="text-center">
-							<q-btn
-								icon="sym_o_delete"
-								color="negative"
-								dense
-								flat
-								@click="deleteRow(props.row.id)"
-							/>
+							<q-btn icon="sym_o_delete" color="negative" dense flat @click="deleteRow(props.row.id)" />
 						</q-td>
 					</q-tr>
 				</template>
@@ -113,7 +61,7 @@ const rapor = ref([]);
 const loading = ref(false);
 const filter = ref('');
 
-async function getData() {
+async function loadData() {
 	const data = await apiGet({
 		endPoint: 'rapor/setting',
 		loading,
@@ -122,12 +70,12 @@ async function getData() {
 }
 
 onMounted(async () => {
-	await getData();
+	await loadData();
 });
 
 async function deleteRow(id) {
 	const del = await apiDelete({ endPoint: `rapor/${id}`, loading });
-	if (del) await getData();
+	if (del) await loadData();
 }
 
 const columns = [

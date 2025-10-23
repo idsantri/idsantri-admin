@@ -1,28 +1,29 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card>
-			<q-card-section class="q-pa-sm bg-green-8 text-green-11 flex">
-				<div tag="h1" class="text-subtitle1">Upload Nilai</div>
-				<q-space />
-				<q-btn
-					label="Kembali"
-					to="/madrasah/nilai-mapel"
-					dense
-					outline
-					no-caps
-					icon="arrow_back"
-					class="q-px-sm q-mr-md"
-				/>
-				<q-btn
-					label="Download"
-					to="/madrasah/nilai-mapel/download"
-					dense
-					outline
-					no-caps
-					icon="download"
-					class="q-px-sm"
-				/>
-			</q-card-section>
+			<CardHeader title="Upload Nilai" :show-reload="false">
+				<template #right>
+					<q-btn
+						label="Nilai Mapel"
+						to="/madrasah/nilai-mapel"
+						dense
+						outline
+						no-caps
+						class="q-px-sm q-ml-sm"
+						icon="show_chart"
+					/>
+					<q-btn
+						label="Download"
+						to="/madrasah/nilai-mapel/download"
+						dense
+						outline
+						no-caps
+						icon="upload"
+						class="q-px-sm q-ml-sm"
+					/>
+				</template>
+			</CardHeader>
+
 			<q-card-section class="no-padding">
 				<q-stepper
 					v-model="step"
@@ -53,23 +54,14 @@
 							style="max-width: 500px"
 						>
 							<template v-slot:prepend>
-								<q-icon
-									name="cloud_upload"
-									@click.stop.prevent
-								/>
+								<q-icon name="cloud_upload" @click.stop.prevent />
 							</template>
 							<template v-slot:after>
-								<q-icon
-									name="close"
-									@click.stop.prevent="inputFile = null"
-									class="cursor-pointer"
-								/>
+								<q-icon name="close" @click.stop.prevent="inputFile = null" class="cursor-pointer" />
 							</template>
 
 							<template v-slot:hint>
-								<span class="text-green text-italic">
-									Hanya membaca sheet pertama
-								</span>
+								<span class="text-green text-italic"> Hanya membaca sheet pertama </span>
 							</template>
 						</q-file>
 					</q-step>
@@ -98,23 +90,14 @@
 										:props="props"
 										class="text-bold"
 										:title="
-											mapel.find(
-												(m) =>
-													m.id.toLowerCase() ==
-													col.label.toLowerCase(),
-											)?.name || ''
+											mapel.find((m) => m.id.toLowerCase() == col.label.toLowerCase())?.name || ''
 										"
 									>
 										{{ col.label.toLowerCase() }}
 										<q-icon
 											v-if="
-												mapel.find(
-													(m) =>
-														m.id.toLowerCase() ==
-														col.label.toLowerCase(),
-												) ||
-												col.label.toLowerCase() ==
-													'kelas_id'
+												mapel.find((m) => m.id.toLowerCase() == col.label.toLowerCase()) ||
+												col.label.toLowerCase() == 'kelas_id'
 											"
 											name="check_circle"
 											color="green"
@@ -126,21 +109,13 @@
 						</q-table>
 					</q-step>
 
-					<q-step
-						:name="3"
-						title="Lengkapi Data"
-						caption="Langkah Terakhir"
-						icon="article"
-					>
+					<q-step :name="3" title="Lengkapi Data" caption="Langkah Terakhir" icon="article">
 						<q-separator class="q-mb-md" />
 						<div class="row">
 							<div class="col-sm-6 col-xs-12">
 								<q-card bordered flat class="q-ma-xs">
 									<q-card-section>
-										<q-form
-											style="max-width: 500px"
-											@submit.prevent="onSubmit"
-										>
+										<q-form style="max-width: 500px" @submit.prevent="onSubmit">
 											<q-select
 												dense
 												class="q-mt-sm"
@@ -171,11 +146,7 @@
 												required
 												type="number"
 												hint="Kesalahan karena hal ini berakibat fatal"
-												:rules="[
-													(val) =>
-														(val > 0 && val < 5) ||
-														'antara 1 s.d. 4',
-												]"
+												:rules="[(val) => (val > 0 && val < 5) || 'antara 1 s.d. 4']"
 											/>
 											<q-btn
 												type="submit"
@@ -200,14 +171,14 @@
 											<li>Ujian Ke-?</li>
 										</ul>
 										<br />
-										Kesalahan karena hal ini akan susah
-										diperbaiki.
+										Kesalahan karena hal ini akan susah diperbaiki.
 									</q-card-section>
 								</q-card>
 							</div>
 						</div>
 					</q-step>
 				</q-stepper>
+				<CardLoading :showing="loading" />
 			</q-card-section>
 		</q-card>
 	</q-page>
@@ -215,9 +186,8 @@
 <script setup>
 import apiGet from 'src/api/api-get';
 import apiPost from 'src/api/api-post';
-import loadingStore from 'src/stores/loading-store';
 import { notifyWarning } from 'src/utils/notify';
-import { onMounted, ref, toRefs, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { read, utils } from 'xlsx';
 
 const input = ref({ category: 'ujian' });
@@ -226,12 +196,12 @@ const nilaiPivot = ref([]);
 const mapelIds = ref([]);
 const mapel = ref([{}]);
 const step = ref(1);
-const { loadingMain } = toRefs(loadingStore());
+const loading = ref(false);
 
 onMounted(async () => {
 	const data = await apiGet({
 		endPoint: 'mapel',
-		loading: loadingMain,
+		loading: loading,
 	});
 	mapel.value = data.mapel;
 	const ids = data.mapel.map((item) => item.id);
@@ -257,9 +227,7 @@ const handleFileChange = (event) => {
 			step.value = 2;
 		} else {
 			notifyWarning('Data tidak dapat diproses');
-			notifyWarning(
-				'Pastikan baris pertama adalah judul kolom dan baris berikutnya adalah konten data',
-			);
+			notifyWarning('Pastikan baris pertama adalah judul kolom dan baris berikutnya adalah konten data');
 		}
 		// console.log(nilaiPivot.value);
 		// console.log(nilaiMapel.value);
@@ -270,9 +238,8 @@ const handleFileChange = (event) => {
 
 function validateData(dataPivot, mapelIds) {
 	return (
-		mapelIds.some((mapelId) =>
-			Object.prototype.hasOwnProperty.call(dataPivot[0], mapelId),
-		) && Object.prototype.hasOwnProperty.call(dataPivot[0], 'kelas_id')
+		mapelIds.some((mapelId) => Object.prototype.hasOwnProperty.call(dataPivot[0], mapelId)) &&
+		Object.prototype.hasOwnProperty.call(dataPivot[0], 'kelas_id')
 	);
 }
 
@@ -304,7 +271,7 @@ async function onSubmit() {
 	const post = await apiPost({
 		endPoint: 'nilai-mapel',
 		data: { data: nilai },
-		loading: loadingMain,
+		loading: loading,
 	});
 	if (post) {
 		step.value = 1;

@@ -1,31 +1,22 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card>
-			<q-card-section class="bg-green-8 text-green-11 q-px-sm q-py-none">
-				<q-toolbar class="no-padding no-margin">
-					<q-toolbar-title class="text-subtitle1">
-						Daftar Mata Pelajaran
-					</q-toolbar-title>
+			<CardHeader title="Daftar Mata Pelajaran" @on-reload="loadData(tingkatId)" :show-reload="!!tingkatId">
+				<template #right>
 					<q-btn
-						label="Nilai Mapel"
-						to="/madrasah/nilai-mapel"
-						dense
-						outline
-						no-caps
-						icon="arrow_back"
-						class="q-px-sm q-mr-md"
-					/>
-					<q-btn
-						class="text-green-10"
+						class="text-green-10 q-px-sm q-ml-sm"
 						label="Baru"
 						icon="add"
 						no-caps
 						color="green-11"
 						@click="addNew"
+						dense
 					/>
-				</q-toolbar>
-			</q-card-section>
+				</template>
+			</CardHeader>
+
 			<q-card-actions align="right" class="bg-green-1">
+				<div class="text-subtitle2 q-mr-sm text-italic">Pilih Tingkat Pendidikan:</div>
 				<InputSelectTingkatPendidikan
 					style="width: 300px"
 					v-model="tingkatId"
@@ -53,10 +44,7 @@
 							</td>
 						</tr>
 						<tr v-else-if="mapel.length == 0">
-							<td
-								colspan="7"
-								class="text-center text-green-10 text-italic"
-							>
+							<td colspan="7" class="text-center text-green-10 text-italic">
 								&mdash; Tidak ada data untuk ditampilkan &mdash;
 								<br />
 								&mdash; Pilih Tingkat Pendidikan &mdash;
@@ -70,19 +58,10 @@
 							<td>{{ item.alias }}</td>
 							<td>{{ item.category }}</td>
 							<td>
-								<q-toggle
-									:model-value="item.show ? true : false"
-									color="green"
-									disable
-								/>
+								<q-toggle :model-value="item.show ? true : false" color="green" disable />
 							</td>
 							<td class="text-center">
-								<q-btn
-									icon="edit"
-									flat
-									color="green"
-									@click="onEdit(item)"
-								/>
+								<q-btn icon="edit" flat color="green" @click="onEdit(item)" />
 							</td>
 						</tr>
 					</tbody>
@@ -134,7 +113,7 @@ function onEdit(item) {
 }
 
 function addNew() {
-	mapelObj.value = {};
+	mapelObj.value = { tingkat_id: tingkatId.value };
 	crudShow.value = true;
 }
 </script>

@@ -19,10 +19,10 @@ export default [
 		],
 	},
 
-	// madrasah/kelas/kenaikan
+	// madrasah/kenaikan-kelas
 	{
-		path: 'kelas/kenaikan',
-		component: (): Component => import('src/pages/madrasah/kelas/kenaikan/KenaikanKelas.vue'),
+		path: 'kenaikan-kelas',
+		component: (): Component => import('src/pages/madrasah/kenaikan-kelas/KenaikanKelas.vue'),
 	},
 
 	// madrasah/kelas/:id

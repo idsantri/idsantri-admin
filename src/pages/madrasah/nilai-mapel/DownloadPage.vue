@@ -1,28 +1,29 @@
 <template lang="">
 	<q-page class="q-pa-sm">
 		<q-card>
-			<q-card-section class="q-pa-sm bg-green-8 text-green-11 flex">
-				<div tag="h1" class="text-subtitle1">Download Nilai</div>
-				<q-space />
-				<q-btn
-					label="Kembali"
-					to="/madrasah/nilai-mapel"
-					dense
-					outline
-					no-caps
-					icon="arrow_back"
-					class="q-px-sm q-mr-md"
-				/>
-				<q-btn
-					label="Upload"
-					to="/madrasah/nilai-mapel/upload"
-					dense
-					outline
-					no-caps
-					icon="upload"
-					class="q-px-sm"
-				/>
-			</q-card-section>
+			<CardHeader title="Download Nilai" :show-reload="false">
+				<template #right>
+					<q-btn
+						label="Nilai Mapel"
+						to="/madrasah/nilai-mapel"
+						dense
+						outline
+						no-caps
+						class="q-px-sm q-ml-sm"
+						icon="show_chart"
+					/>
+					<q-btn
+						label="Upload"
+						to="/madrasah/nilai-mapel/upload"
+						dense
+						outline
+						no-caps
+						icon="upload"
+						class="q-px-sm q-ml-sm"
+					/>
+				</template>
+			</CardHeader>
+
 			<q-card-section class="q-pa-sm">
 				<q-form @submit.prevent="onSubmit">
 					<q-card style="max-width: 425px">
@@ -97,11 +98,7 @@
 								v-model="input.ujian_ke"
 								required
 								type="number"
-								:rules="[
-									(val) =>
-										(val > 0 && val < 5) ||
-										'antara 1 s.d. 4',
-								]"
+								:rules="[(val) => (val > 0 && val < 5) || 'antara 1 s.d. 4']"
 							/>
 						</q-card-section>
 						<q-card-actions class="bg-green-6" align="right">
@@ -116,6 +113,7 @@
 								dense
 							/>
 						</q-card-actions>
+						<CardLoading :showing="loadingForm" />
 					</q-card>
 				</q-form>
 			</q-card-section>
@@ -123,14 +121,13 @@
 	</q-page>
 </template>
 <script setup>
-import { onMounted, ref, toRefs, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import apiGet from 'src/api/api-get';
 import { getListsCustom } from 'src/api/api-get-lists';
 import listsMadrasahStore from 'src/stores/lists-madrasah-store';
-import loadingStore from 'src/stores/loading-store';
 import { notifyWarning } from 'src/utils/notify';
 
-const { loadingMain } = toRefs(loadingStore());
+const loadingForm = ref(false);
 const input = ref({});
 const loading = ref([]);
 const lists = ref([]);
@@ -177,7 +174,7 @@ async function onSubmit() {
 	const params = JSON.parse(JSON.stringify(input.value));
 	const data = await apiGet({
 		endPoint: 'export/nilai-mapel',
-		loading: loadingMain,
+		loading: loadingForm,
 		params,
 	});
 
@@ -222,10 +219,7 @@ watch(
 	async (newModel) => {
 		input.value.kelas = '';
 		if (newModel) {
-			const cekKelas = listsMadrasahStore().getKelasByTingkatAndTahun(
-				newModel,
-				input.value.th_ajaran_h,
-			);
+			const cekKelas = listsMadrasahStore().getKelasByTingkatAndTahun(newModel, input.value.th_ajaran_h);
 			if (cekKelas.length) {
 				lists.value['kelas'] = cekKelas;
 			} else {
@@ -240,11 +234,7 @@ watch(
 					sort: 'asc',
 				});
 
-				listsMadrasahStore().addKelasToTingkatByTahun(
-					data,
-					newModel,
-					input.value.th_ajaran_h,
-				);
+				listsMadrasahStore().addKelasToTingkatByTahun(data, newModel, input.value.th_ajaran_h);
 				lists.value['kelas'] = data;
 			}
 		} else {
