@@ -1,94 +1,71 @@
 <template lang="">
-	<q-page class="q-pa-sm">
-		<q-card>
-			<q-card-section class="bg-green-8 text-green-11 q-px-sm q-py-none">
-				<q-toolbar class="no-padding no-margin">
-					<q-toolbar-title class="text-subtitle1">
-						Daftar Mata Pelajaran
-					</q-toolbar-title>
-					<q-btn
-						label="Nilai Mapel"
-						to="/madrasah/nilai-mapel"
-						dense
-						outline
-						no-caps
-						icon="arrow_back"
-						class="q-px-sm q-mr-md"
-					/>
-					<q-btn
-						class="text-green-10"
-						label="Baru"
-						icon="add"
-						no-caps
-						color="green-11"
-						@click="addNew"
-					/>
-				</q-toolbar>
-			</q-card-section>
-			<q-card-actions align="right" class="bg-green-1">
-				<InputSelectTingkatPendidikan
-					style="width: 300px"
-					v-model="tingkatId"
-					label="Tingkat Pendidikan"
-					:with-hint="false"
+	<CardPage>
+		<CardHeader title="Daftar Mata Pelajaran" @on-reload="loadData(tingkatId)" :show-reload="!!tingkatId">
+			<template #buttons>
+				<q-btn
+					class="text-green-10 q-px-sm"
+					label="Baru"
+					icon="add"
+					no-caps
+					color="green-11"
+					@click="addNew"
+					dense
 				/>
-			</q-card-actions>
-			<q-card-section class="q-pa-sm">
-				<q-markup-table flat>
-					<thead>
-						<tr class="text-left">
-							<th>No</th>
-							<th>Kode/ID</th>
-							<th>Mata Pelajaran</th>
-							<th>Alias</th>
-							<th>Status Fan</th>
-							<th>Tampil</th>
-							<th class="text-center">Edit</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-if="loading">
-							<td colspan="7">
-								<q-skeleton height="50px" />
-							</td>
-						</tr>
-						<tr v-else-if="mapel.length == 0">
-							<td
-								colspan="7"
-								class="text-center text-green-10 text-italic"
-							>
-								&mdash; Tidak ada data untuk ditampilkan &mdash;
-								<br />
-								&mdash; Pilih Tingkat Pendidikan &mdash;
-							</td>
-						</tr>
+			</template>
+		</CardHeader>
 
-						<tr v-else v-for="item in mapel" :key="item.id">
-							<td>{{ item.sequence }}</td>
-							<td>{{ item.id }}</td>
-							<td>{{ item.name }}</td>
-							<td>{{ item.alias }}</td>
-							<td>{{ item.category }}</td>
-							<td>
-								<q-toggle
-									:model-value="item.show ? true : false"
-									color="green"
-									disable
-								/>
-							</td>
-							<td class="text-center">
-								<q-btn
-									icon="edit"
-									flat
-									color="green"
-									@click="onEdit(item)"
-								/>
-							</td>
-						</tr>
-					</tbody>
-				</q-markup-table>
-			</q-card-section>
-		</q-card>
+		<q-card-actions align="right" class="bg-green-1">
+			<div class="text-subtitle2 q-mr-sm text-italic">Pilih Tingkat Pendidikan:</div>
+			<InputSelectTingkatPendidikan
+				style="width: 300px"
+				v-model="tingkatId"
+				label="Tingkat Pendidikan"
+				:with-hint="false"
+			/>
+		</q-card-actions>
+		<q-card-section class="q-pa-sm">
+			<q-markup-table flat>
+				<thead>
+					<tr class="text-left">
+						<th>No</th>
+						<th>Kode/ID</th>
+						<th>Mata Pelajaran</th>
+						<th>Alias</th>
+						<th>Status Fan</th>
+						<th>Tampil</th>
+						<th class="text-center">Edit</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-if="loading">
+						<td colspan="7">
+							<q-skeleton height="50px" />
+						</td>
+					</tr>
+					<tr v-else-if="mapel.length == 0">
+						<td colspan="7" class="text-center text-green-10 text-italic">
+							&mdash; Tidak ada data untuk ditampilkan &mdash;
+							<br />
+							&mdash; Pilih Tingkat Pendidikan &mdash;
+						</td>
+					</tr>
+
+					<tr v-else v-for="item in mapel" :key="item.id">
+						<td>{{ item.sequence }}</td>
+						<td>{{ item.id }}</td>
+						<td>{{ item.name }}</td>
+						<td>{{ item.alias }}</td>
+						<td>{{ item.category }}</td>
+						<td>
+							<q-toggle :model-value="item.show ? true : false" color="green" disable />
+						</td>
+						<td class="text-center">
+							<q-btn icon="edit" flat color="green" @click="onEdit(item)" />
+						</td>
+					</tr>
+				</tbody>
+			</q-markup-table>
+		</q-card-section>
 		<!-- <pre>{{ mapel }}</pre> -->
 		<q-dialog v-model="crudShow">
 			<MapelForm
@@ -97,7 +74,7 @@
 				@success-delete="(val) => loadData(val.tingkat_id)"
 			/>
 		</q-dialog>
-	</q-page>
+	</CardPage>
 </template>
 <script setup>
 import { ref, watch } from 'vue';
@@ -134,7 +111,7 @@ function onEdit(item) {
 }
 
 function addNew() {
-	mapelObj.value = {};
+	mapelObj.value = { tingkat_id: tingkatId.value };
 	crudShow.value = true;
 }
 </script>

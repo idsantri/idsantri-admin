@@ -2,16 +2,8 @@
 	<q-card class="">
 		<q-card-section class="q-pa-sm bg-green-7">
 			<q-toolbar class="no-padding text-green-11" style="min-height: 0">
-				<q-toolbar-title class="text-subtitle1">
-					Kelas Baru
-				</q-toolbar-title>
-				<q-btn
-					icon="sync"
-					dense
-					flat
-					class="q-mr-xs"
-					@click="resetRight"
-				/>
+				<q-toolbar-title class="text-subtitle1"> Kelas Baru </q-toolbar-title>
+				<q-btn icon="sync" dense flat class="q-mr-xs" @click="resetRight" />
 			</q-toolbar>
 		</q-card-section>
 		<q-card-section class="q-pa-sm">
@@ -39,13 +31,7 @@
 						<th class="text-left">Kelas*</th>
 						<th class="text-left">Keterangan</th>
 						<th class="text-right">
-							<q-btn
-								icon="edit"
-								dense
-								flat
-								disable
-								color="green-10"
-							/>
+							<q-btn icon="edit" dense flat disable color="green-10" />
 						</th>
 					</tr>
 				</thead>
@@ -73,13 +59,7 @@
 							{{ item.new_keterangan || '-' }}
 						</td>
 						<td class="text-right">
-							<q-btn
-								icon="edit"
-								dense
-								flat
-								color="green-10"
-								@click="edit(item)"
-							/>
+							<q-btn icon="edit" dense flat color="green-10" @click="edit(item)" />
 						</td>
 					</tr>
 				</tbody>
@@ -92,8 +72,7 @@
 		<q-card-actions class="bg-green-1">
 			<div class="text-caption text-italic">
 				Total: {{ muridTrue.length }} murid<br />
-				Pastikan data sudah benar-benar valid (kesalahan akan sulit
-				diperbaiki).
+				Pastikan data sudah benar-benar valid (kesalahan akan sulit diperbaiki).
 			</div>
 			<q-space />
 			<div>
@@ -162,15 +141,12 @@ async function onSubmit() {
 	// console.log(muridTrue.value);
 	let msg = '';
 	msg += '<hr/>';
-	msg +=
-		'<p style="margin:0">Tahun Ajaran Baru: <strong>' +
-		muridTrue.value[0].new_th_ajaran_h +
-		'</strong></p>';
+	msg += '<p style="margin:0">Tahun Ajaran Baru: <strong>' + muridTrue.value[0].new_th_ajaran_h + '</strong></p>';
 	msg += '<hr/>';
 	msg += 'Pastikan Anda sudah meneliti dengan seksama:';
 	msg += `<ul style="margin:0">
-		<li>Tingkat Pendidikan</li>
-		<li>Kelas</li>
+		<li>— Tingkat Pendidikan</li>
+		<li>— Kelas</li>
 		</ul>
 		`;
 	msg += '<strong>Pada setiap barisnya!</strong>';

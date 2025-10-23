@@ -3,8 +3,7 @@
 		<div class="flex justify-between items-center q-mb-sm">
 			<div>
 				<div class="text-italic text-weight-light">
-					Teks untuk ditampilkan di halaman beranda Aplikasi Wali
-					Santri
+					Teks untuk ditampilkan di halaman beranda Aplikasi Wali Santri
 				</div>
 			</div>
 			<q-btn
@@ -55,15 +54,7 @@
 							fixedLabel: true,
 							fixedIcon: true,
 							list: 'no-icons',
-							options: [
-								'size-1',
-								'size-2',
-								'size-3',
-								'size-4',
-								'size-5',
-								'size-6',
-								'size-7',
-							],
+							options: ['size-1', 'size-2', 'size-3', 'size-4', 'size-5', 'size-6', 'size-7'],
 						},
 						'removeFormat',
 					],
@@ -75,16 +66,13 @@
 		<div v-else>
 			<q-separator class="q-mb-sm" />
 
-			<div v-if="loading">
-				<q-spinner-cube size="4em" class="flex q-ma-lg q-mx-auto" />
-			</div>
-
-			<div v-if="!loading && profile" class="">
+			<div v-if="profile" class="">
 				<span v-html="profile"> </span>
 			</div>
-			<div v-if="!loading && !profile">
+			<div v-else>
 				<div class="">Belum diatur</div>
 			</div>
+			<CardLoading :showing="loading" />
 		</div>
 	</div>
 </template>

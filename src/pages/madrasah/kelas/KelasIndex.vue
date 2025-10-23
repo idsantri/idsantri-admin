@@ -1,115 +1,95 @@
 <template lang="">
-	<q-page class="q-pa-sm">
-		<q-card class="">
-			<q-card-section class="bg-green-8 text-green-11 q-pa-sm">
-				<div class="flex items-center">
-					<div class="text-subtitle1">Data Murid</div>
+	<CardPage>
+		<CardHeader title="Data Murid" @onReload="loadData" />
+
+		<q-card-section class="no-padding">
+			<div class="row" style="max-width: 1400px">
+				<div class="col-12 col-md-6 q-pa-sm">
+					<q-card bordered flat>
+						<!-- santri -->
+						<CardSantri :id="kelas.santri_id" @loaded="(res) => (santri = res)" />
+					</q-card>
+					<q-card class="q-mt-sm" bordered flat>
+						<!-- kelas -->
+						<q-card-section class="q-pa-sm">
+							<q-toolbar class="bg-green-1">
+								<q-toolbar-title class="text-subtitle1"> Data Kelas </q-toolbar-title>
+								<q-btn class="q-px-sm q-mr-sm" outline dense @click="loadData" icon="sync" no-caps />
+								<q-btn
+									class="q-px-md"
+									outline
+									dense
+									icon-right="edit"
+									@click="crudShow = true"
+									label="Edit"
+									no-caps
+								/>
+							</q-toolbar>
+							<q-markup-table flat>
+								<tbody>
+									<tr>
+										<td class="text-italic">Tahun Ajaran</td>
+										<td>
+											{{ kelas.th_ajaran_h + ' | ' + kelas.th_ajaran_m }}
+										</td>
+									</tr>
+									<tr>
+										<td class="text-italic">Tingkat</td>
+										<td>{{ kelas.tingkat }}</td>
+									</tr>
+									<tr>
+										<td class="text-italic">Kelas</td>
+										<td>{{ kelas.kelas }}</td>
+									</tr>
+									<tr>
+										<td class="text-italic">Nomor Absen</td>
+										<td>{{ kelas.no_absen }}</td>
+									</tr>
+									<tr>
+										<td class="text-italic">Aktif</td>
+										<td>
+											<q-toggle
+												v-model="kelas.aktif"
+												color="green"
+												@update:model-value="updateAktif"
+												:true-value="1"
+												:false-value="0"
+											/>
+										</td>
+									</tr>
+									<tr>
+										<td class="text-italic">Keterangan</td>
+										<td>{{ kelas.keterangan }}</td>
+									</tr>
+								</tbody>
+							</q-markup-table>
+							<CardLoading :showing="spinner" />
+						</q-card-section>
+					</q-card>
 				</div>
-			</q-card-section>
-			<q-card-section class="no-padding">
-				<div class="row" style="max-width: 1400px">
-					<div class="col-12 col-md-6 q-pa-sm">
-						<q-card bordered flat>
-							<!-- santri -->
-							<CardSantri :id="kelas.santri_id" @loaded="(res) => (santri = res)" />
-						</q-card>
-						<q-card class="q-mt-sm" bordered flat>
-							<!-- kelas -->
-							<q-card-section class="q-pa-sm">
-								<q-toolbar class="bg-green-1">
-									<q-toolbar-title class="text-subtitle1"> Data Kelas </q-toolbar-title>
-									<q-btn
-										class="q-px-sm q-mr-sm"
-										outline
-										dense
-										@click="loadData"
-										icon="sync"
-										no-caps
-									/>
-									<q-btn
-										class="q-px-md"
-										outline
-										dense
-										icon-right="edit"
-										@click="crudShow = true"
-										label="Edit"
-										no-caps
-									/>
-								</q-toolbar>
-								<div v-if="spinner" class="q-pa-md">
-									<q-spinner-cube color="green-12" size="8em" class="flex q-mx-auto" />
-								</div>
 
-								<div v-else>
-									<q-markup-table flat>
-										<tbody>
-											<tr>
-												<td class="text-italic">Tahun Ajaran</td>
-												<td>
-													{{ kelas.th_ajaran_h + ' | ' + kelas.th_ajaran_m }}
-												</td>
-											</tr>
-											<tr>
-												<td class="text-italic">Tingkat</td>
-												<td>{{ kelas.tingkat }}</td>
-											</tr>
-											<tr>
-												<td class="text-italic">Kelas</td>
-												<td>{{ kelas.kelas }}</td>
-											</tr>
-											<tr>
-												<td class="text-italic">Nomor Absen</td>
-												<td>{{ kelas.no_absen }}</td>
-											</tr>
-											<tr>
-												<td class="text-italic">Aktif</td>
-												<td>
-													<q-toggle
-														v-model="kelas.aktif"
-														color="green"
-														@update:model-value="updateAktif"
-														:true-value="1"
-														:false-value="0"
-													/>
-												</td>
-											</tr>
-											<tr>
-												<td class="text-italic">Keterangan</td>
-												<td>{{ kelas.keterangan }}</td>
-											</tr>
-										</tbody>
-									</q-markup-table>
-								</div>
-							</q-card-section>
-						</q-card>
-					</div>
-
-					<!-- router view -->
-					<div class="col-12 col-md-6 q-pa-sm">
-						<q-card bordered flat>
-							<q-tabs
-								no-caps
-								outside-arrows
-								mobile-arrows
-								class="bg-green-7 text-green-3"
-								indicator-color="green-11"
-								active-color="green-11"
-							>
-								<q-route-tab
-									name="riwayat"
-									label="Riwayat"
-									:to="`/madrasah/kelas/${kelas.id}/riwayat`"
-								/>
-								<q-route-tab name="izin" label="Izin" :to="`/madrasah/kelas/${kelas.id}/izin`" />
-								<q-route-tab
-									name="nilai"
-									label="Nilai Mapel"
-									:to="`/madrasah/kelas/${kelas.id}/nilai-mapel`"
-								/>
-							</q-tabs>
-							<q-card-section class="q-pa-sm" :key="keyRoute">
-								<router-view :key="$route.fullPath" :santri_id="kelas.santri_id" />
-								<!-- <router-view v-slot="{ Component }">
+				<!-- router view -->
+				<div class="col-12 col-md-6 q-pa-sm">
+					<q-card bordered flat>
+						<q-tabs
+							no-caps
+							outside-arrows
+							mobile-arrows
+							class="bg-green-7 text-green-3"
+							indicator-color="green-11"
+							active-color="green-11"
+						>
+							<q-route-tab name="riwayat" label="Riwayat" :to="`/madrasah/kelas/${kelas.id}/riwayat`" />
+							<q-route-tab name="izin" label="Izin" :to="`/madrasah/kelas/${kelas.id}/izin`" />
+							<q-route-tab
+								name="nilai"
+								label="Nilai Mapel"
+								:to="`/madrasah/kelas/${kelas.id}/nilai-mapel`"
+							/>
+						</q-tabs>
+						<q-card-section class="q-pa-sm" :key="keyRoute">
+							<router-view :key="$route.fullPath" :santri_id="kelas.santri_id" />
+							<!-- <router-view v-slot="{ Component }">
 									<transition name="fade" mode="out-in">
 										<component
 											:is="Component"
@@ -118,12 +98,11 @@
 										/>
 									</transition>
 								</router-view> -->
-							</q-card-section>
-						</q-card>
-					</div>
+						</q-card-section>
+					</q-card>
 				</div>
-			</q-card-section>
-		</q-card>
+			</div>
+		</q-card-section>
 		<q-dialog v-model="crudShow">
 			<KelasForm
 				:data="kelas"
@@ -136,7 +115,7 @@
 				@success-delete="$router.go(-1)"
 			/>
 		</q-dialog>
-	</q-page>
+	</CardPage>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';

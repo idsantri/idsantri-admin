@@ -1,11 +1,9 @@
 <template lang="">
-	<q-card>
+	<q-card flat bordered>
 		<q-card-section class="q-px-sm q-py-sm bg-green-11">
 			<q-toolbar class="no-padding" style="min-height: 0">
 				<q-toolbar-title class="text-subtitle1">
-					<div class="text-subtitle2 text-weight-bold">
-						Filter Tanggal
-					</div>
+					<div class="text-subtitle2 text-weight-bold">Filter Tanggal</div>
 				</q-toolbar-title>
 				<slot></slot>
 			</q-toolbar>
@@ -65,20 +63,11 @@ function sendEmit() {
 	const display = () => {
 		let text = '';
 		if (startDate.value)
-			text +=
-				' ➡️ <em>dari tanggal:</em> <strong>' +
-				formatDateFull(startDate.value) +
-				'</strong>';
+			text += ' ➡️ <em>dari tanggal:</em> <strong>' + formatDateFull(startDate.value) + '</strong>';
 		if (endDate.value)
-			text +=
-				' ➡️ <em>sampai tanggal:</em> <strong>' +
-				formatDateFull(endDate.value) +
-				'</strong>';
+			text += ' ➡️ <em>sampai tanggal:</em> <strong>' + formatDateFull(endDate.value) + '</strong>';
 
-		return (
-			text ||
-			'<div class="text-green-13 text-italic">Tentukan filter!</div>'
-		);
+		return text || '<div class="text-green-13 text-italic">Tentukan filter!</div>';
 	};
 
 	const data = {

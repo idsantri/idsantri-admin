@@ -1,20 +1,25 @@
 <template lang="">
-	<q-page class="">
+	<CardPage>
+		<CardHeader title="Riwayat Izin" :show-reload="false" />
 		<div class="row" style="max-width: 1200px">
 			<div class="col-xs-12 col-sm-6">
-				<CardSantri class="q-ma-sm" :id="params.santri_id" />
+				<div class="q-ma-sm">
+					<CardSantri :id="params.santri_id" />
+				</div>
 			</div>
 
 			<div class="col-xs-12 col-sm-6">
-				<IzinRiwayat class="q-ma-sm" :santri_id="santri_id" />
+				<div class="q-ma-sm">
+					<IzinRiwayat :santri_id="santri_id" />
+				</div>
 			</div>
 		</div>
-	</q-page>
+	</CardPage>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import IzinRiwayat from './IzinRiwayat.vue';
+import IzinRiwayat from './part/IzinRiwayat.vue';
 import CardSantri from 'components/santri/CardSantri.vue';
 
 const { params } = useRoute();

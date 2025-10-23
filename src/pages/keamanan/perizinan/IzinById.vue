@@ -1,192 +1,162 @@
 <template lang="">
-	<q-page class="">
+	<CardPage>
+		<CardHeader title="Detail Izin" :show-reload="false" />
 		<div class="row" style="max-width: 1200px">
 			<div class="col-xs-12 col-sm-6">
-				<q-card class="q-ma-sm">
-					<q-card-section class="bg-green-8 no-padding">
-						<q-toolbar class="no-padding no-margin">
-							<q-toolbar-title
-								class="text-subtitle1 q-ml-sm text-green-11"
-							>
-								Data Perizinan
-							</q-toolbar-title>
-							<q-btn
-								dense
-								class="q-px-md q-mr-sm text-green-10"
-								label="Cetak"
-								no-caps=""
-								icon="print"
-								color="green-11"
-								@click="print"
-							/>
-							<q-btn
-								dense
-								class="q-px-md q-mr-sm text-green-10"
-								label="Edit"
-								no-caps=""
-								icon="edit"
-								color="green-11"
-								@click="crudShow = true"
-							/>
-						</q-toolbar>
-					</q-card-section>
-					<q-card-section class="q-pa-sm" v-if="izin">
-						<CardSantriSimple :id="izin.santri_id" />
-						<q-card bordered flat class="q-mt-sm">
-							<q-card-section
-								class="q-pa-sm text-subtitle1 bg-green-11 flex"
-							>
-								Data Izin
-								<q-space />
+				<div class="q-ma-sm">
+					<q-card class="" flat bordered>
+						<q-card-section class="bg-green-7 no-padding">
+							<q-toolbar class="no-padding no-margin">
+								<q-btn
+									icon="sync"
+									no-caps
+									@click="loadData"
+									flat
+									dense
+									class="q-pl-sm"
+									color="green-11"
+									title="Muat ulang"
+								/>
+								<q-toolbar-title class="text-subtitle1 text-green-11 q-px-none">
+									Data Perizinan
+								</q-toolbar-title>
 								<q-btn
 									dense
-									label="Kembali"
-									icon="manage_history"
-									no-caps
-									class="q-px-sm bg-green-10 text-green-12"
-									@click="showKembali = true"
+									class="q-px-md q-mr-sm text-green-10"
+									label="Cetak"
+									no-caps=""
+									icon="print"
+									color="green-11"
+									@click="print"
 								/>
-							</q-card-section>
-
-							<q-card-section class="q-pa-sm">
-								<div v-if="loading">
-									<q-spinner-cube
-										color="green-12"
-										size="8em"
-										class="flex q-ma-lg q-mx-auto"
+								<q-btn
+									dense
+									class="q-px-md q-mr-sm text-green-10"
+									label="Edit"
+									no-caps=""
+									icon="edit"
+									color="green-11"
+									@click="crudShow = true"
+								/>
+							</q-toolbar>
+						</q-card-section>
+						<q-card-section class="q-pa-sm" v-if="izin">
+							<CardSantriSimple :id="izin.santri_id" />
+							<q-card bordered flat class="q-mt-sm">
+								<q-card-section class="q-pa-sm text-subtitle1 bg-green-11 flex">
+									Data Izin
+									<q-space />
+									<q-btn
+										dense
+										label="Kembali"
+										icon="manage_history"
+										no-caps
+										class="q-px-sm bg-green-10 text-green-12"
+										@click="showKembali = true"
 									/>
-								</div>
-								<table v-else class="full-width">
-									<tbody>
-										<tr>
-											<td class="text-italic">Sifat:</td>
-											<td>{{ izin.sifat }}</td>
-										</tr>
-										<tr>
-											<td class="text-italic">
-												Pengajuan:
-											</td>
-											<td>{{ izin.pengajuan }}</td>
-										</tr>
-										<tr>
-											<td class="text-italic">Durasi:</td>
-											<td>
-												{{ izin.durasi + ' hari' }}
-											</td>
-										</tr>
-										<tr>
-											<td class="text-italic">
-												Dari Tanggal:
-											</td>
-											<td>
-												{{
-													formatDateFull(
-														izin.dari_tgl,
-													) +
-													' | ' +
-													bacaHijri(
-														m2h(izin.dari_tgl),
-													)
-												}}
-											</td>
-										</tr>
-										<tr>
-											<td class="text-italic">
-												Sampai Tanggal:
-											</td>
-											<td>
-												{{
-													formatDateFull(
-														izin.sampai_tgl,
-													) +
-													' | ' +
-													bacaHijri(
-														m2h(izin.sampai_tgl),
-													)
-												}}
-											</td>
-										</tr>
-										<tr>
-											<td class="text-italic">
-												Keperluan:
-											</td>
-											<td>
-												{{ izin.keperluan }}
-											</td>
-										</tr>
-										<tr>
-											<td class="text-italic">
-												Keterangan:
-											</td>
-											<td>
-												{{ izin.keterangan ?? '-' }}
-											</td>
-										</tr>
-										<tr>
-											<td class="text-italic">Tujuan:</td>
-											<td>
-												{{ izin.tujuan }}
-											</td>
-										</tr>
-										<tr>
-											<td class="text-italic">
-												Catatan:
-											</td>
-											<td>
-												{{ izin.catatan || '-' }}
-											</td>
-										</tr>
-										<tr>
-											<td colspan="2">
-												<q-separator color="green-8" />
-											</td>
-										</tr>
-										<tr>
-											<td class="text-italic">
-												Kembali:
-											</td>
-											<td>
-												{{
-													formatDateFull(
-														izin.kembali_tgl,
-													) +
-													' | ' +
-													bacaHijri(
-														m2h(izin.kembali_tgl),
-													)
-												}}
-											</td>
-										</tr>
-										<tr>
-											<td class="text-italic">Status:</td>
-											<td>
-												{{
-													izin.status
-														? replaceDynamicText(
-																izin.status,
-															)
-														: ''
-												}}
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</q-card-section>
-						</q-card>
-					</q-card-section>
-				</q-card>
+								</q-card-section>
+
+								<q-card-section class="q-pa-sm">
+									<table class="full-width">
+										<tbody>
+											<tr>
+												<td class="text-italic">Sifat:</td>
+												<td>{{ izin.sifat }}</td>
+											</tr>
+											<tr>
+												<td class="text-italic">Pengajuan:</td>
+												<td>{{ izin.pengajuan }}</td>
+											</tr>
+											<tr>
+												<td class="text-italic">Durasi:</td>
+												<td>
+													{{ izin.durasi + ' hari' }}
+												</td>
+											</tr>
+											<tr>
+												<td class="text-italic">Dari Tanggal:</td>
+												<td>
+													{{
+														formatDateFull(izin.dari_tgl) +
+														' | ' +
+														bacaHijri(m2h(izin.dari_tgl))
+													}}
+												</td>
+											</tr>
+											<tr>
+												<td class="text-italic">Sampai Tanggal:</td>
+												<td>
+													{{
+														formatDateFull(izin.sampai_tgl) +
+														' | ' +
+														bacaHijri(m2h(izin.sampai_tgl))
+													}}
+												</td>
+											</tr>
+											<tr>
+												<td class="text-italic">Keperluan:</td>
+												<td>
+													{{ izin.keperluan }}
+												</td>
+											</tr>
+											<tr>
+												<td class="text-italic">Keterangan:</td>
+												<td>
+													{{ izin.keterangan ?? '-' }}
+												</td>
+											</tr>
+											<tr>
+												<td class="text-italic">Tujuan:</td>
+												<td>
+													{{ izin.tujuan }}
+												</td>
+											</tr>
+											<tr>
+												<td class="text-italic">Catatan:</td>
+												<td>
+													{{ izin.catatan || '-' }}
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<q-separator color="green-8" />
+												</td>
+											</tr>
+											<tr>
+												<td class="text-italic">Kembali:</td>
+												<td>
+													{{
+														formatDateFull(izin.kembali_tgl) +
+														' | ' +
+														bacaHijri(m2h(izin.kembali_tgl))
+													}}
+												</td>
+											</tr>
+											<tr>
+												<td class="text-italic">Status:</td>
+												<td>
+													{{ izin.status ? replaceDynamicText(izin.status) : '' }}
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<CardLoading :showing="loading" />
+								</q-card-section>
+							</q-card>
+						</q-card-section>
+					</q-card>
+				</div>
 			</div>
 
 			<div class="col-xs-12 col-sm-6">
-				<IzinRiwayat class="q-ma-sm" :santri_id="izin.santri_id" />
+				<div class="q-ma-sm">
+					<IzinRiwayat class="" :santri_id="izin.santri_id" />
+				</div>
 			</div>
 		</div>
+
 		<q-dialog v-model="crudShow">
-			<IzinPesantrenForm
-				:data="izin"
-				@success-delete="$router.go(-1)"
-				@success-submit="loadData"
-			/>
+			<IzinPesantrenForm :data="izin" @success-delete="$router.go(-1)" @success-submit="loadData" />
 		</q-dialog>
 		<q-dialog v-model="showKembali">
 			<IzinPesantrenKembaliForm
@@ -200,8 +170,7 @@
 		<q-dialog v-model="showViewer">
 			<ReportViewer :url="urlReport" />
 		</q-dialog>
-		<!-- <pre>{{ izin }}</pre> -->
-	</q-page>
+	</CardPage>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
@@ -210,7 +179,7 @@ import apiGet from 'src/api/api-get';
 import { formatDateFull } from 'src/utils/format-date';
 import { bacaHijri, m2h } from 'src/utils/hijri';
 import ReportViewer from 'src/components/ReportViewer.vue';
-import IzinRiwayat from './IzinRiwayat.vue';
+import IzinRiwayat from './part/IzinRiwayat.vue';
 import CardSantriSimple from 'src/components/santri/CardSantriSimple.vue';
 import IzinPesantrenForm from 'src/components/forms/IzinPesantrenForm.vue';
 import IzinPesantrenKembaliForm from 'src/components/forms/IzinPesantrenKembaliForm.vue';

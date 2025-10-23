@@ -1,24 +1,13 @@
 <template lang="">
 	<CardPage style="min-width: 1200px">
-		<CardHeader title="Modul Mutasi Domisili" :showReload="false">
-			<template v-slot:buttons>
-				<q-btn
-					icon="visibility"
-					label="Hasil Mutasi"
-					dense
-					outline
-					no-caps
-					class="q-px-sm"
-					to="/mutasi/result"
-				/>
-			</template>
-		</CardHeader>
+		<CardHeader title="Modul Kenaikan Kelas" :show-reload="false" />
+
 		<q-card-section class="no-padding">
 			<div class="row">
-				<div class="col q-pa-sm">
+				<div class="col-6 q-pa-sm">
 					<DataLeft />
 				</div>
-				<div class="col q-pa-sm">
+				<div class="col-6 q-pa-sm">
 					<DataRight />
 				</div>
 			</div>
@@ -26,9 +15,9 @@
 	</CardPage>
 </template>
 <script setup>
-import DataLeft from './LeftCard.vue';
-import DataRight from './RightCard.vue';
 import { onMounted } from 'vue';
+import DataLeft from './DataLeft.vue';
+import DataRight from './DataRight.vue';
 
 onMounted(() => {
 	// console.log(dataMurid.value);

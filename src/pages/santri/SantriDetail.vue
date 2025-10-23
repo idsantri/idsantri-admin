@@ -1,70 +1,66 @@
 <template>
-	<q-page class="q-pa-sm">
-		<q-card class="">
-			<CardHeader title="Data Santri" @on-reload="loadData">
-				<template #right>
-					<q-btn
-						:label="$q.screen.lt.sm ? '' : 'Cari'"
-						@click="searchSantri = true"
-						color="green-2"
-						no-caps
-						dense
-						class="q-px-sm text-green-10 q-ml-sm"
-						icon="search"
-					/>
-					<q-btn
-						no-caps
-						color="green-2"
-						dense
-						class="q-px-sm text-green-10 q-ml-sm"
-						icon="edit"
-						:label="$q.screen.lt.sm ? '' : 'Edit'"
-						@click="editSantri"
-					/>
-					<div class="q-ml-sm">
-						<drop-down-print :santri="santri" />
-					</div>
-				</template>
-			</CardHeader>
+	<CardPage>
+		<CardHeader title="Data Santri" @on-reload="loadData">
+			<template #buttons>
+				<q-btn
+					:label="$q.screen.lt.sm ? '' : 'Cari'"
+					@click="searchSantri = true"
+					color="green-2"
+					no-caps
+					dense
+					class="q-px-sm text-green-10"
+					icon="search"
+				/>
+				<q-btn
+					no-caps
+					color="green-2"
+					dense
+					class="q-px-sm text-green-10"
+					icon="edit"
+					:label="$q.screen.lt.sm ? '' : 'Edit'"
+					@click="editSantri"
+				/>
+				<drop-down-print :santri="santri" />
+			</template>
+		</CardHeader>
 
-			<q-card-section class="no-padding">
-				<div class="row">
-					<!-- santri -->
-					<div class="col-12 col-sm-6 col-md-4 q-pa-sm">
-						<CardListTabel class="q-mb-sm" :data="register" :loading="loading" title="Registrasi" />
+		<q-card-section class="no-padding">
+			<div class="row">
+				<!-- santri -->
+				<div class="col-12 col-sm-6 col-md-4 q-pa-sm">
+					<CardListTabel class="q-mb-sm" :data="register" :loading="loading" title="Registrasi" />
 
-						<!-- identitas -->
-						<CardIdentity
-							class="q-mb-sm"
-							title="Identitas"
-							:data="identity"
-							:loading="loading"
-							:loadingImage="loadingImage"
-							:image="santri?.image_url || '/user-default.png'"
-						>
-							<template #button>
-								<q-btn
-									class="q-mt-sm full-width"
-									icon="upload"
-									no-caps=""
-									label="Foto"
-									dense=""
-									size="sm"
-									outline=""
-									color="green-10"
-									@click="showUploader = true"
-								/>
-							</template>
-						</CardIdentity>
-					</div>
-
-					<!-- relations -->
-					<div class="col-12 col-sm-6 col-md-5 q-pa-sm">
-						<santri-relations :santri-id="santriId" />
-					</div>
+					<!-- identitas -->
+					<CardIdentity
+						class="q-mb-sm"
+						title="Identitas"
+						:data="identity"
+						:loading="loading"
+						:loadingImage="loadingImage"
+						:image="santri?.image_url || '/user-default.png'"
+					>
+						<template #button>
+							<q-btn
+								class="q-mt-sm full-width"
+								icon="upload"
+								no-caps=""
+								label="Foto"
+								dense=""
+								size="sm"
+								outline=""
+								color="green-10"
+								@click="showUploader = true"
+							/>
+						</template>
+					</CardIdentity>
 				</div>
-			</q-card-section>
-		</q-card>
+
+				<!-- relations -->
+				<div class="col-12 col-sm-6 col-md-5 q-pa-sm">
+					<santri-relations :santri-id="santriId" />
+				</div>
+			</div>
+		</q-card-section>
 		<!-- modal -->
 		<upload-image
 			img-format="jpg"
@@ -73,8 +69,7 @@
 			@update-uploader="updateUploader"
 			@success-upload="successUpload"
 		/>
-		<!-- <pre>{{ santri }}</pre> -->
-	</q-page>
+	</CardPage>
 </template>
 <script setup>
 import { ref, toRefs, onMounted, computed } from 'vue';

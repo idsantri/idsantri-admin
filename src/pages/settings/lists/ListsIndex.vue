@@ -1,37 +1,40 @@
 <template>
-	<q-page class="q-pa-sm">
-		<q-card style="max-width: 600px">
-			<CardHeader title="Input Auto Complete" :show-reload="false" />
-			<q-card-section class="q-pa-sm">
-				<q-select
-					dense
-					outlined
-					label="Pilih List"
-					v-model="listModel"
-					:options="options"
-					emit-value
-					map-options
-					@update:model-value="(v) => routerPush(v)"
-					behavior="menu"
-				/>
-			</q-card-section>
-			<q-card-section class="q-pa-sm">
-				<q-card v-if="listModel" class="" bordered flat>
-					<router-view :key="$route.fullPath" />
-					<!-- <router-view v-slot="{ Component }">
+	<CardPage>
+		<CardHeader title="Pengaturan Input Auto Complete" :show-reload="false" />
+
+		<q-card-section class="q-pa-sm">
+			<q-card style="max-width: 600px" bordered flat>
+				<q-card-section class="q-pa-sm">
+					<q-select
+						dense
+						outlined
+						label="Pilih List"
+						v-model="listModel"
+						:options="options"
+						emit-value
+						map-options
+						@update:model-value="(v) => routerPush(v)"
+						behavior="menu"
+					/>
+				</q-card-section>
+				<q-card-section class="q-pa-sm">
+					<q-card v-if="listModel" class="" bordered flat>
+						<router-view :key="$route.fullPath" />
+						<!-- <router-view v-slot="{ Component }">
 						<transition name="fade" mode="out-in">
 							<component :is="Component" :key="$route.fullPath" />
 						</transition>
 					</router-view> -->
-				</q-card>
-				<q-card v-else class="" bordered flat>
-					<q-card-section class="bg-green-1 text-center text-italic text-subtitle1 q-pa-lg">
-						Silakan pilih lists yang tersedia!
-					</q-card-section>
-				</q-card>
-			</q-card-section>
-		</q-card>
-	</q-page>
+					</q-card>
+					<q-card v-else class="" bordered flat>
+						<q-card-section class="bg-green-1 text-center text-italic text-subtitle1 q-pa-lg">
+							Silakan pilih lists yang tersedia!
+						</q-card-section>
+					</q-card>
+				</q-card-section>
+			</q-card>
+		</q-card-section>
+	</CardPage>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';

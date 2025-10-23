@@ -11,10 +11,7 @@
 			</q-tabs>
 		</q-card-section>
 		<q-card-section class="q-px-sm q-pb-sm q-pt-none">
-			<div v-if="loading">
-				<q-spinner-cube color="green-12" size="8em" class="flex q-ma-lg q-mx-auto" />
-			</div>
-			<div v-else-if="nilai?.length == 0">
+			<div v-if="nilai?.length == 0">
 				<div class="flex flex-center q-pa-lg text-center text-negative text-italic">
 					Tidak ada untuk ditampilkan <br />Silakan input nilai terlebih dahulu!
 				</div>
@@ -108,6 +105,7 @@
 					</tr>
 				</tfoot>
 			</q-markup-table>
+			<CardLoading :showing="loading" />
 		</q-card-section>
 	</q-card>
 </template>

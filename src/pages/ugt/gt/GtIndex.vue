@@ -1,69 +1,67 @@
 <template lang="">
-	<q-page class="q-pa-sm">
-		<q-card class="">
-			<CardHeader title="Data Guru Tugas" @on-reload="loadData">
-				<template #right>
-					<q-btn
-						dense
-						class="q-px-md q-ml-sm text-green-10"
-						label="Tambah"
-						no-caps=""
-						icon="add"
-						color="green-2"
-						@click="crudShow = true"
-					/>
-				</template>
-			</CardHeader>
+	<CardPage>
+		<CardHeader title="Data Guru Tugas" @on-reload="loadData">
+			<template #buttons>
+				<q-btn
+					dense
+					class="q-px-md text-green-10"
+					label="Tambah"
+					no-caps=""
+					icon="add"
+					color="green-2"
+					@click="crudShow = true"
+				/>
+			</template>
+		</CardHeader>
 
-			<q-card-section class="no-padding">
-				<q-table
-					:rows="gtFiltered"
-					:loading="loading"
-					:rows-per-page-options="[10, 25, 50, 100, 0]"
-					class="dt q-px-sm"
-					:columns="columns"
-					:filter="filter"
-					no-data-label="Tidak ada data untuk ditampilkan!"
-					no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
-					row-key="name"
-					@row-click="(evt, row, index) => $router.push(`/ugt/gt/${row.id}`)"
-				>
-					<template v-slot:top-left>
-						<div style="width: 250px">
-							<q-select
-								dense
-								class="q-my-xs"
-								outlined
-								label="Tahun Ajaran"
-								emit-value
-								map-options
-								v-model="thAjaranH"
-								:options="optionsThAjaran"
-								:loading="loadingThAjaran"
-								clearable
-								@update:model-value="(v) => filterThAjaranH(v)"
-								behavior="menu"
-							/>
-						</div>
-					</template>
-					<template v-slot:top-right>
-						<q-input
-							outlined
+		<q-card-section class="no-padding">
+			<q-table
+				:rows="gtFiltered"
+				:loading="loading"
+				:rows-per-page-options="[10, 25, 50, 100, 0]"
+				class="dt q-px-sm"
+				:columns="columns"
+				:filter="filter"
+				no-data-label="Tidak ada data untuk ditampilkan!"
+				no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
+				row-key="name"
+				@row-click="(evt, row, index) => $router.push(`/ugt/gt/${row.id}`)"
+			>
+				<template v-slot:top-left>
+					<div style="width: 250px">
+						<q-select
 							dense
-							debounce="300"
-							v-model="filter"
-							placeholder="Cari"
-							style="width: 250px"
 							class="q-my-xs"
-						>
-							<template v-slot:append>
-								<q-icon name="search" />
-							</template>
-						</q-input>
-					</template>
-				</q-table>
-			</q-card-section>
-		</q-card>
+							outlined
+							label="Tahun Ajaran"
+							emit-value
+							map-options
+							v-model="thAjaranH"
+							:options="optionsThAjaran"
+							:loading="loadingThAjaran"
+							clearable
+							@update:model-value="(v) => filterThAjaranH(v)"
+							behavior="menu"
+						/>
+					</div>
+				</template>
+				<template v-slot:top-right>
+					<q-input
+						outlined
+						dense
+						debounce="300"
+						v-model="filter"
+						placeholder="Cari"
+						style="width: 250px"
+						class="q-my-xs"
+					>
+						<template v-slot:append>
+							<q-icon name="search" />
+						</template>
+					</q-input>
+				</template>
+			</q-table>
+		</q-card-section>
 		<q-dialog persistent="" v-model="crudShow">
 			<UgtGtForm
 				:data="{}"
@@ -71,7 +69,7 @@
 				@success-delete="$router.go(-1)"
 			/>
 		</q-dialog>
-	</q-page>
+	</CardPage>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';

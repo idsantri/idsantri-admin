@@ -6,7 +6,7 @@
 			:start-url="`/madrasah/absensi/laporan/${params.absensi}`"
 			@data-filter="(v) => (textFilter = v)"
 		/>
-		<q-card class="q-mt-sm">
+		<q-card class="q-mt-sm" flat bordered>
 			<q-card-section class="bg-green-7 text-green-1 text-subtitle1 q-px-sm q-py-xs">
 				<div class="text-subtitle1">
 					➡️ <strong> Absensi {{ titleCase(params.absensi) }} </strong>
