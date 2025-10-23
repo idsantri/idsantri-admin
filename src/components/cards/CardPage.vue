@@ -10,6 +10,6 @@ export default {};
 </script>
 <style lang="scss" scoped>
 .card-page-container {
-	background-color: rgb(191, 255, 231);
+	background-color: rgb(224, 253, 242);
 }
 </style>
