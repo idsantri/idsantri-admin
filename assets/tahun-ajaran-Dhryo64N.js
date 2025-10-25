@@ -1,0 +1,1 @@
+function h(e){const n=typeof e=="number"?String(e):e,r=n.slice(4,6),t=n.slice(0,4);let s=0,u=0;return n.length!==8||!/^\d+$/.test(n)||+r==0||+t==0||+r>12?"":(+r<=8?(s=+t-1,u=+t):(s=+t,u=+t+1),`${s}-${u}`)}export{h};
