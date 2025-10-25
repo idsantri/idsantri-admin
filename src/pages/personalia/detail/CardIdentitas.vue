@@ -16,10 +16,7 @@
 			</q-toolbar>
 		</q-card-section>
 		<q-card-section class="q-pa-sm">
-			<div v-if="loading">
-				<q-spinner-cube color="green-12" size="8em" class="flex q-ma-lg q-mx-auto" />
-			</div>
-			<div v-else class="row">
+			<div class="row">
 				<div class="col-4 q-pr-sm">
 					<q-img :src="aparatur?.image || '/user-default.png'" :ratio="3 / 4" alt="aparatur" />
 					<q-btn
@@ -46,18 +43,21 @@
 
 			<!-- <pre>{{ personalia }}</pre> -->
 		</q-card-section>
+
+		<CardLoading :showing="loading" />
+
+		<q-dialog persistent="" v-model="crudShow">
+			<PersonaliaForm :data="aparatur" @success-submit="handleSubmit" @success-delete="$router.go(-1)" />
+		</q-dialog>
+		<!-- modal -->
+		<upload-image
+			:show-uploader="showUploader"
+			:url="`/images/aparatur/${route.params.id}`"
+			img-format="webp"
+			@update-uploader="updateUploader"
+			@success-upload="successUpload"
+		/>
 	</q-card>
-	<q-dialog persistent="" v-model="crudShow">
-		<PersonaliaForm :data="aparatur" @success-submit="handleSubmit" @success-delete="$router.go(-1)" />
-	</q-dialog>
-	<!-- modal -->
-	<upload-image
-		:show-uploader="showUploader"
-		:url="`/images/aparatur/${route.params.id}`"
-		img-format="webp"
-		@update-uploader="updateUploader"
-		@success-upload="successUpload"
-	/>
 </template>
 <script setup>
 import { computed, onMounted, ref } from 'vue';
