@@ -1,6 +1,6 @@
 <template lang="">
 	<q-page class="q-pa-sm">
-		<q-card class="card-page-container">
+		<q-card class="card-page-container" id="card-page-container">
 			<slot></slot>
 		</q-card>
 	</q-page>
@@ -18,7 +18,9 @@ export default {
 			const header = document.querySelector('header');
 			const main = document.querySelector('main');
 			const footer = document.querySelector('footer');
-			const card = document.querySelector('.card-page-container');
+			const card = document.getElementById('card-page-container');
+
+			if (!card) return;
 
 			// Get heights and padding
 			const headerHeight = header ? header.offsetHeight : 0;
@@ -34,9 +36,7 @@ export default {
 			const totalOffset = headerHeight + footerHeight + mainPaddingY;
 
 			// Set min-height
-			if (card) {
-				card.style.minHeight = `calc(100vh - ${totalOffset}px)`;
-			}
+			card.style.minHeight = `calc(100vh - ${totalOffset}px)`;
 
 			// Debug
 			// console.log('Header:', headerHeight);
