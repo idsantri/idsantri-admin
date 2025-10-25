@@ -7,12 +7,10 @@
 			</div>
 		</q-card-section>
 		<q-card-section class="q-pa-sm row">
-			<div class="col-4 q-pr-sm">
-				<div v-if="loadingImage">
-					<q-spinner-cube color="green-12" size="4em" class="flex q-ma-sm q-mx-auto" />
-				</div>
-				<q-img v-else :src="image" :ratio="3 / 4" alt="santri" />
+			<div class="col-4 q-pr-sm relative-position">
+				<q-img :src="image" :ratio="3 / 4" alt="santri" />
 				<slot name="button" />
+				<CardLoading :showing="loadingImage" message="" />
 			</div>
 			<div class="col">
 				<div v-for="(value, key) in data" :key="key">

@@ -1,5 +1,5 @@
 <template>
-	<q-card :key="keySantriRelations" bordered flat>
+	<q-card bordered flat>
 		<q-card-section class="bg-green-7 text-green-11 no-padding">
 			<q-tabs no-caps outside-arrows mobile-arrows dense="" indicator-color="green-13" align="left">
 				<q-route-tab name="wali" label="Wali" :to="'/santri/' + props.santriId + '/wali'" />
@@ -52,7 +52,6 @@
 				</q-btn-dropdown>
 			</q-tabs>
 		</q-card-section>
-		<button @click="keySantriRelations++" id="btn-rerender-santri-relations" style="display: none">rerender</button>
 		<q-card-section class="q-pa-sm">
 			<router-view />
 
@@ -65,7 +64,5 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
 const props = defineProps({ santriId: { default: null } });
-const keySantriRelations = ref(0);
 </script>
