@@ -40,6 +40,7 @@ export default defineStore('santri', {
 			},
 			wali: { id: null, nama: null, sex: null },
 			ortu: { id: null, ayah: null, ibu: null, jumlah_anak: null },
+			inputs: {},
 			isNew: true,
 		};
 	},
@@ -47,6 +48,8 @@ export default defineStore('santri', {
 		getSantri: (state) => state.santri,
 		getWali: (state) => state.wali,
 		getOrtu: (state) => state.ortu,
+		getIsNew: (state) => state.isNew,
+		getInputs: (state) => state.inputs,
 	},
 
 	actions: {
@@ -65,13 +68,18 @@ export default defineStore('santri', {
 				}
 			}
 		},
-
+		setWaliId(waliId) {
+			this.santri.wali_id = waliId;
+		},
 		setOrtu(payload) {
 			for (const key in this.ortu) {
 				if (key in payload) {
 					this.ortu[key] = payload[key];
 				}
 			}
+		},
+		setOrtuId(ortuId) {
+			this.santri.ortu_id = ortuId;
 		},
 
 		setNull() {

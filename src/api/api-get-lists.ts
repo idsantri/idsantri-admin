@@ -2,6 +2,9 @@ import api from '.';
 import apiError from './api-error';
 import type { ListsCustomParams, ListsParams } from './api-interface';
 
+/**
+ * @deprecated use Model instead
+ */
 async function getLists({
 	loadingArray,
 	loading,
@@ -52,7 +55,9 @@ function hasObject(arr: object[]): boolean {
 	}
 	return false;
 }
-
+/**
+ * @deprecated use Model instead
+ */
 async function getListsCustom({
 	loadingArray,
 	loading,

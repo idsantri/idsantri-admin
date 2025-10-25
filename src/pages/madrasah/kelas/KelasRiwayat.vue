@@ -1,19 +1,7 @@
 <template lang="">
 	<div>
 		<q-card bordered flat>
-			<div v-if="loading">
-				<q-spinner-cube
-					color="green-12"
-					size="8em"
-					class="flex q-ma-lg q-mx-auto"
-				/>
-			</div>
-			<div
-				v-else-if="!kelas?.length"
-				class="text-italic text-center q-pa-lg"
-			>
-				Tidak ada untuk ditampilkan
-			</div>
+			<div v-if="!kelas?.length" class="text-italic text-center q-pa-lg">Tidak ada untuk ditampilkan</div>
 			<div v-else>
 				<q-list v-for="(kelas, index) in kelas" :key="index">
 					<q-item :class="kelas.id == params.id ? 'bg-green-1' : ''">
@@ -39,15 +27,7 @@
 							<q-item-label>
 								{{ kelas.tingkat }} &mdash;
 								{{ kelas.kelas }}
-								{{
-									kelas.no_absen
-										? '(' +
-											String('0' + kelas.no_absen).slice(
-												-2,
-											) +
-											')'
-										: ''
-								}}
+								{{ kelas.no_absen ? '(' + String('0' + kelas.no_absen).slice(-2) + ')' : '' }}
 							</q-item-label>
 							<q-item-label caption class="text-italic">
 								{{ kelas.keterangan ? kelas.keterangan : '-' }}
@@ -57,13 +37,10 @@
 					<q-separator />
 				</q-list>
 			</div>
+			<CardLoading :showing="loading" />
+
 			<q-dialog v-model="crudShow">
-				<KelasForm
-					:data="dataObj"
-					@success-create="
-						(res) => $router.push(`/madrasah/kelas/${res.id}`)
-					"
-				/>
+				<KelasForm :data="dataObj" @success-create="(res) => $router.push(`/madrasah/kelas/${res.id}`)" />
 			</q-dialog>
 		</q-card>
 		<div class="absolute-bottom-right q-ma-sm">

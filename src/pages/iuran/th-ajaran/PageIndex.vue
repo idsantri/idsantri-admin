@@ -1,86 +1,63 @@
 <template lang="">
-	<FilterThAjaran
-		start-url="/iuran/th-ajaran"
-		@data-filter="(val) => (dataFilter = val)"
-		bordered
-		flat
-	/>
-	<q-card class="q-mt-sm" bordered flat>
-		<q-card-section
-			class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center"
-		>
-			<span v-html="dataFilter.display || ''"></span>
-			<q-space />
-			<q-btn
-				dense=""
-				icon="sync"
-				@click="loadData"
-				class="q-px-sm q-mr-sm"
+	<div>
+		<FilterThAjaran start-url="/iuran/th-ajaran" @data-filter="(val) => (dataFilter = val)" bordered flat />
+		<q-card class="q-mt-sm" bordered flat>
+			<q-card-section class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
+				<span v-html="dataFilter.display || ''"></span>
+				<q-space />
+				<q-btn dense="" icon="sync" @click="loadData" class="q-px-sm q-mr-sm" flat />
+				<q-btn
+					dense=""
+					icon="print"
+					label="Cetak"
+					no-caps
+					color="green-11 q-px-md"
+					class="text-green-10 q-mr-sm"
+					to="/info/download"
+				/>
+			</q-card-section>
+			<q-table
+				class="dt q-pa-sm"
+				:rows="iuran"
+				:loading="loading"
+				:filter="filter"
+				:columns="columns"
+				:rows-per-page-options="[10, 25, 50, 75, 100, 0]"
+				no-data-label="Silakan tentukan filter tanggal!"
+				no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
+				row-key="name"
 				flat
-			/>
-			<q-btn
-				dense=""
-				icon="print"
-				label="Cetak"
-				no-caps
-				color="green-11 q-px-md"
-				class="text-green-10 q-mr-sm"
-				to="/info/download"
-			/>
-		</q-card-section>
-		<q-table
-			class="dt q-pa-sm"
-			:rows="iuran"
-			:loading="loading"
-			:filter="filter"
-			:columns="columns"
-			:rows-per-page-options="[10, 25, 50, 75, 100, 0]"
-			no-data-label="Silakan tentukan filter tanggal!"
-			no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
-			row-key="name"
-			flat
-			@row-click="
-				(evt, row, index) =>
-					$router.push(
-						`/iuran/santri/${row.santri_id}/${row.th_ajaran_h}`,
-					)
-			"
-		>
-			<template v-slot:top-left>
-				<div class="text-subtitle1 text-green-10">Data Iuran</div>
-			</template>
-			<template v-slot:top-right>
-				<q-input
-					outlined
-					dense
-					debounce="300"
-					v-model="filter"
-					placeholder="Cari"
-					type="search"
-				>
-					<template v-slot:append>
-						<q-icon name="search" />
-					</template>
-				</q-input>
-			</template>
-		</q-table>
-		<q-card-section
-			class="bg-green-7 text-green-1 text-subtitle1 q-px-sm q-py-xs flex items-center justify-between"
-		>
-			<div class="">
-				<em>Estimasi Pendapatan: </em>
-				<strong>{{ sumNominal(iuran).toRupiah() }}</strong>
-			</div>
-			<div class="">
-				<em>Total Lunas: </em>
-				<strong>{{ sumLunas(iuran).toRupiah() }}</strong>
-			</div>
-			<div class="">
-				<em>Total Tidak Lunas: </em>
-				<strong>{{ sumNotLunas(iuran).toRupiah() }}</strong>
-			</div>
-		</q-card-section>
-	</q-card>
+				@row-click="(evt, row, index) => $router.push(`/iuran/santri/${row.santri_id}/${row.th_ajaran_h}`)"
+			>
+				<template v-slot:top-left>
+					<div class="text-subtitle1 text-green-10">Data Iuran</div>
+				</template>
+				<template v-slot:top-right>
+					<q-input outlined dense debounce="300" v-model="filter" placeholder="Cari" type="search">
+						<template v-slot:append>
+							<q-icon name="search" />
+						</template>
+					</q-input>
+				</template>
+			</q-table>
+			<q-card-section
+				class="bg-green-7 text-green-1 text-subtitle1 q-px-sm q-py-xs flex items-center justify-between"
+			>
+				<div class="">
+					<em>Estimasi Pendapatan: </em>
+					<strong>{{ sumNominal(iuran).toRupiah() }}</strong>
+				</div>
+				<div class="">
+					<em>Total Lunas: </em>
+					<strong>{{ sumLunas(iuran).toRupiah() }}</strong>
+				</div>
+				<div class="">
+					<em>Total Tidak Lunas: </em>
+					<strong>{{ sumNotLunas(iuran).toRupiah() }}</strong>
+				</div>
+			</q-card-section>
+		</q-card>
+	</div>
 </template>
 <script setup>
 import apiGet from 'src/api/api-get';
@@ -163,8 +140,7 @@ const columns = [
 		name: 'lunas',
 		label: 'Lunas',
 		align: 'left',
-		field: (row) =>
-			row.lunas ? formatDate(row.lunas, 'yyyy-MM-dd') : 'Belum dibayar',
+		field: (row) => (row.lunas ? formatDate(row.lunas, 'yyyy-MM-dd') : 'Belum dibayar'),
 		sortable: true,
 	},
 	{

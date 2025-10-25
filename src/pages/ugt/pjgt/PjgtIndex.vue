@@ -1,94 +1,80 @@
 <template lang="">
-	<q-page class="q-pa-sm">
-		<q-card class="">
-			<q-card-section class="bg-green-8 no-padding">
-				<q-toolbar class="no-padding no-margin">
-					<q-toolbar-title
-						class="text-subtitle1 q-ml-sm text-green-11"
-					>
-						Data Penanggung Jawab Guru Tugas
-					</q-toolbar-title>
+	<CardPage>
+		<CardHeader title="Data Penanggung Jawab Guru Tugas" @on-reload="loadData">
+			<template #buttons>
+				<q-btn
+					dense
+					class="q-px-md text-green-10"
+					label="Tambah"
+					no-caps=""
+					icon="add"
+					color="green-2"
+					@click="crudShow = true"
+				/>
+			</template>
+		</CardHeader>
 
-					<q-btn
-						dense
-						class="q-px-md q-mr-sm text-green-10"
-						label="Tambah"
-						no-caps=""
-						icon="add"
-						color="green-2"
-						@click="crudShow = true"
-					/>
-				</q-toolbar>
-			</q-card-section>
-
-			<q-card-section class="no-padding">
-				<q-table
-					:rows="pjgtFiltered"
-					:loading="loading"
-					:rows-per-page-options="[10, 25, 50, 100, 0]"
-					class="dt q-px-sm"
-					:columns="columns"
-					:filter="filter"
-					no-data-label="Tidak ada data untuk ditampilkan!"
-					no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
-					row-key="name"
-					@row-click="
-						(evt, row, index) => $router.push(`/ugt/pjgt/${row.id}`)
-					"
-				>
-					<template v-slot:top-left>
-						<div style="width: 250px">
-							<q-select
-								dense
-								class="q-my-xs"
-								outlined
-								label="Wilayah"
-								emit-value
-								map-options
-								v-model="wilayah"
-								:options="optionsWilayah"
-								:loading="loadingWilayah"
-								clearable
-								@update:model-value="(v) => filterWilayah(v)"
-								behavior="menu"
-							/>
-						</div>
-					</template>
-					<template v-slot:top-right>
-						<q-input
-							outlined
+		<q-card-section class="no-padding">
+			<q-table
+				:rows="pjgtFiltered"
+				:loading="loading"
+				:rows-per-page-options="[10, 25, 50, 100, 0]"
+				class="dt q-px-sm"
+				:columns="columns"
+				:filter="filter"
+				no-data-label="Tidak ada data untuk ditampilkan!"
+				no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
+				row-key="name"
+				@row-click="(evt, row, index) => $router.push(`/ugt/pjgt/${row.id}`)"
+			>
+				<template v-slot:top-left>
+					<div style="width: 250px">
+						<q-select
 							dense
-							debounce="300"
-							v-model="filter"
-							placeholder="Cari"
-							style="width: 250px"
 							class="q-my-xs"
-						>
-							<template v-slot:append>
-								<q-icon name="search" />
-							</template>
-						</q-input>
-					</template>
-				</q-table>
-			</q-card-section>
-		</q-card>
+							outlined
+							label="Wilayah"
+							emit-value
+							map-options
+							v-model="wilayah"
+							:options="optionsWilayah"
+							:loading="loadingWilayah"
+							clearable
+							@update:model-value="(v) => filterWilayah(v)"
+							behavior="menu"
+						/>
+					</div>
+				</template>
+				<template v-slot:top-right>
+					<q-input
+						outlined
+						dense
+						debounce="300"
+						v-model="filter"
+						placeholder="Cari"
+						style="width: 250px"
+						class="q-my-xs"
+					>
+						<template v-slot:append>
+							<q-icon name="search" />
+						</template>
+					</q-input>
+				</template>
+			</q-table>
+		</q-card-section>
 		<q-dialog persistent="" v-model="crudShow">
-			<modal-pjgt
-				:is-new="true"
+			<UgtPjgtForm
 				:data="{}"
 				@success-submit="(v) => $router.push(`/ugt/pjgt/${v.id}`)"
 				@success-delete="$router.go(-1)"
 			/>
 		</q-dialog>
-		<!-- <pre>{{ pjgt }}</pre> -->
-		<!-- <pre>{{ wilayah }}</pre> -->
-	</q-page>
+	</CardPage>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-import apiGet from 'src/api/api-get';
-import { getListsCustom } from 'src/api/api-get-lists';
-import ModalPjgt from 'src/pages/ugt/pjgt/PjgtCrud.vue';
+import UgtPjgtForm from 'src/components/forms/UgtPjgtForm.vue';
+import UgtPjgt from 'src/models/UgtPjgt';
 
 const pjgt = ref([]);
 const loading = ref(false);
@@ -100,10 +86,16 @@ const loadingWilayah = ref(false);
 const optionsWilayah = ref([]);
 
 async function loadData() {
-	const data = await apiGet({ endPoint: 'ugt/pjgt', loading });
-	if (data) {
-		pjgt.value = data.pjgt;
+	try {
+		loading.value = true;
+		const response = await UgtPjgt.getAll();
+		pjgt.value = response.pjgt;
 		pjgtFiltered.value = pjgt.value;
+	} catch (_err) {
+		// console.error(_err);
+		console.log('error get pjgt');
+	} finally {
+		loading.value = false;
 	}
 }
 
@@ -115,16 +107,22 @@ function filterWilayah(v) {
 	}
 }
 
+async function loadWilayah() {
+	try {
+		loadingWilayah.value = true;
+		const response = await UgtPjgt.listWilayah();
+		optionsWilayah.value = response.wilayah;
+	} catch (_err) {
+		// console.error(_err);
+		console.log('error get wilayah pjgt');
+	} finally {
+		loadingWilayah.value = false;
+	}
+}
+
 onMounted(async () => {
 	await loadData();
-	const data = await getListsCustom({
-		url: 'ugt/pjgt/lists/wilayah',
-		key: 'wilayah',
-		loading: loadingWilayah,
-	});
-	if (data) {
-		optionsWilayah.value = data;
-	}
+	await loadWilayah();
 });
 
 const columns = [
@@ -141,14 +139,15 @@ const columns = [
 		align: 'left',
 		field: 'nama',
 		sortable: true,
+		style: 'white-space: normal; word-wrap: break-word;',
 	},
 	{
 		name: 'alamat',
 		label: 'Alamat',
 		align: 'left',
-		field: (row) =>
-			`${row.desa || ''} ${row.kecamatan || ''} ${row.kabupaten || ''}`,
+		field: (row) => `${row.desa || ''} ${row.kecamatan || ''} ${row.kabupaten || ''}`,
 		sortable: true,
+		style: 'white-space: normal; word-wrap: break-word;',
 	},
 	{
 		name: 'wilayah',
@@ -156,6 +155,7 @@ const columns = [
 		align: 'left',
 		field: 'wilayah',
 		sortable: true,
+		style: 'white-space: normal; word-wrap: break-word;',
 	},
 	{
 		name: 'lembaga',
@@ -163,6 +163,9 @@ const columns = [
 		align: 'left',
 		field: (row) => `${row.jenis_lembaga} ${row.nama_lembaga}`,
 		sortable: true,
+		style: (_row) => {
+			return 'white-space: normal; word-wrap: break-word;';
+		},
 	},
 ];
 </script>

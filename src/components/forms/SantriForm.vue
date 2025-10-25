@@ -1,0 +1,180 @@
+<template>
+	<q-card class="full-width" style="max-width: 425px">
+		<q-form @submit.prevent="onSubmit">
+			<FormHeader title="Input Data Santri" :is-new="isNew" />
+			<FormLoading v-if="loading" />
+			<q-card-section class="no-padding">
+				<q-carousel
+					v-model="slide"
+					transition-prev="slide-right"
+					transition-next="slide-left"
+					animated
+					control-color="primary"
+					class="full-width"
+					style="min-height: 65vh"
+					swipeable
+					infinite
+				>
+					<!-- registrasi -->
+					<q-carousel-slide name="register" class="no-wrap flex-center">
+						<CarouselRegister v-model="inputs" />
+					</q-carousel-slide>
+
+					<!-- identitas -->
+					<q-carousel-slide name="identity" class="no-wrap flex-center">
+						<CarouselIdentity v-model="inputs" />
+					</q-carousel-slide>
+
+					<!-- alamat -->
+					<q-carousel-slide name="alamat" class="no-wrap flex-center">
+						<CarouselAlamat v-model="inputs" @emit-route="closeModal" />
+					</q-carousel-slide>
+
+					<!-- pendidikan -->
+					<q-carousel-slide name="pendidikan" class="no-wrap flex-center">
+						<CarouselPendidikanAkhir v-model="inputs" />
+					</q-carousel-slide>
+
+					<!-- ortu wali -->
+					<q-carousel-slide name="ortu_wali" class="no-wrap flex-center">
+						<CarouselOrtuWali v-model="inputs" />
+					</q-carousel-slide>
+				</q-carousel>
+			</q-card-section>
+			<q-card-section class="q-pa-sm q-ma-sm">
+				<div class="row justify-center">
+					<q-btn-toggle
+						toggle-color="green-10"
+						text-color="text-green-11"
+						no-caps=""
+						glossy
+						v-model="slide"
+						:options="toggleOptions"
+					/>
+				</div>
+			</q-card-section>
+			<FormActions :btn-delete="true" :label-delete="isNew ? 'Reset' : 'Hapus'" @onDelete="resetOrDelete" />
+		</q-form>
+	</q-card>
+</template>
+<script setup>
+import { onMounted, reactive, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import dialogStore from 'src/stores/dialog-store';
+import santriStore from 'src/stores/santri-store';
+import CarouselRegister from './carousel/SantriRegister.vue';
+import CarouselIdentity from './carousel/SantriIdentity.vue';
+import CarouselAlamat from './carousel/CarouselAlamat.vue';
+import CarouselPendidikanAkhir from './carousel/SantriPendidikanAkhir.vue';
+import CarouselOrtuWali from './carousel/SantriOrtuWali.vue';
+import Santri from 'src/models/Santri';
+import { storeToRefs } from 'pinia';
+
+const router = useRouter();
+const route = useRoute();
+const { isNew } = reactive(santriStore());
+const { santri } = reactive(santriStore());
+const { inputs } = storeToRefs(santriStore());
+const loading = ref(false);
+
+onMounted(() => {
+	inputs.value = { ...santri };
+});
+
+watch(
+	() => santri.ortu_id,
+	(value) => {
+		inputs.value.ortu_id = value;
+	},
+);
+
+watch(
+	() => santri.wali_id,
+	(value) => {
+		inputs.value.wali_id = value;
+	},
+);
+
+function closeModal() {
+	dialogStore().toggleCrudSantri(false);
+	dialogStore().toggleSearchSantri(false);
+
+	dialogStore().toggleCrudWali(false);
+	dialogStore().toggleSearchWali(false);
+
+	dialogStore().toggleCrudOrtu(false);
+	dialogStore().toggleSearchOrtu(false);
+}
+
+const onSubmit = async () => {
+	const data = JSON.parse(JSON.stringify(inputs.value));
+	delete data.image_url;
+	delete data.data_akhir;
+	delete data.alamat_lengkap;
+	delete data.alamat_pendek;
+	delete data.th_ajaran_h;
+	delete data.th_ajaran_m;
+	// console.log(data);
+	// return;
+
+	try {
+		loading.value = true;
+		const response = isNew
+			? await Santri.create({ data })
+			: await Santri.update({ id: route.params.id, data, confirm: true });
+		if (response) {
+			dialogStore().toggleCrudSantri(false);
+			dialogStore().toggleSearchSantri(false);
+
+			if (route.params.id != response.santri.id) {
+				router.push(`/santri/${response.santri.id}`);
+			} else {
+				santriStore().setSantri(response.santri);
+			}
+		}
+	} finally {
+		loading.value = false;
+	}
+};
+
+const resetOrDelete = async () => {
+	if (isNew) {
+		inputs.value = { ...santri };
+		return;
+	}
+	try {
+		loading.value = true;
+		const response = await Santri.remove({ id: santri.id });
+		if (response) {
+			dialogStore().toggleCrudSantri(false);
+			router.push('/cari/santri');
+		}
+	} finally {
+		loading.value = false;
+	}
+};
+
+const slide = ref('register');
+const toggleOptions = [
+	{
+		label: 1,
+		value: 'register',
+	},
+	{
+		label: 2,
+		value: 'identity',
+	},
+	{
+		label: 3,
+		value: 'alamat',
+	},
+	{
+		label: 4,
+		value: 'pendidikan',
+	},
+	{
+		label: '5',
+		value: 'ortu_wali',
+	},
+];
+</script>

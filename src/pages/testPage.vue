@@ -1,67 +1,62 @@
 <template lang="">
 	<q-page>
-		<q-card>
-			<q-card-section>
-				<h1 class="text-subtitle1">Upload File Excel</h1>
-
-				<q-file
-					@input="handleFileChange"
-					outlined
-					bottom-slots
-					v-model="model"
-					label="Label"
-					counter
-				>
-					<template v-slot:prepend>
-						<q-icon name="cloud_upload" @click.stop.prevent />
-					</template>
-					<template v-slot:append>
-						<q-icon
-							name="close"
-							@click.stop.prevent="model = null"
-							class="cursor-pointer"
-						/>
-					</template>
-
-					<template v-slot:hint
-						>Hanya membaca sheet pertama
-					</template>
-				</q-file>
-				<br />
-				<!-- <input type="file" v-on:change="handleFileChange" /> -->
-				<br />
-				<!-- <pre v-if="jsonData">{{ jsonData }}</pre> -->
-			</q-card-section>
-			<q-table :rows="jsonData" />
-		</q-card>
+		<h6 v-if="loading">loading page ...</h6>
+		<q-btn @click="getById">Fetch by id</q-btn>
+		<pre>{{ santri }}</pre>
+		<q-btn @click="testAlamat">Alamat</q-btn>
+		<q-btn @click="testLists">List</q-btn>
 	</q-page>
 </template>
 <script setup>
-import { ref, watch } from 'vue';
-import { read, utils } from 'xlsx';
-const model = ref();
+import { ref } from 'vue';
+import Santri from 'src/models/Santri';
+import Alamat from 'src/models/Alamat';
+import Lists from 'src/models/Lists';
 
-const jsonData = ref([]);
-const handleFileChange = (event) => {
-	const file = event.target.files[0];
-	const reader = new FileReader();
+const santri = ref([]);
+const loading = ref(false);
 
-	reader.onload = (e) => {
-		const data = e.target.result;
-		const workbook = read(data, { type: 'array' });
-		const sheetName = workbook.SheetNames[0];
-		const worksheet = workbook.Sheets[sheetName];
-		jsonData.value = utils.sheet_to_json(worksheet);
-		console.log(jsonData.value);
-	};
+const getById = async () => {
+	try {
+		santri.value = [];
+		loading.value = true;
+		const data = await Santri.getById({
+			id: 800011,
+		});
+		if (data) {
+			santri.value = data.santri;
+		}
 
-	reader.readAsArrayBuffer(file);
+		// const res = await Santri._api.get('/santri/8000', {});
+		// Santri._showSuccess('berhasil fetch by id');
+		// console.log(res);
+	} catch (_err) {
+		console.error('err ', _err);
+	} finally {
+		loading.value = false;
+	}
 };
 
-watch(model, (newModel) => {
-	if (!newModel) {
-		jsonData.value = [];
+const testLists = async () => {
+	try {
+		loading.value = true;
+		const { data } = await Lists.getByKey('tahun-ajaran');
+		console.log(data);
+	} finally {
+		loading.value = false;
 	}
-});
+};
+
+const testAlamat = async () => {
+	try {
+		loading.value = true;
+		const data = await Alamat.searchByParams({
+			provinsi: 'jawa timur',
+		});
+		console.log(data);
+	} finally {
+		loading.value = false;
+	}
+};
 </script>
 <style lang=""></style>

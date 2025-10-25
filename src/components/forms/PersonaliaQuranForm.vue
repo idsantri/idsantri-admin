@@ -1,165 +1,86 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
-		<q-form @submit.prevent="submit">
-			<FormHeader
-				title="Input Jabatan Madrasiyah"
-				:is-new="input.id ? false : true"
-			/>
+		<q-form @submit.prevent="onSubmit">
+			<FormHeader title="Input Jabatan Madrasiyah" :is-new="isNew" />
+			<FormLoading v-if="loading" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-input
 					dense
 					outlined
 					label="Nama"
-					:model-value="input?.nama + ' (' + input?.aparatur_id + ')'"
+					:model-value="inputs?.nama + ' (' + inputs?.aparatur_id + ')'"
 					disable=""
 					filled=""
+					class="q-my-sm"
 				/>
 
-				<q-input
-					dense
-					class="q-mt-sm"
-					outlined
-					filled
-					label="Jabatan"
-					v-model="input.jabatan"
-					disable
-				/>
+				<q-input dense class="q-my-sm" outlined filled label="Jabatan" v-model="inputs.jabatan" disable />
 				<InputSelectArray
-					v-model="input.th_ajaran_h"
+					v-model="inputs.th_ajaran_h"
 					url="tahun-ajaran"
 					label="Tahun Ajaran *"
 					sort="desc"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
-					:selected="input.th_ajaran_h"
+					:selected="inputs.th_ajaran_h"
 				/>
 
 				<q-select
 					dense
 					outlined=""
-					v-model="input.marhalah"
+					v-model="inputs.marhalah"
 					label="Marhalah *"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:options="['Ula', 'Wustho', 'Ulya']"
 				/>
-				<input-select-array
-					v-model="input.faslah"
-					url="faslah-quran"
-					label="Faslah/Kelas"
-					class="q-mt-sm"
-				/>
+				<input-select-array v-model="inputs.faslah" url="faslah-quran" label="Faslah/Kelas" class="q-my-sm" />
 
-				<q-input
-					dense
-					class="q-mt-sm"
-					outlined
-					label="Ruang"
-					v-model="input.ruang"
-				/>
-				<q-input
-					dense
-					class="q-mt-sm"
-					outlined
-					label="Keterangan"
-					v-model="input.keterangan"
-					autogrow=""
-				/>
+				<q-input dense class="q-my-sm" outlined label="Ruang" v-model="inputs.ruang" />
+				<q-input dense class="q-my-sm" outlined label="Keterangan" v-model="inputs.keterangan" autogrow="" />
 			</q-card-section>
-
-			<FormActions
-				:btn-delete="input.id ? true : false"
-				@on-delete="deleteData"
-			/>
+			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
-		<!-- <pre>{{ input }}</pre> -->
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
-import listsStore from 'src/stores/lists-store';
-import apiDelete from 'src/api/api-delete';
-import apiPost from 'src/api/api-post';
-import apiUpdate from 'src/api/api-update';
-import FormHeader from 'src/components/forms/FormHeader.vue';
+import { ref } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
+import useCrudForm from './utils/useCrudForm';
+import AparaturQuran from 'src/models/AparaturQuran';
 
 const props = defineProps({
 	data: { type: Object, required: true, default: () => {} },
 });
 
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
-const input = ref({ jabatan: 'Muallim' });
-const loadingCrud = ref(false);
-const tahunAjaran = ref([]);
+const inputs = ref({ jabatan: 'Muallim', ...props.data });
+const isNew = !props.data?.id;
 
-onMounted(async () => {
-	Object.assign(input.value, props.data);
-	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(AparaturQuran, {
+	emit: emit,
+	responseKey: 'aparatur_quran',
 });
 
-const submit = async () => {
+const onSubmit = async () => {
 	const data = {
-		aparatur_id: input.value.aparatur_id,
-		jabatan: input.value.jabatan,
-		th_ajaran_h: input.value.th_ajaran_h,
-		marhalah: input.value.marhalah,
-		faslah: input.value.faslah,
-		ruang: input.value.ruang,
-		keterangan: input.value.keterangan,
+		aparatur_id: inputs.value.aparatur_id,
+		jabatan: inputs.value.jabatan,
+		th_ajaran_h: inputs.value.th_ajaran_h,
+		marhalah: inputs.value.marhalah,
+		faslah: inputs.value.faslah,
+		ruang: inputs.value.ruang,
+		keterangan: inputs.value.keterangan,
 	};
-
-	let response = null;
-	const isNew = !input.value.id;
 	if (isNew) {
-		response = await apiPost({
-			endPoint: 'aparatur-quran',
-			data,
-			loading: loadingCrud,
-		});
+		return await handleCreate(data, true);
 	} else {
-		response = await apiUpdate({
-			endPoint: `aparatur-quran/${input.value.id}`,
-			data,
-			confirm: true,
-			loading: loadingCrud,
-		});
-	}
-	if (response) {
-		document.getElementById('btn-close-form').click();
-		emit('successSubmit', response?.aparatur_quran);
-		if (isNew) {
-			emit('successCreate', response?.aparatur_quran);
-		} else {
-			emit('successUpdate', response?.aparatur_quran);
-		}
+		return await handleUpdate(props.data.id, data, true);
 	}
 };
 
-const deleteData = async () => {
-	const id = input.value.id;
-	const deleted = await apiDelete({
-		endPoint: `aparatur-quran/${id}`,
-		loading: loadingCrud,
-	});
-	if (deleted) {
-		document.getElementById('btn-close-form').click();
-		emit('successDelete', id);
-	}
+const onDelete = async () => {
+	return await handleDelete(props.data.id);
 };
 </script>

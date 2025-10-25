@@ -1,11 +1,12 @@
 <template lang="">
 	<q-btn-dropdown
 		color="green-10"
-		label="Cetak"
+		:label="$q.screen.lt.sm ? '' : 'Cetak'"
 		icon="print"
 		no-caps
-		class="text-green-11 q-px-md"
-		size="sm"
+		dense
+		outline
+		class="q-px-sm text-green-11"
 	>
 		<q-list>
 			<q-item v-close-popup>
@@ -71,7 +72,7 @@
 	</q-btn-dropdown>
 
 	<q-dialog v-model="dialogPermohonan">
-		<PermohonanBerhenti @submitted="printPermohonan" />
+		<SantriPermohonanBerhentiForm @success-submit="printPermohonan" :data="props.santri" />
 	</q-dialog>
 
 	<q-dialog v-model="showViewer">
@@ -83,7 +84,7 @@ import apiDownload from 'src/api/api-download';
 import { ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import ReportViewer from 'src/components/ReportViewer.vue';
-import PermohonanBerhenti from './PermohonanBerhenti.vue';
+import SantriPermohonanBerhentiForm from 'src/components/forms/SantriPermohonanBerhentiForm.vue';
 import loadingStore from 'src/stores/loading-store';
 
 const props = defineProps({

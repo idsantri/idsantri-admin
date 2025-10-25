@@ -4,9 +4,7 @@
 		:rows="aparatur"
 		:columns="columns"
 		:filter="filter"
-		@row-click="
-			(evt, row, index) => $router.push(`/personalia/${row.aparatur_id}`)
-		"
+		@row-click="(evt, row, index) => $router.push(`/personalia/${row.aparatur_id}`)"
 		:rows-per-page-options="[10, 25, 50, 75, 100, 0]"
 		no-data-label="Silakan tentukan filter!"
 		no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
@@ -14,31 +12,16 @@
 		:loading="loading"
 	>
 		<template v-slot:top-left>
-			<div class="text-subtitle1 text-green-10">
-				Data Aparatur Madrasah
-			</div>
+			<div class="text-subtitle1 text-green-10">Data Aparatur Madrasah</div>
 		</template>
 		<template v-slot:top-right>
-			<q-input
-				outlined
-				dense
-				debounce="300"
-				v-model="filter"
-				placeholder="Cari"
-			>
+			<q-input outlined dense debounce="300" v-model="filter" placeholder="Cari">
 				<template v-slot:append>
 					<q-icon name="search" />
 				</template>
 			</q-input>
 		</template>
 	</q-table>
-
-	<!-- <pre>
-{{ personalia }}
-</pre>
-	<pre>
-{{ params }}
-</pre> -->
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';

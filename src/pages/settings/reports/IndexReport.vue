@@ -1,67 +1,50 @@
 <template lang="">
-	<q-page class="q-pa-sm">
-		<q-card style="max-width: 600px">
-			<q-form @submit.prevent="onSubmit">
-				<q-card-section
-					class="q-pa-sm bg-green-8 text-green-11 text-subtitle1 flex"
-				>
-					Report (Print Out)
-					<q-space />
-					<q-btn
-						no-caps
-						label="Kembali"
-						icon="reply"
-						dense
-						class="q-px-md"
-						outline
-						@click="$router.go(-1)"
-					/>
-				</q-card-section>
-				<q-card-section class="q-pa-sm">
-					<q-select
-						v-model="selected"
-						dense
-						class=""
-						outlined
-						label="Report"
-						emit-value
-						map-options
-						:options="lists"
-						:loading="loading"
-						use-input=""
-						clearable
-						behavior="menu"
-						@update:model-value="onUpdate"
-					/>
-					<div class="text-caption q-mt-md">Catatan Kaki</div>
-					<q-editor
-						v-model="selectedFootnote"
-						min-height="5rem"
-						class="q-mt-sm"
-						paragraph-tag="p"
-						:toolbar="[
-							['left', 'center', 'right', 'justify'],
-							['bold', 'italic', 'underline'],
-							['hr'],
-							['unordered', 'ordered', 'outdent', 'indent'],
-							['undo', 'redo'],
-						]"
-					/>
-				</q-card-section>
-				<q-card-actions align="right" class="bg-green-7">
-					<q-btn
-						label="Simpan"
-						type="submit"
-						no-caps
-						icon="save"
-						class="bg-green-11"
-					/>
-				</q-card-actions>
-			</q-form>
-		</q-card>
-		<!-- <pre>{{ reports }}</pre> -->
-		<!-- <pre>{{ lists }}</pre> -->
-	</q-page>
+	<CardPage>
+		<CardHeader title="Pengaturan Report (Print Out)" @onReload="loadData" />
+		<q-card-section class="q-pa-sm">
+			<q-card style="max-width: 600px" flat bordered>
+				<q-card-section class="q-pa-sm bg-green-7 text-green-1"> Input Footnote Report</q-card-section>
+
+				<q-form @submit.prevent="onSubmit">
+					<q-card-section class="q-pa-sm">
+						<q-select
+							v-model="selected"
+							dense
+							class=""
+							outlined
+							label="Report"
+							emit-value
+							map-options
+							:options="lists"
+							:loading="loading"
+							use-input=""
+							clearable
+							behavior="menu"
+							@update:model-value="onUpdate"
+						/>
+						<div class="text-caption q-mt-md">Catatan Kaki</div>
+						<q-editor
+							v-model="selectedFootnote"
+							min-height="5rem"
+							class="q-mt-sm"
+							paragraph-tag="p"
+							:toolbar="[
+								['left', 'center', 'right', 'justify'],
+								['bold', 'italic', 'underline'],
+								['hr'],
+								['unordered', 'ordered', 'outdent', 'indent'],
+								['undo', 'redo'],
+							]"
+						/>
+					</q-card-section>
+					<q-card-actions align="right" class="bg-green-7">
+						<q-btn label="Simpan" type="submit" no-caps icon="save" class="bg-green-11" />
+					</q-card-actions>
+					<CardLoading :showing="loading" />
+				</q-form>
+			</q-card>
+		</q-card-section>
+	</CardPage>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';

@@ -1,0 +1,328 @@
+<template lang="">
+	<div class="text-subtitle2">Data Alamat</div>
+	<InputSelectAlamat
+		@sync-click="fetchProvinsi()"
+		@route-click="$emit('emitRoute')"
+		label="Provinsi"
+		v-model="inputs.provinsi"
+		:options="listsProvinsi"
+		:loading="loadingProvinsi"
+		class="q-my-sm"
+	/>
+	<InputSelectAlamat
+		@sync-click="fetchKabupaten()"
+		@route-click="$emit('emitRoute')"
+		label="Kabupaten/Kota"
+		v-model="inputs.kabupaten"
+		:options="listsKabupaten"
+		:loading="loadingKabupaten"
+		class="q-my-sm"
+	/>
+	<InputSelectAlamat
+		@sync-click="fetchKecamatan()"
+		@route-click="$emit('emitRoute')"
+		label="Kecamatan"
+		v-model="inputs.kecamatan"
+		:options="listsKecamatan"
+		:loading="loadingKecamatan"
+		class="q-my-sm"
+	/>
+	<InputSelectAlamat
+		@sync-click="fetchDesa()"
+		@route-click="$emit('emitRoute')"
+		label="Desa/Kelurahan"
+		v-model="inputs.desa"
+		:options="listsDesa"
+		:loading="loadingDesa"
+		class="q-my-sm"
+	/>
+	<div class="row q-my-sm">
+		<q-input
+			dense
+			class="col q-mr-sm"
+			outlined
+			label="RT"
+			v-model="inputs.rt"
+			type="number"
+		/>
+
+		<q-input
+			dense
+			class="col q-ml-sm"
+			outlined
+			label="RW"
+			v-model="inputs.rw"
+			type="number"
+		/>
+	</div>
+
+	<q-input
+		dense
+		hint="Dusun, kampung, jalan, gang, nomor rumah ..."
+		class="q-my-sm"
+		outlined
+		label="Dusun"
+		v-model="inputs.jl"
+		autogrow=""
+	/>
+
+	<q-input
+		dense
+		hint=""
+		class="q-my-sm"
+		outlined
+		label="Kode Pos"
+		v-model="inputs.kode_pos"
+		:rules="[
+			(val) =>
+				!val || (val?.length == 5 && !isNaN(val)) || '5 digit angka!',
+		]"
+		error-color="negative"
+	/>
+</template>
+<script setup>
+import { onMounted, ref, watch } from 'vue';
+import alamatStore from 'src/stores/alamat-store';
+import Alamat from 'src/models/Alamat';
+import InputSelectAlamat from 'src/components/inputs/InputSelectAlamat.vue';
+
+const alamatState = alamatStore();
+const inputs = defineModel();
+
+const listsProvinsi = ref([]);
+const listsKabupaten = ref([]);
+const listsKecamatan = ref([]);
+const listsDesa = ref([]);
+
+const loadingProvinsi = ref(false);
+const loadingKabupaten = ref(false);
+const loadingKecamatan = ref(false);
+const loadingDesa = ref(false);
+
+onMounted(async () => {
+	await checkProvinsi();
+	if (inputs.value.provinsi) {
+		await checkKabupaten(inputs.value.provinsi);
+	}
+	if (inputs.value.provinsi && inputs.value.kabupaten) {
+		await checkKecamatan(inputs.value.provinsi, inputs.value.kabupaten);
+	}
+	if (
+		inputs.value.provinsi &&
+		inputs.value.kabupaten &&
+		inputs.value.kecamatan
+	) {
+		await checkDesa(
+			inputs.value.provinsi,
+			inputs.value.kabupaten,
+			inputs.value.kecamatan,
+		);
+	}
+});
+
+function arrayAlamat(arr, alamat) {
+	if (!Array.isArray(arr) || !alamat) {
+		return [];
+	}
+	const result = arr.map((i) => {
+		return i[alamat];
+	});
+	return result.sort((a, b) =>
+		a.toLowerCase().localeCompare(b.toLowerCase()),
+	);
+}
+
+async function fetchProvinsi() {
+	listsProvinsi.value = [];
+	try {
+		loadingProvinsi.value = true;
+		const data = await Alamat.searchByParams();
+		if (data) {
+			alamatState.setProvinsi(data.provinsi);
+			const provinsi = alamatState.getProvinsi();
+			listsProvinsi.value = arrayAlamat(provinsi, 'provinsi');
+		}
+	} catch (error) {
+		console.log('error get provinsi ', error);
+	} finally {
+		loadingProvinsi.value = false;
+	}
+}
+
+async function checkProvinsi() {
+	listsProvinsi.value = [];
+	const provinsi = alamatState.getProvinsi();
+	if (provinsi?.length > 0) {
+		listsProvinsi.value = arrayAlamat(provinsi, 'provinsi');
+	} else {
+		await fetchProvinsi();
+	}
+}
+
+async function fetchKabupaten() {
+	listsKabupaten.value = [];
+	const provinsi = inputs.value.provinsi;
+	if (!provinsi) return;
+
+	try {
+		loadingKabupaten.value = true;
+		const data = await Alamat.searchByParams({ provinsi });
+		if (data) {
+			alamatState.setKabupaten(data.kabupaten, {
+				provinsi_name: provinsi,
+			});
+			const kabupaten = alamatState.getKabupaten({
+				provinsi_name: provinsi,
+			});
+			listsKabupaten.value = arrayAlamat(kabupaten, 'kabupaten');
+		}
+	} catch (error) {
+		console.log('error get kabupaten ', error);
+	} finally {
+		loadingKabupaten.value = false;
+	}
+}
+
+async function checkKabupaten(provinsi_name) {
+	listsKabupaten.value = [];
+	if (!provinsi_name) return;
+
+	const kabupaten = alamatState.getKabupaten({ provinsi_name });
+	if (kabupaten?.length > 0) {
+		listsKabupaten.value = arrayAlamat(kabupaten, 'kabupaten');
+	} else {
+		await fetchKabupaten(provinsi_name);
+	}
+}
+
+async function fetchKecamatan() {
+	listsKecamatan.value = [];
+	const provinsi = inputs.value.provinsi;
+	const kabupaten = inputs.value.kabupaten;
+	if (!provinsi || !kabupaten) return;
+
+	try {
+		loadingKecamatan.value = true;
+		const data = await Alamat.searchByParams({ provinsi, kabupaten });
+		if (data) {
+			alamatState.setKecamatan(data.kecamatan, {
+				provinsi_name: provinsi,
+				kabupaten_name: kabupaten,
+			});
+			const kecamatan = alamatState.getKecamatan({
+				provinsi_name: provinsi,
+				kabupaten_name: kabupaten,
+			});
+			listsKecamatan.value = arrayAlamat(kecamatan, 'kecamatan');
+		}
+	} catch (error) {
+		console.log('error get kecamatan ', error);
+	} finally {
+		loadingKecamatan.value = false;
+	}
+}
+
+async function checkKecamatan(provinsi_name, kabupaten_name) {
+	listsKecamatan.value = [];
+	if (!provinsi_name || !kabupaten_name) return;
+
+	const kecamatan = alamatState.getKecamatan({
+		provinsi_name,
+		kabupaten_name,
+	});
+	if (kecamatan?.length > 0) {
+		listsKecamatan.value = arrayAlamat(kecamatan, 'kecamatan');
+	} else {
+		await fetchKecamatan(provinsi_name, kabupaten_name);
+	}
+}
+
+async function fetchDesa() {
+	listsDesa.value = [];
+	const provinsi = inputs.value.provinsi;
+	const kabupaten = inputs.value.kabupaten;
+	const kecamatan = inputs.value.kecamatan;
+	if (!provinsi || !kabupaten || !kecamatan) return;
+
+	try {
+		loadingDesa.value = true;
+		const data = await Alamat.searchByParams({
+			provinsi,
+			kabupaten,
+			kecamatan,
+		});
+		if (data) {
+			alamatState.setDesa(data.desa, {
+				provinsi_name: provinsi,
+				kabupaten_name: kabupaten,
+				kecamatan_name: kecamatan,
+			});
+			const desa = alamatState.getDesa({
+				provinsi_name: provinsi,
+				kabupaten_name: kabupaten,
+				kecamatan_name: kecamatan,
+			});
+			listsDesa.value = arrayAlamat(desa, 'desa');
+		}
+	} catch (error) {
+		console.log('error get desa ', error);
+	} finally {
+		loadingDesa.value = false;
+	}
+}
+
+async function checkDesa(provinsi_name, kabupaten_name, kecamatan_name) {
+	listsDesa.value = [];
+	if (!provinsi_name || !kabupaten_name || !kecamatan_name) return;
+
+	const desa = alamatState.getDesa({
+		provinsi_name,
+		kabupaten_name,
+		kecamatan_name,
+	});
+	if (desa?.length > 0) {
+		listsDesa.value = arrayAlamat(desa, 'desa');
+	} else {
+		await fetchDesa(provinsi_name, kabupaten_name, kecamatan_name);
+	}
+}
+
+watch(
+	() => inputs.value.provinsi,
+	async (newProvinsi, oldProvinsi) => {
+		if (newProvinsi != oldProvinsi) {
+			inputs.value.kabupaten = '';
+			inputs.value.kecamatan = '';
+			inputs.value.desa = '';
+			await checkKabupaten(newProvinsi);
+		}
+	},
+);
+
+watch(
+	() => inputs.value.kabupaten,
+	async (newValue, oldValue) => {
+		if (newValue != oldValue) {
+			inputs.value.kecamatan = '';
+			inputs.value.desa = '';
+			await checkKecamatan(inputs.value.provinsi, newValue);
+		}
+	},
+);
+
+watch(
+	() => inputs.value.kecamatan,
+	async (newValue, oldValue) => {
+		if (newValue != oldValue) {
+			inputs.value.desa = '';
+			await checkDesa(
+				inputs.value.provinsi,
+				inputs.value.kabupaten,
+				newValue,
+			);
+		}
+	},
+);
+</script>
+
+<style lang=""></style>

@@ -25,6 +25,7 @@ export default defineStore('wali', {
 				penghasilan: null,
 				pa_formal_tingkat: null,
 				pa_diniyah_tingkat: null,
+				santri: [],
 			},
 			isNew: true,
 		};

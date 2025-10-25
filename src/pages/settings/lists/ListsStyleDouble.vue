@@ -66,4 +66,10 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style scoped>
+td {
+	white-space: normal;
+	word-wrap: break-word;
+	padding: 4px 8px;
+}
+</style>

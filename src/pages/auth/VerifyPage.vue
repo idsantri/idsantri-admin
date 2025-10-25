@@ -1,11 +1,8 @@
 <template>
-	<div class="q-pa-xs" style="height: 12rem"></div>
-	<q-spinner-cube
-		v-show="showSpinner"
-		color="green-12"
-		size="14em"
-		class="absolute-center"
-	/>
+	<div>
+		<div class="q-pa-xs" style="height: 12rem"></div>
+		<q-spinner-cube v-show="showSpinner" color="green-12" size="14em" class="absolute-center" />
+	</div>
 </template>
 <script setup>
 import { useRoute, useRouter } from 'vue-router';

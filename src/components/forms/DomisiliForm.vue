@@ -1,58 +1,43 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
-		<q-form @submit.prevent="submit">
-			<FormHeader
-				title="Input Domisili"
-				:is-new="input.id ? false : true"
-			/>
+		<q-form @submit.prevent="onSubmit">
+			<FormHeader title="Input Domisili" :is-new="isNew" />
+			<FormLoading v-if="loading" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-input
+					class="q-my-sm"
 					dense
 					outlined
 					label="Nama"
-					:model-value="input?.nama + ' (' + input?.santri_id + ')'"
+					:model-value="inputs?.nama + ' (' + inputs?.santri_id + ')'"
 					disable=""
 					filled=""
 				/>
 				<input-select-array
-					v-model="input.domisili"
+					class="q-my-sm"
+					v-model="inputs.domisili"
 					url="domisili"
 					label="Domisili *"
-					class="q-mt-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
 				<q-input
+					class="q-my-sm"
 					dense
-					class="q-mt-sm"
 					outlined
 					label="Keterangan"
-					v-model="input.keterangan"
+					v-model="inputs.keterangan"
 					autogrow=""
 				/>
 			</q-card-section>
-			<FormActions
-				:btn-delete="input.id ? true : false"
-				@on-delete="onDelete"
-			/>
+			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
-		<!-- <pre>{{ input }}</pre> -->
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
-import apiPost from 'src/api/api-post';
-import apiUpdate from 'src/api/api-update';
-import apiDelete from 'src/api/api-delete';
+import { ref } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
+import Domisili from 'src/models/Domisili';
+import useCrudForm from './utils/useCrudForm';
 
 const props = defineProps({
 	data: { type: Object, required: true },
@@ -64,57 +49,32 @@ const emit = defineEmits([
 	'successCreate',
 ]);
 
-const input = ref({});
-const loadingCrud = ref(false);
+const inputs = ref({ ...props.data });
+const isNew = !props.data?.id;
 
-onMounted(async () => {
-	Object.assign(input.value, props.data);
-});
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
+	Domisili,
+	{
+		emit: emit,
+		responseKey: 'domisili',
+	},
+);
 
-const submit = async () => {
+const onSubmit = async () => {
 	const data = {
-		santri_id: input.value.santri_id,
-		domisili: input.value.domisili,
-		keterangan: input.value.keterangan,
+		santri_id: inputs.value.santri_id,
+		domisili: inputs.value.domisili,
+		keterangan: inputs.value.keterangan,
 	};
 
-	let response = null;
-	const isNew = !input.value.id;
 	if (isNew) {
-		response = await apiPost({
-			endPoint: 'domisili',
-			data,
-			loading: loadingCrud,
-		});
+		return await handleCreate(data, true);
 	} else {
-		response = await apiUpdate({
-			endPoint: `domisili/${input.value.id}`,
-			data,
-			confirm: true,
-			notify: true,
-			loading: loadingCrud,
-		});
-	}
-	if (response) {
-		document.getElementById('btn-close-form').click();
-		emit('successSubmit', response?.domisili);
-		if (isNew) {
-			emit('successCreate', response?.domisili);
-		} else {
-			emit('successUpdate', response?.domisili);
-		}
+		return await handleUpdate(props.data.id, data, true);
 	}
 };
 
 const onDelete = async () => {
-	const id = input.value.id;
-	const result = await apiDelete({
-		endPoint: `domisili/${id}`,
-		loading: loadingCrud,
-	});
-	if (result) {
-		document.getElementById('btn-close-form').click();
-		emit('successDelete', id);
-	}
+	return await handleDelete(props.data.id);
 };
 </script>

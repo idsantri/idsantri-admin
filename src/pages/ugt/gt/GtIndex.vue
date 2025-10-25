@@ -1,94 +1,80 @@
 <template lang="">
-	<q-page class="q-pa-sm">
-		<q-card class="">
-			<q-card-section class="bg-green-8 no-padding">
-				<q-toolbar class="no-padding no-margin">
-					<q-toolbar-title
-						class="text-subtitle1 q-ml-sm text-green-11"
-					>
-						Data Guru Tugas
-					</q-toolbar-title>
+	<CardPage>
+		<CardHeader title="Data Guru Tugas" @on-reload="loadData">
+			<template #buttons>
+				<q-btn
+					dense
+					class="q-px-md text-green-10"
+					label="Tambah"
+					no-caps=""
+					icon="add"
+					color="green-2"
+					@click="crudShow = true"
+				/>
+			</template>
+		</CardHeader>
 
-					<q-btn
-						dense
-						class="q-px-md q-mr-sm text-green-10"
-						label="Tambah"
-						no-caps=""
-						icon="add"
-						color="green-2"
-						@click="crudShow = true"
-					/>
-				</q-toolbar>
-			</q-card-section>
-
-			<q-card-section class="no-padding">
-				<q-table
-					:rows="gtFiltered"
-					:loading="loading"
-					:rows-per-page-options="[10, 25, 50, 100, 0]"
-					class="dt q-px-sm"
-					:columns="columns"
-					:filter="filter"
-					no-data-label="Tidak ada data untuk ditampilkan!"
-					no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
-					row-key="name"
-					@row-click="
-						(evt, row, index) => $router.push(`/ugt/gt/${row.id}`)
-					"
-				>
-					<template v-slot:top-left>
-						<div style="width: 250px">
-							<q-select
-								dense
-								class="q-my-xs"
-								outlined
-								label="Tahun Ajaran"
-								emit-value
-								map-options
-								v-model="thAjaranH"
-								:options="optionsThAjaran"
-								:loading="loadingThAjaran"
-								clearable
-								@update:model-value="(v) => filterThAjaranH(v)"
-								behavior="menu"
-							/>
-						</div>
-					</template>
-					<template v-slot:top-right>
-						<q-input
-							outlined
+		<q-card-section class="no-padding">
+			<q-table
+				:rows="gtFiltered"
+				:loading="loading"
+				:rows-per-page-options="[10, 25, 50, 100, 0]"
+				class="dt q-px-sm"
+				:columns="columns"
+				:filter="filter"
+				no-data-label="Tidak ada data untuk ditampilkan!"
+				no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
+				row-key="name"
+				@row-click="(evt, row, index) => $router.push(`/ugt/gt/${row.id}`)"
+			>
+				<template v-slot:top-left>
+					<div style="width: 250px">
+						<q-select
 							dense
-							debounce="300"
-							v-model="filter"
-							placeholder="Cari"
-							style="width: 250px"
 							class="q-my-xs"
-						>
-							<template v-slot:append>
-								<q-icon name="search" />
-							</template>
-						</q-input>
-					</template>
-				</q-table>
-			</q-card-section>
-		</q-card>
+							outlined
+							label="Tahun Ajaran"
+							emit-value
+							map-options
+							v-model="thAjaranH"
+							:options="optionsThAjaran"
+							:loading="loadingThAjaran"
+							clearable
+							@update:model-value="(v) => filterThAjaranH(v)"
+							behavior="menu"
+						/>
+					</div>
+				</template>
+				<template v-slot:top-right>
+					<q-input
+						outlined
+						dense
+						debounce="300"
+						v-model="filter"
+						placeholder="Cari"
+						style="width: 250px"
+						class="q-my-xs"
+					>
+						<template v-slot:append>
+							<q-icon name="search" />
+						</template>
+					</q-input>
+				</template>
+			</q-table>
+		</q-card-section>
 		<q-dialog persistent="" v-model="crudShow">
-			<gt-crud
-				:is-new="true"
+			<UgtGtForm
 				:data="{}"
 				@success-submit="(v) => $router.push(`/ugt/gt/${v.id}`)"
 				@success-delete="$router.go(-1)"
 			/>
 		</q-dialog>
-		<!-- <pre>{{ gt }}</pre> -->
-		<!-- <pre>{{ wilayah }}</pre> -->
-	</q-page>
+	</CardPage>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-import apiGet from 'src/api/api-get';
-import { getListsCustom } from 'src/api/api-get-lists';
-import GtCrud from 'src/pages/ugt/gt/GtCrud.vue';
+import UgtGtForm from 'src/components/forms/UgtGtForm.vue';
+import UgtGt from 'src/models/UgtGt';
 
 const gt = ref([]);
 const gtFiltered = ref([]);
@@ -100,10 +86,16 @@ const loadingThAjaran = ref(false);
 const optionsThAjaran = ref([]);
 
 async function loadData() {
-	const data = await apiGet({ endPoint: 'ugt/gt', loading });
-	if (data) {
-		gt.value = data.gt;
+	try {
+		loading.value = true;
+		const response = await UgtGt.getAll();
+		gt.value = response.gt;
 		gtFiltered.value = gt.value;
+	} catch (_err) {
+		// console.error(_err);
+		console.log('error get gt');
+	} finally {
+		loading.value = false;
 	}
 }
 
@@ -115,16 +107,22 @@ function filterThAjaranH(v) {
 	}
 }
 
+async function getListsThAjaran() {
+	try {
+		loadingThAjaran.value = true;
+		const response = await UgtGt.listTahunAjaran();
+		optionsThAjaran.value = response.th_ajaran_h;
+	} catch (_err) {
+		// console.error(_err);
+		console.log('error get th ajaran gt');
+	} finally {
+		loadingThAjaran.value = false;
+	}
+}
+
 onMounted(async () => {
 	await loadData();
-	const data = await getListsCustom({
-		url: 'ugt/gt/lists/th-ajaran-h',
-		key: 'th_ajaran_h',
-		loading: loadingThAjaran,
-	});
-	if (data) {
-		optionsThAjaran.value = data;
-	}
+	await getListsThAjaran();
 });
 
 const columns = [
@@ -155,6 +153,7 @@ const columns = [
 		align: 'left',
 		field: 'nama',
 		sortable: true,
+		style: 'white-space: normal; word-wrap: break-word;',
 	},
 	{
 		name: 'data_akhir',
@@ -162,6 +161,7 @@ const columns = [
 		align: 'left',
 		field: 'data_akhir',
 		sortable: true,
+		style: 'white-space: normal; word-wrap: break-word;',
 	},
 	{
 		name: 'pjgt_nama',
@@ -169,6 +169,7 @@ const columns = [
 		align: 'left',
 		field: 'pjgt_nama',
 		sortable: true,
+		style: 'white-space: normal; word-wrap: break-word;',
 	},
 	{
 		name: 'pjgt_lembaga',
@@ -176,6 +177,7 @@ const columns = [
 		align: 'left',
 		field: 'pjgt_lembaga',
 		sortable: true,
+		style: 'white-space: normal; word-wrap: break-word;',
 	},
 	{
 		name: 'pjgt_wilayah',
@@ -183,7 +185,10 @@ const columns = [
 		align: 'left',
 		field: 'pjgt_wilayah',
 		sortable: true,
+		style: (_row) => {
+			return 'white-space: normal; word-wrap: break-word;';
+		},
 	},
 ];
 </script>
-<style lang=""></style>
+<style scoped></style>

@@ -1,190 +1,167 @@
 <template>
-	<q-page class="q-pa-sm">
-		<filter-kelas
-			start-url="/madrasah/nilai-ahwal"
-			@data-filter="(v) => (textFilter = v)"
-			title="Filter Data: <span class='text-weight-medium'>Nilai Ahwal (Kepribadian)</span>"
-			:show-ujian-ke="true"
-		>
-			<!-- <template #more>
+	<CardPage>
+		<CardHeader title="Data Nilai Ahwal (Kepribadian)" :show-reload="false">
+			<template #buttons>
 				<q-btn
-					outline
-					no-caps
-					class="q-px-md"
+					icon="show_chart"
+					label="Nilai Mapel"
+					to="/madrasah/nilai-mapel"
+					outline=""
 					dense
-					icon="more_vert"
-					disable
+					no-caps=""
+					class="q-px-sm"
 				/>
-			</template> -->
-		</filter-kelas>
-		<q-card class="q-mt-sm">
-			<q-card-section
-				class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center"
+			</template>
+		</CardHeader>
+		<q-card-section class="q-pa-sm">
+			<filter-kelas
+				start-url="/madrasah/nilai-ahwal"
+				@data-filter="(v) => (textFilter = v)"
+				title="Filter Data: <span class='text-weight-medium'>Nilai Ahwal (Kepribadian)</span>"
+				:show-ujian-ke="true"
 			>
-				<span v-html="textFilter"></span>
-				<q-space />
-
-				<q-btn-dropdown
-					outline
-					no-caps
-					class="text-green-11 q-px-md"
-					size=""
-					dense
-					dropdown-icon="more_vert"
+				<!-- <template #more>
+						<q-btn outline no-caps class="q-px-md" dense icon="more_vert" disable />
+					</template> -->
+			</filter-kelas>
+		</q-card-section>
+		<q-card-section class="q-pa-sm">
+			<q-card class="" bordered flat>
+				<q-card-section class="bg-green-8 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
+					<span v-html="textFilter"></span>
+					<q-space />
+				</q-card-section>
+				<q-card-section
+					v-if="!params.th_ajaran_h || !params.tingkat_id || !params.kelas || !params.ujian_ke"
+					class="q-pa-sm"
 				>
-					<q-list>
-						<q-item v-close-popup to="/madrasah/nilai-mapel">
-							<q-item-section>
-								<q-item-label>Nilai Mapel</q-item-label>
-							</q-item-section>
-							<q-item-section avatar>
-								<q-icon name="show_chart" />
-							</q-item-section>
-						</q-item>
-					</q-list>
-				</q-btn-dropdown>
-			</q-card-section>
-			<q-card-section
-				v-if="
-					!params.th_ajaran_h ||
-					!params.tingkat_id ||
-					!params.kelas ||
-					!params.ujian_ke
-				"
-				class="q-pa-sm"
-			>
-				<div class="text-center q-pa-lg text-negative text-italic">
-					Tentukan Tahun Ajaran, Tingkat Pendidikan, Kelas, dan Ujian!
-				</div>
-			</q-card-section>
-			<q-card-section v-else class="q-pa-sm">
-				<div v-if="loading">
-					<q-skeleton type="text" height="4rem" />
-				</div>
-				<div v-else>
-					<q-table
-						flat
-						:rows="ahwal"
-						:columns="columns"
-						row-key="kelas_id"
-						:rows-per-page-options="[10, 25, 50, 100, 0]"
-					>
-						<template v-slot:body="props">
-							<q-tr :props="props">
-								<q-td key="no_absen" :props="props">
-									{{ props.row.no_absen }}
-								</q-td>
-								<q-td key="kelas_id" :props="props">
-									<q-btn
-										outline
-										:label="props.row.kelas_id"
-										color="green-10"
-										dense
-										class="q-px-md"
-										:to="`/madrasah/kelas/${props.row.kelas_id}`"
-									/>
-								</q-td>
-								<q-td key="santri_id" :props="props">
-									<q-btn
-										outline
-										:label="props.row.santri_id"
-										color="green-10"
-										dense
-										class="q-px-md"
-										:to="`/santri/${props.row.santri_id}`"
-									/>
-								</q-td>
-								<q-td key="nama" :props="props">
-									{{ props.row.nama }}
-								</q-td>
-								<q-td key="sopan" :props="props">
-									<q-rating
-										v-model="props.row.sopan"
-										max="5"
-										size="1.7em"
-										color="green-14"
-										@update:model-value="
-											updateRating('sopan', props.row)
-										"
-									>
-										<template v-slot:tip-1>
-											<q-tooltip>Buruk</q-tooltip>
-										</template>
-										<template v-slot:tip-2>
-											<q-tooltip>Lumayan</q-tooltip>
-										</template>
-										<template v-slot:tip-3>
-											<q-tooltip>Sedang</q-tooltip>
-										</template>
-										<template v-slot:tip-4>
-											<q-tooltip>Baik</q-tooltip>
-										</template>
-										<template v-slot:tip-5>
-											<q-tooltip>Istimewa</q-tooltip>
-										</template>
-									</q-rating>
-								</q-td>
-								<q-td key="disiplin" :props="props">
-									<q-rating
-										v-model="props.row.disiplin"
-										max="5"
-										size="1.7em"
-										color="green-14"
-										@update:model-value="
-											updateRating('disiplin', props.row)
-										"
-									>
-										<template v-slot:tip-1>
-											<q-tooltip>Buruk</q-tooltip>
-										</template>
-										<template v-slot:tip-2>
-											<q-tooltip>Lumayan</q-tooltip>
-										</template>
-										<template v-slot:tip-3>
-											<q-tooltip>Sedang</q-tooltip>
-										</template>
-										<template v-slot:tip-4>
-											<q-tooltip>Baik</q-tooltip>
-										</template>
-										<template v-slot:tip-5>
-											<q-tooltip>Istimewa</q-tooltip>
-										</template>
-									</q-rating>
-								</q-td>
-								<q-td key="rapi" :props="props">
-									<q-rating
-										v-model="props.row.rapi"
-										max="5"
-										size="1.7em"
-										color="green-14"
-										@update:model-value="
-											updateRating('rapi', props.row)
-										"
-									>
-										<template v-slot:tip-1>
-											<q-tooltip>Buruk</q-tooltip>
-										</template>
-										<template v-slot:tip-2>
-											<q-tooltip>Lumayan</q-tooltip>
-										</template>
-										<template v-slot:tip-3>
-											<q-tooltip>Sedang</q-tooltip>
-										</template>
-										<template v-slot:tip-4>
-											<q-tooltip>Baik</q-tooltip>
-										</template>
-										<template v-slot:tip-5>
-											<q-tooltip>Istimewa</q-tooltip>
-										</template>
-									</q-rating>
-								</q-td>
-							</q-tr>
-						</template>
-					</q-table>
-				</div>
-			</q-card-section>
-		</q-card>
-	</q-page>
+					<div class="text-center q-pa-lg text-negative text-italic">
+						Tentukan Tahun Ajaran, Tingkat Pendidikan, Kelas, dan Ujian!
+					</div>
+				</q-card-section>
+				<q-card-section v-else class="q-pa-sm">
+					<div v-if="loading">
+						<q-skeleton type="text" height="4rem" />
+					</div>
+					<div v-else>
+						<q-table
+							flat
+							:rows="ahwal"
+							:columns="columns"
+							row-key="kelas_id"
+							:rows-per-page-options="[10, 25, 50, 100, 0]"
+						>
+							<template v-slot:body="props">
+								<q-tr :props="props">
+									<q-td key="no_absen" :props="props">
+										{{ props.row.no_absen }}
+									</q-td>
+									<q-td key="kelas_id" :props="props">
+										<q-btn
+											outline
+											:label="props.row.kelas_id"
+											color="green-10"
+											dense
+											class="q-px-md"
+											:to="`/madrasah/kelas/${props.row.kelas_id}`"
+										/>
+									</q-td>
+									<q-td key="santri_id" :props="props">
+										<q-btn
+											outline
+											:label="props.row.santri_id"
+											color="green-10"
+											dense
+											class="q-px-md"
+											:to="`/santri/${props.row.santri_id}`"
+										/>
+									</q-td>
+									<q-td key="nama" :props="props">
+										{{ props.row.nama }}
+									</q-td>
+									<q-td key="sopan" :props="props">
+										<q-rating
+											v-model="props.row.sopan"
+											max="5"
+											size="1.7em"
+											color="green-14"
+											@update:model-value="updateRating('sopan', props.row)"
+										>
+											<template v-slot:tip-1>
+												<q-tooltip>Buruk</q-tooltip>
+											</template>
+											<template v-slot:tip-2>
+												<q-tooltip>Lumayan</q-tooltip>
+											</template>
+											<template v-slot:tip-3>
+												<q-tooltip>Sedang</q-tooltip>
+											</template>
+											<template v-slot:tip-4>
+												<q-tooltip>Baik</q-tooltip>
+											</template>
+											<template v-slot:tip-5>
+												<q-tooltip>Istimewa</q-tooltip>
+											</template>
+										</q-rating>
+									</q-td>
+									<q-td key="disiplin" :props="props">
+										<q-rating
+											v-model="props.row.disiplin"
+											max="5"
+											size="1.7em"
+											color="green-14"
+											@update:model-value="updateRating('disiplin', props.row)"
+										>
+											<template v-slot:tip-1>
+												<q-tooltip>Buruk</q-tooltip>
+											</template>
+											<template v-slot:tip-2>
+												<q-tooltip>Lumayan</q-tooltip>
+											</template>
+											<template v-slot:tip-3>
+												<q-tooltip>Sedang</q-tooltip>
+											</template>
+											<template v-slot:tip-4>
+												<q-tooltip>Baik</q-tooltip>
+											</template>
+											<template v-slot:tip-5>
+												<q-tooltip>Istimewa</q-tooltip>
+											</template>
+										</q-rating>
+									</q-td>
+									<q-td key="rapi" :props="props">
+										<q-rating
+											v-model="props.row.rapi"
+											max="5"
+											size="1.7em"
+											color="green-14"
+											@update:model-value="updateRating('rapi', props.row)"
+										>
+											<template v-slot:tip-1>
+												<q-tooltip>Buruk</q-tooltip>
+											</template>
+											<template v-slot:tip-2>
+												<q-tooltip>Lumayan</q-tooltip>
+											</template>
+											<template v-slot:tip-3>
+												<q-tooltip>Sedang</q-tooltip>
+											</template>
+											<template v-slot:tip-4>
+												<q-tooltip>Baik</q-tooltip>
+											</template>
+											<template v-slot:tip-5>
+												<q-tooltip>Istimewa</q-tooltip>
+											</template>
+										</q-rating>
+									</q-td>
+								</q-tr>
+							</template>
+						</q-table>
+					</div>
+				</q-card-section>
+			</q-card>
+		</q-card-section>
+	</CardPage>
 </template>
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
@@ -234,12 +211,7 @@ async function updateRating(hal, row) {
 }
 
 onMounted(async () => {
-	if (
-		params.th_ajaran_h &&
-		params.tingkat_id &&
-		params.kelas &&
-		params.ujian_ke
-	) {
+	if (params.th_ajaran_h && params.tingkat_id && params.kelas && params.ujian_ke) {
 		await fetchData();
 	}
 

@@ -1,47 +1,45 @@
 <template lang="">
-	<q-page class="q-pa-sm">
-		<q-card style="max-width: 600px">
-			<CardHeader
-				:title="`Upload ${selected.label}`"
-				:showReload="false"
-				:showBack="true"
-			/>
-			<q-card-section horizontal>
-				<q-card-section class="q-pa-sm">
-					<div style="width: 200px">
-						<q-img
-							:src="computedSrc"
-							:ratio="1"
-							alt="user"
-							:img-style="{
-								border: '1px',
-								borderColor: 'green',
-								borderStyle: 'solid',
-							}"
-						/>
-						<q-btn
-							icon="upload"
-							label="Upload"
-							no-caps
-							dense
-							outline
-							class="full-width q-mt-md"
-							@click="showUploader = true"
-						/>
-					</div>
-				</q-card-section>
+	<CardPage>
+		<CardHeader :title="`Upload ${selected.label}`" :showReload="false" :showBack="true" />
+		<q-card-section class="q-pa-sm">
+			<q-card bordered flat style="max-width: 600px">
+				<q-card-section horizontal>
+					<q-card-section class="q-pa-sm">
+						<div style="width: 200px">
+							<q-img
+								:src="computedSrc"
+								:ratio="1"
+								alt="user"
+								:img-style="{
+									border: '1px',
+									borderColor: 'green',
+									borderStyle: 'solid',
+								}"
+							/>
+							<q-btn
+								icon="upload"
+								label="Upload"
+								no-caps
+								dense
+								outline
+								class="full-width q-mt-md"
+								@click="showUploader = true"
+							/>
+						</div>
+					</q-card-section>
 
-				<q-separator vertical />
+					<q-separator vertical />
 
-				<q-card-section class="q-pa-sm">
-					<div class="text-subtitle1">{{ selected.label }}</div>
-					<ul class="text-italic q-mt-sm">
-						<li>Pastikan gambar sudah transparan</li>
-						<li>Gunakan file dengan ekstensi PNG</li>
-					</ul>
+					<q-card-section class="q-pa-sm">
+						<div class="text-subtitle1">{{ selected.label }}</div>
+						<ul class="text-italic q-mt-sm">
+							<li>Pastikan gambar sudah transparan</li>
+							<li>Gunakan file dengan ekstensi PNG</li>
+						</ul>
+					</q-card-section>
 				</q-card-section>
-			</q-card-section>
-		</q-card>
+			</q-card>
+		</q-card-section>
 		<upload-image
 			:show-uploader="showUploader"
 			:url="`/config/profiles/upload/${selected.url}`"
@@ -51,14 +49,13 @@
 			@update-uploader="updateUploader"
 			@success-upload="successUpload"
 		/>
-	</q-page>
+	</CardPage>
 </template>
 <script setup>
 import { computed, ref } from 'vue';
 import UploadImage from 'src/components/ImageUploader.vue';
 import api from 'src/api';
 import config from 'src/config';
-import CardHeader from 'src/components/CardHeader.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { notifyError } from 'src/utils/notify';
 
@@ -91,10 +88,7 @@ switch (params?.image?.toLocaleLowerCase()) {
 		};
 		break;
 	default:
-		notifyError(
-			'Halaman tidak ditemukan',
-			'Halaman yang anda cari tidak ditemukan',
-		);
+		notifyError('Halaman tidak ditemukan', 'Halaman yang anda cari tidak ditemukan');
 		selected = {
 			label: 'Halaman tidak ditemukan',
 			url: 'not-found',
@@ -111,9 +105,7 @@ const showUploader = ref(false);
 const updateUploader = (val) => (showUploader.value = val);
 const imgFormat = 'png';
 
-const computedSrc = computed(
-	() => `${url}${selected.url}.${imgFormat}?timestamp=${timestamp.value}`,
-);
+const computedSrc = computed(() => `${url}${selected.url}.${imgFormat}?timestamp=${timestamp.value}`);
 
 async function successUpload() {
 	showUploader.value = false;
