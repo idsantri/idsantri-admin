@@ -13,13 +13,11 @@
 				/>
 			</template>
 		</CardHeader>
-		<q-card-section
-			class="no-padding full-width row no-wrap justify-between items-start content-start scroll q-gutter-x-sm"
-		>
-			<div class="col q-py-sm" style="min-width: 400px">
+		<q-card-section class="no-padding full-width row no-wrap justify-between items-start content-start scroll">
+			<div class="col q-py-sm q-mx-sm" style="min-width: 400px">
 				<DataLeft />
 			</div>
-			<div class="col q-py-sm" style="min-width: 500px">
+			<div class="col q-py-sm q-mx-sm" style="min-width: 500px">
 				<DataRight />
 			</div>
 		</q-card-section>
