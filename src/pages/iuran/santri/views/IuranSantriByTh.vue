@@ -1,47 +1,25 @@
 <template>
-	<div v-if="loading">
-		<q-spinner-cube
-			color="green-12"
-			size="8em"
-			class="flex q-ma-lg q-mx-auto"
-		/>
-	</div>
-	<div v-else>
+	<div class="relative-position">
 		<div v-if="iuran.length > 0">
 			<q-list>
 				<q-item class="q-pa-sm bg-green-11">
 					<q-item-section class="flex">
-						<table
-							class=""
-							style="min-width: 250px; max-width: 300px"
-						>
+						<table class="" style="min-width: 250px; max-width: 300px">
 							<tbody>
 								<tr>
-									<td
-										class="text-caption text-italic q-pr-md"
-									>
-										Total Tagihan
-									</td>
+									<td class="text-caption text-italic q-pr-md">Total Tagihan</td>
 									<td class="text-right">
 										{{ sumNominal(iuran).toRupiah() }}
 									</td>
 								</tr>
 								<tr>
-									<td
-										class="text-caption text-italic q-pr-md"
-									>
-										Total Pembayaran
-									</td>
+									<td class="text-caption text-italic q-pr-md">Total Pembayaran</td>
 									<td class="text-right">
 										{{ sumLunas(iuran).toRupiah() }}
 									</td>
 								</tr>
 								<tr>
-									<td
-										class="text-caption text-italic q-pr-md"
-									>
-										Sisa Tagihan
-									</td>
+									<td class="text-caption text-italic q-pr-md">Sisa Tagihan</td>
 									<td class="text-right text-weight-bold">
 										{{ sumNotLunas(iuran).toRupiah() }}
 									</td>
@@ -51,11 +29,7 @@
 					</q-item-section>
 				</q-item>
 				<div v-for="(item, index) in iuran" :key="index">
-					<q-item
-						class="q-px-sm"
-						clickable=""
-						@click.stop="item.show = !item.show"
-					>
+					<q-item class="q-px-sm" clickable="" @click.stop="item.show = !item.show">
 						<q-item-section>
 							<q-item-label overline>
 								{{ item.item }}
@@ -66,9 +40,7 @@
 						</q-item-section>
 						<q-item-section side>
 							<div class="flex items-center q-gutter-x-sm">
-								<div
-									class="q-card--bordered rounded-borders q-px-sm"
-								>
+								<div class="q-card--bordered rounded-borders q-px-sm">
 									<q-toggle
 										label="Lunas"
 										color="green"
@@ -78,20 +50,10 @@
 										unchecked-icon="clear"
 										:true-value="true"
 										:false-value="false"
-										@update:model-value="
-											(value, event) =>
-												toggleLunas(
-													value,
-													event,
-													item,
-													index,
-												)
-										"
+										@update:model-value="(value, event) => toggleLunas(value, event, item, index)"
 									/>
 								</div>
-								<div
-									class="q-card--bordered rounded-borders q-px-sm"
-								>
+								<div class="q-card--bordered rounded-borders q-px-sm">
 									<q-toggle
 										:disable="!item.lunas"
 										label="Cetak"
@@ -102,15 +64,7 @@
 										unchecked-icon="clear"
 										:true-value="1"
 										:false-value="0"
-										@update:model-value="
-											(val, evt) =>
-												toggleCetak(
-													val,
-													evt,
-													item,
-													index,
-												)
-										"
+										@update:model-value="(val, evt) => toggleCetak(val, evt, item, index)"
 									/>
 								</div>
 								<q-btn
@@ -132,23 +86,14 @@
 								<em>Lunas:</em>&nbsp;
 								{{
 									item.lunas
-										? formatDate(
-												item.lunas,
-												"'hari' EEEE, 'tanggal' dd MMMM yyyy, 'pukul' HH:mm",
-											)
+										? formatDate(item.lunas, "'hari' EEEE, 'tanggal' dd MMMM yyyy, 'pukul' HH:mm")
 										: '-'
 								}}
 							</q-item-label>
 							<q-item-label caption>
-								<em>Kasir:</em>&nbsp;<strong>{{
-									item.kasir || '-'
-								}}</strong
-								>; <em>Via:</em>&nbsp;<strong>{{
-									item.via || '-'
-								}}</strong
-								>; <em>Ket.:</em>&nbsp;<strong>{{
-									item.keterangan || '-'
-								}}</strong>
+								<em>Kasir:</em>&nbsp;<strong>{{ item.kasir || '-' }}</strong
+								>; <em>Via:</em>&nbsp;<strong>{{ item.via || '-' }}</strong
+								>; <em>Ket.:</em>&nbsp;<strong>{{ item.keterangan || '-' }}</strong>
 							</q-item-label>
 						</q-item-section>
 					</q-item>
@@ -177,35 +122,29 @@
 			</q-list>
 		</div>
 		<div v-else class="q-ma-lg">
-			<div class="text-body2 text-italic text-center">
-				Tidak ada data untuk ditampilkan!
-			</div>
+			<div class="text-body2 text-italic text-center">Tidak ada data untuk ditampilkan!</div>
 			<hr />
-			<div class="text-weight-thin text-italic text-center">
-				Klik angka tahun disamping, atau tambahkan data!
-			</div>
+			<div class="text-weight-thin text-italic text-center">Klik angka tahun disamping, atau tambahkan data!</div>
 		</div>
+
+		<CardLoading :showing="loading" />
+		<!-- edit -->
+		<q-dialog v-model="crud">
+			<IuranForm
+				:data="dataIuran"
+				@success-delete="(id) => deleteById(iuran, id)"
+				@success-create="(res) => iuran.push(res)"
+				@success-update="(res) => replaceById(iuran, res.id, res)"
+				:disable-santri-id="true"
+				:disable-th-ajaran="true"
+			/>
+		</q-dialog>
+
+		<!-- Lunas -->
+		<q-dialog v-model="crudLunas">
+			<IuranLunasForm :data="dataIuran" @success-update="(res) => replaceById(iuran, res.id, res)" />
+		</q-dialog>
 	</div>
-
-	<!-- edit -->
-	<q-dialog v-model="crud">
-		<IuranForm
-			:data="dataIuran"
-			@success-delete="(id) => deleteById(iuran, id)"
-			@success-create="(res) => iuran.push(res)"
-			@success-update="(res) => replaceById(iuran, res.id, res)"
-			:disable-santri-id="true"
-			:disable-th-ajaran="true"
-		/>
-	</q-dialog>
-
-	<!-- Lunas -->
-	<q-dialog v-model="crudLunas">
-		<IuranLunasForm
-			:data="dataIuran"
-			@success-update="(res) => replaceById(iuran, res.id, res)"
-		/>
-	</q-dialog>
 </template>
 <script setup>
 import { inject, nextTick, onMounted, ref, watch } from 'vue';
@@ -312,9 +251,7 @@ function sortMapIuran(data) {
 		.map((v) => ({
 			...v,
 			isLunas: !!v.lunas,
-			show: Object.prototype.hasOwnProperty.call(v, 'show')
-				? v.show
-				: false,
+			show: Object.prototype.hasOwnProperty.call(v, 'show') ? v.show : false,
 		}));
 }
 </script>

@@ -26,20 +26,13 @@
 								@click="clickIos"
 							/>
 						</div>
-						<logo-circle
-							:size="100"
-							:border="3"
-							class="q-mx-auto"
-						/>
+						<logo-circle :size="100" :border="3" class="q-mx-auto" />
 						<q-btn
 							icon="info"
 							round
 							class="absolute-top-right text-green-13 bg-green-10"
 							glossy
-							v-if="
-								config.DEV == true &&
-								$route.fullPath.includes('login')
-							"
+							v-if="config.DEV == true && $route.fullPath.includes('login')"
 							@click="modalInfo = true"
 							title="Klik untuk mendapatkan info login"
 						/>
@@ -56,11 +49,7 @@
 						<h3 class="sub-title">{{ title }}</h3>
 					</q-card-section>
 
-					<q-banner
-						v-if="errors.length > 0"
-						id="error"
-						class="q-mb-sm no-padding bg-red-2 text-red"
-					>
+					<q-banner v-if="errors.length > 0" id="error" class="q-mb-sm no-padding bg-red-2 text-red">
 						<ul class="q-my-xs">
 							<li v-for="(error, index) in errors" :key="index">
 								<span v-html="error"></span>
@@ -69,12 +58,16 @@
 					</q-banner>
 
 					<q-card-section class="no-padding no-margin">
-						<!-- ROUTER -->
-						<router-view
-							@title="handleTitle"
-							@errors="handleErrors"
-							:credential="credential"
-						/>
+						<router-view v-slot="{ Component }">
+							<transition name="fade" mode="out-in">
+								<component
+									:is="Component"
+									@title="handleTitle"
+									@errors="handleErrors"
+									:credential="credential"
+								/>
+							</transition>
+						</router-view>
 					</q-card-section>
 				</q-card>
 			</q-page>
@@ -128,9 +121,7 @@ const getOS = () => {
 		{ regex: /mac/i, name: 'Mac/iOS' },
 	];
 
-	return (
-		osList.find(({ regex }) => regex.test(userAgent))?.name || 'Unknown OS'
-	);
+	return osList.find(({ regex }) => regex.test(userAgent))?.name || 'Unknown OS';
 };
 const isIos = () => getOS() === 'iOS';
 const isAndroid = () => getOS() === 'Android';
@@ -142,9 +133,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 	deferredPrompt.value = e;
 });
 
-const isPwaInstalled = ref(
-	window.matchMedia('(display-mode: standalone)').matches,
-);
+const isPwaInstalled = ref(window.matchMedia('(display-mode: standalone)').matches);
 
 const installPwa = () => {
 	if (deferredPrompt.value) {

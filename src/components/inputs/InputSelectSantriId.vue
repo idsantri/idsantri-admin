@@ -2,7 +2,6 @@
 	<q-card class="" flat bordered>
 		<q-card-section class="q-pa-sm">
 			<q-select
-				class=""
 				dense
 				:hint="
 					$props.activeOnly
@@ -19,12 +18,14 @@
 				option-label="id"
 				error-color="negative"
 				:loading="loading"
+				input-debounce="400"
 				use-input
 				clearable=""
 				@filter="filterFunction"
 				@update:model-value="onInput"
 				:disable="input.santri_id ? true : false"
 				behavior="menu"
+				debounce="500"
 			>
 				<template v-slot:option="scope">
 					<q-item v-bind="scope.itemProps">
@@ -54,7 +55,8 @@
 	</q-card>
 </template>
 <script setup>
-import getData from 'src/api/api-get';
+import Santri from 'src/models/Santri';
+import { notifyWarning } from 'src/utils/notify';
 import { onMounted, ref } from 'vue';
 
 const props = defineProps({
@@ -77,7 +79,6 @@ function onInput() {
 	)?.data_akhir;
 
 	emit('emitInput', input.value);
-	// console.log('input', input.value);
 }
 
 onMounted(async () => {
@@ -87,28 +88,40 @@ onMounted(async () => {
 		data_akhir: props.data?.data_akhir,
 	};
 	Object.assign(input.value, data);
-	// console.log('props', props.data);
-	// console.log('data', data);
 });
 
-async function filterFunction(val, update) {
+async function getLists(val) {
+	try {
+		loading.value = true;
+		const response = await Santri.getIds({
+			active_only: props.activeOnly ? true : false,
+			q: val,
+		});
+
+		if (!response.lists.length) {
+			notifyWarning('ID Santri tidak ditemukan');
+		}
+
+		return response.lists;
+	} finally {
+		loading.value = false;
+	}
+}
+
+async function filterFunction(val, update, abort) {
 	if (!val) {
 		update(() => {
 			options.value = [];
 		});
 		return;
 	}
-	const data = await getData({
-		endPoint: 'santri/ids',
-		loading: loading,
-		params: {
-			active_only: props.activeOnly ? true : false,
-			q: val,
-		},
-	});
-	// console.log(data);
+	if (val.length < 3) {
+		abort();
+		return;
+	}
+	const listIds = await getLists(val);
 	update(
-		() => (options.value = data.lists),
+		() => (options.value = listIds),
 		(menuRef) => {
 			if (val !== '' && menuRef.options.length) {
 				menuRef.setOptionIndex(-1);

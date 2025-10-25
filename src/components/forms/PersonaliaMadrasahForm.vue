@@ -1,93 +1,73 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
-		<q-form @submit.prevent="submit">
-			<FormHeader
-				title="Input Jabatan Madrasiyah"
-				:is-new="input.id ? false : true"
-			/>
+		<q-form @submit.prevent="onSubmit">
+			<FormHeader title="Input Jabatan Madrasiyah" :is-new="isNew" />
+			<FormLoading v-if="loading" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-input
 					dense
 					outlined
 					label="Nama"
-					:model-value="input?.nama + ' (' + input?.aparatur_id + ')'"
+					:model-value="
+						inputs?.nama + ' (' + inputs?.aparatur_id + ')'
+					"
 					disable=""
 					filled=""
+					class="q-my-sm"
 				/>
 
 				<input-select-array
-					v-model="input.jabatan"
+					v-model="inputs.jabatan"
 					url="jabatan-madrasiyah"
 					label="Jabatan"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
-				<InputSelectArray
-					v-model="input.th_ajaran_h"
-					url="tahun-ajaran"
-					label="Tahun Ajaran *"
-					sort="desc"
-					class="q-mt-sm"
+				<InputSelectTahunAjaran
+					v-model="inputs.th_ajaran_h"
 					:rules="[(val) => !!val || 'Harus diisi!']"
-					:selected="input.th_ajaran_h"
+					class="q-my-sm"
 				/>
 
 				<InputSelectTingkatPendidikan
-					v-model="input.tingkat_id"
-					class="q-mt-sm"
+					v-model="inputs.tingkat_id"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
-					:selected="input.tingkat_id"
 				/>
 				<input-select-array
-					v-model="input.kelas"
+					v-model="inputs.kelas"
 					url="kelas"
 					label="Kelas"
-					class="q-mt-sm"
+					class="q-my-sm"
 				/>
 
 				<q-input
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					label="Ruang"
-					v-model="input.ruang"
+					v-model="inputs.ruang"
 				/>
 				<q-input
 					dense
-					class="q-mt-sm"
+					class="q-my-sm"
 					outlined
 					label="Keterangan"
-					v-model="input.keterangan"
+					v-model="inputs.keterangan"
 					autogrow=""
 				/>
 			</q-card-section>
-
-			<FormActions
-				:btn-delete="input.id ? true : false"
-				@on-delete="deleteData"
-			/>
+			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
-		<!-- <pre>{{ input }}</pre> -->
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
-import listsStore from 'src/stores/lists-store';
-import apiDelete from 'src/api/api-delete';
-import apiPost from 'src/api/api-post';
-import apiUpdate from 'src/api/api-update';
-import FormHeader from 'src/components/forms/FormHeader.vue';
+import { ref } from 'vue';
 import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingkatPendidikan.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
+import useCrudForm from './utils/useCrudForm';
+import AparaturMadrasah from 'src/models/AparaturMadrasah';
+import InputSelectTahunAjaran from '../inputs/InputSelectTahunAjaran.vue';
 
 const props = defineProps({
 	data: { type: Object, required: true, default: () => {} },
@@ -100,64 +80,36 @@ const emit = defineEmits([
 	'successCreate',
 ]);
 
-const input = ref({});
-const loadingCrud = ref(false);
-const tingkat = ref([]);
-const tahunAjaran = ref([]);
+const inputs = ref({ ...props.data });
+const isNew = !props.data.id;
 
-onMounted(async () => {
-	Object.assign(input.value, props.data);
-	tahunAjaran.value = listsStore().getByStateName('tahun-ajaran');
-	tingkat.value = listsStore().getByStateName('tingkat-pendidikan');
-});
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
+	AparaturMadrasah,
+	{
+		emit: emit,
+		responseKey: 'aparatur_madrasah',
+	},
+);
 
-const submit = async () => {
+const onSubmit = async () => {
 	const data = {
-		aparatur_id: input.value.aparatur_id,
-		jabatan: input.value.jabatan,
-		th_ajaran_h: input.value.th_ajaran_h,
-		tingkat_id: input.value.tingkat_id,
-		kelas: input.value.kelas,
-		ruang: input.value.ruang,
-		keterangan: input.value.keterangan,
+		aparatur_id: inputs.value.aparatur_id,
+		jabatan: inputs.value.jabatan,
+		th_ajaran_h: inputs.value.th_ajaran_h,
+		tingkat_id: inputs.value.tingkat_id,
+		kelas: inputs.value.kelas,
+		ruang: inputs.value.ruang,
+		keterangan: inputs.value.keterangan,
 	};
 
-	let response = null;
-	const isNew = !input.value.id;
 	if (isNew) {
-		response = await apiPost({
-			endPoint: 'aparatur-madrasah',
-			data,
-			loading: loadingCrud,
-		});
+		return await handleCreate(data, true);
 	} else {
-		response = await apiUpdate({
-			endPoint: `aparatur-madrasah/${input.value.id}`,
-			data,
-			confirm: true,
-			loading: loadingCrud,
-		});
-	}
-	if (response) {
-		document.getElementById('btn-close-form').click();
-		emit('successSubmit', response?.aparatur_madrasah);
-		if (isNew) {
-			emit('successCreate', response?.aparatur_madrasah);
-		} else {
-			emit('successUpdate', response?.aparatur_madrasah);
-		}
+		return await handleUpdate(props.data.id, data, true);
 	}
 };
 
-const deleteData = async () => {
-	const id = input.value.id;
-	const deleted = await apiDelete({
-		endPoint: `aparatur-madrasah/${id}`,
-		loading: loadingCrud,
-	});
-	if (deleted) {
-		document.getElementById('btn-close-form').click();
-		emit('successDelete', id);
-	}
+const onDelete = async () => {
+	return await handleDelete(props.data.id);
 };
 </script>

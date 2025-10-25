@@ -1,154 +1,94 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
-		<q-form @submit.prevent="submit">
-			<FormHeader
-				title="Input Pendidikan Quran"
-				:is-new="input.id ? false : true"
-			/>
+		<q-form @submit.prevent="onSubmit">
+			<FormHeader title="Input Pendidikan Quran" :is-new="isNew" />
+			<FormLoading v-if="loading" />
 			<q-card-section>
-				<div v-if="loadingCrud">
-					<q-dialog v-model="loadingCrud" persistent="">
-						<q-spinner-cube
-							color="green-12"
-							size="8em"
-							class="flex q-ma-lg q-mx-auto"
-						/>
-					</q-dialog>
-				</div>
 				<q-input
 					dense
 					outlined
 					label="Nama"
-					:model-value="input?.nama + ' (' + input?.santri_id + ')'"
+					:model-value="inputs?.nama + ' (' + inputs?.santri_id + ')'"
 					disable=""
 					filled=""
+					class="q-my-sm"
 				/>
 				<InputSelectArray
-					v-model="input.th_ajaran_h"
+					v-model="inputs.th_ajaran_h"
 					url="tahun-ajaran"
 					label="Tahun Ajaran *"
 					sort="desc"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
-					:selected="input.th_ajaran_h"
+					:selected="inputs.th_ajaran_h"
 				/>
 				<q-select
 					dense
 					outlined=""
-					v-model="input.marhalah"
+					v-model="inputs.marhalah"
 					label="Marhalah *"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:options="['Ula', 'Wustho', 'Ulya']"
 				/>
 				<input-select-array
-					v-model="input.faslah"
+					v-model="inputs.faslah"
 					url="faslah-quran"
 					label="Faslah/Kelas *"
-					class="q-mt-sm"
+					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
-				<!-- <q-input
-					dense
-					outlined
-					label="No Absen"
-					v-model="input.no_absen"
-					:rules="[
-						(val) => !val || !isNaN(val) || 'Hanya menerima angka!',
-					]"
-				/> -->
-				<q-card bordered flat class="q-px-sm q-mt-sm">
+				<q-card bordered flat class="q-px-sm q-my-sm">
 					<q-toggle
-						v-model="input.aktif"
+						v-model="inputs.aktif"
 						color="green"
 						:true-value="1"
 						:false-value="0"
 						label="Aktif"
-						:disable="input.id ? false : true"
+						:disable="inputs.id ? false : true"
 					/>
 				</q-card>
 			</q-card-section>
-			<FormActions
-				:btn-delete="input.id ? true : false"
-				@on-delete="onDelete"
-			/>
+			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
-		<!-- <pre>{{ input }}</pre> -->
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
-import apiPost from 'src/api/api-post';
-import apiUpdate from 'src/api/api-update';
-import apiDelete from 'src/api/api-delete';
+import { ref } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
+import useCrudForm from './utils/useCrudForm';
+import Mutaallim from 'src/models/Mutaallim';
 
 const props = defineProps({
 	data: { type: Object, required: true },
 });
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
-const input = ref({ marhalah: 'Ula', faslah: null, no_absen: null, aktif: 1 });
-const loadingCrud = ref(false);
+const inputs = ref({ marhalah: 'Ula', faslah: null, no_absen: null, aktif: 1, ...props.data });
+const isNew = !props.data?.id;
 
-onMounted(async () => {
-	Object.assign(input.value, props.data);
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Mutaallim, {
+	emit,
+	responseKey: 'mutaallim',
 });
 
-const submit = async () => {
+const onSubmit = async () => {
 	const data = {
-		santri_id: input.value.santri_id,
-		th_ajaran_h: input.value.th_ajaran_h,
-		marhalah: input.value.marhalah,
-		faslah: input.value.faslah,
-		no_absen: input.value.no_absen,
-		aktif: input.value.aktif,
+		santri_id: inputs.value.santri_id,
+		th_ajaran_h: inputs.value.th_ajaran_h,
+		marhalah: inputs.value.marhalah,
+		faslah: inputs.value.faslah,
+		no_absen: inputs.value.no_absen,
+		aktif: inputs.value.aktif,
 	};
-	// console.log(data);
-	// return;
-
-	let response = null;
-	const isNew = !input.value.id;
 	if (isNew) {
-		response = await apiPost({
-			endPoint: 'mutaallim',
-			data,
-			loading: loadingCrud,
-		});
+		return await handleCreate(data, true);
 	} else {
-		response = await apiUpdate({
-			endPoint: `mutaallim/${input.value.id}`,
-			data,
-			confirm: true,
-			notify: true,
-			loading: loadingCrud,
-		});
-	}
-	if (response) {
-		document.getElementById('btn-close-form').click();
-		emit('successSubmit', response?.mutaallim);
-		if (isNew) {
-			emit('successCreate', response?.mutaallim);
-		} else {
-			emit('successUpdate', response?.mutaallim);
-		}
+		return await handleUpdate(props.data.id, data, true);
 	}
 };
 
 const onDelete = async () => {
-	const id = input.value.id;
-	const result = await apiDelete({
-		endPoint: `mutaallim/${id}`,
-		loading: loadingCrud,
-	});
-	if (result) {
-		document.getElementById('btn-close-form').click();
-		emit('successDelete', id);
-	}
+	return await handleDelete(props.data.id);
 };
 </script>

@@ -3,6 +3,9 @@ import apiError from './api-error';
 import type { PostParams } from './api-interface';
 import { notifyConfirm, notifySuccess } from 'src/utils/notify';
 
+/**
+ * @deprecated Use apiPost in src/api/apiPost.ts instead
+ */
 async function apiPost({
 	endPoint,
 	data,

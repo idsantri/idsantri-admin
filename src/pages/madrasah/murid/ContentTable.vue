@@ -15,66 +15,36 @@
 			<div class="text-subtitle1 text-green-10">Data Murid</div>
 		</template>
 		<template v-slot:top-right>
-			<q-input
-				outlined
-				dense
-				debounce="300"
-				v-model="filter"
-				placeholder="Cari"
-			>
+			<q-input outlined dense debounce="300" v-model="filter" placeholder="Cari">
 				<template v-slot:append>
 					<q-icon name="search" />
 				</template>
 			</q-input>
 		</template>
 		<template v-slot:body="props">
-			<q-tr
-				:props="props"
-				@click="rowClick(props.row)"
-				style="cursor: pointer"
-			>
+			<q-tr :props="props" @click="rowClick(props.row)" style="cursor: pointer">
 				<q-td key="id" :props="props">
 					{{ props.row.id }}
 				</q-td>
 				<q-td key="id" :props="props">
 					{{ props.row.santri_id }}
 				</q-td>
-				<q-td key="nama" :props="props">
-					{{ props.row.nama }} ({{ props.row.sex }})
-				</q-td>
-				<q-td
-					key="alamat"
-					:props="props"
-					:title="props.row.alamat_lengkap"
-				>
-					{{
-						props.row.alamat.length > 30
-							? props.row.alamat.substr(0, 30) + '&mldr;'
-							: props.row.alamat
-					}}
+				<q-td key="nama" :props="props"> {{ props.row.nama }} ({{ props.row.sex }}) </q-td>
+				<q-td key="alamat" :props="props" :title="props.row.alamat_lengkap">
+					{{ props.row.alamat.length > 30 ? props.row.alamat.substr(0, 30) + '&mldr;' : props.row.alamat }}
 				</q-td>
 				<q-td key="pendidikan" :props="props">
 					{{ props.row.kelas }}
 					{{ props.row.tingkat_id }}
-					{{
-						props.row.no_absen
-							? ' (' +
-								String('0' + props.row.no_absen).slice(-2) +
-								')'
-							: ''
-					}}
+					{{ props.row.no_absen ? ' (' + String('0' + props.row.no_absen).slice(-2) + ')' : '' }}
 				</q-td>
 				<q-td key="wali" :props="props">
-					{{ props.row.wali_nama }} ({{ props.row.wali_status }};
-					{{ props.row.wali_sex }})
+					{{ props.row.wali_nama }} ({{ props.row.wali_status }}; {{ props.row.wali_sex }})
 				</q-td>
-				<q-td key="ortu" :props="props">
-					{{ props.row.ayah }} | {{ props.row.ibu }}
-				</q-td>
+				<q-td key="ortu" :props="props"> {{ props.row.ayah }} | {{ props.row.ibu }} </q-td>
 			</q-tr>
 		</template>
 	</q-table>
-	<!-- <pre>{{ murid }}</pre> -->
 </template>
 <script setup>
 import apiGet from 'src/api/api-get';

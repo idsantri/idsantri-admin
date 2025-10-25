@@ -1,18 +1,9 @@
 <template lang="">
-	<q-card class="">
+	<q-card class="" flat bordered>
 		<q-card-section class="q-pa-sm bg-green-7">
 			<q-toolbar class="no-padding text-green-11" style="min-height: 0">
-				<q-toolbar-title class="text-subtitle1">
-					Data Mutasi
-				</q-toolbar-title>
-				<q-btn
-					icon="sync"
-					dense
-					flat
-					class="q-mr-xs"
-					@click="null"
-					disable
-				/>
+				<q-toolbar-title class="text-subtitle1"> Data Mutasi </q-toolbar-title>
+				<q-btn icon="sync" dense flat class="q-mr-xs" @click="null" disable />
 			</q-toolbar>
 		</q-card-section>
 		<q-card-section class="q-pa-sm">
@@ -26,15 +17,7 @@
 					dense
 					disable
 				/>
-				<q-select
-					v-model="input.kelas"
-					label=""
-					class="col no-padding"
-					filled
-					outlined
-					dense
-					disable
-				/>
+				<q-select v-model="input.kelas" label="" class="col no-padding" filled outlined dense disable />
 			</div>
 			<input-select-array
 				v-model="input.domisili"
@@ -86,9 +69,7 @@ onMounted(() => {
 });
 
 function removeBottomRow() {
-	const el = document.querySelectorAll(
-		'div.q-field__bottom.row.items-start.q-field__bottom',
-	);
+	const el = document.querySelectorAll('div.q-field__bottom.row.items-start.q-field__bottom');
 	el.forEach((e) => e.remove());
 }
 

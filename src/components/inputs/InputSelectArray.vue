@@ -8,7 +8,7 @@
 		:loading="loading"
 		behavior="menu"
 		clearable
-		:hint="textHint()"
+		v-model="input"
 	>
 		<template v-slot:after>
 			<drop-down-after
@@ -20,11 +20,12 @@
 	</q-select>
 </template>
 <script setup>
-import { getLists } from 'src/api/api-get-lists';
 import listsStore from 'src/stores/lists-store';
 import { onMounted, ref } from 'vue';
 import DropDownAfter from './DropDownAfter.vue';
+import Lists from 'src/models/Lists';
 
+const input = defineModel();
 const props = defineProps({
 	url: {
 		type: String,
@@ -33,10 +34,6 @@ const props = defineProps({
 	sort: {
 		type: String,
 		default: 'asc',
-	},
-	selected: {
-		type: String,
-		default: '',
 	},
 	btnSetting: {
 		type: Boolean,
@@ -47,33 +44,28 @@ const props = defineProps({
 const loading = ref(false);
 const options = ref([]);
 const store = listsStore();
-
-function textHint() {
-	let result = '';
-	if (props.selected && props.url == 'tahun-ajaran') {
-		const data = store.getByStateName(props.url);
-		result = data.find((th) => th.val0 === props.selected)?.val1;
-	}
-	return result;
-}
+const key = props.url.replace(/-/g, '_');
 
 onMounted(async () => {
-	const data = store.getByStateName_arr(props.url);
+	const data = store.getStateByKey_Arr(key, props.sort);
 	if (data.length) {
 		options.value = data;
 	} else {
 		await fetchList();
-		options.value = store.getByStateName_arr(props.url);
+		options.value = store.getStateByKey_Arr(key, props.sort);
 	}
 });
 
 async function fetchList() {
-	const data = await getLists({
-		key: props.url,
-		loading: loading,
-		sort: props.sort,
-	});
-	store.$patch({ [props.url]: data });
+	try {
+		loading.value = true;
+		const data = await Lists.getByKey(props.url);
+		store.$patch({ [key]: data[key] });
+	} catch (error) {
+		console.log('error get list ', error);
+	} finally {
+		loading.value = false;
+	}
 }
 </script>
 <style lang=""></style>

@@ -11,19 +11,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Nodejs
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 22
 
+      - name: Install Corepack
+        run: npm i -g corepack
+
+      - name: Enable Corepack & pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+
       - name: Install dependencies
-        run: yarn install #use yarn
+        run: pnpm install --frozen-lockfile
 
       - name: Clean Config
-        run: npx quasar clean --qconf
+        run: pnpm exec quasar clean --qconf
 
       - name: Build PWA
-        run: npx quasar build -m pwa
+        run: pnpm exec quasar build -m pwa
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

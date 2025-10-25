@@ -1,173 +1,125 @@
 <template lang="">
-	<q-page class="q-pa-sm" style="min-width: 1024px">
-		<q-card>
-			<CardHeader :show-reload="false" title="Modul Tagihan" />
-			<q-card-section class="q-pa-sm">
-				<FilterKelas
-					bordered
-					flat
-					:show-ujian-ke="false"
-					start-url="/iuran/tagihan"
-					@data-filter="(v) => (textFilter = v)"
-				/>
-				<div class="row">
-					<div class="col-7 q-mt-sm">
-						<q-table
-							flat
-							bordered
-							table-header-class="bg-green-2 text-green-10 text-subtitle1"
-							class="dt"
-							:rows="murid"
-							:columns="columns"
-							:loading="loading"
-							row-key="id"
-							selection="multiple"
-							v-model:selected="selected"
-							:rows-per-page-options="[0]"
-							hide-bottom
-							style="height: 635px"
-							virtual-scroll
-						>
-							<template v-slot:header-selection="scope">
-								<q-toggle
-									v-model="scope.selected"
-									color="green-7"
-									checked-icon="check"
-									unchecked-icon="clear"
-								/>
-							</template>
+	<CardPage>
+		<CardHeader :show-reload="false" title="Modul Tagihan" />
+		<q-card-section class="q-pa-sm">
+			<FilterKelas
+				bordered
+				flat
+				:show-ujian-ke="false"
+				start-url="/iuran/tagihan"
+				@data-filter="(v) => (textFilter = v)"
+			/>
+			<div class="no-padding full-width row no-wrap justify-between items-start content-start scroll">
+				<div class="q-mt-sm" style="min-width: 500px; width: 100%">
+					<q-table
+						flat
+						bordered
+						table-header-class="bg-green-2 text-green-10 text-subtitle1"
+						class="dt"
+						:rows="murid"
+						:columns="columns"
+						:loading="loading"
+						row-key="id"
+						selection="multiple"
+						v-model:selected="selected"
+						:rows-per-page-options="[0]"
+						hide-bottom
+						style="height: 635px"
+						virtual-scroll
+					>
+						<template v-slot:header-selection="scope">
+							<q-toggle
+								v-model="scope.selected"
+								color="green-7"
+								checked-icon="check"
+								unchecked-icon="clear"
+							/>
+						</template>
 
-							<template v-slot:body-selection="scope">
-								<q-toggle
-									v-model="scope.selected"
-									color="green-5"
-									checked-icon="check"
-									unchecked-icon="clear"
-								/>
-							</template>
-						</q-table>
-					</div>
-					<div class="col-5 q-mt-sm">
-						<q-card
-							bordered
-							flat
-							class="q-ml-sm scroll"
-							style="height: 635px"
-						>
-							<q-card-section
-								class="q-px-sm q-py-md bg-green-2 text-green-10 text-subtitle2"
-							>
-								Buat Tagihan Massal
-							</q-card-section>
-							<q-card-section class="q-pa-sm">
-								<table>
-									<tbody>
-										<tr class="vertical-top">
-											<td
-												class="text-no-wrap text-italic q-pr-md"
-											>
-												Jumlah Murid
-											</td>
-											<td>{{ murid.length }}</td>
-										</tr>
-										<tr class="vertical-top">
-											<td
-												class="text-no-wrap text-italic q-pr-md"
-											>
-												Terpilih
-											</td>
-											<td>
-												{{ selected.length }} santri
-												{{
-													selected.map(
-														(s) => s.santri_id,
-													)
-												}}
-											</td>
-										</tr>
-										<tr class="vertical-top">
-											<td
-												class="text-no-wrap text-italic q-pr-md"
-											>
-												VA Group
-											</td>
-											<td class="">
-												<q-toggle
-													dense
-													v-model="withVA"
-													color="green"
-													:label="va_group"
-													@update:model-value="
-														(v) =>
-															v
-																? (va_group =
-																		va_text)
-																: (va_group =
-																		'')
-													"
-												/>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</q-card-section>
-							<q-card-section class="q-pa-sm">
-								<q-input
-									label="Tahun Ajaran"
-									outlined
-									dense
-									v-model="input.th_ajaran_h"
-									disable
-								/>
-								<InputSelectIuranPaket
-									class="q-mt-sm"
-									@on-input="iuranPaket = $event"
-								/>
-							</q-card-section>
-							<q-card-actions
-								class="q-pa-sm bg-green-6 absolute-bottom"
-							>
-								<q-btn
-									label="Unduh Data"
-									glossy
-									color="green-9"
-									class="text-green-11"
-									no-caps
-									icon="download"
-									to="/iuran/download"
-								/>
-								<q-space />
-								<q-btn
-									label="Simpan"
-									glossy
-									outline
-									color="green-10"
-									class="bg-green-11 right-0"
-									no-caps
-									icon="save"
-									@click="onSubmit"
-								/>
-							</q-card-actions>
-							<q-inner-loading :showing="loadingPaket">
-								<q-spinner-facebook
-									color="green-6"
-									size="6em"
-								/>
-							</q-inner-loading>
-						</q-card>
-					</div>
+						<template v-slot:body-selection="scope">
+							<q-toggle
+								v-model="scope.selected"
+								color="green-5"
+								checked-icon="check"
+								unchecked-icon="clear"
+							/>
+						</template>
+					</q-table>
 				</div>
-			</q-card-section>
-		</q-card>
-		<!-- <q-card flat bordered>
-			<pre>{{ iuranPaket }}</pre>
-		</q-card> -->
-	</q-page>
+				<div class="q-mt-sm" style="min-width: 400px; width: 70%">
+					<q-card bordered flat class="q-ml-sm scroll" style="height: 635px">
+						<q-card-section class="q-px-sm q-py-md bg-green-2 text-green-10 text-subtitle2">
+							Buat Tagihan Massal
+						</q-card-section>
+						<q-card-section class="q-pa-sm">
+							<table>
+								<tbody>
+									<tr class="vertical-top">
+										<td class="text-no-wrap text-italic q-pr-md">Jumlah Murid</td>
+										<td>{{ murid.length }}</td>
+									</tr>
+									<tr class="vertical-top">
+										<td class="text-no-wrap text-italic q-pr-md">Terpilih</td>
+										<td>
+											{{ selected.length }} santri
+											{{ selected.map((s) => s.santri_id) }}
+										</td>
+									</tr>
+									<tr class="vertical-top">
+										<td class="text-no-wrap text-italic q-pr-md">VA Group</td>
+										<td class="">
+											<q-toggle
+												dense
+												v-model="withVA"
+												color="green"
+												:label="va_group"
+												@update:model-value="
+													(v) => (v ? (va_group = va_text) : (va_group = ''))
+												"
+											/>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</q-card-section>
+						<q-card-section class="q-pa-sm">
+							<q-input label="Tahun Ajaran" outlined dense v-model="input.th_ajaran_h" disable />
+							<InputSelectIuranPaket class="q-mt-sm" @on-input="iuranPaket = $event" />
+						</q-card-section>
+						<q-card-actions class="q-pa-sm bg-green-6 absolute-bottom">
+							<q-btn
+								label="Unduh Data"
+								glossy
+								color="green-9"
+								class="text-green-11"
+								no-caps
+								icon="download"
+								to="/iuran/download"
+							/>
+							<q-space />
+							<q-btn
+								label="Simpan"
+								glossy
+								outline
+								color="green-10"
+								class="bg-green-11 right-0"
+								no-caps
+								icon="save"
+								@click="onSubmit"
+							/>
+						</q-card-actions>
+						<q-inner-loading :showing="loadingPaket">
+							<q-spinner-facebook color="green-6" size="6em" />
+						</q-inner-loading>
+					</q-card>
+				</div>
+			</div>
+		</q-card-section>
+	</CardPage>
 </template>
 <script setup>
 import apiGet from 'src/api/api-get';
 import apiPost from 'src/api/api-post';
-import CardHeader from 'src/components/CardHeader.vue';
 import FilterKelas from 'src/components/filters/FilterKelas.vue';
 import InputSelectIuranPaket from 'src/components/inputs/InputSelectIuranPaket.vue';
 import { notifyError } from 'src/utils/notify';
@@ -279,8 +231,7 @@ const columns = [
 		name: 'wali',
 		label: 'Wali',
 		align: 'left',
-		field: (row) =>
-			`${row.wali_nama} (${row.wali_sex}; ${row.wali_status})`,
+		field: (row) => `${row.wali_nama} (${row.wali_sex}; ${row.wali_status})`,
 		sortable: true,
 	},
 ];

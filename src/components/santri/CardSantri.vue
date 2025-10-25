@@ -1,10 +1,8 @@
 <template lang="">
-	<q-card>
+	<q-card flat bordered>
 		<q-card-section class="no-padding">
 			<q-toolbar class="bg-green-1">
-				<q-toolbar-title class="text-subtitle1">
-					Identitas Santri
-				</q-toolbar-title>
+				<q-toolbar-title class="text-subtitle1"> Identitas Santri </q-toolbar-title>
 				<q-btn icon="sync" outline @click="loadData" />
 			</q-toolbar>
 		</q-card-section>
@@ -14,11 +12,7 @@
 					<q-item-section avatar>
 						<q-skeleton v-if="loading || !id" type="QAvatar" />
 						<q-avatar v-else class="d-flex">
-							<q-img
-								:src="santri?.image_url || '/user-default.png'"
-								:ratio="1"
-								cover
-							/>
+							<q-img :src="santri?.image_url || '/user-default.png'" :ratio="1" cover />
 						</q-avatar>
 					</q-item-section>
 
@@ -26,9 +20,7 @@
 						<q-item-label overline> Santri </q-item-label>
 						<q-item-label>
 							<q-skeleton v-if="loading || !id" type="text" />
-							<div v-else>
-								{{ santri.nama }} ({{ santri.sex }})
-							</div>
+							<div v-else>{{ santri.nama }} ({{ santri.sex }})</div>
 						</q-item-label>
 						<q-item-label caption lines="1">
 							<q-skeleton v-if="loading || !id" type="text" />
@@ -44,17 +36,8 @@
 						</q-item-label>
 					</q-item-section>
 					<q-item-section avatar>
-						<q-skeleton
-							v-if="loading || !id"
-							type="QBtn"
-							class="full-width"
-						/>
-						<q-btn
-							v-else
-							outline
-							color="green"
-							:to="`/santri/${santri?.id}`"
-						>
+						<q-skeleton v-if="loading || !id" type="QBtn" class="full-width" />
+						<q-btn v-else outline color="green" :to="`/santri/${santri?.id}`">
 							<small>
 								{{ santri?.id }}
 							</small>
@@ -72,24 +55,12 @@
 						<q-item-label overline> Wali </q-item-label>
 						<q-item-label>
 							<q-skeleton v-if="loading || !id" type="text" />
-							<div v-else>
-								{{ wali?.nama }} ({{ wali?.sex }};
-								{{ santri?.wali_status }})
-							</div>
+							<div v-else>{{ wali?.nama }} ({{ wali?.sex }}; {{ santri?.wali_status }})</div>
 						</q-item-label>
 					</q-item-section>
 					<q-item-section avatar>
-						<q-skeleton
-							v-if="loading || !id"
-							type="QBtn"
-							class="full-width"
-						/>
-						<q-btn
-							v-else
-							outline
-							color="green"
-							:to="`/wali/${santri?.wali_id}`"
-						>
+						<q-skeleton v-if="loading || !id" type="QBtn" class="full-width" />
+						<q-btn v-else outline color="green" :to="`/wali/${santri?.wali_id}`">
 							<small>
 								{{ santri?.wali_id }}
 							</small>
@@ -113,18 +84,9 @@
 						</q-item-label>
 					</q-item-section>
 					<q-item-section avatar>
-						<q-skeleton
-							v-if="loading || !id"
-							type="QBtn"
-							class="full-width"
-						/>
+						<q-skeleton v-if="loading || !id" type="QBtn" class="full-width" />
 
-						<q-btn
-							v-else
-							outline
-							color="green"
-							:to="`/ortu/${santri?.ortu_id}`"
-						>
+						<q-btn v-else outline color="green" :to="`/ortu/${santri?.ortu_id}`">
 							<small>
 								{{ santri?.ortu_id }}
 							</small>

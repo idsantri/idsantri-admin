@@ -1,26 +1,20 @@
 <template lang="">
-	<temp-array
-		:data="izinMap"
-		:spinner="loading"
-		:btn-print="true"
-		@add="handleAdd"
-		@edit="handleEdit"
-		@print="handlePrint"
-	/>
-	<q-dialog v-model="crudShow">
-		<kelas-izin-crud
-			:data="izinObj"
-			:is-new="isNew"
-			title="Input Izin Madrasah"
-			@success-submit="loadData"
-			@success-delete="loadData"
+	<div>
+		<temp-array
+			:data="izinMap"
+			:spinner="loading"
+			:btn-print="true"
+			@add="handleAdd"
+			@edit="handleEdit"
+			@print="handlePrint"
 		/>
-	</q-dialog>
-	<q-dialog v-model="showViewer">
-		<ReportViewer :url="urlReport" />
-	</q-dialog>
-
-	<!-- <pre>{{ izin }}	</pre> -->
+		<q-dialog v-model="crudShow">
+			<IzinMadrasahForm :data="izinObj" @success-submit="loadData" @success-delete="loadData" />
+		</q-dialog>
+		<q-dialog v-model="showViewer">
+			<ReportViewer :url="urlReport" />
+		</q-dialog>
+	</div>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
@@ -30,7 +24,7 @@ import { formatHijri, m2h } from 'src/utils/hijri';
 import { getObjectById } from 'src/utils/array-object';
 import apiGet from 'src/api/api-get';
 import TempArray from 'src/pages/santri/relations/TemplateArray.vue';
-import KelasIzinCrud from 'src/pages/madrasah/kelas/KelasIzinCrud.vue';
+import IzinMadrasahForm from 'src/components/forms/IzinMadrasahForm.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
 
 const route = useRoute();
@@ -39,7 +33,6 @@ const izin = ref([]);
 const izinMap = ref([]);
 const izinObj = ref({});
 const loading = ref(false);
-const isNew = ref(false);
 const crudShow = ref(false);
 const kelas = ref({});
 const urlReport = ref('');
@@ -53,14 +46,9 @@ async function loadData() {
 		izin.value = data.izin_madrasah;
 		kelas.value = data.kelas;
 		izinMap.value = data.izin_madrasah.map((v) => ({
-			Tanggal:
-				formatDateShort(v.dari_tgl) +
-				' | ' +
-				formatHijri(m2h(v.dari_tgl)),
+			Tanggal: formatDateShort(v.dari_tgl) + ' | ' + formatHijri(m2h(v.dari_tgl)),
 			Durasi: v.durasi + ' hari',
-			Keperluan:
-				v.keperluan +
-				`${v.keterangan?.length > 0 ? ' (' + v.keterangan + ')' : ''}`,
+			Keperluan: v.keperluan + `${v.keterangan?.length > 0 ? ' (' + v.keterangan + ')' : ''}`,
 			Catatan: v.catatan,
 			id: v.id,
 		}));
@@ -81,7 +69,6 @@ const handleAdd = () => {
 	izinObj.value.kelas = kelas.value.kelas;
 	izinObj.value.kelas_id = kelas.value.id;
 
-	isNew.value = true;
 	crudShow.value = true;
 };
 
@@ -95,7 +82,6 @@ const handleEdit = ({ id }) => {
 	izinObj.value.tingkat_id = kelas.value.tingkat_id;
 	izinObj.value.kelas = kelas.value.kelas;
 
-	isNew.value = false;
 	crudShow.value = true;
 };
 

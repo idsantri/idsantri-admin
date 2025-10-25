@@ -1,81 +1,66 @@
 <template>
-	<q-page class="q-pa-sm">
-		<q-card class="">
-			<q-card-section class="bg-green-8 text-green-11 q-pa-sm">
-				<div class="flex items-center">
-					<div class="text-subtitle1">Data Santri</div>
-					<q-space />
-					<q-btn
-						@click="null"
-						size="sm"
-						color="green-2"
-						class="text-green-10 q-mr-sm"
-						icon="sync"
-						disable
-					/>
-					<q-btn
-						label="Cari"
-						@click="searchSantri = true"
-						size="sm"
-						color="green-2"
-						class="text-green-10 q-mr-sm"
-						icon="search"
-					/>
-					<q-btn
-						no-caps
-						size="sm"
-						color="green-2"
-						class="text-green-10 q-mr-sm"
-						icon="edit"
-						label="Edit"
-						@click="editSantri"
-					/>
-					<drop-down-print :santri="santri" />
-				</div>
-			</q-card-section>
-			<q-card-section class="no-padding">
-				<div class="row">
-					<!-- santri -->
-					<div class="col-12 col-sm-6 col-md-4 q-pa-sm">
-						<card-column
-							class="q-mb-sm"
-							:data="register"
-							:loading="loading"
-							title="Registrasi"
-						/>
+	<CardPage>
+		<CardHeader title="Data Santri" @on-reload="loadData">
+			<template #buttons>
+				<q-btn
+					:label="$q.screen.lt.sm ? '' : 'Cari'"
+					@click="searchSantri = true"
+					color="green-2"
+					no-caps
+					dense
+					class="q-px-sm text-green-10"
+					icon="search"
+				/>
+				<q-btn
+					no-caps
+					color="green-2"
+					dense
+					class="q-px-sm text-green-10"
+					icon="edit"
+					:label="$q.screen.lt.sm ? '' : 'Edit'"
+					@click="editSantri"
+				/>
+				<drop-down-print :santri="santri" />
+			</template>
+		</CardHeader>
 
-						<!-- identitas -->
-						<card-image
-							class="q-mb-sm"
-							title="Identitas"
-							:data="identity"
-							:loading="loading"
-							:loadingImage="loadingImage"
-							:image="santri?.image_url || '/user-default.png'"
-						>
-							<template #button>
-								<q-btn
-									class="q-mt-sm full-width"
-									icon="upload"
-									no-caps=""
-									label="Foto"
-									dense=""
-									size="sm"
-									outline=""
-									color="green-10"
-									@click="showUploader = true"
-								/>
-							</template>
-						</card-image>
-					</div>
+		<q-card-section class="no-padding">
+			<div class="row">
+				<!-- santri -->
+				<div class="col-12 col-sm-6 col-md-4 q-pa-sm">
+					<CardListTabel class="q-mb-sm" :data="register" :loading="loading" title="Registrasi" />
 
-					<!-- relations -->
-					<div class="col-12 col-sm-6 col-md-5 q-pa-sm">
-						<santri-relations :santri-id="santriId" />
-					</div>
+					<!-- identitas -->
+					<CardIdentity
+						class="q-mb-sm"
+						title="Identitas"
+						:data="identity"
+						:loading="loading"
+						:loadingImage="loadingImage"
+						:image="santri?.image_url || '/user-default.png'"
+					>
+						<template #button>
+							<q-btn
+								class="q-mt-sm full-width"
+								icon="upload"
+								no-caps=""
+								label="Foto"
+								dense=""
+								size="sm"
+								outline=""
+								color="green-10"
+								@click="showUploader = true"
+							/>
+						</template>
+					</CardIdentity>
 				</div>
-			</q-card-section>
-		</q-card>
+
+				<!-- relations -->
+				<div class="col-12 col-sm-6 col-md-5 q-pa-sm">
+					<santri-relations :santri-id="santriId" />
+				</div>
+			</div>
+		</q-card-section>
 		<!-- modal -->
 		<upload-image
 			img-format="jpg"
@@ -84,15 +69,13 @@
 			@update-uploader="updateUploader"
 			@success-upload="successUpload"
 		/>
-	</q-page>
-	<!-- <pre>{{ santri }}</pre> -->
+	</CardPage>
 </template>
 <script setup>
-import { reactive, ref, toRefs, onMounted } from 'vue';
+import { ref, toRefs, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { formatDateFull } from '../../utils/format-date';
-import CardColumn from '../../components/CardColumn.vue';
-import CardImage from './CardImage.vue';
+import CardIdentity from './CardIdentity.vue';
 import UploadImage from 'src/components/ImageUploader.vue';
 import santriStore from 'src/stores/santri-store';
 import { bacaHijri } from 'src/utils/hijri';
@@ -100,10 +83,12 @@ import SantriRelations from 'src/pages/santri/SantriRelations.vue';
 import dialogStore from 'src/stores/dialog-store';
 import apiGet from 'src/api/api-get';
 import DropDownPrint from './DropDownPrint.vue';
+import { storeToRefs } from 'pinia';
+import Santri from 'src/models/Santri';
+import CardListTabel from 'src/components/cards/CardListTabel.vue';
+import { formatAlamatLengkap } from 'src/utils/format-text';
 
-const santri = reactive({});
-const wali = reactive({});
-const ortu = reactive({});
+const { santri } = storeToRefs(santriStore());
 
 const route = useRoute();
 const santriId = route.params.id;
@@ -111,8 +96,6 @@ const santriId = route.params.id;
 const dialog = dialogStore();
 const { searchSantri, crudSantri } = toRefs(dialog);
 
-const register = ref({});
-const identity = ref({});
 const loading = ref(false);
 const loadingImage = ref(false);
 
@@ -125,50 +108,59 @@ async function loadImage() {
 	santri.image_url = img.image_url;
 }
 
-async function getSantri() {
-	const data = await apiGet({ endPoint: `santri/${santriId}`, loading });
-	if (!data.santri) return;
-	Object.assign(santri, data.santri);
-	Object.assign(wali, data.wali);
-	Object.assign(ortu, data.ortu);
+async function loadData() {
+	santriStore().$reset();
+	try {
+		loading.value = true;
+		const data = await Santri.getById({
+			id: santriId,
+		});
+		if (data) {
+			santriStore().setSantri(data.santri);
+			santriStore().setOrtu(data.ortu);
+			santriStore().setWali(data.wali);
+		}
+	} catch (_err) {
+		// console.error('err ', _err);
+	} finally {
+		loading.value = false;
+	}
 }
+const register = computed(() => {
+	return [
+		{
+			label: 'ID',
+			value: santri.value.id,
+		},
+		{
+			label: 'Tanggal Daftar',
+			value: formatDateFull(santri.value.tgl_daftar_m) + ' | ' + bacaHijri(santri.value.tgl_daftar_h),
+		},
+		{
+			label: 'Tahun Ajaran',
+			value: `${santri.value.th_ajaran_h || '-'} | ${santri.value.th_ajaran_m || '-'}`,
+		},
+	];
+});
+
+const identity = computed(() => ({
+	Nama: `${santri.value.nama ? santri.value.nama?.toUpperCase() : ''} (${santri.value.sex?.toUpperCase()})`,
+	Alamat: formatAlamatLengkap(
+		santri.value.jl,
+		santri.value.rt,
+		santri.value.rw,
+		santri.value.desa,
+		santri.value.kecamatan,
+		santri.value.kabupaten,
+		santri.value.provinsi,
+		santri.value.kode_pos,
+	),
+	Kelahiran: `${santri.value.tmp_lahir || '-'}, ${formatDateFull(santri.value.tgl_lahir)}`,
+	'Data Akhir': santri.value.data_akhir || '-',
+}));
 
 onMounted(async () => {
-	await getSantri();
-	// register
-	register.value = {
-		ID: santri.id,
-		'Tanggal Daftar':
-			formatDateFull(santri.tgl_daftar_m) +
-			' | ' +
-			bacaHijri(santri.tgl_daftar_h),
-		'Tahun Ajaran': `${santri.th_ajaran_h || '-'} | ${
-			santri.th_ajaran_m || '-'
-		}`,
-	};
-
-	// identity
-	identity.value = {
-		Nama: `${santri.nama?.toUpperCase()} (${santri.sex?.toUpperCase()})`,
-		Alamat: `${santri.jl || ' '} RT ${String(santri.rt || 0).padStart(
-			3,
-			0,
-		)} RW ${String(santri.rw || 0).padStart(3, '0')} ${
-			santri.desa || ' '
-		} ${santri.kecamatan || ' '} ${santri.kabupaten || ' '} ${
-			santri.provinsi || ' '
-		} ${santri.kode_pos || ' '}`.replace(/\s\s+/g, ' '),
-		Kelahiran: `${santri.tmp_lahir || '-'}, ${formatDateFull(
-			santri.tgl_lahir,
-		)}`,
-		'Data Akhir': santri.data_akhir || '-',
-	};
-
-	santriStore().setSantri(santri);
-	santriStore().setOrtu(ortu);
-	santriStore().setWali(wali);
-
-	// await loadImage();
+	await loadData();
 });
 
 /**

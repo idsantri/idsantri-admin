@@ -45,7 +45,7 @@ function titleCase(text) {
 function kebabToTitleCase(text) {
 	return text
 		.split('-')
-		.map((w) => w[0].toUpperCase() + w.substring(1).toLowerCase())
+		.map((w) => w[0]?.toUpperCase() + w.substring(1).toLowerCase())
 		.join(' ');
 }
 function snakeToTitleCase(text) {

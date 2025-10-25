@@ -2,18 +2,8 @@
 	<q-card flat bordered class="">
 		<q-card-section class="bg-green-7 no-padding">
 			<q-toolbar class="no-padding no-margin">
-				<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11">
-					Identitas
-				</q-toolbar-title>
-				<q-btn
-					dense
-					flat
-					class="q-px-md q-mr-sm"
-					no-caps=""
-					icon="sync"
-					color="green-2"
-					@click="loadData"
-				/>
+				<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11"> Identitas </q-toolbar-title>
+				<q-btn dense flat class="q-px-md q-mr-sm" no-caps="" icon="sync" color="green-2" @click="loadData" />
 				<q-btn
 					dense
 					class="q-px-md q-mr-sm text-green-10"
@@ -26,20 +16,9 @@
 			</q-toolbar>
 		</q-card-section>
 		<q-card-section class="q-pa-sm">
-			<div v-if="loading">
-				<q-spinner-cube
-					color="green-12"
-					size="8em"
-					class="flex q-ma-lg q-mx-auto"
-				/>
-			</div>
-			<div v-else class="row">
+			<div class="row">
 				<div class="col-4 q-pr-sm">
-					<q-img
-						:src="aparatur?.image || '/user-default.png'"
-						:ratio="3 / 4"
-						alt="aparatur"
-					/>
+					<q-img :src="aparatur?.image || '/user-default.png'" :ratio="3 / 4" alt="aparatur" />
 					<q-btn
 						class="q-mt-sm full-width"
 						icon="upload"
@@ -64,22 +43,21 @@
 
 			<!-- <pre>{{ personalia }}</pre> -->
 		</q-card-section>
-	</q-card>
-	<q-dialog persistent="" v-model="crudShow">
-		<PersonaliaForm
-			:data="aparatur"
-			@success-submit="handleSubmit"
-			@success-delete="$router.go(-1)"
+
+		<CardLoading :showing="loading" />
+
+		<q-dialog persistent="" v-model="crudShow">
+			<PersonaliaForm :data="aparatur" @success-submit="handleSubmit" @success-delete="$router.go(-1)" />
+		</q-dialog>
+		<!-- modal -->
+		<upload-image
+			:show-uploader="showUploader"
+			:url="`/images/aparatur/${route.params.id}`"
+			img-format="webp"
+			@update-uploader="updateUploader"
+			@success-upload="successUpload"
 		/>
-	</q-dialog>
-	<!-- modal -->
-	<upload-image
-		:show-uploader="showUploader"
-		:url="`/images/aparatur/${route.params.id}`"
-		img-format="webp"
-		@update-uploader="updateUploader"
-		@success-upload="successUpload"
-	/>
+	</q-card>
 </template>
 <script setup>
 import { computed, onMounted, ref } from 'vue';
@@ -88,6 +66,7 @@ import apiGet from 'src/api/api-get';
 import { formatDateFull } from 'src/utils/format-date';
 import UploadImage from 'src/components/ImageUploader.vue';
 import PersonaliaForm from 'src/components/forms/PersonaliaForm.vue';
+import { formatAlamatLengkap } from 'src/utils/format-text';
 
 const route = useRoute();
 const router = useRouter();
@@ -128,19 +107,17 @@ async function loadImage() {
 
 const aparaturObj = computed(() => ({
 	Nama: `${aparatur.value.nama?.toUpperCase()} (${aparatur.value.sex?.toUpperCase()})`,
-	Alamat: `${aparatur.value.jl || ' '} RT ${String(
-		aparatur.value.rt || 0,
-	).padStart(3, 0)} RW ${String(aparatur.value.rw || 0).padStart(
-		3,
-		'0',
-	)} ${aparatur.value.desa || ' '} ${
-		aparatur.value.kecamatan || ' '
-	} ${aparatur.value.kabupaten || ' '} ${
-		aparatur.value.provinsi || ' '
-	} ${aparatur.value.kode_pos || ' '}`.replace(/\s\s+/g, ' '),
-	Kelahiran: `${aparatur.value.tmp_lahir || '-'}, ${formatDateFull(
-		aparatur.value.tgl_lahir,
-	)}`,
+	Alamat: formatAlamatLengkap(
+		aparatur.value.jl,
+		aparatur.value.rt,
+		aparatur.value.rw,
+		aparatur.value.desa,
+		aparatur.value.kecamatan,
+		aparatur.value.kabupaten,
+		aparatur.value.provinsi,
+		aparatur.value.kode_pos,
+	),
+	Kelahiran: `${aparatur.value.tmp_lahir || '-'}, ${formatDateFull(aparatur.value.tgl_lahir)}`,
 	Telepon: aparatur.value.telepon || '-',
 	Email: aparatur.value.email || '-',
 }));

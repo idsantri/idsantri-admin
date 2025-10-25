@@ -2,12 +2,7 @@
 	<q-card flat class="">
 		<q-card-section class="no-padding">
 			<q-card flat bordered>
-				<TableHeader
-					title="Data Muallim"
-					v-model="filter"
-					@on-reload="onReload"
-					:btn-filter="false"
-				>
+				<TableHeader title="Data Muallim" v-model="filter" @on-reload="onReload" :btn-filter="false">
 					<template #actions>
 						<q-btn
 							no-caps
@@ -39,16 +34,10 @@
 					:loading="loading"
 					:rows-per-page-options="[10, 25, 50, 100, 0]"
 					flat
-					@row-click="
-						(evt, row, index) =>
-							$router.push(`/personalia/${row.aparatur_id}`)
-					"
+					@row-click="(evt, row, index) => $router.push(`/personalia/${row.aparatur_id}`)"
 					:columns="columns"
 					table-header-class="bg-green-1 text-green-10 text-subtitle1"
 				/>
-				<!-- <div>
-					<pre>{{ muallim }}</pre>
-				</div> -->
 			</q-card>
 		</q-card-section>
 	</q-card>

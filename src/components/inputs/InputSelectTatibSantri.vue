@@ -10,7 +10,8 @@
 		behavior="menu"
 		clearable
 		multiple
-		:hint="textHint()"
+		:hint="hint"
+		v-model="input"
 	>
 		<template v-slot:after>
 			<drop-down-after route-to="tatib-santri" @reload="fetchList" />
@@ -18,70 +19,82 @@
 	</q-select>
 </template>
 <script setup>
-import { getLists } from 'src/api/api-get-lists';
 import listsStore from 'src/stores/lists-store';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import DropDownAfter from './DropDownAfter.vue';
+import Lists from 'src/models/Lists';
 
-const props = defineProps({
-	selected: {
-		type: String,
-	},
-});
+const input = defineModel();
 
-function textHint() {
-	let result = '';
-	if (props.selected) {
-		result = extractDataInBrackets(props.selected);
+const hint = computed(() => extractData(input.value));
+
+function extractData(inputValue) {
+	try {
+		// Jika input kosong/null/undefined, kembalikan string ...
+		if (!inputValue) {
+			return 'Pilih pasal dilanggar';
+		}
+
+		// Normalisasi ke array
+		const values = Array.isArray(inputValue) ? inputValue : [inputValue];
+
+		// Gabungkan menjadi satu string dengan pemisah
+		const joined = values.join('; ');
+
+		// Ekstraksi konten di dalam tanda kurung []
+		const regex = /\[(.*?)\]/g;
+		const matches = joined.match(regex);
+
+		// Jika tidak ada match, kembalikan string kosong
+		if (!matches) {
+			return '';
+		}
+
+		// Bersihkan tanda kurung [] dan gabungkan hasilnya
+		const extractedData = matches.map((match) => match.slice(1, -1)).join(', ');
+		return '[' + extractedData + ']';
+	} catch (error) {
+		// Tangani error secara aman
+		console.error(error);
+		return '';
 	}
-	return result;
-}
-
-function extractDataInBrackets(inputText) {
-	let extractedData = '';
-	const regex = /\[(.*?)\]/g;
-	const matches = inputText.match(regex);
-
-	if (matches) {
-		extractedData = matches.map((match) => match.slice(1, -1)).join(', ');
-	}
-
-	return extractedData;
 }
 
 const loading = ref(false);
 const options = ref([]);
 const store = listsStore();
 const url = 'tatib-santri';
+const key = url.replace(/-/g, '_');
 
 function mapData(data) {
 	let result = [];
 	if (data.length) {
-		result = data
-			.filter((d) => d.val0.length != 1)
-			.map((d) => `[${d.val0}] ${d.val1}`);
+		result = data.filter((d) => d.val0.length != 1).map((d) => `[${d.val0}] ${d.val1}`);
 	}
 	return result;
 }
 
 onMounted(async () => {
-	const data = store.getByStateName(url);
+	const data = store.getStateByKey(key);
 	if (data.length) {
 		options.value = mapData(data);
 	} else {
 		await fetchList();
-		const result = store.getByStateName(url);
+		const result = store.getStateByKey(key);
 		options.value = mapData(result);
 	}
 });
 
 async function fetchList() {
-	const data = await getLists({
-		key: url,
-		loading,
-		sort: 'asc',
-	});
-	store.$patch({ [url]: data });
+	try {
+		loading.value = true;
+		const data = await Lists.getByKey(url);
+		store.$patch({ [key]: data[key] });
+	} catch (error) {
+		console.log('error get list ', error);
+	} finally {
+		loading.value = false;
+	}
 }
 </script>
 <style lang=""></style>

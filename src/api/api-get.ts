@@ -3,6 +3,9 @@ import apiError from './api-error';
 import type { GetParams } from './api-interface';
 import { notifySuccess } from 'src/utils/notify';
 
+/**
+ * @deprecated Use apiGet from 'src/api/apiGet' instead
+ */
 async function apiGet({
 	endPoint,
 	loading,

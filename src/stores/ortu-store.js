@@ -24,6 +24,7 @@ export default defineStore('ortu', {
 				i_pekerjaan: null,
 
 				jumlah_anak: null,
+				santri: [],
 			},
 			isNew: true,
 		};

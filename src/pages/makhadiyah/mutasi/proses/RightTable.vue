@@ -1,5 +1,5 @@
 <template lang="">
-	<q-markup-table flat bordered style="height: 550px">
+	<q-markup-table flat bordered style="height: 520px">
 		<thead>
 			<tr>
 				<th class="text-left">
@@ -45,13 +45,7 @@
 				<td>{{ item.new_domisili }}</td>
 				<td>{{ item.new_keterangan ?? '-' }}</td>
 				<td class="text-right">
-					<q-btn
-						icon="edit"
-						dense
-						flat
-						color="green-10"
-						@click="edit(item)"
-					/>
+					<q-btn icon="edit" dense flat color="green-10" @click="edit(item)" />
 				</td>
 			</tr>
 		</tbody>
@@ -66,7 +60,7 @@
 <script setup>
 import { computed, ref, toRef } from 'vue';
 import mutasiStore from 'src/stores/mutasi-store';
-import EditNewDomisili from 'pages/makhadiyah/mutasi/EditMutasi.vue';
+import EditNewDomisili from './EditMutasi.vue';
 
 const props = defineProps({
 	onLoading: { type: Boolean, default: false },

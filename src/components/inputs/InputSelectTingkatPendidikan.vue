@@ -11,8 +11,12 @@
 		:loading="loading"
 		behavior="menu"
 		clearable
-		:hint="textHint()"
+		v-model="input"
+		:bottom-slots="withHint"
 	>
+		<template v-slot:hint>
+			<div>{{ hint }}</div>
+		</template>
 		<template v-slot:after>
 			<drop-down-after
 				v-if="btnSetting"
@@ -24,55 +28,58 @@
 	</q-select>
 </template>
 <script setup>
-import { getLists } from 'src/api/api-get-lists';
 import listsStore from 'src/stores/lists-store';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import DropDownAfter from './DropDownAfter.vue';
+import Lists from 'src/models/Lists';
 
-const loading = ref(false);
-const options = ref([]);
-const store = listsStore();
-const url = 'tingkat-pendidikan';
-
-const props = defineProps({
-	selected: {
-		type: String,
-		default: '',
-	},
+const input = defineModel();
+defineProps({
 	btnSetting: {
+		type: Boolean,
+		default: true,
+	},
+	withHint: {
 		type: Boolean,
 		default: true,
 	},
 });
 
-function textHint() {
-	if (props.selected) {
-		const tingkat = options.value?.find(
-			(tk) => tk?.val0 === props.selected,
-		);
+const loading = ref(false);
+const options = ref([]);
+const store = listsStore();
+const url = 'tingkat-pendidikan';
+const key = url.replace(/-/g, '_');
+
+const hint = computed(() => {
+	if (input.value) {
+		const tingkat = options.value?.find((tk) => tk?.val0 === input.value);
 		return 'Tingkat ID: ' + tingkat?.val0 || '';
 	} else {
 		return 'Pilih tingkat pendidikan';
 	}
-}
+});
 
 onMounted(async () => {
-	const data = store.getByStateName(url);
+	const data = store.getStateByKey(key);
 	if (data.length) {
 		options.value = data;
 	} else {
 		await fetchList();
-		options.value = store.getByStateName(url);
+		options.value = store.getStateByKey(key);
 	}
 });
 
 async function fetchList() {
-	const data = await getLists({
-		key: url,
-		loading,
-		sort: 'asc',
-	});
-	store.$patch({ [url]: data });
+	try {
+		loading.value = true;
+		const data = await Lists.getByKey(url);
+		store.$patch({ [key]: data[key] });
+	} catch (error) {
+		console.log('error get list ', error);
+	} finally {
+		loading.value = false;
+	}
 }
 </script>
 <style lang=""></style>

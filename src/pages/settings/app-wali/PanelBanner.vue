@@ -2,9 +2,7 @@
 	<div>
 		<div class="flex justify-between items-center q-mb-sm">
 			<div>
-				<div class="text-italic text-weight-light">
-					Banner Pengumuman
-				</div>
+				<div class="text-italic text-weight-light">Banner Pengumuman</div>
 			</div>
 
 			<q-btn
@@ -49,15 +47,7 @@
 								label: $q.lang.editor.formatting,
 								icon: $q.iconSet.editor.formatting,
 								list: 'no-icons',
-								options: [
-									'p',
-									'h1',
-									'h2',
-									'h3',
-									'h4',
-									'h5',
-									'h6',
-								],
+								options: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
 							},
 							{
 								label: $q.lang.editor.fontSize,
@@ -65,15 +55,7 @@
 								fixedLabel: true,
 								fixedIcon: true,
 								list: 'no-icons',
-								options: [
-									'size-1',
-									'size-2',
-									'size-3',
-									'size-4',
-									'size-5',
-									'size-6',
-									'size-7',
-								],
+								options: ['size-1', 'size-2', 'size-3', 'size-4', 'size-5', 'size-6', 'size-7'],
 							},
 							'removeFormat',
 						],
@@ -85,16 +67,12 @@
 		</div>
 
 		<div v-if="!showFormAdd">
-			<div v-if="loading">
-				<q-separator class="q-my-sm" />
-				<q-spinner-cube size="4em" class="flex q-ma-lg q-mx-auto" />
-			</div>
-			<div v-else-if="!loading && banners.length === 0">
+			<div v-if="!banners.length">
 				<div class="text-center text-italic q-pa-lg text-negative">
 					Tidak ada data <br />Silakan tambahkan banner baru
 				</div>
 			</div>
-			<div v-else-if="!loading && banners.length > 0">
+			<div v-else>
 				<CardBanner
 					v-for="(banner, index) in banners"
 					:key="banner.id"
@@ -104,9 +82,8 @@
 					@onDelete="onDelete"
 					:errorUpdate="errorUpdate"
 				/>
-
-				<!-- <pre>{{ banners }}</pre> -->
 			</div>
+			<CardLoading :showing="loading" />
 		</div>
 	</div>
 </template>

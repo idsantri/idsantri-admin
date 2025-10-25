@@ -1,7 +1,7 @@
 import js from '@eslint/js';
 import globals from 'globals';
 import pluginVue from 'eslint-plugin-vue';
-import pluginQuasar from '@quasar/app-webpack/eslint';
+import pluginQuasar from '@quasar/app-vite/eslint';
 import {
 	defineConfigWithVueTs,
 	vueTsConfigs,
@@ -81,7 +81,14 @@ export default defineConfigWithVueTs(
 				process.env.NODE_ENV === 'production' ? 'error' : 'off', // allow debugger during development only
 
 			'vue/block-lang': 'off',
-			'no-unused-vars': 'warn',
+			'no-unused-vars': [
+				'warn',
+				{
+					varsIgnorePattern: '^_',
+					argsIgnorePattern: '^_',
+					caughtErrorsIgnorePattern: '^_',
+				},
+			],
 			'prefer-promise-reject-errors': 'warn',
 			'prefer-const': 'warn',
 			'no-prototype-builtins': 'warn',
@@ -95,7 +102,14 @@ export default defineConfigWithVueTs(
 			'@typescript-eslint/consistent-type-imports': 'warn',
 			'@typescript-eslint/prefer-promise-reject-errors': 'warn',
 			'@typescript-eslint/no-empty-object-type': 'warn',
-			'@typescript-eslint/no-unused-vars': 'warn',
+			'@typescript-eslint/no-unused-vars': [
+				'warn',
+				{
+					varsIgnorePattern: '^_',
+					argsIgnorePattern: '^_',
+					caughtErrorsIgnorePattern: '^_',
+				},
+			],
 		},
 	},
 

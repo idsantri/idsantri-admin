@@ -1,18 +1,9 @@
 <template lang="">
 	<q-card>
-		<q-card-section
-			class="q-pa-sm bg-green-7 text-green-11 text-subtitle1 flex flex-center"
-		>
+		<q-card-section class="q-pa-sm bg-green-7 text-green-11 text-subtitle1 flex flex-center">
 			Kabupaten/Kota
 			<q-space />
-			<q-btn
-				@click="fetchData"
-				icon="sync"
-				round
-				dense
-				flat
-				class="q-mr-md"
-			/>
+			<q-btn @click="fetchData" icon="sync" round dense flat class="q-mr-md" />
 			<q-btn @click="onAdd" icon="add" round dense flat />
 		</q-card-section>
 		<TableAlamat
@@ -23,21 +14,17 @@
 			@on-edit="onEdit"
 		/>
 		<q-dialog v-model="crudShow">
-			<CrudKabupaten
-				:data="alamat"
-				@success-delete="fetchData"
-				@success-submit="fetchData"
-			/>
+			<AlamatKabupatenForm :data="alamat" @success-delete="fetchData" @success-submit="fetchData" />
 		</q-dialog>
 	</q-card>
 </template>
 <script setup>
 import { ref, watch } from 'vue';
 import alamatStore from 'src/stores/alamat-store';
-import apiGet from 'src/api/api-get';
 import { notifyWarning } from 'src/utils/notify';
 import TableAlamat from './TableAlamat.vue';
-import CrudKabupaten from './CrudKabupaten.vue';
+import AlamatKabupatenForm from 'src/components/forms/AlamatKabupatenForm.vue';
+import Alamat from 'src/models/Alamat';
 
 const props = defineProps({
 	provinsi_id: { type: String, required: true, default: '' },
@@ -54,14 +41,18 @@ async function fetchData() {
 	const { provinsi_id } = props;
 	if (!provinsi_id) return;
 
-	const data = await apiGet({
-		endPoint: 'alamat/kabupaten',
-		loading,
-		params: { provinsi_id },
-	});
-	if (data && data.kabupaten) {
-		state.setKabupaten(data.kabupaten, { provinsi_id });
-		rows.value = state.getKabupaten({ provinsi_id });
+	try {
+		loading.value = true;
+		const data = await Alamat.Kabupaten.getAll({ params: { provinsi_id } });
+		if (data && data.kabupaten) {
+			state.setKabupaten(data.kabupaten, { provinsi_id });
+			rows.value = state.getKabupaten({ provinsi_id });
+		}
+	} catch (_err) {
+		// console.error(_err);
+		console.log('error get kabupaten');
+	} finally {
+		loading.value = false;
 	}
 }
 

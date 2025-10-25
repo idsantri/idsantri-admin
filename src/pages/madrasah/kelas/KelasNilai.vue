@@ -1,13 +1,7 @@
 <template lang="">
 	<q-card flat bordered class="bg-green-1">
 		<q-card-section class="q-pa-sm">
-			<q-tabs
-				no-caps
-				outside-arrows
-				mobile-arrows
-				class="bg-green-2 text-green-10"
-				v-model="tab"
-			>
+			<q-tabs no-caps outside-arrows mobile-arrows class="bg-green-2 text-green-10" v-model="tab">
 				<q-tab name="ujian" label="Ujian" />
 				<q-tab name="harian" label="Harian" />
 				<q-tab name="rapor" label="Rapor" />
@@ -17,19 +11,9 @@
 			</q-tabs>
 		</q-card-section>
 		<q-card-section class="q-px-sm q-pb-sm q-pt-none">
-			<div v-if="loading">
-				<q-spinner-cube
-					color="green-12"
-					size="8em"
-					class="flex q-ma-lg q-mx-auto"
-				/>
-			</div>
-			<div v-else-if="nilai?.length == 0">
-				<div
-					class="flex flex-center q-pa-lg text-center text-negative text-italic"
-				>
-					Tidak ada untuk ditampilkan <br />Silakan input nilai
-					terlebih dahulu!
+			<div v-if="nilai?.length == 0">
+				<div class="flex flex-center q-pa-lg text-center text-negative text-italic">
+					Tidak ada untuk ditampilkan <br />Silakan input nilai terlebih dahulu!
 				</div>
 			</div>
 
@@ -57,28 +41,16 @@
 					<tr v-for="(item, index) in nilai" :key="index">
 						<td class="text-left">{{ item.id }}</td>
 						<td class="text-left">{{ item.name }}</td>
-						<td
-							:title="'Nilai ' + tab + ' pada ujian ke-1'"
-							class="text-right"
-						>
+						<td :title="'Nilai ' + tab + ' pada ujian ke-1'" class="text-right">
 							{{ item.nilai_1 }}
 						</td>
-						<td
-							:title="'Nilai ' + tab + ' pada ujian ke-2'"
-							class="text-right"
-						>
+						<td :title="'Nilai ' + tab + ' pada ujian ke-2'" class="text-right">
 							{{ item.nilai_2 }}
 						</td>
-						<td
-							:title="'Nilai ' + tab + ' pada ujian ke-3'"
-							class="text-right"
-						>
+						<td :title="'Nilai ' + tab + ' pada ujian ke-3'" class="text-right">
 							{{ item.nilai_3 }}
 						</td>
-						<td
-							:title="'Nilai ' + tab + ' pada ujian ke-4'"
-							class="text-right"
-						>
+						<td :title="'Nilai ' + tab + ' pada ujian ke-4'" class="text-right">
 							{{ item.nilai_4 }}
 						</td>
 						<td title="Nilai rata-rata" class="text-right">
@@ -98,61 +70,42 @@
 						<td class="text-right">
 							{{
 								tab == 'rapor' || tab == 'ijazah'
-									? hitungRataRata(nilai, 'nilai_1')?.toFixed(
-											1,
-										)
-									: hitungRataRata(nilai, 'nilai_1')?.toFixed(
-											2,
-										)
+									? hitungRataRata(nilai, 'nilai_1')?.toFixed(1)
+									: hitungRataRata(nilai, 'nilai_1')?.toFixed(2)
 							}}
 						</td>
 						<td class="text-right">
 							{{
 								tab == 'rapor' || tab == 'ijazah'
-									? hitungRataRata(nilai, 'nilai_2')?.toFixed(
-											1,
-										)
-									: hitungRataRata(nilai, 'nilai_2')?.toFixed(
-											2,
-										)
+									? hitungRataRata(nilai, 'nilai_2')?.toFixed(1)
+									: hitungRataRata(nilai, 'nilai_2')?.toFixed(2)
 							}}
 						</td>
 						<td class="text-right">
 							{{
 								tab == 'rapor' || tab == 'ijazah'
-									? hitungRataRata(nilai, 'nilai_3')?.toFixed(
-											1,
-										)
-									: hitungRataRata(nilai, 'nilai_3')?.toFixed(
-											2,
-										)
+									? hitungRataRata(nilai, 'nilai_3')?.toFixed(1)
+									: hitungRataRata(nilai, 'nilai_3')?.toFixed(2)
 							}}
 						</td>
 						<td class="text-right">
 							{{
 								tab == 'rapor' || tab == 'ijazah'
-									? hitungRataRata(nilai, 'nilai_4')?.toFixed(
-											1,
-										)
-									: hitungRataRata(nilai, 'nilai_4')?.toFixed(
-											2,
-										)
+									? hitungRataRata(nilai, 'nilai_4')?.toFixed(1)
+									: hitungRataRata(nilai, 'nilai_4')?.toFixed(2)
 							}}
 						</td>
 						<td class="text-right">
 							{{
 								tab == 'rapor' || tab == 'ijazah'
-									? hitungRataRata(nilai, 'rerata')?.toFixed(
-											1,
-										)
-									: hitungRataRata(nilai, 'rerata')?.toFixed(
-											2,
-										)
+									? hitungRataRata(nilai, 'rerata')?.toFixed(1)
+									: hitungRataRata(nilai, 'rerata')?.toFixed(2)
 							}}
 						</td>
 					</tr>
 				</tfoot>
 			</q-markup-table>
+			<CardLoading :showing="loading" />
 		</q-card-section>
 	</q-card>
 </template>
