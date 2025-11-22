@@ -59,11 +59,11 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import apiGet from 'src/api/api-get';
 import { formatDateShort, isDate } from 'src/utils/format-date';
 import FilterTanggal from 'src/components/filters/FilterTanggal.vue';
 import DropDownMenu from './part/DropDownMenu.vue';
 import IndisiplinerForm from 'src/components/forms/IndisiplinerForm.vue';
+import Indisipliner from 'src/models/Indisipliner';
 
 const indisipliner = ref([{}]);
 const loading = ref(false);
@@ -82,17 +82,21 @@ function dataEmit(val) {
 	dataFilter.value = val;
 }
 
+async function loadData(start_date, end_date) {
+	try {
+		loading.value = true;
+		const data = await Indisipliner.getAll({ params: { start_date, end_date } });
+		indisipliner.value = data.indisipliner;
+	} catch (error) {
+		console.log('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
+	}
+}
+
 onMounted(async () => {
 	if (isDate(startDate.value) && isDate(endDate.value)) {
-		const data = await apiGet({
-			endPoint: 'indisipliner',
-			loading,
-			params: { start_date: startDate.value, end_date: endDate.value },
-		});
-		if (data) {
-			indisipliner.value = data.indisipliner;
-		}
-		// console.log(izin.value);
+		await loadData(startDate.value, endDate.value);
 	}
 });
 

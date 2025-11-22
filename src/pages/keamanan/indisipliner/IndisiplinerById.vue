@@ -144,12 +144,12 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import apiGet from 'src/api/api-get';
 import { formatDateFull } from 'src/utils/format-date';
 import { m2hBacaHijri } from 'src/utils/hijri';
 import IndisiplinerRiwayat from './part/IndisiplinerRiwayat.vue';
 import CardSantriSimple from 'src/components/santri/CardSantriSimple.vue';
 import IndisiplinerForm from 'src/components/forms/IndisiplinerForm.vue';
+import Indisipliner from 'src/models/Indisipliner';
 
 const route = useRoute();
 const indisipliner = ref({});
@@ -157,12 +157,14 @@ const loading = ref(false);
 const crudShow = ref(false);
 
 async function loadData() {
-	const data = await apiGet({
-		endPoint: `indisipliner/${route.params.id}`,
-		loading,
-	});
-	if (data) {
+	try {
+		loading.value = true;
+		const data = await Indisipliner.getById({ id: route.params.id });
 		indisipliner.value = data.indisipliner;
+	} catch (error) {
+		console.log('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 
