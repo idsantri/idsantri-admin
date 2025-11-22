@@ -58,11 +58,11 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import apiGet from 'src/api/api-get';
 import { isDate } from 'src/utils/format-date';
 import FilterTanggal from 'src/components/filters/FilterTanggal.vue';
 import DropDownMenu from './part/DropDownMenu.vue';
 import IzinPesantrenForm from 'src/components/forms/IzinPesantrenForm.vue';
+import IzinPesantren from 'src/models/IzinPesantren';
 
 const izin = ref([{}]);
 const loading = ref(false);
@@ -81,15 +81,21 @@ function dataEmit(val) {
 	dataFilter.value = val;
 }
 
+async function loadData(start_date, end_date) {
+	try {
+		loading.value = true;
+		const data = await IzinPesantren.getAll({ params: { start_date, end_date } });
+		izin.value = data.izin_pesantren;
+	} catch (error) {
+		console.log('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
+	}
+}
+
 onMounted(async () => {
 	if (isDate(startDate.value) && isDate(endDate.value)) {
-		const data = await apiGet({
-			endPoint: 'izin-pesantren',
-			loading,
-			params: { start_date: startDate.value, end_date: endDate.value },
-		});
-		izin.value = data.izin_pesantren;
-		// console.log(izin.value);
+		await loadData(startDate.value, endDate.value);
 	}
 });
 

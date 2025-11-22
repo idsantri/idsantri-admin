@@ -87,9 +87,9 @@
 		<q-dialog v-model="crudShow">
 			<IndisiplinerForm
 				:data="{
-					santri_id: riwayatIndisipliner[0].santri_id,
-					nama: riwayatIndisipliner[0].nama,
-					data_akhir: riwayatIndisipliner[0].data_akhir,
+					santri_id: santri_id,
+					nama: riwayatIndisipliner[0]?.nama,
+					data_akhir: riwayatIndisipliner[0]?.data_akhir,
 				}"
 				@success-delete="null"
 				@success-submit="(v) => $router.push(`/keamanan/indisipliner/${v.id}`)"
