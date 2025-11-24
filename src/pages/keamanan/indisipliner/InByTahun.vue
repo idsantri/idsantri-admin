@@ -8,8 +8,9 @@
 			<q-card-section class="bg-green-7 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
 				<span v-html="dataFilter.display || ''"></span>
 				<q-space />
+				<InputSearch v-model="filter" bg-color="green-11" />
 			</q-card-section>
-			<TabelIndex :indisipliner="indisipliner" :loading="loading" />
+			<TabelIndex :indisipliner="indisipliner" :loading="loading" :filter="filter" />
 		</q-card>
 	</div>
 </template>
@@ -20,7 +21,9 @@ import Indisipliner from 'src/models/Indisipliner';
 import TabelIndex from './part/TabelIndex.vue';
 import FilterTahunAjaran from 'src/components/filters/FilterTahunAjaran.vue';
 import RouterPage from './part/RouterPage.vue';
+import InputSearch from 'src/components/inputs/InputSearch.vue';
 
+const filter = ref('');
 const indisipliner = ref([{}]);
 const loading = ref(false);
 const { params } = useRoute();

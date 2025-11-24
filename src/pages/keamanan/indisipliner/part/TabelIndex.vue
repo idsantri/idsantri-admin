@@ -12,21 +12,10 @@
 		flat
 		@row-click="(evt, row, index) => row?.id && $router.push(`/keamanan/indisipliner/${row.id}`)"
 	>
-		<template v-slot:top-left>
-			<div class="text-subtitle1 text-green-10">Data Indisipliner</div>
-		</template>
-		<template v-slot:top-right>
-			<q-input outlined dense debounce="300" v-model="filter" placeholder="Cari">
-				<template v-slot:append>
-					<q-icon name="search" />
-				</template>
-			</q-input>
-		</template>
 	</q-table>
 </template>
 <script setup>
 import { formatDateShort } from 'src/utils/format-date';
-import { ref } from 'vue';
 
 defineProps({
 	indisipliner: {
@@ -37,8 +26,12 @@ defineProps({
 		type: Boolean,
 		default: false,
 	},
+	filter: {
+		type: String,
+		default: '',
+	},
 });
-const filter = ref('');
+
 const columns = [
 	{
 		name: 'santri_id',
