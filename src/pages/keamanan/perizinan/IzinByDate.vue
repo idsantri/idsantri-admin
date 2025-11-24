@@ -1,6 +1,18 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Data Izin Pesantren" :show-reload="false" />
+		<CardHeader title="Data Izin Pesantren" :show-reload="false">
+			<template #buttons>
+				<q-btn
+					dense
+					icon="sym_o_bar_chart"
+					label="Statistik"
+					no-caps
+					class="q-px-sm"
+					outline
+					to="/keamanan/izin-pesantren/statistik"
+				/>
+			</template>
+		</CardHeader>
 		<q-card-section class="q-pa-sm">
 			<filter-tanggal :showBulanUjian="true" start-url="/keamanan/izin-pesantren" @dataFilter="dataEmit">
 				<DropDownMenu />
@@ -33,7 +45,7 @@
 					@row-click="(evt, row, index) => $router.push(`/keamanan/izin-pesantren/${row.id}`)"
 				>
 					<template v-slot:top-left>
-						<div class="text-subtitle1 text-green-10">Data Perizinan</div>
+						<div class="text-subtitle1 text-green-10">Data Izin Pesantren</div>
 					</template>
 					<template v-slot:top-right>
 						<q-input outlined dense debounce="300" v-model="filter" placeholder="Cari">
