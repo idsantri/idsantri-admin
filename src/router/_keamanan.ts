@@ -12,12 +12,23 @@ export default [
 		path: 'izin-pesantren',
 		children: [
 			{
-				path: ':startDate?/:endDate?',
-				component: (): Component => import('src/pages/keamanan/perizinan/IzinByDate.vue'),
-			},
-			{
-				path: 'santri/:santri_id',
-				component: (): Component => import('src/pages/keamanan/perizinan/IzinBySantri.vue'),
+				path: '',
+				redirect: (to: RouteLocation): string => `${to.fullPath}/th-ajaran`,
+				component: (): Component => import('src/pages/keamanan/perizinan/IzinIndex.vue'),
+				children: [
+					{
+						path: 'th-ajaran/:thAjaranH?',
+						component: (): Component => import('src/pages/keamanan/perizinan/IzByTahun.vue'),
+					},
+					{
+						path: 'tanggal/:startDate?/:endDate?',
+						component: (): Component => import('src/pages/keamanan/perizinan/IzByDate.vue'),
+					},
+					{
+						path: 'santri/:id?',
+						component: (): Component => import('src/pages/keamanan/perizinan/IzBySantri.vue'),
+					},
+				],
 			},
 			{
 				path: 'statistik',
@@ -26,7 +37,7 @@ export default [
 			{
 				// /:id -> matches only numbers
 				path: ':id(\\d+)',
-				component: (): Component => import('src/pages/keamanan/perizinan/IzinById.vue'),
+				component: (): Component => import('src/pages/keamanan/perizinan/IzinDetail.vue'),
 			},
 		],
 	},
@@ -36,12 +47,23 @@ export default [
 		path: 'indisipliner',
 		children: [
 			{
-				path: ':startDate?/:endDate?',
-				component: (): Component => import('src/pages/keamanan/indisipliner/IndisiplinerByDate.vue'),
-			},
-			{
-				path: 'santri/:santri_id',
-				component: (): Component => import('src/pages/keamanan/indisipliner/IndisiplinerBySantri.vue'),
+				path: '',
+				redirect: (to: RouteLocation): string => `${to.fullPath}/th-ajaran`,
+				component: (): Component => import('src/pages/keamanan/indisipliner/IndisiplinerIndex.vue'),
+				children: [
+					{
+						path: 'th-ajaran/:thAjaranH?',
+						component: (): Component => import('src/pages/keamanan/indisipliner/InByTahun.vue'),
+					},
+					{
+						path: 'tanggal/:startDate?/:endDate?',
+						component: (): Component => import('src/pages/keamanan/indisipliner/InByDate.vue'),
+					},
+					{
+						path: 'santri/:id?',
+						component: (): Component => import('src/pages/keamanan/indisipliner/InBySantri.vue'),
+					},
+				],
 			},
 			{
 				path: 'statistik',
@@ -50,7 +72,7 @@ export default [
 			{
 				// /:id -> matches only numbers
 				path: ':id(\\d+)',
-				component: (): Component => import('src/pages/keamanan/indisipliner/IndisiplinerById.vue'),
+				component: (): Component => import('src/pages/keamanan/indisipliner/IndisiplinerDetail.vue'),
 			},
 		],
 	},

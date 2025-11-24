@@ -1,11 +1,9 @@
 <template lang="">
-	<q-card>
+	<q-card flat bordered>
 		<q-card-section class="q-px-sm q-py-sm bg-green-11">
 			<q-toolbar class="no-padding" style="min-height: 0">
 				<q-toolbar-title class="text-subtitle1">
-					<div class="text-subtitle2 text-weight-bold">
-						Filter Tahun Ajaran
-					</div>
+					<div class="text-subtitle2 text-weight-bold">Filter Tahun Ajaran</div>
 				</q-toolbar-title>
 				<slot></slot>
 			</q-toolbar>
