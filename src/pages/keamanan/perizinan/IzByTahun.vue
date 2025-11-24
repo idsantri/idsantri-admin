@@ -7,21 +7,22 @@
 			<q-card-section class="bg-green-7 text-green-1 text-subtitle1 q-pa-sm flex flex-center">
 				<span v-html="dataFilter.display || ''"></span>
 				<q-space />
+				<InputSearch v-model="filter" bg-color="green-11" />
 			</q-card-section>
-			<TabelIndex :loading="loading" :izin="izin" />
+			<TabelIndex :loading="loading" :izin="izin" :filter="filter" />
 		</q-card>
 	</div>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { isDate } from 'src/utils/format-date';
 import IzinPesantren from 'src/models/IzinPesantren';
 import TabelIndex from './part/TabelIndex.vue';
 import RouterPage from './part/RouterPage.vue';
-import FilterSantri from 'src/components/filters/FilterSantri.vue';
 import FilterTahunAjaran from 'src/components/filters/FilterTahunAjaran.vue';
+import InputSearch from 'src/components/inputs/InputSearch.vue';
 
+const filter = ref('');
 const izin = ref([{}]);
 const loading = ref(false);
 const { params } = useRoute();

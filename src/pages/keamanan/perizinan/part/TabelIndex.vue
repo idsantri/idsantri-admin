@@ -12,21 +12,9 @@
 		flat
 		@row-click="(evt, row, index) => row?.id && $router.push(`/keamanan/izin-pesantren/${row.id}`)"
 	>
-		<template v-slot:top-left>
-			<div class="text-subtitle1 text-green-10">Data Izin Santri</div>
-		</template>
-		<template v-slot:top-right>
-			<q-input outlined dense debounce="300" v-model="filter" placeholder="Cari">
-				<template v-slot:append>
-					<q-icon name="search" />
-				</template>
-			</q-input>
-		</template>
 	</q-table>
 </template>
 <script setup>
-import { ref } from 'vue';
-
 defineProps({
 	izin: {
 		type: Array,
@@ -36,8 +24,12 @@ defineProps({
 		type: Boolean,
 		default: false,
 	},
+	filter: {
+		type: String,
+		default: '',
+	},
 });
-const filter = ref('');
+
 const columns = [
 	{
 		name: 'santri_id',
