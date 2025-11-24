@@ -5,9 +5,7 @@ class IzinPesantren extends ApiCrud {
 		super('izin-pesantren');
 	}
 	async setKembali({ id, data, message }) {
-		const isConfirmed = await this._notifyConfirm(
-			message || 'Update data ini?',
-		);
+		const isConfirmed = await this._notifyConfirm(message || 'Update data ini?');
 
 		if (!isConfirmed) {
 			return false;
@@ -20,6 +18,13 @@ class IzinPesantren extends ApiCrud {
 
 		this._showSuccess(resData.message);
 
+		return resData.data || true;
+	}
+
+	async listThAjaran() {
+		const resData = await this._apiGet({
+			endPoint: `${this._path}/lists/th-ajaran-h`,
+		});
 		return resData.data || true;
 	}
 }
