@@ -18,9 +18,9 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
-import apiGet from 'src/api/api-get';
 import ChartAsrama from './ChartAsrama.vue';
 import ChartKamar from './ChartKamar.vue';
+import Statistik from 'src/models/Statistik';
 
 const loading = ref(false);
 const asrama = ref([]);
@@ -32,13 +32,16 @@ const total = computed(() => {
 });
 
 onMounted(async () => {
-	loading.value = true;
-	const data = await apiGet({ endPoint: 'statistik/domisili', loading });
-	if (data?.asrama) {
+	try {
+		loading.value = true;
+		const data = await Statistik.domisili();
 		asrama.value = data.asrama;
 		kamar.value = data.kamar;
+	} catch (error) {
+		console.error('🚀 ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
-	loading.value = false;
 });
 
 const filtered = computed(() => {

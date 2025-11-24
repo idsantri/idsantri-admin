@@ -36,6 +36,14 @@ import config from 'src/config';
 
 const releases = [
 	{
+		ver: '1.5.2',
+		date: 'November 2025',
+		release: {
+			'Fitur Baru': ['Statistik Izin Pesantren', 'Statistik Indisipliner'],
+			Improve: ['Perbaikan dan peningkatan performa', 'Update UI'],
+		},
+	},
+	{
 		ver: '1.5.1',
 		date: 'Oktober 2025',
 		release: {

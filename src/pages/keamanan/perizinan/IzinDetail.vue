@@ -1,6 +1,6 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Detail Izin" :show-reload="false" />
+		<CardHeader title="Detail Izin Pesantren" :show-reload="false" />
 		<div class="row" style="max-width: 1200px">
 			<div class="col-xs-12 col-sm-6">
 				<div class="q-ma-sm">
@@ -175,7 +175,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import apiGet from 'src/api/api-get';
 import { formatDateFull } from 'src/utils/format-date';
 import { bacaHijri, m2h } from 'src/utils/hijri';
 import ReportViewer from 'src/components/ReportViewer.vue';
@@ -183,6 +182,7 @@ import IzinRiwayat from './part/IzinRiwayat.vue';
 import CardSantriSimple from 'src/components/santri/CardSantriSimple.vue';
 import IzinPesantrenForm from 'src/components/forms/IzinPesantrenForm.vue';
 import IzinPesantrenKembaliForm from 'src/components/forms/IzinPesantrenKembaliForm.vue';
+import IzinPesantren from 'src/models/IzinPesantren';
 
 const showViewer = ref(false);
 const urlReport = ref('');
@@ -199,12 +199,14 @@ function print() {
 }
 
 async function loadData() {
-	const data = await apiGet({
-		endPoint: `izin-pesantren/${route.params.id}`,
-		loading,
-	});
-	if (data) {
+	try {
+		loading.value = true;
+		const data = await IzinPesantren.getById({ id: route.params.id });
 		izin.value = data.izin_pesantren;
+	} catch (error) {
+		console.log('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 

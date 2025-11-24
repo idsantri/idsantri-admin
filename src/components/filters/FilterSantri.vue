@@ -1,20 +1,15 @@
 <template lang="">
-	<q-card>
+	<q-card flat bordered>
 		<q-card-section class="q-px-sm q-py-sm bg-green-11">
 			<q-toolbar class="no-padding" style="min-height: 0">
 				<q-toolbar-title class="text-subtitle1">
-					<div class="text-subtitle2 text-weight-bold">
-						Filter ID Santri
-					</div>
+					<div class="text-subtitle2 text-weight-bold">Filter ID Santri</div>
 				</q-toolbar-title>
 				<slot></slot>
 			</q-toolbar>
 		</q-card-section>
 		<q-card-section class="no-padding">
-			<div
-				class="flex content-start items-center"
-				style="max-width: 1000px; width: 100%"
-			>
+			<div class="flex content-start items-center" style="max-width: 1000px; width: 100%">
 				<q-select
 					class="q-pa-sm"
 					dense
@@ -41,17 +36,13 @@
 									>{{ scope.opt.id }} &mdash;
 									{{ scope.opt.nama }}
 								</q-item-label>
-								<q-item-label caption>{{
-									scope.opt.data_akhir
-								}}</q-item-label>
+								<q-item-label caption>{{ scope.opt.data_akhir }}</q-item-label>
 							</q-item-section>
 						</q-item>
 					</template>
 				</q-select>
 				<div v-if="!id" class="q-pa-sm">Ketikkan ID Santri</div>
-				<div v-if="notFound" class="q-pa-sm text-negative">
-					Data Tidak ditemukan
-				</div>
+				<div v-if="notFound" class="q-pa-sm text-negative">Data Tidak ditemukan</div>
 			</div>
 		</q-card-section>
 	</q-card>
@@ -80,8 +71,7 @@ const notFound = ref(false);
 
 onMounted(async () => {
 	emit('dataFilter', {
-		display:
-			'<div class="text-green-13 text-italic">Tentukan filter!</div>',
+		display: '<div class="text-green-13 text-italic">Tentukan filter!</div>',
 	});
 
 	if (id.value) {

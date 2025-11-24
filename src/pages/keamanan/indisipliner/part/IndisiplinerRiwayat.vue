@@ -1,4 +1,3 @@
-<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template lang="">
 	<q-card flat bordered class="">
 		<q-card-section class="bg-green-7 no-padding">
@@ -27,13 +26,13 @@
 			</q-toolbar>
 		</q-card-section>
 		<div class="relative-position">
-			<q-card-section v-if="!riwayatIndsipliner?.length" class="text-italic text-center q-pa-lg">
+			<q-card-section v-if="!riwayatIndisipliner?.length" class="text-italic text-center q-pa-lg">
 				Tidak ada untuk ditampilkan
 			</q-card-section>
 			<q-card-section v-else class="q-pa-sm">
 				<q-list separator bordered>
 					<q-item
-						v-for="(indisipliner, index) in riwayatIndsipliner"
+						v-for="(indisipliner, index) in riwayatIndisipliner"
 						:key="index"
 						:class="[indisipliner.id == params.id ? 'bg-green-1' : '', 'q-pa-sm']"
 					>
@@ -87,7 +86,11 @@
 		</div>
 		<q-dialog v-model="crudShow">
 			<IndisiplinerForm
-				:data="santri"
+				:data="{
+					santri_id: santri_id,
+					nama: riwayatIndisipliner[0]?.nama,
+					data_akhir: riwayatIndisipliner[0]?.data_akhir,
+				}"
 				@success-delete="null"
 				@success-submit="(v) => $router.push(`/keamanan/indisipliner/${v.id}`)"
 			/>
@@ -95,13 +98,13 @@
 	</q-card>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
 import { formatDateShort } from 'src/utils/format-date';
 import { m2h, m2hFormat } from 'src/utils/hijri';
 import { hijriToThAjaranH } from 'src/utils/tahun-ajaran';
 import { onMounted, onUpdated, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import IndisiplinerForm from 'src/components/forms/IndisiplinerForm.vue';
+import Indisipliner from 'src/models/Indisipliner';
 
 const props = defineProps({
 	santri_id: {
@@ -109,17 +112,16 @@ const props = defineProps({
 	},
 });
 
-const riwayatIndsipliner = ref([]);
+const riwayatIndisipliner = ref([]);
 const loading = ref(false);
 const crudShow = ref(false);
-const santri = ref({});
 const { params } = useRoute();
 
 onMounted(async () => {
 	if (props.santri_id) {
 		await getRiwayat(props.santri_id);
 	} else {
-		riwayatIndsipliner.value = [];
+		riwayatIndisipliner.value = [];
 	}
 });
 
@@ -127,25 +129,20 @@ onUpdated(async () => {
 	if (props.santri_id) {
 		await getRiwayat(props.santri_id);
 	} else {
-		riwayatIndsipliner.value = [];
+		riwayatIndisipliner.value = [];
 	}
 });
 
 async function getRiwayat(santri_id) {
-	const data = await apiGet({
-		endPoint: 'indisipliner',
-		params: { santri_id: santri_id },
-		loading,
-	});
-	if (!data.indisipliner) return;
-	riwayatIndsipliner.value = data.indisipliner;
-	santri.value = {
-		santri_id: data.santri.id,
-		nama: data.santri.nama,
-		data_akhir: data.santri.data_akhir,
-	};
-
-	// console.log(riwayatIndsipliner.value);
+	try {
+		loading.value = true;
+		const data = await Indisipliner.getAll({ params: { santri_id: santri_id } });
+		riwayatIndisipliner.value = data.indisipliner;
+	} catch (error) {
+		console.log('🚀 ~ getRiwayat ~ error:', error);
+	} finally {
+		loading.value = false;
+	}
 }
 </script>
 
