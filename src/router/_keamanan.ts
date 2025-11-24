@@ -9,31 +9,49 @@ export default [
 
 	// izin-pesantren
 	{
-		path: 'izin-pesantren/:startDate?/:endDate?',
-		component: (): Component => import('src/pages/keamanan/perizinan/IzinByDate.vue'),
-	},
-	{
-		path: 'izin-pesantren/santri/:santri_id',
-		component: (): Component => import('src/pages/keamanan/perizinan/IzinBySantri.vue'),
-	},
-	{
-		// /:id -> matches only numbers
-		path: 'izin-pesantren/:id(\\d+)',
-		component: (): Component => import('src/pages/keamanan/perizinan/IzinById.vue'),
+		path: 'izin-pesantren',
+		children: [
+			{
+				path: ':startDate?/:endDate?',
+				component: (): Component => import('src/pages/keamanan/perizinan/IzinByDate.vue'),
+			},
+			{
+				path: 'santri/:santri_id',
+				component: (): Component => import('src/pages/keamanan/perizinan/IzinBySantri.vue'),
+			},
+			{
+				path: 'statistik',
+				component: (): Component => import('src/pages/keamanan/perizinan/IzinStatistik.vue'),
+			},
+			{
+				// /:id -> matches only numbers
+				path: ':id(\\d+)',
+				component: (): Component => import('src/pages/keamanan/perizinan/IzinById.vue'),
+			},
+		],
 	},
 
 	// indisipliner
 	{
-		path: 'indisipliner/:startDate?/:endDate?',
-		component: (): Component => import('src/pages/keamanan/indisipliner/IndisiplinerByDate.vue'),
-	},
-	{
-		path: 'indisipliner/santri/:santri_id',
-		component: (): Component => import('src/pages/keamanan/indisipliner/IndisiplinerBySantri.vue'),
-	},
-	{
-		// /:id -> matches only numbers
-		path: 'indisipliner/:id(\\d+)',
-		component: (): Component => import('src/pages/keamanan/indisipliner/IndisiplinerById.vue'),
+		path: 'indisipliner',
+		children: [
+			{
+				path: ':startDate?/:endDate?',
+				component: (): Component => import('src/pages/keamanan/indisipliner/IndisiplinerByDate.vue'),
+			},
+			{
+				path: 'santri/:santri_id',
+				component: (): Component => import('src/pages/keamanan/indisipliner/IndisiplinerBySantri.vue'),
+			},
+			{
+				path: 'statistik',
+				component: (): Component => import('src/pages/keamanan/indisipliner/IndisiplinerStatistik.vue'),
+			},
+			{
+				// /:id -> matches only numbers
+				path: ':id(\\d+)',
+				component: (): Component => import('src/pages/keamanan/indisipliner/IndisiplinerById.vue'),
+			},
+		],
 	},
 ];

@@ -1,6 +1,18 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Data Santri Indisipliner" :show-reload="false" />
+		<CardHeader title="Data Santri Indisipliner" :show-reload="false">
+			<template #buttons>
+				<q-btn
+					dense
+					icon="sym_o_bar_chart"
+					label="Statistik"
+					no-caps
+					class="q-px-sm"
+					outline
+					to="/keamanan/indisipliner/statistik"
+				/>
+			</template>
+		</CardHeader>
 		<q-card-section class="q-pa-sm">
 			<filter-tanggal :showBulanUjian="true" start-url="/keamanan/indisipliner" @dataFilter="dataEmit">
 				<DropDownMenu />
@@ -34,7 +46,7 @@
 					@row-click="(evt, row, index) => $router.push(`/keamanan/indisipliner/${row.id}`)"
 				>
 					<template v-slot:top-left>
-						<div class="text-subtitle1 text-green-10">Data Perizinan</div>
+						<div class="text-subtitle1 text-green-10">Data Indisipliner</div>
 					</template>
 					<template v-slot:top-right>
 						<q-input outlined dense debounce="300" v-model="filter" placeholder="Cari">
@@ -59,11 +71,11 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import apiGet from 'src/api/api-get';
 import { formatDateShort, isDate } from 'src/utils/format-date';
 import FilterTanggal from 'src/components/filters/FilterTanggal.vue';
 import DropDownMenu from './part/DropDownMenu.vue';
 import IndisiplinerForm from 'src/components/forms/IndisiplinerForm.vue';
+import Indisipliner from 'src/models/Indisipliner';
 
 const indisipliner = ref([{}]);
 const loading = ref(false);
@@ -82,17 +94,21 @@ function dataEmit(val) {
 	dataFilter.value = val;
 }
 
+async function loadData(start_date, end_date) {
+	try {
+		loading.value = true;
+		const data = await Indisipliner.getAll({ params: { start_date, end_date } });
+		indisipliner.value = data.indisipliner;
+	} catch (error) {
+		console.log('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
+	}
+}
+
 onMounted(async () => {
 	if (isDate(startDate.value) && isDate(endDate.value)) {
-		const data = await apiGet({
-			endPoint: 'indisipliner',
-			loading,
-			params: { start_date: startDate.value, end_date: endDate.value },
-		});
-		if (data) {
-			indisipliner.value = data.indisipliner;
-		}
-		// console.log(izin.value);
+		await loadData(startDate.value, endDate.value);
 	}
 });
 

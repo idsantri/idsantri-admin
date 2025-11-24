@@ -90,7 +90,11 @@
 		</div>
 		<q-dialog v-model="crudShow">
 			<IzinPesantrenForm
-				:data="santri"
+				:data="{
+					santri_id: santri_id,
+					nama: riwayatIzin[0]?.nama,
+					data_akhir: riwayatIzin[0]?.data_akhir,
+				}"
 				@success-delete="null"
 				@success-submit="(v) => $router.push(`/keamanan/izin-pesantren/${v.id}`)"
 			/>
@@ -98,13 +102,13 @@
 	</q-card>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
 import { formatDateShort } from 'src/utils/format-date';
 import { m2h, m2hFormat } from 'src/utils/hijri';
 import { hijriToThAjaranH } from 'src/utils/tahun-ajaran';
 import { onMounted, onUpdated, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import IzinPesantrenForm from 'src/components/forms/IzinPesantrenForm.vue';
+import IzinPesantren from 'src/models/IzinPesantren';
 
 const props = defineProps({
 	santri_id: {
@@ -115,7 +119,6 @@ const props = defineProps({
 const riwayatIzin = ref([]);
 const loading = ref(false);
 const crudShow = ref(false);
-const santri = ref({});
 const { params } = useRoute();
 
 onMounted(async () => {
@@ -135,18 +138,15 @@ onUpdated(async () => {
 });
 
 async function getRiwayat(santri_id) {
-	const data = await apiGet({
-		endPoint: 'izin-pesantren',
-		params: { santri_id: santri_id },
-		loading,
-	});
-	if (!data.izin_pesantren) return;
-	riwayatIzin.value = data.izin_pesantren;
-	santri.value = {
-		santri_id: data.santri.id,
-		nama: data.santri.nama,
-		data_akhir: data.santri.data_akhir,
-	};
+	try {
+		loading.value = true;
+		const data = await IzinPesantren.getAll({ params: { santri_id: santri_id } });
+		riwayatIzin.value = data.izin_pesantren;
+	} catch (error) {
+		console.log('🚀 ~ getRiwayat ~ error:', error);
+	} finally {
+		loading.value = false;
+	}
 }
 </script>
 
