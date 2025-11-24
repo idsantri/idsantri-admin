@@ -16,9 +16,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { isDate } from 'src/utils/format-date';
-import FilterTanggal from 'src/components/filters/FilterTanggal.vue';
-import IndisiplinerForm from 'src/components/forms/IndisiplinerForm.vue';
 import Indisipliner from 'src/models/Indisipliner';
 import TabelIndex from './part/TabelIndex.vue';
 import FilterTahunAjaran from 'src/components/filters/FilterTahunAjaran.vue';
@@ -28,8 +25,6 @@ const indisipliner = ref([{}]);
 const loading = ref(false);
 const { params } = useRoute();
 const dataFilter = ref({});
-
-const crudShow = ref(false);
 
 function dataEmit(val) {
 	dataFilter.value = val;

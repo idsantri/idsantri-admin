@@ -15,11 +15,9 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { isDate } from 'src/utils/format-date';
 import IzinPesantren from 'src/models/IzinPesantren';
 import TabelIndex from './part/TabelIndex.vue';
 import RouterPage from './part/RouterPage.vue';
-import FilterSantri from 'src/components/filters/FilterSantri.vue';
 import FilterTahunAjaran from 'src/components/filters/FilterTahunAjaran.vue';
 
 const izin = ref([{}]);

@@ -15,7 +15,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { isDate } from 'src/utils/format-date';
 import IzinPesantren from 'src/models/IzinPesantren';
 import TabelIndex from './part/TabelIndex.vue';
 import RouterPage from './part/RouterPage.vue';
