@@ -19,6 +19,7 @@
 					label="Email/Surel"
 					placeholder="Masukkan email/surel Anda!"
 					type="email"
+					ref="firstInput"
 				/>
 				<q-btn type="submit" class="full-width q-pa-sm text-green-10" color="green-3" label="Kirim instruksi" />
 
@@ -51,7 +52,7 @@
 <script setup>
 import api from 'src/api';
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 import { toArray } from 'src/utils/array-object';
 import { notifyAlert } from 'src/utils/notify';
 
@@ -62,6 +63,11 @@ emit('errors', []);
 const showSpinner = ref(false);
 const router = useRouter();
 const email = ref('');
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(() => {
+	firstInput.value.focus();
+});
 
 const reset = async () => {
 	emit('errors', []);
@@ -75,6 +81,7 @@ const reset = async () => {
 		router.push('/reset-password');
 	} catch (error) {
 		emit('errors', toArray(error.response?.data?.message || 'Terjadi sebuah kesalahan'));
+		firstInput.value.focus();
 	} finally {
 		showSpinner.value = false;
 	}
