@@ -7,43 +7,23 @@
 		</q-item>
 
 		<!-- SEKRETARIAT -->
-		<ExpansionItem
-			label="Sekretariat"
-			caption="Kesantrian"
-			:separator="false"
-		>
-			<MenuItem
-				v-for="item in MenuSekretariat"
-				:key="item.to"
-				:item="item"
-			/>
+		<ExpansionItem label="Sekretariat" caption="Kesantrian" :separator="false">
+			<MenuItem v-for="item in MenuSekretariat" :key="item.to" :item="item" />
 		</ExpansionItem>
 
 		<!-- MAKHADIYAH -->
 		<ExpansionItem label="Makhadiyah" caption="Kedaerahan">
-			<MenuItem
-				v-for="item in menuMakhadiyah"
-				:key="item.to"
-				:item="item"
-			/>
+			<MenuItem v-for="item in menuMakhadiyah" :key="item.to" :item="item" />
 		</ExpansionItem>
 
 		<!-- MADRASAH -->
 		<ExpansionItem label="Madrasah" caption="Kemuridan dan Keguruan">
-			<MenuItem
-				v-for="item in menuMadrasah"
-				:key="item.to"
-				:item="item"
-			/>
+			<MenuItem v-for="item in menuMadrasah" :key="item.to" :item="item" />
 		</ExpansionItem>
 
 		<!-- KEAMANAN -->
 		<ExpansionItem label="Keamanan" caption="Perizinan dan Pelanggaran">
-			<MenuItem
-				v-for="item in menuKeamanan"
-				:key="item.to"
-				:item="item"
-			/>
+			<MenuItem v-for="item in menuKeamanan" :key="item.to" :item="item" />
 		</ExpansionItem>
 
 		<!-- UGT -->
@@ -81,6 +61,13 @@ const MenuSekretariat = [
 		icon: 'payments',
 		label: 'Iuran',
 		caption: 'Iuran Santri dan Murid',
+		disable: false,
+	},
+	{
+		to: '/alumni',
+		icon: 'sym_o_school',
+		label: 'Alumni',
+		caption: 'Data Alumni',
 		disable: false,
 	},
 ];
