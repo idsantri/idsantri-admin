@@ -1,0 +1,1 @@
+import{A as t}from"./ApiCrud-8mMJRmXF.js";class a extends t{constructor(){super("ugt/pjgt")}async listWilayah(){return(await this._apiGet({endPoint:`${this._path}/lists/wilayah`})).data}async listJenisLembaga(){throw new Error("Method not implemented yet.")}}const i=new a;export{i as U};
