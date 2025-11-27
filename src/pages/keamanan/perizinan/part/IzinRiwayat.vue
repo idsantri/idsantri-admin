@@ -44,7 +44,7 @@
 										<td class="flex">
 											{{ formatDateShort(izin.dari_tgl) + ' | ' + m2hFormat(izin.dari_tgl) }}
 											<q-space />
-											{{ hijriToThAjaranH(m2h(izin.dari_tgl)) }}
+											{{ izin.th_ajaran_h }}
 										</td>
 									</tr>
 
@@ -103,8 +103,7 @@
 </template>
 <script setup>
 import { formatDateShort } from 'src/utils/format-date';
-import { m2h, m2hFormat } from 'src/utils/hijri';
-import { hijriToThAjaranH } from 'src/utils/tahun-ajaran';
+import { m2hFormat } from 'src/utils/hijri';
 import { onMounted, onUpdated, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import IzinPesantrenForm from 'src/components/forms/IzinPesantrenForm.vue';

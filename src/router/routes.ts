@@ -12,6 +12,7 @@ import _madrasah from './_madrasah';
 import _info from './_info';
 import _makhadiyah from './_makhadiyah';
 import _iuran from './_iuran';
+import _alumni from './_alumni';
 
 const routes: RouteRecordRaw[] = [
 	// layout auth
@@ -37,6 +38,11 @@ const routes: RouteRecordRaw[] = [
 				path: 'santri',
 				meta: { title: 'Detail Santri' },
 				children: _santri,
+			},
+			{
+				path: 'alumni',
+				meta: { title: 'Data Alumni' },
+				children: _alumni,
 			},
 			{
 				path: 'wali',
