@@ -1,5 +1,4 @@
 import { menu } from 'src/config';
-console.log('🚀 ~ menu:', menu);
 const menus = {
 	sekretariat: [
 		{

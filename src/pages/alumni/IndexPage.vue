@@ -6,7 +6,13 @@
 		</q-card-section>
 		<q-card-section class="q-pa-sm tw:grid tw:grid-cols-1 tw:sm:flex tw:sm:justify-between tw:gap-2 bg-green-11">
 			<q-card flat bordered style="min-width: 300px">
-				<q-toggle v-model="toggleSend" label="Terkirim" color="green" />
+				<q-toggle
+					v-model="toggleSend"
+					label="Terkirim"
+					color="green-7"
+					checked-icon="check"
+					unchecked-icon="clear"
+				/>
 			</q-card>
 			<q-card flat bordered style="min-width: 300px">
 				<InputSearch v-model="filter" />
@@ -64,18 +70,13 @@
 							/>
 						</q-td>
 						<q-td class="text-center">
-							<q-btn
-								class="q-px-sm"
-								dense
-								icon="sym_o_done"
-								round
-								size="sm"
-								:outline="props.row.sent_to_alumni_at ? false : true"
-								color="green"
+							<q-toggle
+								:model-value="!!props.row.sent_to_alumni_at"
 								@click="handleSign(props.row)"
-								no-caps
-							>
-							</q-btn>
+								checked-icon="check"
+								unchecked-icon="clear"
+								color="green-7"
+							/>
 							<q-tooltip>
 								{{
 									props.row.sent_to_alumni_at
