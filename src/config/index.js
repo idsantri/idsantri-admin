@@ -8,5 +8,25 @@ const config = {
 	PWA_NAME: 'ID Santri (Admin)',
 	PWA_SHORT_NAME: 'ID Santri',
 	PWA_DESCRIPTION: 'Aplikasi ID Santri (Admin)',
+	MENU: {
+		sekretariat: {
+			alumni: true,
+		},
+		makhadiyah: {
+			mutasi: true,
+			quran: true,
+		},
+		keamanan: {
+			izin_pesantren: true,
+			indisipliner: true,
+		},
+		ugt: true,
+		setting: {
+			appWali: true,
+			virtualAccount: true,
+		},
+	},
 };
+const menu = config.MENU;
+export { menu };
 export default config;
