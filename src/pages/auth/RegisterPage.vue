@@ -12,6 +12,7 @@
 					autocorrect="off"
 					placeholder="Nama Anda"
 					autocapitalize="words"
+					ref="firstInput"
 				/>
 				<q-input
 					bg-color="green-1"
@@ -75,17 +76,10 @@
 						/>
 					</template>
 				</q-input>
-				<q-btn
-					type="submit"
-					class="full-width q-pa-sm text-green-10"
-					color="green-3"
-					label="Daftar"
-				/>
+				<q-btn type="submit" class="full-width q-pa-sm text-green-10" color="green-3" label="Daftar" />
 
 				<q-card class="my-card" flat>
-					<q-card-section
-						class="text-green-10 text-center bg-green-2 q-pa-sm"
-					>
+					<q-card-section class="text-green-10 text-center bg-green-2 q-pa-sm">
 						<q-btn
 							outline
 							color="green-10"
@@ -98,19 +92,14 @@
 				</q-card>
 			</div>
 		</form>
-		<q-spinner-cube
-			v-show="showSpinner"
-			color="green-12"
-			size="14em"
-			class="absolute-center"
-		/>
+		<q-spinner-cube v-show="showSpinner" color="green-12" size="14em" class="absolute-center" />
 	</div>
 </template>
 
 <script setup>
 import api from 'src/api';
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 import { toArray } from 'src/utils/array-object';
 import { notifyAlert } from 'src/utils/notify';
 
@@ -125,6 +114,11 @@ const password = ref('');
 const password_confirmation = ref('');
 const isPwd = ref(true);
 const showSpinner = ref(false);
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(() => {
+	firstInput.value.focus();
+});
 
 const register = async () => {
 	emit('errors', []);
@@ -140,12 +134,8 @@ const register = async () => {
 		await notification; // tunggu notifikasi ditutup
 		router.push({ name: 'Login' });
 	} catch (error) {
-		emit(
-			'errors',
-			toArray(
-				error.response?.data?.message || 'Terjadi sebuah kesalahan',
-			),
-		);
+		emit('errors', toArray(error.response?.data?.message || 'Terjadi sebuah kesalahan'));
+		firstInput.value.focus();
 	} finally {
 		showSpinner.value = false;
 	}

@@ -15,6 +15,8 @@
 					readonly
 					onfocus="this.removeAttribute('readonly');"
 					onblur="this.setAttribute('readonly','true');"
+					autocorrect="off"
+					ref="inputLogin"
 				/>
 				<q-input
 					id="password"
@@ -40,17 +42,10 @@
 						/>
 					</template>
 				</q-input>
-				<q-btn
-					type="submit"
-					class="full-width q-pa-sm text-green-10"
-					color="green-3"
-					label="Login"
-				/>
+				<q-btn type="submit" class="full-width q-pa-sm text-green-10" color="green-3" label="Login" />
 
 				<q-card class="my-card" flat>
-					<q-card-section
-						class="text-green-10 text-center bg-green-2 q-pa-sm"
-					>
+					<q-card-section class="text-green-10 text-center bg-green-2 q-pa-sm">
 						<q-btn
 							outline
 							color="green-10"
@@ -71,17 +66,12 @@
 				</q-card>
 			</div>
 		</form>
-		<q-spinner-cube
-			v-show="showSpinner"
-			color="green-12"
-			size="14em"
-			class="absolute-center"
-		/>
+		<q-spinner-cube v-show="showSpinner" color="green-12" size="14em" class="absolute-center" />
 	</div>
 </template>
 
 <script setup>
-import { onMounted, onUpdated, ref, watch } from 'vue';
+import { onMounted, onUpdated, ref, useTemplateRef, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import api from 'src/api';
@@ -98,6 +88,7 @@ const props = defineProps({
 	credential: { type: Object },
 });
 
+const firstInput = useTemplateRef('inputLogin');
 const router = useRouter();
 const login = ref('');
 const password = ref('');
@@ -126,12 +117,8 @@ const submitLogin = async (e) => {
 		return router.push('/');
 	} catch (error) {
 		// console.log('e', error);
-		emit(
-			'errors',
-			toArray(
-				error.response?.data?.message || 'Terjadi sebuah kesalahan',
-			),
-		);
+		emit('errors', toArray(error.response?.data?.message || 'Terjadi sebuah kesalahan'));
+		firstInput.value.focus();
 	} finally {
 		showSpinner.value = false;
 	}
@@ -156,20 +143,18 @@ function showNotify() {
 	});
 }
 
-watch(
-	[() => props.credential.username, () => props.credential.password],
-	([nUsername, nPassword]) => {
-		if (config.DEV) {
-			if (nUsername) login.value = nUsername;
-			if (nPassword) password.value = nPassword;
-		}
-	},
-);
+watch([() => props.credential.username, () => props.credential.password], ([nUsername, nPassword]) => {
+	if (config.DEV) {
+		if (nUsername) login.value = nUsername;
+		if (nPassword) password.value = nPassword;
+	}
+});
 
 onMounted(() => {
 	if (config.DEV) {
 		showNotify();
 	}
+	firstInput.value.focus();
 });
 
 onUpdated(() => {
@@ -188,12 +173,7 @@ onUpdated(() => {
 			const notification = notifyAlert(response.data.message, 0);
 			await notification; // tunggu notifikasi ditutup
 		} catch (error) {
-			emit(
-				'errors',
-				toArray(
-					error.response?.data?.message || 'Terjadi sebuah kesalahan',
-				),
-			);
+			emit('errors', toArray(error.response?.data?.message || 'Terjadi sebuah kesalahan'));
 		} finally {
 			showSpinner.value = false;
 		}
