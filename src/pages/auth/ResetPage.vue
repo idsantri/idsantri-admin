@@ -21,6 +21,7 @@
 					label="Email/Surel"
 					placeholder="Masukkan email/surel!"
 					autocomplete="off"
+					ref="firstInput"
 				/>
 				<q-input
 					bg-color="green-1"
@@ -92,7 +93,7 @@
 <script setup>
 import api from 'src/api';
 import { useRoute, useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 import { toArray } from 'src/utils/array-object';
 import { notifyAlert } from 'src/utils/notify';
 
@@ -108,8 +109,12 @@ const password_confirmation = ref('');
 const showSpinner = ref(false);
 const isPwd = ref(true);
 const token = ref(query.token);
-
+const firstInput = useTemplateRef('firstInput');
 // console.log(token.value);
+
+onMounted(() => {
+	firstInput.value.focus();
+});
 
 const reset = async () => {
 	emit('errors', []);
@@ -126,6 +131,7 @@ const reset = async () => {
 		router.push({ name: 'Login' });
 	} catch (error) {
 		emit('errors', toArray(error.response?.data?.message || 'Terjadi sebuah kesalahan'));
+		firstInput.value.focus();
 	} finally {
 		showSpinner.value = false;
 	}

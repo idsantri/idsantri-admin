@@ -39,7 +39,11 @@ const releases = [
 		ver: '1.5.2',
 		date: 'November 2025',
 		release: {
-			'Fitur Baru': ['Statistik Izin Pesantren', 'Statistik Indisipliner'],
+			'Fitur Baru': [
+				'Statistik Izin Pesantren',
+				'Statistik Indisipliner',
+				'Manajemen Data Alumni (Integrasi dengan Aplikasi Alumni)',
+			],
 			Improve: ['Perbaikan dan peningkatan performa', 'Update UI'],
 		},
 	},
