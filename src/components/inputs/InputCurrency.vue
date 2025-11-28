@@ -13,15 +13,15 @@ const props = defineProps({
 });
 
 const { inputRef, formattedValue, setValue } = useCurrencyInput({
-	currency: 'EUR',
-	currencyDisplay: 'hidden',
-	locale: 'de-DE',
+	currency: 'IDR',
+	currencyDisplay: 'symbol',
+	locale: 'id-ID',
 });
 
 watch(
 	() => props.modelValue,
 	(value) => {
 		setValue(value);
-	}
+	},
 );
 </script>
