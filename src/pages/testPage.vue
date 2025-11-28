@@ -5,6 +5,20 @@
 		<pre>{{ santri }}</pre>
 		<q-btn @click="testAlamat">Alamat</q-btn>
 		<q-btn @click="testLists">List</q-btn>
+
+		<q-separator spaced="" class="q-my-lg" />
+		<q-card>
+			<q-card-section>
+				<!-- <q-input dense outlined label="Test Input" v-model="input" class="q-my-sm" /> -->
+				<InputToggle
+					v-model="input"
+					label="Test Input Toggle"
+					:true-value="true"
+					:false-value="false"
+					class="q-my-sm"
+				/>
+			</q-card-section>
+		</q-card>
 	</q-page>
 </template>
 <script setup>
@@ -12,9 +26,11 @@ import { ref } from 'vue';
 import Santri from 'src/models/Santri';
 import Alamat from 'src/models/Alamat';
 import Lists from 'src/models/Lists';
+import InputToggle from 'src/components/inputs/InputToggle.vue';
 
 const santri = ref([]);
 const loading = ref(false);
+const input = ref(false);
 
 const getById = async () => {
 	try {
