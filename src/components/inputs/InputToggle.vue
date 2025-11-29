@@ -1,5 +1,5 @@
 <template lang="">
-	<q-field outlined :dense="dense" :disable="disable" :filled="disable" :class="class">
+	<q-field outlined :dense="dense" :disable="disable" :filled="disable" :class="$attrs.class == '' ? '' : 'q-my-sm'">
 		<template v-slot:control>
 			<q-toggle
 				v-model="model"
@@ -11,6 +11,7 @@
 				unchecked-icon="clear"
 				:color="color"
 				:left-label="leftLabel"
+				:class="toggleClass"
 			/>
 			<span v-if="leftLabel" class="q-ml-sm text-italic text-caption">{{ model ? trueText : falseText }}</span>
 		</template>
@@ -32,7 +33,7 @@ defineProps({
 	color: { type: String, default: 'green-6' },
 	disable: { type: Boolean, default: false },
 	leftLabel: { type: Boolean, default: true },
-	class: { type: String, default: 'q-my-sm' },
+	toggleClass: { type: String, default: '' },
 });
 </script>
 <style lang=""></style>
