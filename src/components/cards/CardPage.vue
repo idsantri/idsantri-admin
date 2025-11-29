@@ -8,10 +8,18 @@
 
 <script>
 export default {
-	mounted() {
-		// TODO: beberapa halaman belum siap
-		// this.setDynamicHeight();
+	props: {
+		dynamicHeight: {
+			type: Boolean,
+			default: true, // default true
+		},
 	},
+	mounted() {
+		if (this.dynamicHeight) {
+			this.setDynamicHeight();
+		}
+	},
+
 	methods: {
 		setDynamicHeight() {
 			// Get elements

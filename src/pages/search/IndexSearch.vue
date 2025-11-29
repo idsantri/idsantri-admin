@@ -1,5 +1,5 @@
 <template>
-	<CardPage>
+	<CardPage :dynamic-height="false">
 		<CardHeader title="Pencarian…" :show-reload="false">
 			<template #buttons>
 				<q-card flat class="bg-green-6">

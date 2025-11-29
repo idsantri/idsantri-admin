@@ -14,8 +14,10 @@
 			</template>
 		</CardHeader>
 
-		<q-card-section class="no-padding">
+		<q-card-section class="q-pa-sm">
 			<q-table
+				bordered
+				flat
 				:rows="kas"
 				:loading="loading"
 				:rows-per-page-options="[10, 25, 50, 100, 0]"

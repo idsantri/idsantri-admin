@@ -13,12 +13,14 @@
 				/>
 			</template>
 		</CardHeader>
-		<q-card-section class="no-padding">
+		<q-card-section class="q-pa-sm">
 			<q-table
+				bordered
+				flat
 				:rows="personalia"
 				:loading="loading"
 				:rows-per-page-options="[10, 25, 50, 100, 0]"
-				class="dt q-px-sm"
+				class="dt"
 				:columns="columns"
 				:filter="filter"
 				no-data-label="Tidak ada data untuk ditampilkan!"
