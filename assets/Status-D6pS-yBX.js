@@ -1,1 +1,0 @@
-import{A as a}from"./ApiCrud-DvdKryYe.js";class s extends a{constructor(){super("status")}async santri(t){return(await this._apiGet({endPoint:`${this._path}/santri/${t}`})).data}async lists(){return(await this._apiGet({endPoint:`${this._path}/lists`})).data}}const e=new s;export{e as S};
