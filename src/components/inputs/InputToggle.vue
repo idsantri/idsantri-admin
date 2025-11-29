@@ -1,5 +1,5 @@
 <template lang="">
-	<q-field outlined :dense="dense" :disable="disable" :filled="disable">
+	<q-field outlined :dense="dense" :disable="disable" :filled="disable" :class="class">
 		<template v-slot:control>
 			<q-toggle
 				v-model="model"
@@ -10,7 +10,6 @@
 				checked-icon="check"
 				unchecked-icon="clear"
 				:color="color"
-				:disable="disable"
 				:left-label="leftLabel"
 			/>
 			<span v-if="leftLabel" class="q-ml-sm text-italic text-caption">{{ model ? trueText : falseText }}</span>
@@ -20,18 +19,20 @@
 <script setup>
 const model = defineModel({
 	type: [String, Number, Boolean],
-	default: false,
+	default: 0,
 });
+
 defineProps({
 	label: { type: String, default: '' },
-	trueValue: { type: [String, Number, Boolean], default: true },
-	falseValue: { type: [String, Number, Boolean], default: false },
+	trueValue: { type: [String, Number, Boolean], default: 1 },
+	falseValue: { type: [String, Number, Boolean], default: 0 },
 	trueText: { type: String, default: 'Ya' },
 	falseText: { type: String, default: 'Tidak' },
 	dense: { type: Boolean, default: true },
 	color: { type: String, default: 'green-6' },
 	disable: { type: Boolean, default: false },
 	leftLabel: { type: Boolean, default: true },
+	class: { type: String, default: 'q-my-sm' },
 });
 </script>
 <style lang=""></style>
