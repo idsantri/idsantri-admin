@@ -1,5 +1,5 @@
 <template lang="">
-	<CardPage>
+	<CardPage :dynamic-height="false">
 		<CardHeader title="Data Mutasi Domisili" @on-reload="loadData">
 			<template v-slot:buttons>
 				<q-btn icon="tune" label="Atur Mutasi" dense outline no-caps class="q-px-sm" to="/mutasi/start" />

@@ -46,10 +46,7 @@
 					:options="['Fan Pokok', 'Fan Dasar', 'Fan Tambahan']"
 					behavior="menu"
 				/>
-				<q-card bordered flat class="q-px-sm q-my-sm">
-					Tampilkan:
-					<q-toggle v-model="inputs.show" color="green" :true-value="1" :false-value="0" />
-				</q-card>
+				<InputToggle v-model="inputs.show" label="Tampilkan" />
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
@@ -60,6 +57,7 @@ import { ref } from 'vue';
 import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingkatPendidikan.vue';
 import useCrudForm from './utils/useCrudForm';
 import Mapel from 'src/models/Mapel';
+import InputToggle from '../inputs/InputToggle.vue';
 
 const props = defineProps({
 	data: { type: Object, required: true },

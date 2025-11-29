@@ -1,10 +1,5 @@
 import { route } from 'quasar/wrappers';
-import {
-	createMemoryHistory,
-	createRouter,
-	createWebHashHistory,
-	createWebHistory,
-} from 'vue-router';
+import { createMemoryHistory, createRouter, createWebHashHistory, createWebHistory } from 'vue-router';
 import routes from './routes';
 import { nextTick } from 'vue';
 import authStore from '../stores/auth-store';
@@ -42,7 +37,7 @@ export default route(function (/* { store, ssrContext } */) {
 		}
 
 		const store = authStore();
-		const isAuthenticate = store.getIsLogin;
+		const isAuthenticate = store.isLoggedIn;
 
 		const authRoutes = ['Register', 'Login', 'Forgot', 'Reset', 'Verify'];
 		const toAuthRoutes = authRoutes.includes(to.name as string);
@@ -59,9 +54,7 @@ export default route(function (/* { store, ssrContext } */) {
 	const DEFAULT_TITLE = config.INS_SHORT;
 	Router.afterEach(async (to) => {
 		await nextTick(() => {
-			document.title = to.meta.title
-				? `${DEFAULT_TITLE} — ${to.meta.title as string}`
-				: DEFAULT_TITLE;
+			document.title = to.meta.title ? `${DEFAULT_TITLE} — ${to.meta.title as string}` : DEFAULT_TITLE;
 		});
 	});
 

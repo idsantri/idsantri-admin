@@ -1,6 +1,6 @@
 <template>
 	<CardPage>
-		<CardHeader title="Data Orang Tua" @on-reload="loadData">
+		<CardHeader title="Data Orang Tua" @on-reload="loadData" :show-edit="true" @on-edit="editOrtu">
 			<template #buttons>
 				<q-btn
 					:label="$q.screen.lt.sm ? '' : 'Cari'"
@@ -10,15 +10,6 @@
 					dense
 					class="q-px-sm text-green-10"
 					icon="search"
-				/>
-				<q-btn
-					no-caps
-					color="green-2"
-					dense
-					class="q-px-sm text-green-10"
-					icon="edit"
-					:label="$q.screen.lt.sm ? '' : 'Edit'"
-					@click="editOrtu"
 				/>
 			</template>
 		</CardHeader>
