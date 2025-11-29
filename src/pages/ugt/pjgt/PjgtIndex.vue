@@ -1,18 +1,11 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Data Penanggung Jawab Guru Tugas" @on-reload="loadData">
-			<template #buttons>
-				<q-btn
-					dense
-					class="q-px-md text-green-10"
-					label="Tambah"
-					no-caps=""
-					icon="add"
-					color="green-2"
-					@click="crudShow = true"
-				/>
-			</template>
-		</CardHeader>
+		<CardHeader
+			title="Data Penanggung Jawab Guru Tugas"
+			@on-reload="loadData"
+			:show-add="true"
+			@on-add="crudShow = true"
+		/>
 
 		<q-card-section class="q-pa-sm">
 			<q-table
