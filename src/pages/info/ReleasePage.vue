@@ -44,7 +44,11 @@ const releases = [
 				'Statistik Indisipliner',
 				'Manajemen Data Alumni (Integrasi dengan Aplikasi Alumni)',
 			],
-			Improve: ['Perbaikan dan peningkatan performa', 'Update UI'],
+			Improve: [
+				'Perbaikan dan peningkatan performa',
+				'Update UI',
+				'Aplikasi dapat dibuka di beberapa tab tanpa login ulang',
+			],
 		},
 	},
 	{

@@ -5,7 +5,6 @@
 	</div>
 </template>
 <script setup>
-// import { useQuasar } from 'quasar';
 import authState from '../../stores/auth-store';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -23,7 +22,7 @@ onMounted(async () => {
 	const confirmed = await notifyConfirm('Keluar dari Aplikasi?', true);
 	if (confirmed) {
 		await apiPost({ endPoint: 'logout' });
-		authState().$reset();
+		authState().logout();
 		router.push('/login');
 	} else {
 		router.go(-1);

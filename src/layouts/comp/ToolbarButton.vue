@@ -4,26 +4,11 @@
 		{{ ' ' }}
 		<span class="text-caption">({{ user?.email }})</span>
 	</div>
-	<q-btn
-		round
-		flat
-		dense
-		icon="search"
-		color="green-1"
-		to="/cari"
-		class="text-green-11"
-	>
+	<q-btn round flat dense icon="search" color="green-1" to="/cari" class="text-green-11">
 		<!-- <q-badge v-if="badge" floating color="green-13" rounded /> -->
 	</q-btn>
 
-	<q-btn-dropdown
-		flat
-		round
-		dense
-		dropdown-icon="more_vert"
-		class="q-pl-md"
-		color="green-11"
-	>
+	<q-btn-dropdown flat round dense dropdown-icon="more_vert" class="q-pl-md" color="green-11">
 		<q-list clickable v-close-popup>
 			<q-item name="install" @click="installApp" v-if="!pwaIsInstalled">
 				<q-item-section>Install</q-item-section>
@@ -52,7 +37,7 @@
 import { computed, onMounted, ref } from 'vue';
 import useAuthStore from 'src/stores/auth-store';
 const auth = useAuthStore();
-const user = auth.getUser;
+const user = auth.user;
 
 /**
  * ----------------------------------
