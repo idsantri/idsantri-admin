@@ -130,7 +130,7 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 
 const auth = useAuthStore();
-const { email } = auth.getUser;
+const { email } = auth.user;
 const withVA = ref(false);
 const textFilter = ref('');
 const loading = ref(false);

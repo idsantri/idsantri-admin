@@ -38,16 +38,7 @@
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
-				<q-card bordered flat class="q-px-sm q-my-sm">
-					<q-toggle
-						v-model="inputs.aktif"
-						color="green"
-						:true-value="1"
-						:false-value="0"
-						label="Aktif"
-						:disable="inputs.id ? false : true"
-					/>
-				</q-card>
+				<InputToggle v-model="inputs.aktif" label="Aktif" :disable="inputs.id ? false : true" />
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
@@ -58,6 +49,7 @@ import { ref } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import useCrudForm from './utils/useCrudForm';
 import Mutaallim from 'src/models/Mutaallim';
+import InputToggle from '../inputs/InputToggle.vue';
 
 const props = defineProps({
 	data: { type: Object, required: true },

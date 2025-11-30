@@ -1,24 +1,14 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Data Personalia" @onReload="loadData">
-			<template v-slot:buttons>
-				<q-btn
-					dense
-					class="q-px-md text-green-10"
-					label="Tambah"
-					no-caps=""
-					icon="add"
-					color="green-2"
-					@click="crudShow = true"
-				/>
-			</template>
-		</CardHeader>
-		<q-card-section class="no-padding">
+		<CardHeader title="Data Personalia" @onReload="loadData" :show-add="true" @onAdd="crudShow = true" />
+		<q-card-section class="q-pa-sm">
 			<q-table
+				bordered
+				flat
 				:rows="personalia"
 				:loading="loading"
 				:rows-per-page-options="[10, 25, 50, 100, 0]"
-				class="dt q-px-sm"
+				class="dt"
 				:columns="columns"
 				:filter="filter"
 				no-data-label="Tidak ada data untuk ditampilkan!"

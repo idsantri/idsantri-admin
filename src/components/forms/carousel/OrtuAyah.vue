@@ -7,10 +7,7 @@
 		outlined
 		label="Nama*"
 		v-model="inputs.ayah"
-		:rules="[
-			(val) => !!val || 'Harus diisi!',
-			(val) => val?.length >= 3 || 'Setidaknya 3 huruf!',
-		]"
+		:rules="[(val) => !!val || 'Harus diisi!', (val) => val?.length >= 3 || 'Setidaknya 3 huruf!']"
 		error-color="negative"
 		autocapitalize="words"
 	/>
@@ -22,10 +19,7 @@
 		outlined
 		label="Nomor Induk Kependudukan"
 		v-model="inputs.a_nik"
-		:rules="[
-			(val) =>
-				!val || (val?.length == 16 && !isNaN(val)) || '16 digit angka!',
-		]"
+		:rules="[(val) => !val || (val?.length == 16 && !isNaN(val)) || '16 digit angka!']"
 		error-color="negative"
 	/>
 	<input-select-kota-lahir v-model="inputs.a_tmp_lahir" class="q-my-sm" />
@@ -34,9 +28,7 @@
 		dense
 		:hint="
 			isDate(inputs.a_tgl_lahir)
-				? formatDateFull(inputs.a_tgl_lahir) +
-					' | ' +
-					bacaHijri(m2h(inputs.a_tgl_lahir))
+				? formatDateFull(inputs.a_tgl_lahir) + ' | ' + bacaHijri(m2h(inputs.a_tgl_lahir))
 				: ''
 		"
 		class="q-my-sm"
@@ -45,15 +37,7 @@
 		v-model="inputs.a_tgl_lahir"
 		type="date"
 	/>
-	<q-card bordered flat class="q-px-sm q-my-sm">
-		<q-toggle
-			v-model="inputs.a_hidup"
-			color="green"
-			:true-value="1"
-			:false-value="0"
-			label="Hidup"
-		/>
-	</q-card>
+	<InputToggle v-model="inputs.a_hidup" label="Hidup" hint />
 	<input-select-array
 		v-model="inputs.a_pa_formal_tingkat"
 		url="pendidikan-akhir-diniyah"
@@ -89,6 +73,7 @@ import { m2h, bacaHijri } from 'src/utils/hijri';
 import { isDate, formatDateFull } from 'src/utils/format-date';
 import InputSelectKotaLahir from 'src/components/inputs/InputSelectKotaLahir.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
+import InputToggle from 'src/components/inputs/InputToggle.vue';
 
 const inputs = defineModel();
 </script>

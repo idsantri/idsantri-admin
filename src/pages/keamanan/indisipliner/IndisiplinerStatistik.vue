@@ -1,6 +1,6 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Statistik Santri Indisipliner" :show-reload="false"> </CardHeader>
+		<CardHeader title="Statistik Santri Indisipliner" :show-reload="false" />
 
 		<q-card-section class="q-pa-sm">
 			<q-card bordered flat>

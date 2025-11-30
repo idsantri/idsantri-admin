@@ -1,21 +1,11 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Kas UGT" @on-reload="loadData">
-			<template #buttons>
-				<q-btn
-					dense
-					class="q-px-md text-green-10"
-					label="Tambah"
-					no-caps=""
-					icon="add"
-					color="green-2"
-					@click="addKas"
-				/>
-			</template>
-		</CardHeader>
+		<CardHeader title="Kas UGT" @on-reload="loadData" :show-add="true" @on-add="addKas" />
 
-		<q-card-section class="no-padding">
+		<q-card-section class="q-pa-sm">
 			<q-table
+				bordered
+				flat
 				:rows="kas"
 				:loading="loading"
 				:rows-per-page-options="[10, 25, 50, 100, 0]"

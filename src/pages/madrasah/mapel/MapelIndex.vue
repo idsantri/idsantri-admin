@@ -1,18 +1,12 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Daftar Mata Pelajaran" @on-reload="loadData(tingkatId)" :show-reload="!!tingkatId">
-			<template #buttons>
-				<q-btn
-					class="text-green-10 q-px-sm"
-					label="Baru"
-					icon="add"
-					no-caps
-					color="green-11"
-					@click="addNew"
-					dense
-				/>
-			</template>
-		</CardHeader>
+		<CardHeader
+			title="Daftar Mata Pelajaran"
+			@on-reload="loadData(tingkatId)"
+			:show-reload="!!tingkatId"
+			:show-add="true"
+			@on-add="addNew"
+		/>
 
 		<q-card-actions align="right" class="bg-green-1">
 			<div class="text-subtitle2 q-mr-sm text-italic">Pilih Tingkat Pendidikan:</div>

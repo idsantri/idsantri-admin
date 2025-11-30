@@ -189,8 +189,15 @@ const columns = [
 		sortable: true,
 	},
 	{
+		name: 'tgl_daftar_m',
+		label: 'Masuk',
+		field: 'tgl_daftar_m',
+		format: (val) => formatDate(val, 'dd-MM-yyyy'),
+		sortable: true,
+	},
+	{
 		name: 'created_at',
-		label: 'Tanggal',
+		label: 'Keluar',
 		field: 'created_at',
 		format: (val) => formatDate(val, 'dd-MM-yyyy'),
 		sortable: true,
