@@ -8,15 +8,11 @@
 
 		<q-separator spaced="" class="q-my-lg" />
 		<q-card>
-			<q-card-section>
+			<q-card-section class="q-pa-md bg-yellow">
 				<!-- <q-input dense outlined label="Test Input" v-model="input" class="q-my-sm" /> -->
-				<InputToggle
-					v-model="input"
-					label="Test Input Toggle"
-					:true-value="true"
-					:false-value="false"
-					class="q-my-sm"
-				/>
+				<div class="bg-blue">
+					<InputToggle v-model="input" label="Test Input Toggle" :true-value="true" :false-value="false" />
+				</div>
 			</q-card-section>
 		</q-card>
 	</q-page>

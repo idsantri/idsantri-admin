@@ -1,5 +1,11 @@
 <template lang="">
-	<q-field outlined :dense="dense" :disable="disable" :filled="disable" :class="$attrs.class == '' ? '' : 'q-my-sm'">
+	<q-field
+		outlined
+		:dense="dense"
+		:disable="disable"
+		:filled="disable"
+		:class="$attrs.class === undefined ? 'q-my-sm' : $attrs.class === '' ? null : $attrs.class"
+	>
 		<template v-slot:control>
 			<q-toggle
 				v-model="model"
