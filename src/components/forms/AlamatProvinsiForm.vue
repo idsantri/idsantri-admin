@@ -14,10 +14,9 @@
 					label="Kode Provinsi"
 					:rules="[
 						(val) => !!val || 'Harus diisi!',
-						(val) =>
-							/^[a-zA-Z0-9]+$/.test(val) ||
-							'Harus berisi huruf atau angka!',
+						(val) => /^[a-zA-Z0-9]+$/.test(val) || 'Harus berisi huruf atau angka!',
 					]"
+					ref="firstInput"
 				/>
 				<q-input
 					v-model="inputs.provinsi"
@@ -35,7 +34,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import Alamat from 'src/models/Alamat';
 import useCrudForm from './utils/useCrudForm';
 
@@ -43,23 +42,21 @@ const props = defineProps({
 	data: { type: Object, required: false, default: () => {} },
 });
 
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	Alamat.Provinsi,
-	{
-		emit: emit,
-		responseKey: 'provinsi',
-	},
-);
+onMounted(async () => {
+	await nextTick();
+	firstInput.value.focus();
+});
+
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Alamat.Provinsi, {
+	emit: emit,
+	responseKey: 'provinsi',
+});
 
 const onSubmit = async (e) => {
 	const formData = new FormData(e.target);
