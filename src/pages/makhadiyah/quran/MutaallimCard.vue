@@ -1,24 +1,11 @@
 <template lang="">
 	<q-card flat bordered class="" style="width: 350px">
-		<q-card-section
-			class="bg-green-7 text-green-11 q-pa-sm flex items-center justify-between"
-		>
+		<q-card-section class="bg-green-7 text-green-11 q-pa-sm flex items-center justify-between">
 			<div>Riwayat Mutaallim</div>
-			<q-btn
-				icon="add"
-				outline
-				dense
-				class="q-px-sm"
-				:disabled="!santri.id"
-				@click="handleAdd"
-			/>
+			<q-btn icon="add" outline dense class="q-px-sm" :disabled="!santri.id" @click="handleAdd" />
 		</q-card-section>
 		<q-card-section class="q-pa-sm">
-			<CardSantriSimple
-				v-if="santri.id"
-				:id="santri.id"
-				class="q-mb-sm"
-			/>
+			<CardSantriSimple v-if="santri.id" :id="santri.id" class="q-mb-sm" />
 
 			<q-list bordered separator class="rounded-borders">
 				<q-item v-if="loading" class="q-px-sm">
@@ -40,14 +27,7 @@
 						<q-item-label caption> untuk ditampilkan </q-item-label>
 					</q-item-section>
 					<q-item-section avatar>
-						<q-btn
-							icon="sym_o_exclamation"
-							disable
-							dense
-							outline
-							round
-							color="green-14"
-						/>
+						<q-btn icon="sym_o_exclamation" disable dense outline round color="green-14" />
 					</q-item-section>
 				</q-item>
 
@@ -66,28 +46,15 @@
 						</q-item-label>
 						<q-item-label caption>
 							{{ formatDate(item.created_at, 'dd-MM-yyyy') }} |
-							{{
-								m2hFormat(
-									formatDate(item.created_at, 'yyyy-MM-dd'),
-								)
-							}}
+							{{ m2hFormat(formatDate(item.created_at, 'yyyy-MM-dd')) }}
 							<span v-if="item.aktif">
 								<span>|</span>
-								<span class="text-weight-bold text-green-10">
-									Aktif
-								</span>
+								<span class="text-weight-bold text-green-10"> Aktif </span>
 							</span>
 						</q-item-label>
 					</q-item-section>
 					<q-item-section avatar>
-						<q-btn
-							icon="edit"
-							dense
-							outline
-							round
-							glossy
-							@click="handleEdit(item.id)"
-						/>
+						<q-btn icon="edit" dense outline round glossy @click="handleEdit(item.id)" />
 					</q-item-section>
 				</q-item>
 			</q-list>
@@ -102,9 +69,9 @@
 	</q-card>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
 import QuranMutaallimForm from 'src/components/forms/QuranMutaallimForm.vue';
 import CardSantriSimple from 'src/components/santri/CardSantriSimple.vue';
+import Mutaallim from 'src/models/Mutaallim';
 import { getObjectById } from 'src/utils/array-object';
 import { formatDate } from 'src/utils/format-date';
 import { m2hFormat } from 'src/utils/hijri';
@@ -117,13 +84,14 @@ const mutaallim = ref([]);
 const loading = ref(false);
 
 async function loadMutaallim(santriId) {
-	const data = await apiGet({
-		endPoint: `mutaallim/santri/${santriId}`,
-		loading: loading,
-	});
-	if (data) {
-		// console.log(data.mutaallim);
+	try {
+		loading.value = true;
+		const data = await Mutaallim.getSantriId(santriId);
 		mutaallim.value = data.mutaallim;
+	} catch (e) {
+		console.error('🚀 ~ loadMutaallim ~ e:', e);
+	} finally {
+		loading.value = false;
 	}
 }
 

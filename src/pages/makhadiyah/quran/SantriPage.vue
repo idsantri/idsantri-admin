@@ -45,13 +45,13 @@
 	</div>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
 import { onMounted, ref, computed, watchEffect, watch } from 'vue';
 import MutaallimCard from './MutaallimCard.vue';
 import TableHeader from './TableHeader.vue';
 import FilterDomisili from './FilterDomisili.vue';
 import FilterKelas from './FilterKelas.vue';
 import { columnSantri } from './column-header';
+import Mutaallim from 'src/models/Mutaallim';
 
 const filter = ref('');
 const loading = ref(false);
@@ -65,21 +65,24 @@ const modelKelas = ref([]);
 
 const filteredSantri = computed(() => {
 	return santri.value.filter((item) => {
-		const matchesDomisili =
-			!modelDomisili.value?.length ||
-			modelDomisili.value.includes(item.domisili);
-		const matchesTingkat =
-			!modelTingkat.value || item.tingkat === modelTingkat.value;
-		const matchesKelas =
-			!modelKelas.value?.length || modelKelas.value.includes(item.kelas);
+		const matchesDomisili = !modelDomisili.value?.length || modelDomisili.value.includes(item.domisili);
+		const matchesTingkat = !modelTingkat.value || item.tingkat === modelTingkat.value;
+		const matchesKelas = !modelKelas.value?.length || modelKelas.value.includes(item.kelas);
 		return matchesDomisili && matchesTingkat && matchesKelas;
 	});
 });
 
 async function loadData() {
-	const data = await apiGet({ endPoint: 'mutaallim/santri', loading });
-	if (data) {
-		santri.value = data.santri;
+	try {
+		loading.value = true;
+		const data = await Mutaallim.getSantri();
+		if (data) {
+			santri.value = data.santri;
+		}
+	} catch (e) {
+		console.error('🚀 ~ loadData ~ e:', e);
+	} finally {
+		loading.value = false;
 	}
 }
 
