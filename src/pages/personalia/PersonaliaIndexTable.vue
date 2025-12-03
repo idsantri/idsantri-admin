@@ -5,7 +5,7 @@
 			<q-table
 				bordered
 				flat
-				:rows="personalia"
+				:rows="aparatur"
 				:loading="loading"
 				:rows-per-page-options="[10, 25, 50, 100, 0]"
 				class="dt"
@@ -36,18 +36,23 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
-import apiGet from 'src/api/api-get';
 import PersonaliaForm from 'src/components/forms/PersonaliaForm.vue';
+import Aparatur from 'src/models/Aparatur';
 
 const loading = ref(false);
-const personalia = ref([]);
+const aparatur = ref([]);
 const filter = ref('');
 const crudShow = ref(false);
 
 async function loadData() {
-	const data = await apiGet({ endPoint: 'aparatur', loading });
-	if (data) {
-		personalia.value = data.aparatur;
+	try {
+		loading.value = true;
+		const data = await Aparatur.getAll();
+		aparatur.value = data.aparatur;
+	} catch (e) {
+		console.error('🚀 ~ loadData ~ e:', e);
+	} finally {
+		loading.value = false;
 	}
 }
 

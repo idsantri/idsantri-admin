@@ -2,11 +2,7 @@
 	<div class="q-card--bordered">
 		<div class="q-px-md">
 			<q-toolbar class="no-padding no-margin">
-				<q-toolbar-title
-					class="text-subtitle1 text-green-10 text-weight-bold"
-				>
-					Jabatan Quran
-				</q-toolbar-title>
+				<q-toolbar-title class="text-subtitle1 text-green-10 text-weight-bold"> Jabatan Quran </q-toolbar-title>
 				<q-btn
 					class="q-px-md text-green-10"
 					label="Tambah"
@@ -26,18 +22,14 @@
 			</div>
 			<div v-else-if="!aq?.length">
 				<div class="bg-red-1 text-negative text-center q-pa-md">
-					Tidak data data untuk ditampilkan.<br />Silakan tambahkah
-					data!
+					Tidak data data untuk ditampilkan.<br />Silakan tambahkah data!
 				</div>
 			</div>
 			<q-item v-else v-for="item in aq" :key="item.id" class="">
 				<q-item-section>
-					<q-item-label overline>
-						{{ item.th_ajaran_h }} | {{ item.th_ajaran_m }}
-					</q-item-label>
+					<q-item-label overline> {{ item.th_ajaran_h }} | {{ item.th_ajaran_m }} </q-item-label>
 					<q-item-label lines="1">
-						<span class="text-bold">Muallim</span>;
-						{{ item.marhalah
+						<span class="text-bold">Muallim</span>; {{ item.marhalah
 						}}{{ item.faslah ? '; ' + item.faslah : '' }}
 						{{ item.ruang ? '(' + item.ruang + ')' : '' }}
 					</q-item-label>
@@ -47,15 +39,7 @@
 				</q-item-section>
 
 				<q-item-section side>
-					<q-btn
-						outline
-						glossy
-						icon="edit"
-						round
-						dense
-						color="green"
-						@click="handleEdit(item.id)"
-					/>
+					<q-btn outline glossy icon="edit" round dense color="green" @click="handleEdit(item.id)" />
 				</q-item-section>
 			</q-item>
 		</q-list>
@@ -63,19 +47,15 @@
 
 	<!-- modal -->
 	<q-dialog v-model="crudShow">
-		<PersonaliaQuranForm
-			:data="dataObj"
-			@success-submit="loadData"
-			@success-delete="loadData"
-		/>
+		<PersonaliaQuranForm :data="dataObj" @success-submit="loadData" @success-delete="loadData" />
 	</q-dialog>
 </template>
 <script setup>
 import { inject, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import apiGet from 'src/api/api-get';
 import { getObjectById } from 'src/utils/array-object';
 import PersonaliaQuranForm from 'src/components/forms/PersonaliaQuranForm.vue';
+import AparaturQuran from 'src/models/AparaturQuran';
 
 const route = useRoute();
 const loading = ref(false);
@@ -86,13 +66,14 @@ const aparatur = inject('aparatur');
 
 async function loadData() {
 	if (route.params.id) {
-		const data = await apiGet({
-			endPoint: `aparatur-quran`,
-			params: { aparatur_id: route.params.id },
-			loading,
-		});
-		if (data) {
+		try {
+			loading.value = true;
+			const data = await AparaturQuran.getAll({ params: { aparatur_id: route.params.id } });
 			aq.value = data.aparatur_quran;
+		} catch (e) {
+			console.error('🚀 ~ loadData ~ e:', e);
+		} finally {
+			loading.value = false;
 		}
 	}
 }
