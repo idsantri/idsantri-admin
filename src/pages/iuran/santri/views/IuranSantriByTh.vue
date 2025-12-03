@@ -149,14 +149,13 @@
 <script setup>
 import { inject, nextTick, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import apiGet from 'src/api/api-get';
-import apiUpdate from 'src/api/api-update';
 import { formatDate } from 'src/utils/format-date';
 import IuranForm from 'src/components/forms/IuranForm.vue';
 import { deleteById, replaceById } from 'src/utils/array-object';
 import { sumNominal, sumLunas, sumNotLunas, sumCetak } from '../../utils';
 import DropDownPrint from './DropDownPrint.vue';
 import IuranLunasForm from 'src/components/forms/IuranLunasForm.vue';
+import Iuran from 'src/models/Iuran';
 
 const { params } = useRoute();
 const thAjaranH = ref(params.thAjaranH);
@@ -177,13 +176,14 @@ function editIuran(item) {
 
 async function loadData() {
 	if (thAjaranH.value && santriId.value) {
-		const data = await apiGet({
-			endPoint: `iuran/santri/${santriId.value}`,
-			params: { th_ajaran_h: thAjaranH.value },
-			loading,
-		});
-		if (data) {
+		try {
+			loading.value = true;
+			const data = await Iuran.bySantriByThAjaran(santriId.value, thAjaranH.value);
 			iuran.value = sortMapIuran(data.iuran);
+		} catch (error) {
+			console.error('🚀 ~ loadData ~ error:', error);
+		} finally {
+			loading.value = false;
 		}
 	}
 }
@@ -191,13 +191,11 @@ async function loadData() {
 onMounted(async () => await loadData());
 
 async function toggleCetak(val, evt, item, index) {
-	const updated = await apiUpdate({
-		endPoint: `iuran/${item.id}/cetak`,
-		confirm: false,
-		notify: false,
-	});
-	if (!updated) {
+	try {
+		await Iuran.toggleCetak(item.id);
+	} catch (error) {
 		iuran.value[index].cetak = val == 1 ? 0 : 1;
+		console.error('🚀 ~ toggleCetak ~ error:', error);
 	}
 }
 
@@ -205,15 +203,16 @@ async function toggleLunas(val, evt, item, index) {
 	if (val) {
 		return setLunas(item, index);
 	}
-	const updated = await apiUpdate({
-		endPoint: `iuran/${item.id}/not-lunas`,
-		message: 'Iuran/tagihan TIDAK lunas?',
-		loading: loading,
-	});
-	if (updated) {
-		iuran.value[index] = updated.iuran;
-	} else {
+
+	try {
+		loading.value = true;
+		const data = await Iuran.setNotLunas(item.id, 'Iuran/tagihan TIDAK lunas?');
+		iuran.value[index] = data.iuran;
+	} catch (error) {
 		iuran.value[index].isLunas = val == true ? false : true;
+		console.error('🚀 ~ toggleLunas ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 

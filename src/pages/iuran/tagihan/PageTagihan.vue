@@ -24,7 +24,7 @@
 						v-model:selected="selected"
 						:rows-per-page-options="[0]"
 						hide-bottom
-						style="height: 635px"
+						style="height: 70vh"
 						virtual-scroll
 					>
 						<template v-slot:header-selection="scope">
@@ -47,7 +47,7 @@
 					</q-table>
 				</div>
 				<div class="q-mt-sm" style="min-width: 400px; width: 70%">
-					<q-card bordered flat class="q-ml-sm scroll" style="height: 635px">
+					<q-card bordered flat class="q-ml-sm scroll" style="height: 70vh">
 						<q-card-section class="q-px-sm q-py-md bg-green-2 text-green-10 text-subtitle2">
 							Buat Tagihan Massal
 						</q-card-section>
@@ -118,8 +118,6 @@
 	</CardPage>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
-import apiPost from 'src/api/api-post';
 import FilterKelas from 'src/components/filters/FilterKelas.vue';
 import InputSelectIuranPaket from 'src/components/inputs/InputSelectIuranPaket.vue';
 import { notifyError } from 'src/utils/notify';
@@ -128,6 +126,8 @@ import { useRoute } from 'vue-router';
 import useAuthStore from 'src/stores/auth-store';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
+import Kelas from 'src/models/Kelas';
+import Iuran from 'src/models/Iuran';
 
 const auth = useAuthStore();
 const { email } = auth.user;
@@ -149,17 +149,20 @@ const va_text =
 const va_group = ref('');
 
 async function loadData() {
-	const data = await apiGet({
-		endPoint: 'kelas',
-		params: {
+	try {
+		loading.value = true;
+		const config = {
 			th_ajaran_h: params.th_ajaran_h,
 			tingkat_id: params.tingkat_id,
 			kelas: params.kelas,
-		},
-		loading,
-	});
-	if (data) {
+		};
+
+		const data = await Kelas.getAll({ params: config, notifySuccess: false });
 		murid.value = data.murid;
+	} catch (error) {
+		console.error('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 
@@ -186,17 +189,23 @@ async function onSubmit() {
 			return { item: i.item, nominal: i.nominal };
 		}),
 	};
-	// console.log('🚀 ~ onSubmit ~ data:', data);
-	// return;
-	await apiPost({
-		endPoint: 'iuran/paket-massal',
-		loading: loadingPaket,
-		data,
-		message: `PERHATIAN<br/>
+
+	const message = `PERHATIAN<br/>
 			Jika item iuran sudah terdapat dalam daftar maka akan diabaikan.
 			<hr/>
-			<span style="color:red">Kesalahan akibat aksi ini sulit ditelusuri dan harus diperbaiki satu per satu.</span>`,
-	});
+			<span style="color:red">Kesalahan akibat aksi ini sulit ditelusuri dan harus diperbaiki satu per satu.</span>`;
+
+	try {
+		loadingPaket.value = true;
+		await Iuran.storePaketMassal({
+			data,
+			message,
+		});
+	} catch (error) {
+		console.error('🚀 ~ onSubmit ~ error:', error);
+	} finally {
+		loadingPaket.value = false;
+	}
 }
 const columns = [
 	{

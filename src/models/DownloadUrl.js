@@ -1,0 +1,28 @@
+import { notifyWarning } from 'src/utils/notify';
+import Api from './Api';
+
+class DownloadUrl extends Api {
+	constructor() {
+		super('export');
+	}
+
+	#handleDownload(data) {
+		if (!data?.url) return notifyWarning('Url tidak ditemukan');
+
+		const link = document.createElement('a');
+		link.href = data.url;
+		link.click();
+		link.remove();
+	}
+
+	async iuranVA(params = {}) {
+		const resData = await this._apiGet({
+			endPoint: `${this._path}/iuran-va`,
+			params,
+		});
+		// return resData.data;
+		return this.#handleDownload(resData.data);
+	}
+}
+
+export default new DownloadUrl();

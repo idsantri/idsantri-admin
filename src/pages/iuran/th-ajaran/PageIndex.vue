@@ -60,12 +60,12 @@
 	</div>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { sumLunas, sumNominal, sumNotLunas } from '../utils';
 import { formatDate } from 'src/utils/format-date';
 import FilterThAjaran from 'src/components/filters/FilterTahunAjaran.vue';
+import Iuran from 'src/models/Iuran';
 
 const dataFilter = ref({});
 const iuran = ref([]);
@@ -73,22 +73,28 @@ const loading = ref(false);
 const { params } = useRoute();
 const filter = ref('');
 
-// const store = listsStore();
-// const a = store.getByStateName('tahun-ajaran');
-// console.log(a);
-
 async function loadData() {
-	const data = await apiGet({
-		endPoint: 'iuran',
-		loading,
-		params: {
-			th_ajaran_h: params.thAjaranH,
-		},
-	});
-	if (data) {
-		iuran.value = data.iuran;
-		// console.log('🚀 ~ loadData ~ data.iuran:', data.iuran[0]);
+	try {
+		loading.value = true;
+		const data = await Iuran.getAll({ params: { th_ajaran_h: params.thAjaranH } });
+		iuran.value = data.iuran ?? [];
+	} catch (error) {
+		console.error('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
+
+	// const data = await apiGet({
+	// 	endPoint: 'iuran',
+	// 	loading,
+	// 	params: {
+	// 		th_ajaran_h: params.thAjaranH,
+	// 	},
+	// });
+	// if (data) {
+	// 	iuran.value = data.iuran;
+	// 	// console.log('🚀 ~ loadData ~ data.iuran:', data.iuran[0]);
+	// }
 }
 
 onMounted(async () => {
