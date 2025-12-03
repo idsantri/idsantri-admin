@@ -14,10 +14,18 @@ class DownloadUrl extends Api {
 		link.click();
 		link.remove();
 	}
-
 	async iuranVA(params = {}) {
 		const resData = await this._apiGet({
 			endPoint: `${this._path}/iuran-va`,
+			params,
+		});
+		// return resData.data;
+		return this.#handleDownload(resData.data);
+	}
+
+	async santri(params = {}) {
+		const resData = await this._apiGet({
+			endPoint: `${this._path}/santri`,
 			params,
 		});
 		// return resData.data;
