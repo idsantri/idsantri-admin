@@ -74,7 +74,7 @@
 					</tbody>
 
 					<tbody v-else>
-						<tr v-for="(abs, index) in absensi" :key="index">
+						<tr v-for="(abs, index) in absences" :key="index">
 							<td class="text-center">
 								{{ abs.no_absen ? abs.no_absen.toString().padStart(2, 0) : '' }}
 							</td>
@@ -173,41 +173,42 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import apiGet from 'src/api/api-get';
 import FilterKelas from 'src/components/filters/FilterKelas.vue';
 import { titleCase } from 'src/utils/format-text';
+import Absensi from 'src/models/Absensi';
 
 const spinner = ref(false);
 const route = useRoute();
-
-const absensi = ref([]);
-const params = {
-	absensi: route.params.absensi,
-	th_ajaran_h: route.params.th_ajaran_h,
-	tingkat_id: route.params.tingkat_id,
-	kelas: route.params.kelas,
-};
-
+const { params } = route;
+const absences = ref([]);
 const textFilter = ref('');
+const model =
+	params.absensi?.toLowerCase() === 'sekolah'
+		? Absensi.Sekolah
+		: params.absensi?.toLowerCase() === 'musyawarah'
+			? Absensi.Musyawarah
+			: null;
 
 async function getAbsensi() {
-	// console.log(params);
-	if (params.th_ajaran_h && params.tingkat_id && params.kelas) {
-		const data = await apiGet({
-			endPoint: `absensi/${params.absensi}/rekap-ujian`,
-			loading: spinner,
-			params: {
-				th_ajaran_h: params.th_ajaran_h,
-				tingkat_id: params.tingkat_id,
-				kelas: params.kelas,
-			},
+	try {
+		spinner.value = true;
+		const data = await model.getRekapUjian({
+			th_ajaran_h: params.th_ajaran_h,
+			tingkat_id: params.tingkat_id,
+			kelas: params.kelas,
 		});
-		absensi.value = data['absensi_' + params.absensi];
+		absences.value = data['absensi_' + params.absensi];
+	} catch (error) {
+		console.error('🚀 ~ getAbsensi ~ error:', error);
+	} finally {
+		spinner.value = false;
 	}
 }
 
 onMounted(async () => {
-	await getAbsensi();
+	if (params.th_ajaran_h && params.tingkat_id && params.kelas) {
+		await getAbsensi();
+	}
 });
 </script>
 

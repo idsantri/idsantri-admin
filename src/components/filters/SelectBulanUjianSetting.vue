@@ -35,7 +35,7 @@ const props = defineProps({
 const { params } = useRoute();
 const router = useRouter();
 
-const bulanUjian = ref(params.set_bulan_ujian);
+const bulanUjian = ref(params.bulan_ujian);
 
 const loading = ref(false);
 const lists = ref([]);
@@ -43,9 +43,7 @@ const url = `${props.startUrl}/${params.th_ajaran_h}/${params.tingkat_id}/${para
 
 onMounted(async () => {
 	if (params.tingkat_id) {
-		const cekData = listsMadrasahStore().getBulanUjianSettingByTingkatId(
-			params.tingkat_id,
-		);
+		const cekData = listsMadrasahStore().getBulanUjianSettingByTingkatId(params.tingkat_id);
 		if (cekData.length) {
 			lists.value['bulan_ujian'] = cekData;
 		} else {

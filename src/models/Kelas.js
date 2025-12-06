@@ -12,6 +12,22 @@ class Kelas extends ApiCrud {
 
 		return resData.data;
 	}
-	// TODO: other methods
+
+	async updateNoAbsen(data) {
+		const isConfirmed = await this._notifyConfirm('Update nomor absen?');
+
+		if (!isConfirmed) {
+			return false;
+		}
+
+		const resData = await this._apiUpdate({
+			endPoint: `${this._path}/no-absen`,
+			data,
+		});
+
+		this._showSuccess(resData.message);
+
+		return resData.data || true;
+	}
 }
 export default new Kelas();

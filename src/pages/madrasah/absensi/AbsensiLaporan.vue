@@ -97,7 +97,7 @@
 					</tbody>
 
 					<tbody v-else>
-						<tr v-for="(abs, index) in absensi" :key="index">
+						<tr v-for="(abs, index) in absences" :key="index">
 							<td class="text-center">
 								{{ abs.no_absen ? abs.no_absen.toString().padStart(2, 0) : '' }}
 							</td>
@@ -233,38 +233,44 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import FilterKelas from 'src/components/filters/FilterKelas.vue';
-import apiGet from 'src/api/api-get';
 import { titleCase } from 'src/utils/format-text';
 import { notifySuccess } from 'src/utils/notify';
+import Absensi from 'src/models/Absensi';
 
 const spinner = ref(false);
 const { params } = useRoute();
 const textFilter = ref('');
-
-const absensi = ref([]);
+const absences = ref([]);
+const model =
+	params.absensi?.toLowerCase() === 'sekolah'
+		? Absensi.Sekolah
+		: params.absensi?.toLowerCase() === 'musyawarah'
+			? Absensi.Musyawarah
+			: null;
 
 async function fetchAbsensi() {
-	if (params.th_ajaran_h && params.tingkat_id && params.list_bulan_ujian) {
-		const data = await apiGet({
-			endPoint: 'absensi/' + params.absensi + '/not-null',
-			params: {
-				th_ajaran_h: params.th_ajaran_h,
-				tingkat_id: params.tingkat_id,
-				bulan_ujian: params.list_bulan_ujian,
-			},
-			notify: false,
-			loading: spinner,
+	try {
+		spinner.value = true;
+		const data = await model.getNotNull({
+			th_ajaran_h: params.th_ajaran_h,
+			tingkat_id: params.tingkat_id,
+			bulan_ujian: params.list_bulan_ujian,
 		});
-		absensi.value = data['absensi_' + params.absensi];
-		// console.log(absensi.value);
-		if (!absensi.value.length) {
+		absences.value = data['absensi_' + params.absensi];
+		if (!absences.value.length) {
 			notifySuccess('Tidak ada murid absen pada filter yang dipilih!');
 		}
+	} catch (error) {
+		console.error('🚀 ~ fetchAbsensi ~ error:', error);
+	} finally {
+		spinner.value = false;
 	}
 }
 
 onMounted(async () => {
-	await fetchAbsensi();
+	if (params.th_ajaran_h && params.tingkat_id && params.list_bulan_ujian) {
+		await fetchAbsensi();
+	}
 });
 </script>
 <style lang="scss">

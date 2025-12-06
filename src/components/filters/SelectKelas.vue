@@ -39,10 +39,7 @@ const url = `${props.startUrl}/${params.th_ajaran_h}/${params.tingkat_id}`;
 
 onMounted(async () => {
 	if (params.th_ajaran_h && params.tingkat_id) {
-		const cekData = listsMadrasahStore().getKelasByTingkatAndTahun(
-			params.tingkat_id,
-			params.th_ajaran_h,
-		);
+		const cekData = listsMadrasahStore().getKelasByTingkatAndTahun(params.tingkat_id, params.th_ajaran_h);
 		if (cekData.length) {
 			lists.value['kelas'] = cekData;
 		} else {
@@ -57,11 +54,7 @@ onMounted(async () => {
 				sort: 'asc',
 			});
 
-			listsMadrasahStore().addKelasToTingkatByTahun(
-				data,
-				params.tingkat_id,
-				params.th_ajaran_h,
-			);
+			listsMadrasahStore().addKelasToTingkatByTahun(data, params.tingkat_id, params.th_ajaran_h);
 			lists.value['kelas'] = data;
 		}
 	}
@@ -77,8 +70,8 @@ watch(kelas, (newValue, oldValue) => {
 		}
 		if (newValue != oldValue) {
 			let endUrl = '';
-			if (params.set_bulan_ujian) {
-				endUrl = '/' + params.set_bulan_ujian;
+			if (params.bulan_ujian) {
+				endUrl = '/' + params.bulan_ujian;
 			} else if (params.ujian_ke) {
 				endUrl = '/' + params.ujian_ke;
 			}

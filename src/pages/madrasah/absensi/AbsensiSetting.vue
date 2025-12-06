@@ -148,10 +148,8 @@
 	</q-card>
 </template>
 <script setup>
-import apiDelete from 'src/api/api-delete';
-import apiGet from 'src/api/api-get';
-import apiPost from 'src/api/api-post';
-import apiUpdate from 'src/api/api-update';
+import AbsensiSetting from 'src/models/AbsensiSetting';
+import Lists from 'src/models/Lists';
 import { onMounted, ref } from 'vue';
 
 const modelTingkatId = ref('');
@@ -163,59 +161,84 @@ const spinner = ref(false);
 const newSetting = ref({});
 
 async function addSetting() {
-	newSetting.value.tingkat_id = modelTingkatId.value.val0;
-	const post = await apiPost({
-		endPoint: 'absensi/settings',
-		data: newSetting.value,
-	});
-	if (post) {
+	try {
+		spinner.value = true;
+		newSetting.value.tingkat_id = modelTingkatId.value.val0;
+		await AbsensiSetting.create({ data: newSetting.value });
 		newSetting.value = {};
-		return fetchSetting(modelTingkatId.value.val0);
+		await fetchSetting(modelTingkatId.value.val0);
+	} catch (error) {
+		console.error('🚀 ~ addSetting ~ error:', error);
+	} finally {
+		spinner.value = false;
 	}
 }
+
 async function deleteSetting(id) {
-	const deleted = await apiDelete({
-		endPoint: `absensi/settings/${id}`,
-		loading: spinner,
-	});
-	if (deleted) return fetchSetting(modelTingkatId.value.val0);
+	try {
+		spinner.value = true;
+		await AbsensiSetting.remove({ id });
+		await fetchSetting(modelTingkatId.value.val0);
+	} catch (e) {
+		console.error('🚀 ~ deleteSetting ~ e:', e);
+	} finally {
+		spinner.value = false;
+	}
 }
+
 async function submitUpdate(val) {
-	await apiUpdate({
-		endPoint: `absensi/settings/${val.id}`,
-		data: {
-			bulan: val.bulan,
-			ujian: val.ujian,
-			tingkat_id: val.tingkat_id,
-		},
-		loading: spinner,
-		confirm: false,
-	});
-	await fetchSetting(val.tingkat_id);
+	try {
+		spinner.value = true;
+		await AbsensiSetting.update({
+			id: val.id,
+			data: {
+				bulan: val.bulan,
+				ujian: val.ujian,
+				tingkat_id: val.tingkat_id,
+			},
+		});
+		await fetchSetting(val.tingkat_id);
+	} catch (error) {
+		console.error('🚀 ~ submitUpdate ~ error:', error);
+	} finally {
+		spinner.value = false``;
+	}
 }
+
 async function fetchTingkat() {
-	const data = await apiGet({
-		endPoint: 'lists/tingkat-pendidikan',
-		loading,
-	});
-	listsTingkatId.value = data.tingkat_pendidikan;
+	try {
+		loading.value = true;
+		const data = await Lists.getByKey('tingkat-pendidikan');
+		listsTingkatId.value = data.tingkat_pendidikan;
+	} catch (error) {
+		console.log('error get list ', error);
+	} finally {
+		loading.value = false;
+	}
 }
 
 async function fetchHijri() {
-	const data = await apiGet({
-		endPoint: 'lists/bulan-hijri',
-		loading,
-	});
-	listsBulanHijri.value = data.bulan_hijri;
+	try {
+		loading.value = true;
+		const data = await Lists.getByKey('bulan-hijri');
+		listsBulanHijri.value = data.bulan_hijri;
+	} catch (error) {
+		console.log('error get list ', error);
+	} finally {
+		loading.value = false;
+	}
 }
 
-async function fetchSetting(tingkatId) {
-	const data = await apiGet({
-		endPoint: `absensi/settings?tingkat_id=${tingkatId}`,
-		loading: spinner,
-	});
-	bulanUjian.value = data.bulan_ujian;
-	// console.log(data);
+async function fetchSetting(tingkat_id) {
+	try {
+		spinner.value = true;
+		const data = await AbsensiSetting.getAll({ params: { tingkat_id } });
+		bulanUjian.value = data.bulan_ujian;
+	} catch (e) {
+		console.error('🚀 ~ fetchSetting ~ e:', e);
+	} finally {
+		spinner.value = false;
+	}
 }
 
 onMounted(async () => {
