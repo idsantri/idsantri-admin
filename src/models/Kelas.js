@@ -13,6 +13,17 @@ class Kelas extends ApiCrud {
 		return resData.data;
 	}
 
+	async updateAktif(id = '', aktif = true) {
+		const resData = await this._apiUpdate({
+			endPoint: `${this._path}/${id}/set-active`,
+			data: { aktif },
+		});
+
+		this._showSuccess(resData.message);
+
+		return resData.data || true;
+	}
+
 	async updateNoAbsen(data) {
 		const isConfirmed = await this._notifyConfirm('Update nomor absen?');
 
