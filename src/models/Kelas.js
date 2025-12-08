@@ -13,6 +13,15 @@ class Kelas extends ApiCrud {
 		return resData.data;
 	}
 
+	async list(params = {}) {
+		const resData = await this._apiGet({
+			endPoint: `${this._path}/lists`,
+			params,
+		});
+
+		return resData.data;
+	}
+
 	async updateAktif(id = '', aktif = true) {
 		const resData = await this._apiUpdate({
 			endPoint: `${this._path}/${id}/set-active`,
@@ -33,6 +42,17 @@ class Kelas extends ApiCrud {
 
 		const resData = await this._apiUpdate({
 			endPoint: `${this._path}/no-absen`,
+			data,
+		});
+
+		this._showSuccess(resData.message);
+
+		return resData.data || true;
+	}
+
+	async kenaikan(data = {}) {
+		const resData = await this._apiPost({
+			endPoint: `${this._path}/kenaikan`,
 			data,
 		});
 
