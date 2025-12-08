@@ -47,7 +47,7 @@
 	</q-table>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
+import Kelas from 'src/models/Kelas';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -60,15 +60,11 @@ const filter = ref('');
 function rowClick(row) {
 	router.push(`/madrasah/kelas/${row.id}/riwayat`);
 }
-
-onMounted(async () => {
-	if (params.th_ajaran_h && params.tingkat_id) {
-		if (!params.kelas) delete params.kelas;
-		const data = await apiGet({
-			endPoint: 'kelas',
-			params,
-			loading: spinner,
-		});
+async function loadData(params = {}) {
+	try {
+		murid.value = [];
+		spinner.value = true;
+		const data = await Kelas.getAll({ params });
 		const map = data.murid.map((m) => {
 			return {
 				...m,
@@ -77,6 +73,16 @@ onMounted(async () => {
 			};
 		});
 		murid.value = map;
+	} catch (error) {
+		console.error('Error loading data:', error);
+	} finally {
+		spinner.value = false;
+	}
+}
+onMounted(async () => {
+	if (params.th_ajaran_h && params.tingkat_id) {
+		if (!params.kelas) delete params.kelas;
+		await loadData(params);
 	} else {
 		murid.value = [];
 	}
@@ -108,7 +114,7 @@ const columns = [
 		name: 'alamat',
 		label: 'Alamat',
 		align: 'left',
-		field: 'alamat',
+		field: (row) => `${row.desa} ${row.kecamatan} ${row.kabupaten}`,
 		sortable: true,
 		classes: 'alamat',
 	},
