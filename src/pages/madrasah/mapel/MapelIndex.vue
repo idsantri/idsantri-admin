@@ -72,9 +72,9 @@
 </template>
 <script setup>
 import { ref, watch } from 'vue';
-import apiGet from 'src/api/api-get';
 import MapelForm from 'src/components/forms/MapelForm.vue';
 import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingkatPendidikan.vue';
+import Mapel from 'src/models/Mapel';
 
 const mapel = ref([]);
 const tingkatId = ref('');
@@ -82,13 +82,17 @@ const loading = ref(false);
 const mapelObj = ref({});
 const crudShow = ref(false);
 
-async function loadData(id) {
-	const data = await apiGet({
-		endPoint: 'mapel',
-		loading,
-		params: { tingkat_id: id },
-	});
-	mapel.value = data.mapel;
+async function loadData(tingkat_id) {
+	try {
+		loading.value = true;
+		mapel.value = [];
+		const data = await Mapel.getAll({ params: { tingkat_id } });
+		mapel.value = data.mapel;
+	} catch (error) {
+		console.error('Error loading data:', error);
+	} finally {
+		loading.value = false;
+	}
 }
 
 watch(tingkatId, async (newVal) => {
