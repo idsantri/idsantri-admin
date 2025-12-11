@@ -14,6 +14,7 @@ class DownloadUrl extends Api {
 		link.click();
 		link.remove();
 	}
+
 	async iuranVA(params = {}) {
 		const resData = await this._apiGet({
 			endPoint: `${this._path}/iuran-va`,
@@ -35,6 +36,15 @@ class DownloadUrl extends Api {
 	async mutaallim(params = {}) {
 		const resData = await this._apiGet({
 			endPoint: `${this._path}/mutaallim`,
+			params,
+		});
+		// return resData.data;
+		return this.#handleDownload(resData.data);
+	}
+
+	async nilaiMapel(params = {}) {
+		const resData = await this._apiGet({
+			endPoint: `${this._path}/nilai-mapel`,
 			params,
 		});
 		// return resData.data;
