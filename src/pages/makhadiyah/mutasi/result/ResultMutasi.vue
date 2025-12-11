@@ -115,13 +115,11 @@
 	</CardPage>
 </template>
 <script setup>
-import apiDelete from 'src/api/api-delete';
-import apiGet from 'src/api/api-get';
 import { onMounted, ref, toRefs } from 'vue';
-import apiPost from 'src/api/api-post';
 import loadingStore from 'src/stores/loading-store';
-import { notifyWarning } from 'src/utils/notify';
 import MutasiForm from 'src/components/forms/MutasiForm.vue';
+import Mutasi from 'src/models/Mutasi';
+import DownloadUrl from 'src/models/DownloadUrl';
 
 const santri = ref([]);
 const loading = ref(false);
@@ -130,11 +128,16 @@ const mutasiItem = ref({});
 const { loadingMain } = toRefs(loadingStore());
 
 async function loadData() {
-	const data = await apiGet({ endPoint: 'mutasi', loading });
-	if (data) {
+	try {
+		loading.value = true;
+		const data = await Mutasi.getAll({ notifySuccess: false });
 		santri.value = data.mutasi.map((s) => {
 			return { ...s, tk: s.tingkat_id + ' ' + s.kelas };
 		});
+	} catch (error) {
+		console.error('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 
@@ -157,43 +160,40 @@ async function updateDomisili() {
 				<li>Setelah update selesai, semua data mutasi akan <strong>dihapus</strong>!</li>
 			</ul>
 		</em>`;
-	const post = await apiPost({
-		endPoint: 'mutasi/execute',
-		data: null,
-		loading,
-		confirm: true,
-		message,
-	});
-	if (post) {
-		await loadData();
+
+	try {
+		loading.value = true;
+		if (await Mutasi.execute(message)) {
+			await loadData();
+		}
+	} catch (error) {
+		console.error('🚀 ~ updateDomisili ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 
 async function deleteAll() {
-	const del = await apiDelete({
-		endPoint: 'mutasi/clean',
-		loading,
-		message: 'Hapus semua data mutasi?',
-	});
-	if (del) {
+	try {
+		loading.value = true;
+		await Mutasi.removeAll();
 		santri.value = [];
+	} catch (error) {
+		console.error('🚀 ~ deleteAll ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 
 async function downloadMutasi() {
-	const data = await apiGet({
-		endPoint: 'export/mutasi',
-		loading: loadingMain,
-		notify: true,
-	});
-
-	if (!data) return;
-	if (!data.url) return notifyWarning('Url tidak ditemukan');
-
-	const link = document.createElement('a');
-	link.href = data.url;
-	link.click();
-	link.remove();
+	try {
+		loadingMain.value = true;
+		await DownloadUrl.mutasi();
+	} catch (error) {
+		console.error('🚀 ~ downloadMutasi ~ error:', error);
+	} finally {
+		loadingMain.value = false;
+	}
 }
 </script>
 <style lang=""></style>

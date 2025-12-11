@@ -59,6 +59,14 @@ class DownloadUrl extends Api {
 		// return resData.data;
 		return this.#handleDownload(resData.data);
 	}
+
+	async mutasi() {
+		const resData = await this._apiGet({
+			endPoint: `${this._path}/mutasi`,
+		});
+		// return resData.data;
+		return this.#handleDownload(resData.data);
+	}
 }
 
 export default new DownloadUrl();

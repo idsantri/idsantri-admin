@@ -51,27 +51,17 @@
 	</q-card>
 </template>
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
-import apiGet from 'src/api/api-get';
+import { computed, ref, watch } from 'vue';
 import mutasiStore from 'src/stores/mutasi-store';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingkatPendidikan.vue';
 import TableLeft from './LeftTable.vue';
+import Mutasi from 'src/models/Mutasi';
 
 const input = ref({ tingkat_id: '', kelas: '', domisili: '' });
 const mutasi = mutasiStore();
 const loading = ref(false);
-// const santri = computed(() => mutasi.getProsesFalse());
 const santri = computed(() => mutasi.getProsesFalse());
-
-onMounted(() => {
-	removeBottomRow();
-});
-
-function removeBottomRow() {
-	const el = document.querySelectorAll('div.q-field__bottom.row.items-start.q-field__bottom');
-	el.forEach((e) => e.remove());
-}
 
 // tingkat_id
 watch(
@@ -120,10 +110,15 @@ watch(
 );
 
 async function getData(params) {
-	const data = await apiGet({ endPoint: 'mutasi/not', params, loading });
-	// santri.value = data.santri;
-	// console.log(data.santri);
-	mutasi.addSantri(data.santri);
+	try {
+		loading.value = true;
+		const data = await Mutasi.getNotMutate(params);
+		mutasi.addSantri(data.santri);
+	} catch (error) {
+		console.error('Error fetching data:', error);
+	} finally {
+		loading.value = false;
+	}
 }
 </script>
 <style lang=""></style>
