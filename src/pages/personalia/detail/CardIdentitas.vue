@@ -62,12 +62,12 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import apiGet from 'src/api/api-get';
 import { formatDateFull } from 'src/utils/format-date';
 import UploadImage from 'src/components/ImageUploader.vue';
 import PersonaliaForm from 'src/components/forms/PersonaliaForm.vue';
 import { formatAlamatLengkap } from 'src/utils/format-text';
 import Aparatur from 'src/models/Aparatur';
+import Image from 'src/models/Image';
 
 const route = useRoute();
 const router = useRouter();
@@ -100,11 +100,11 @@ async function loadData() {
 }
 
 async function loadImage() {
-	const img = await apiGet({
-		endPoint: `images/aparatur/${aparatur.value.id}`,
-	});
-	if (img) {
-		aparatur.value.image = img.image_url;
+	try {
+		const img = await Image.aparatur(aparatur.value.id);
+		aparatur.value.image = img?.image_url ? img.image_url + `?t=${new Date().getTime()}` : '/user-default.png';
+	} catch (error) {
+		console.log('🚀 ~ loadImage ~ error:', error);
 	}
 }
 

@@ -124,12 +124,12 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
-import apiGet from 'src/api/api-get';
 import { titleCase } from 'src/utils/format-text';
 import { notifyAlert } from 'src/utils/notify';
 import UploadImage from 'src/components/ImageUploader.vue';
 import UserForm from 'src/components/forms/UserForm.vue';
 import User from 'src/models/User';
+import Image from 'src/models/Image';
 
 const user = ref({});
 const loading = ref(false);
@@ -157,11 +157,15 @@ async function loadUser() {
 }
 
 async function loadImage() {
-	const img = await apiGet({
-		endPoint: `images/users/${user.value.id}`,
-		loading: loadingImage,
-	});
-	user.value.image = img.image_url || '/user-default.png';
+	try {
+		loadingImage.value = true;
+		const img = await Image.user(user.value.id);
+		user.value.image = img?.image_url ? img.image_url + `?t=${new Date().getTime()}` : '/user-default.png';
+	} catch (error) {
+		console.log('🚀 ~ loadImage ~ error:', error);
+	} finally {
+		loadingImage.value = false;
+	}
 }
 
 async function loadData() {
