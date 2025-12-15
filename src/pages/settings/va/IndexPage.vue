@@ -56,35 +56,37 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-import apiGet from 'src/api/api-get';
-import apiPost from 'src/api/api-post';
+import ConfigApp from 'src/models/ConfigApp';
 
 const loading = ref(false);
 // init data
 const va = ref({});
 
 async function loadData() {
-	const data = await apiGet({
-		endPoint: 'config/va',
-		loading: loading,
-	});
-	Object.assign(va.value, data.va);
-	// console.log(profile.value);
+	try {
+		loading.value = true;
+		const data = await ConfigApp.getVA();
+		va.value = data.va;
+	} catch (err) {
+		console.error('🚀 ~ loadData ~ _err:', err);
+	} finally {
+		loading.value = false;
+	}
 }
 
 onMounted(async () => {
 	await loadData();
 });
+
 async function onSubmit() {
-	const data = JSON.parse(JSON.stringify(va.value));
-	// console.log(data);
-	const res = await apiPost({
-		endPoint: 'config/va',
-		data,
-		loading,
-	});
-	if (!res) {
-		await loadData();
+	try {
+		loading.value = true;
+		const data = JSON.parse(JSON.stringify(va.value));
+		await ConfigApp.setVA(data);
+	} catch (err) {
+		console.error('🚀 ~ onSubmit ~ err:', err);
+	} finally {
+		loading.value = false;
 	}
 }
 </script>
