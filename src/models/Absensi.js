@@ -66,6 +66,15 @@ class AbsensiMaster extends ApiCrud {
 class Absensi {
 	Sekolah = new AbsensiMaster('sekolah');
 	Musyawarah = new AbsensiMaster('musyawarah');
+
+	async getListBulanUjian(model, params = {}) {
+		if (model === 'sekolah') {
+			return await this.Sekolah.getListBulanUjian(params);
+		} else if (model === 'musyawarah') {
+			return await this.Musyawarah.getListBulanUjian(params);
+		}
+		throw new Error('Model tidak dikenali');
+	}
 }
 
 export default new Absensi();

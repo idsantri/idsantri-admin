@@ -48,7 +48,7 @@
 	</q-card>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
+import Santri from 'src/models/Santri';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -75,7 +75,7 @@ onMounted(async () => {
 	});
 
 	if (id.value) {
-		const data = await apiGet({ endPoint: `santri/${id.value}` });
+		const data = await Santri.getById({ id: id.value });
 		const dataEmit = {
 			display: `
 			➡️ ${id.value}
@@ -95,31 +95,35 @@ function onInput(val) {
 	}
 }
 async function filterFunction(val, update) {
-	if (!val) {
+	if (!val || val.length < 3) {
 		update(() => {
 			options.value = [];
 		});
 		return;
 	}
-	const data = await apiGet({
-		endPoint: 'santri/ids',
-		loading: loading,
-		params: {
+	try {
+		loading.value = true;
+		const data = await Santri.getIds({
 			active_only: props.activeOnly ? true : false,
 			q: val,
-		},
-	});
-	// console.log(data);
-	notFound.value = data.lists.length ? false : true;
-	update(
-		() => (options.value = data.lists),
-		(menuRef) => {
-			if (val !== '' && menuRef.options.length) {
-				menuRef.setOptionIndex(-1);
-				menuRef.moveOptionSelection(1, true);
-			}
-		},
-	);
+		});
+		notFound.value = data.lists.length ? false : true;
+
+		update(
+			() => (options.value = data.lists),
+			(menuRef) => {
+				if (val !== '' && menuRef.options.length) {
+					menuRef.setOptionIndex(-1);
+					menuRef.moveOptionSelection(1, true);
+				}
+			},
+		);
+	} catch (error) {
+		console.error('🚀 ~ filterFunction ~ error:', error);
+		notFound.value = true;
+	} finally {
+		loading.value = false;
+	}
 }
 </script>
 <style lang=""></style>
