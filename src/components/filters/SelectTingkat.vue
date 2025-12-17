@@ -41,7 +41,7 @@ const url = `${props.startUrl}/${params.th_ajaran_h}`;
 onMounted(async () => {
 	if (params.th_ajaran_h) {
 		const cekData = listsMadrasahStore().getTingkatByTahun(params.th_ajaran_h);
-		if (cekData.length) {
+		if (cekData?.length) {
 			listTingkat.value = cekData;
 		} else {
 			try {

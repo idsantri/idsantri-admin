@@ -4,7 +4,7 @@
 		outlined
 		label="Cawu/Semester"
 		v-model="ujian_ke"
-		:options="lists"
+		:options="listUjian"
 		option-value="value"
 		option-label="label"
 		emit-value
@@ -33,7 +33,7 @@ const props = defineProps({
 	},
 });
 
-const lists = ref([]);
+const listUjian = ref([]);
 const { params } = useRoute();
 const ujian_ke = ref(params.ujian_ke);
 const router = useRouter();
@@ -41,7 +41,7 @@ const url = `${props.startUrl}/${params.th_ajaran_h}/${params.tingkat_id}/${para
 
 onMounted(() => {
 	if (params.th_ajaran_h && params.tingkat_id && params.kelas) {
-		lists.value = listsMadrasahStore().getUjian.filter((u) => props.arrUjian.includes(u.value));
+		listUjian.value = listsMadrasahStore().getUjian.filter((u) => props.arrUjian.includes(u.value));
 	}
 });
 

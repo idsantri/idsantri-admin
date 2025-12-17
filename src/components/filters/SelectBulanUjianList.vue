@@ -4,7 +4,7 @@
 		outlined
 		label="Bulan (Ujian)"
 		v-model="bulanUjian"
-		:options="lists"
+		:options="listBU"
 		option-value="bu"
 		option-label="bulan_ujian"
 		emit-value
@@ -38,7 +38,7 @@ const router = useRouter();
 const bulanUjian = ref(params.list_bulan_ujian);
 
 const loading = ref(false);
-const lists = ref([]);
+const listBU = ref([]);
 const url = `${props.startUrl}/${params.th_ajaran_h}/${params.tingkat_id}`;
 
 onMounted(async () => {
@@ -47,12 +47,12 @@ onMounted(async () => {
 			params.th_ajaran_h,
 			params.tingkat_id,
 		);
-		if (cekData.length) {
-			lists.value = cekData;
+		if (cekData?.length) {
+			listBU.value = cekData;
 		} else {
 			try {
 				loading.value = true;
-				const data = Absensi.getListBulanUjian(params.absensi, {
+				const data = await Absensi.getListBulanUjian(params.absensi, {
 					th_ajaran_h: params.th_ajaran_h,
 					tingkat_id: params.tingkat_id,
 				});
@@ -62,7 +62,7 @@ onMounted(async () => {
 					return;
 				}
 				listsMadrasahStore().addBulanUjianList(data.bulan_ujian);
-				lists.value = data.bulan_ujian;
+				listBU.value = data.bulan_ujian;
 			} catch (error) {
 				console.error('🚀 ~ error:', error);
 			} finally {
