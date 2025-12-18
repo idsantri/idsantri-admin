@@ -94,6 +94,7 @@ import FormJournal from '../../../../components/forms/ApbJournalForm.vue';
 import ArrayCrud from 'src/models/ArrayCrud';
 import { uid } from 'quasar';
 import accountsStore from 'src/stores/apb-accounts-store';
+import { storeToRefs } from 'pinia';
 
 const props = defineProps({
 	transactionId: {
@@ -107,7 +108,7 @@ const journals = ref([]);
 const journal = ref(null);
 const crudShow = ref(false);
 const emit = defineEmits(['update:isSaved']);
-const { accounts } = accountsStore();
+const { accounts } = storeToRefs(accountsStore());
 
 async function loadJournals() {
 	try {
@@ -117,7 +118,6 @@ async function loadJournals() {
 			...j,
 			temp_id: uid(),
 		}));
-		// console.log('🚀 ~ loadJournals ~ journals.value:', journals.value);
 		isSaved.value = true;
 	} catch (_err) {
 		console.error('🚀 ~ loadData ~ _err:', _err);
@@ -148,18 +148,17 @@ function createJournal(journal) {
 	isSaved.value = false;
 
 	journal.temp_id = uid();
-	journal.account = accounts.find((acc) => acc.id === journal.account_id);
+	journal.account = accounts.value.find((acc) => acc.id == journal.account_id);
 	journals.value = ArrayCrud.create(journals.value, journal);
 }
 
 function updateJournal(journal) {
 	isSaved.value = false;
-	journal.account = accounts.find((acc) => acc.id === journal.account_id);
+	journal.account = accounts.value.find((acc) => acc.id == journal.account_id);
 	journals.value = ArrayCrud.update(journals.value, journal.temp_id, journal, 'temp_id');
 }
 
 function deleteJournal(journal) {
-	// console.log('🚀 ~ deleteJournal ~ journal:', journal);
 	isSaved.value = false;
 	journals.value = ArrayCrud.remove(journals.value, journal.temp_id, 'temp_id');
 }

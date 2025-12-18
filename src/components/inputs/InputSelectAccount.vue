@@ -46,11 +46,8 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import accountsStore from 'src/stores/apb-accounts-store';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 
-const expanded = ref(false);
-const inputPaket = ref('');
-const emit = defineEmits(['onInput']);
 const input = defineModel();
 
 const store = accountsStore();

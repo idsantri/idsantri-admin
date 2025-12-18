@@ -1,11 +1,10 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Daftar Akun" :show-reload="false" :show-add="true" @on-add="crudShow = true" />
+		<CardHeader title="Daftar Transaksi" @on-reload="reload" :show-add="true" @on-add="crudShow = true" />
 
 		<q-card-section class="q-pt-sm q-pb-none q-px-sm">
-			<q-card bordered flat class="q-pa-sm">
-				<div class="text-subtitle2 q-pb-sm">Filter Data</div>
-				<div class="tw:grid tw:sm:flex tw:sm:justify-between tw:gap-2">
+			<q-card bordered flat class="">
+				<q-card-section class="tw:grid tw:sm:flex tw:sm:justify-between tw:gap-2 q-pa-sm">
 					<q-select
 						dense
 						class="tw:w-full tw:sm:max-w-sm"
@@ -15,7 +14,7 @@
 						map-options
 						v-model="thAjaranH"
 						:options="optionsThAjaran"
-						:loading="loadingSelect"
+						:loading="loadingTh"
 						clearable
 						behavior="menu"
 					/>
@@ -56,7 +55,12 @@
 							<q-icon name="search" />
 						</template>
 					</q-input>
-				</div>
+				</q-card-section>
+				<q-card-section v-show="!realtime" class="bg-warning q-pa-xs text-black">
+					<div class="text-caption text-center">
+						Data tidak realtime! Klik tombol muat ulang untuk mendapatkan data terbaru.
+					</div>
+				</q-card-section>
 			</q-card>
 		</q-card-section>
 		<q-card-section class="q-pa-sm">
@@ -77,82 +81,54 @@
 			</q-table>
 		</q-card-section>
 		<q-dialog persistent="" v-model="crudShow">
-			<!-- <UgtPjgtForm
+			<ApbTransactionForm
 				:data="{}"
-				@success-submit="(v) => $router.push(`/ugt/pjgt/${v.id}`)"
-				@success-delete="$router.go(-1)"
-			/> -->
+				@success-submit="
+					(v) => {
+						state.add(v);
+						$router.push(`/apb/transactions/${v.id}`);
+					}
+				"
+			/>
 		</q-dialog>
 	</CardPage>
 </template>
 <script setup>
-import ApbTransaction from 'src/models/ApbTransaction';
+import { storeToRefs } from 'pinia';
+import ApbTransactionForm from 'src/components/forms/ApbTransactionForm.vue';
+import apbTransactionsStore from 'src/stores/apb-transactions-store';
 import { formatDate } from 'src/utils/format-date';
 import { onMounted, ref, watch } from 'vue';
 
-const loadingSelect = ref(false);
-const loading = ref(false);
-const optionsThAjaran = ref([]);
-const thAjaranH = ref('');
-const startDate = ref('');
-const endDate = ref('');
-
-const filter = ref('');
 const crudShow = ref(false);
-const transactions = ref([]);
-
-async function getThAjaran() {
-	try {
-		loadingSelect.value = true;
-		const data = await ApbTransaction.listTahunAjaran();
-		optionsThAjaran.value = data.th_ajaran_h;
-	} catch (error) {
-		console.log(error);
-	} finally {
-		loadingSelect.value = false;
-	}
-}
-
-async function loadByTahun(th_ajaran_h) {
-	try {
-		transactions.value = [];
-		loading.value = true;
-		const data = await ApbTransaction.getAll({ params: { th_ajaran_h } });
-		transactions.value = data.transactions;
-	} catch (_err) {
-		console.error('🚀 ~ loadData ~ _err:', _err);
-	} finally {
-		loading.value = false;
-	}
-}
-
-async function loadByDate(start_date, end_date) {
-	try {
-		transactions.value = [];
-		loading.value = true;
-		const data = await ApbTransaction.getAll({
-			params: {
-				start_date,
-				end_date,
-			},
-		});
-		transactions.value = data.transactions;
-	} catch (_err) {
-		console.error('🚀 ~ loadData ~ _err:', _err);
-	} finally {
-		loading.value = false;
-	}
-}
+const realtime = ref(false);
+const state = apbTransactionsStore();
+const { transactions, loadingTh, optionsThAjaran, loading, filter, thAjaranH, startDate, endDate } = storeToRefs(state);
 
 onMounted(async () => {
-	await getThAjaran();
+	realtime.value = false;
+	if (!optionsThAjaran.value?.length) {
+		await state.listTahun();
+	}
 });
+
+async function reload() {
+	await state.listTahun();
+	if (thAjaranH.value) {
+		await state.loadByTahun(thAjaranH.value);
+		realtime.value = true;
+	} else if (startDate.value && endDate.value) {
+		await state.loadByDate(startDate.value, endDate.value);
+		realtime.value = true;
+	}
+}
 
 watch(thAjaranH, async (newVal) => {
 	if (newVal) {
 		startDate.value = '';
 		endDate.value = '';
-		await loadByTahun(newVal);
+		await state.loadByTahun(newVal);
+		realtime.value = true;
 	} else {
 		transactions.value = [];
 	}
@@ -161,7 +137,8 @@ watch(thAjaranH, async (newVal) => {
 watch([startDate, endDate], async ([newStart, newEnd]) => {
 	if (newStart && newEnd) {
 		thAjaranH.value = '';
-		await loadByDate(newStart, newEnd);
+		await state.loadByDate(newStart, newEnd);
+		realtime.value = true;
 	} else {
 		transactions.value = [];
 	}
@@ -195,7 +172,7 @@ const columns = [
 		label: 'Nilai',
 		align: 'right',
 		field: 'nilai',
-		format: (val) => `${val.toRupiah()}`,
+		format: (val) => `${val ? val.toRupiah() : 0}`,
 		sortable: true,
 	},
 	{
