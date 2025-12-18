@@ -2,16 +2,15 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Jurnal" :is-new="isNew" />
-			<q-card-section>
-				<q-input
+			<q-card-section class="q-pa-sm">
+				<InputSelectAccount
 					dense
 					class="q-my-sm"
 					outlined
-					label="Akun"
+					label="Jenis Akun"
 					v-model="inputs.account_id"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
-				<!-- <InputToggle v-model="inputs.show" label="Status" true-text="Debit/Masuk" false-text="Kredit/Keluar" /> -->
 				<InputCurrency
 					dense
 					class="q-my-sm"
@@ -39,6 +38,7 @@
 import { ref } from 'vue';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 import { notifyWarning } from 'src/utils/notify';
+import InputSelectAccount from 'src/components/inputs/InputSelectAccount.vue';
 
 const props = defineProps({
 	data: { type: Object, required: true },
