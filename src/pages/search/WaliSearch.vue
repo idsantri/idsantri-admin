@@ -42,12 +42,12 @@ import { useRouter } from 'vue-router';
 import DataTable from 'datatables.net-vue3';
 import DataTablesLib from 'datatables.net-dt';
 import api from 'src/api';
-import getToken from 'src/api/get-token';
 import dialogStore from 'src/stores/dialog-store';
 import santriStore from 'src/stores/santri-store';
 import waliStore from 'src/stores/wali-store';
 import { notifyError, notifySuccess } from 'src/utils/notify';
 import { toArray } from 'src/utils/array-object';
+import useAuthStore from 'src/stores/auth-store';
 
 const dialog = dialogStore();
 const { searchWali, crudWali, crudSantri } = toRefs(dialog);
@@ -58,9 +58,10 @@ const addNew = () => {
 };
 
 const router = useRouter();
+const token = useAuthStore().token || '';
 const url = `${api.defaults.baseURL}/wali/search`;
 const headers = {
-	Authorization: `Bearer ${getToken()}`,
+	Authorization: `Bearer ${token}`,
 };
 
 DataTable.use(DataTablesLib);
