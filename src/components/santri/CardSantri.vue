@@ -99,8 +99,8 @@
 </template>
 <script setup>
 import { ref, watchEffect } from 'vue';
-import apiGet from 'src/api/api-get';
 import santriStore from 'src/stores/santri-store';
+import Santri from 'src/models/Santri';
 
 const emit = defineEmits(['loaded']);
 const props = defineProps({
@@ -130,11 +130,11 @@ const ortu = ref({});
 const wali = ref({});
 
 const loadData = async () => {
-	const data = await apiGet({
-		endPoint: 'santri/' + props.id,
-		loading: loading,
-	});
-	if (data) {
+	try {
+		loading.value = true;
+
+		const data = await Santri.getById({ id: props.id });
+
 		santri.value = data.santri;
 		wali.value = data.wali;
 		ortu.value = data.ortu;
@@ -143,6 +143,10 @@ const loadData = async () => {
 		santriStore().setSantri(data.santri);
 		santriStore().setOrtu(data.ortu);
 		santriStore().setWali(data.wali);
+	} catch (error) {
+		console.error('Error loading santri data:', error);
+	} finally {
+		loading.value = false;
 	}
 };
 
