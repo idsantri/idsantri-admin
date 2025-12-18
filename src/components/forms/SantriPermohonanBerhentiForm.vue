@@ -3,7 +3,7 @@
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Permohonan Berhenti" :is-new="true" />
 
-			<q-card-section class="q-pa-sm">
+			<q-card-section>
 				<q-input dense class="q-my-sm" outlined label="Santri ID" v-model="santri.id" filled disable />
 				<q-input dense class="q-my-sm" outlined label="Nama" v-model="santri.nama" filled disable />
 				<q-select
