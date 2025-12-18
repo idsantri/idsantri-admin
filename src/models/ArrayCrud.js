@@ -42,11 +42,11 @@ const ArrayCrud = (() => {
 	 * @param {Object} updateData - Data baru untuk update
 	 * @returns {Array} Array baru untuk update state
 	 */
-	function update(currentArray, objectId, updateData) {
+	function update(currentArray, objectId, updateData, key = 'id') {
 		_validateObject(updateData);
 
 		const newArray = currentArray.map((item) => {
-			if (item.id === objectId) {
+			if (item[key] === objectId) {
 				return { ...item, ...updateData };
 			}
 			return item;
@@ -61,8 +61,8 @@ const ArrayCrud = (() => {
 	 * @param {number|string} objectId - ID object yang akan dihapus
 	 * @returns {Array} Array baru untuk update state
 	 */
-	function remove(currentArray, objectId) {
-		return currentArray.filter((item) => item.id !== objectId);
+	function remove(currentArray, objectId, key = 'id') {
+		return currentArray.filter((item) => item[key] !== objectId);
 	}
 
 	/**
