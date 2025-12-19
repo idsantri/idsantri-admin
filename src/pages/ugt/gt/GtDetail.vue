@@ -75,25 +75,41 @@
 					<q-card-actions class="bg-green-7 flex items-center justify-between q-pt-none q-gutter-y-sm">
 						<div class="flex q-gutter-x-sm">
 							<q-btn
-								label="Sertifikat"
 								dense
 								no-caps
-								icon="download"
 								color="green-11"
 								class="q-px-md text-green-10"
 								@click="downloadSertifikat"
 								title="Cetak Sertifikat"
-							/>
+								:disable="loadingSertifikat"
+							>
+								<template v-slot:default v-if="loadingSertifikat">
+									<q-spinner />
+									Sertifikat
+								</template>
+								<template v-slot:default v-else>
+									<q-icon name="download" />
+									Sertifikat
+								</template>
+							</q-btn>
 							<q-btn
-								label="Surat Tugas"
 								dense
 								no-caps
-								icon="download"
 								color="green-11"
 								class="q-px-md text-green-10"
 								@click="downloadSuratTugas"
 								title="Cetak Surat Tugas"
-							/>
+								:disable="loadingSurat"
+							>
+								<template v-slot:default v-if="loadingSurat">
+									<q-spinner />
+									Surat Tugas
+								</template>
+								<template v-slot:default v-else>
+									<q-icon name="download" />
+									Surat Tugas
+								</template>
+							</q-btn>
 						</div>
 						<div class="flex q-gutter-x-sm">
 							<q-btn
@@ -196,11 +212,10 @@
 </template>
 <script setup>
 import { digitSeparator } from 'src/utils/format-number';
-import { onMounted, ref, toRefs } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import UgtGtForm from 'src/components/forms/UgtGtForm.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
-import loadingStore from 'src/stores/loading-store';
 import UgtGt from 'src/models/UgtGt';
 import DownloadFile from 'src/models/DownloadFile';
 
@@ -210,7 +225,8 @@ const loading = ref(false);
 const gt = ref({});
 const crudShow = ref(false);
 const urlReport = ref('');
-const { loadingMain } = toRefs(loadingStore());
+const loadingSurat = ref(false);
+const loadingSertifikat = ref(false);
 
 async function loadData() {
 	try {
@@ -242,23 +258,23 @@ async function viewSertifikat() {
 
 async function downloadSuratTugas() {
 	try {
-		loadingMain.value = true;
+		loadingSurat.value = true;
 		await DownloadFile.GtSuratTugas(gt.value.id, 'gt-surat-tugas-' + gt.value.id + '.pdf');
 	} catch (error) {
 		console.error('Error downloading surat tugas:', error);
 	} finally {
-		loadingMain.value = false;
+		loadingSurat.value = false;
 	}
 }
 
 async function downloadSertifikat() {
 	try {
-		loadingMain.value = true;
+		loadingSertifikat.value = true;
 		await DownloadFile.GtSertifikat(gt.value.id, 'gt-sertifikat-' + gt.value.id + '.pdf');
 	} catch (error) {
 		console.error('Error downloading sertifikat:', error);
 	} finally {
-		loadingMain.value = false;
+		loadingSertifikat.value = false;
 	}
 }
 </script>
