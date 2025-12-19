@@ -1,5 +1,10 @@
 <template lang="">
-	<q-btn-dropdown color="green-11" label="Cetak" icon="print" no-caps class="text-green-10 q-px-md" dense>
+	<q-btn-dropdown color="green-11" no-caps class="text-green-10 q-px-md" dense :disable="loadingDownload">
+		<template v-slot:label>
+			<q-spinner v-if="loadingDownload" class="q-mr-sm" />
+			<q-icon v-else name="print" class="q-mr-sm" />
+			Cetak / Unduh
+		</template>
 		<q-list>
 			<q-item v-close-popup>
 				<q-item-section>
@@ -44,16 +49,15 @@
 	</q-dialog>
 </template>
 <script setup>
-import { onMounted, ref, toRefs } from 'vue';
-import loadingStore from 'src/stores/loading-store';
+import { onMounted, ref } from 'vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
 import DownloadFile from 'src/models/DownloadFile';
 
-const { loadingMain } = toRefs(loadingStore());
 const urlReport = ref('');
 const showViewer = ref(false);
 const props = defineProps({ data: {} });
 const param = ref('');
+const loadingDownload = ref(false);
 
 onMounted(() => {
 	param.value = new URLSearchParams(props.data).toString();
@@ -61,34 +65,34 @@ onMounted(() => {
 
 async function downloadCard() {
 	try {
-		loadingMain.value = true;
+		loadingDownload.value = true;
 		await DownloadFile.iuranCard(props.data, 'iuran-card-' + props.data.santri_id + '.pdf');
 	} catch (error) {
 		console.error('Error downloading card:', error);
 	} finally {
-		loadingMain.value = false;
+		loadingDownload.value = false;
 	}
 }
 
 async function downloadCover() {
 	try {
-		loadingMain.value = true;
+		loadingDownload.value = true;
 		await DownloadFile.iuranCover(props.data, 'iuran-cover-' + props.data.santri_id + '.pdf');
 	} catch (error) {
 		console.error('Error downloading cover:', error);
 	} finally {
-		loadingMain.value = false;
+		loadingDownload.value = false;
 	}
 }
 
 async function downloadKuitansi() {
 	try {
-		loadingMain.value = true;
+		loadingDownload.value = true;
 		await DownloadFile.iuranKuitansi(props.data, 'iuran-kuitansi-' + props.data.santri_id + '.pdf');
 	} catch (error) {
 		console.error('Error downloading kuitansi:', error);
 	} finally {
-		loadingMain.value = false;
+		loadingDownload.value = false;
 	}
 }
 

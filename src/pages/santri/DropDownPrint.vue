@@ -1,13 +1,10 @@
 <template lang="">
-	<q-btn-dropdown
-		color="green-10"
-		:label="$q.screen.lt.sm ? '' : 'Cetak'"
-		icon="print"
-		no-caps
-		dense
-		outline
-		class="q-px-sm text-green-11"
-	>
+	<q-btn-dropdown color="green-10" no-caps dense outline class="q-px-sm text-green-11" :disable="loadingDownload">
+		<template v-slot:label>
+			<q-spinner v-if="loadingDownload" class="q-mr-sm" />
+			<q-icon v-else name="print" class="q-mr-sm" />
+			<span v-if="!$q.screen.lt.sm"> Cetak / Unduh </span>
+		</template>
 		<q-list>
 			<q-item v-close-popup>
 				<q-item-section>
@@ -80,18 +77,16 @@
 	</q-dialog>
 </template>
 <script setup>
-import { computed, ref, toRefs } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import ReportViewer from 'src/components/ReportViewer.vue';
 import SantriPermohonanBerhentiForm from 'src/components/forms/SantriPermohonanBerhentiForm.vue';
-import loadingStore from 'src/stores/loading-store';
 import DownloadFile from 'src/models/DownloadFile';
 
 const props = defineProps({
 	santri: { type: Object, required: true },
 });
 
-const { loadingMain } = toRefs(loadingStore());
 const route = useRoute();
 const dialogPermohonan = ref(false);
 const urlReport = ref('');
@@ -100,48 +95,49 @@ const fileName = computed(() => {
 	const namaSantri = props.santri.nama.replace(/\s+/g, '_').toLowerCase();
 	return `${props.santri.id}-${namaSantri}.pdf`;
 });
+const loadingDownload = ref(false);
 
 async function downloadRegistrasi() {
 	try {
-		loadingMain.value = true;
+		loadingDownload.value = true;
 		await DownloadFile.santriRegistrasi(props.santri.id, 'registrasi-' + fileName.value);
 	} catch (error) {
 		console.error('Error downloading registrasi:', error);
 	} finally {
-		loadingMain.value = false;
+		loadingDownload.value = false;
 	}
 }
 
 async function downloadStandbook() {
 	try {
-		loadingMain.value = true;
+		loadingDownload.value = true;
 		await DownloadFile.santriStandbook(props.santri.id, 'standbook-' + fileName.value);
 	} catch (error) {
 		console.error('Error downloading standbook:', error);
 	} finally {
-		loadingMain.value = false;
+		loadingDownload.value = false;
 	}
 }
 
 async function downloadKeterangan() {
 	try {
-		loadingMain.value = true;
+		loadingDownload.value = true;
 		await DownloadFile.santriKeteranganBerhenti(props.santri.id, 'keterangan-berhenti-' + fileName.value);
 	} catch (error) {
 		console.error('Error downloading keterangan berhenti:', error);
 	} finally {
-		loadingMain.value = false;
+		loadingDownload.value = false;
 	}
 }
 
 async function downloadIdCard() {
 	try {
-		loadingMain.value = true;
+		loadingDownload.value = true;
 		await DownloadFile.santriIdCard(props.santri.id, 'id-card-' + fileName.value);
 	} catch (error) {
 		console.error('Error downloading id card:', error);
 	} finally {
-		loadingMain.value = false;
+		loadingDownload.value = false;
 	}
 }
 
