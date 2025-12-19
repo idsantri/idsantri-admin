@@ -200,9 +200,9 @@ import { onMounted, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import UgtGtForm from 'src/components/forms/UgtGtForm.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
-import apiDownload from 'src/api/api-download';
 import loadingStore from 'src/stores/loading-store';
 import UgtGt from 'src/models/UgtGt';
+import DownloadFile from 'src/models/DownloadFile';
 
 const route = useRoute();
 const id = route.params.id;
@@ -241,23 +241,25 @@ async function viewSertifikat() {
 }
 
 async function downloadSuratTugas() {
-	await apiDownload({
-		endPoint: `reports/ugt/surat-tugas/download?id=${gt.value.id}`,
-		loading: loadingMain,
-		fileName: 'gt-surat-tugas-' + gt.value.id,
-		confirm: true,
-		message: 'Download Surat Tugas GT?',
-	});
+	try {
+		loadingMain.value = true;
+		await DownloadFile.GtSuratTugas(gt.value.id, 'gt-surat-tugas-' + gt.value.id + '.pdf');
+	} catch (error) {
+		console.error('Error downloading surat tugas:', error);
+	} finally {
+		loadingMain.value = false;
+	}
 }
 
 async function downloadSertifikat() {
-	await apiDownload({
-		endPoint: `reports/ugt/sertifikat/download?id=${gt.value.id}`,
-		loading: loadingMain,
-		fileName: 'gt-sertifikat-' + gt.value.id,
-		confirm: true,
-		message: 'Download Sertifikat GT?',
-	});
+	try {
+		loadingMain.value = true;
+		await DownloadFile.GtSertifikat(gt.value.id, 'gt-sertifikat-' + gt.value.id + '.pdf');
+	} catch (error) {
+		console.error('Error downloading sertifikat:', error);
+	} finally {
+		loadingMain.value = false;
+	}
 }
 </script>
 <style scoped>

@@ -80,12 +80,12 @@
 	</q-dialog>
 </template>
 <script setup>
-import apiDownload from 'src/api/api-download';
-import { ref, toRefs } from 'vue';
+import { computed, ref, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import ReportViewer from 'src/components/ReportViewer.vue';
 import SantriPermohonanBerhentiForm from 'src/components/forms/SantriPermohonanBerhentiForm.vue';
 import loadingStore from 'src/stores/loading-store';
+import DownloadFile from 'src/models/DownloadFile';
 
 const props = defineProps({
 	santri: { type: Object, required: true },
@@ -96,45 +96,53 @@ const route = useRoute();
 const dialogPermohonan = ref(false);
 const urlReport = ref('');
 const showViewer = ref(false);
+const fileName = computed(() => {
+	const namaSantri = props.santri.nama.replace(/\s+/g, '_').toLowerCase();
+	return `${props.santri.id}-${namaSantri}.pdf`;
+});
 
 async function downloadRegistrasi() {
-	await apiDownload({
-		endPoint: `reports/santri/registrasi/download?id=${route.params.id}`,
-		loading: loadingMain,
-		fileName: 'registrasi-' + route.params.id,
-		confirm: true,
-		message: 'Download data registrasi?',
-	});
+	try {
+		loadingMain.value = true;
+		await DownloadFile.santriRegistrasi(props.santri.id, 'registrasi-' + fileName.value);
+	} catch (error) {
+		console.error('Error downloading registrasi:', error);
+	} finally {
+		loadingMain.value = false;
+	}
 }
 
 async function downloadStandbook() {
-	await apiDownload({
-		endPoint: `reports/santri/standbook/download?id=${route.params.id}`,
-		loading: loadingMain,
-		fileName: 'standbook-' + route.params.id,
-		confirm: true,
-		message: 'Download standbook?',
-	});
+	try {
+		loadingMain.value = true;
+		await DownloadFile.santriStandbook(props.santri.id, 'standbook-' + fileName.value);
+	} catch (error) {
+		console.error('Error downloading standbook:', error);
+	} finally {
+		loadingMain.value = false;
+	}
 }
 
 async function downloadKeterangan() {
-	await apiDownload({
-		endPoint: `reports/santri/keterangan-berhenti/download?id=${route.params.id}`,
-		loading: loadingMain,
-		fileName: 'keterangan-berhenti-' + route.params.id,
-		confirm: true,
-		message: 'Download Keterangan Berhenti',
-	});
+	try {
+		loadingMain.value = true;
+		await DownloadFile.santriKeteranganBerhenti(props.santri.id, 'keterangan-berhenti-' + fileName.value);
+	} catch (error) {
+		console.error('Error downloading keterangan berhenti:', error);
+	} finally {
+		loadingMain.value = false;
+	}
 }
 
 async function downloadIdCard() {
-	await apiDownload({
-		endPoint: `reports/santri/id-card/download?id=${route.params.id}`,
-		loading: loadingMain,
-		fileName: 'card-' + route.params.id + ' ~ ' + props.santri.nama,
-		confirm: true,
-		message: 'Download ID Card',
-	});
+	try {
+		loadingMain.value = true;
+		await DownloadFile.santriIdCard(props.santri.id, 'id-card-' + fileName.value);
+	} catch (error) {
+		console.error('Error downloading id card:', error);
+	} finally {
+		loadingMain.value = false;
+	}
 }
 
 function printRegistrasi() {

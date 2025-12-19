@@ -3,6 +3,10 @@ import apiError from './api-error';
 import type { DownloadParams } from './api-interface';
 import { notifyConfirm } from 'src/utils/notify';
 
+/**
+ * @deprecated use apiGetBlob in src/api/apiGetBlob instead
+ * Download file from server and trigger browser download
+ */
 async function apiDownload({
 	message,
 	endPoint,
@@ -51,8 +55,7 @@ async function apiDownload({
 		apiError(error);
 		return false;
 	} finally {
-		if (loading && typeof loading.value === 'boolean')
-			loading.value = false;
+		if (loading && typeof loading.value === 'boolean') loading.value = false;
 	}
 }
 

@@ -1,12 +1,5 @@
 <template lang="">
-	<q-btn-dropdown
-		color="green-11"
-		label="Cetak"
-		icon="print"
-		no-caps
-		class="text-green-10 q-px-md"
-		dense
-	>
+	<q-btn-dropdown color="green-11" label="Cetak" icon="print" no-caps class="text-green-10 q-px-md" dense>
 		<q-list>
 			<q-item v-close-popup>
 				<q-item-section>
@@ -52,9 +45,9 @@
 </template>
 <script setup>
 import { onMounted, ref, toRefs } from 'vue';
-import apiDownload from 'src/api/api-download';
 import loadingStore from 'src/stores/loading-store';
 import ReportViewer from 'src/components/ReportViewer.vue';
+import DownloadFile from 'src/models/DownloadFile';
 
 const { loadingMain } = toRefs(loadingStore());
 const urlReport = ref('');
@@ -67,33 +60,36 @@ onMounted(() => {
 });
 
 async function downloadCard() {
-	await apiDownload({
-		endPoint: `reports/iuran-card/download?${param.value}`,
-		loading: loadingMain,
-		fileName: 'iuran-card',
-		confirm: true,
-		message: 'Download kartu iuran?',
-	});
+	try {
+		loadingMain.value = true;
+		await DownloadFile.iuranCard(props.data, 'iuran-card-' + props.data.santri_id + '.pdf');
+	} catch (error) {
+		console.error('Error downloading card:', error);
+	} finally {
+		loadingMain.value = false;
+	}
 }
 
 async function downloadCover() {
-	await apiDownload({
-		endPoint: `reports/iuran-cover/download?${param.value}`,
-		loading: loadingMain,
-		fileName: 'iuran-cover',
-		confirm: true,
-		message: 'Download cover kartu iuran?',
-	});
+	try {
+		loadingMain.value = true;
+		await DownloadFile.iuranCover(props.data, 'iuran-cover-' + props.data.santri_id + '.pdf');
+	} catch (error) {
+		console.error('Error downloading cover:', error);
+	} finally {
+		loadingMain.value = false;
+	}
 }
 
 async function downloadKuitansi() {
-	await apiDownload({
-		endPoint: `reports/iuran-kuitansi/download?${param.value}`,
-		loading: loadingMain,
-		fileName: 'iuran-kuitansi',
-		confirm: true,
-		message: 'Download kuitansi iuran?',
-	});
+	try {
+		loadingMain.value = true;
+		await DownloadFile.iuranKuitansi(props.data, 'iuran-kuitansi-' + props.data.santri_id + '.pdf');
+	} catch (error) {
+		console.error('Error downloading kuitansi:', error);
+	} finally {
+		loadingMain.value = false;
+	}
 }
 
 function printCard() {
