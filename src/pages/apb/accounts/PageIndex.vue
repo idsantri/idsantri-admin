@@ -1,11 +1,10 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Daftar Akun" @on-reload="loadData" :show-add="true" @on-add="crudShow = true" />
+		<CardHeader title="Daftar Akun" @on-reload="reload" :show-add="true" @on-add="showForm = true" />
 
 		<q-card-section class="q-pt-sm q-pb-none q-px-sm">
-			<q-card bordered flat class="q-pa-sm">
-				<div class="text-subtitle2 q-pb-sm">Filter Data</div>
-				<div class="tw:grid tw:sm:flex tw:gap-2">
+			<q-card bordered flat>
+				<q-card-section class="tw:grid tw:sm:flex tw:sm:justify-between tw:gap-2 q-pa-sm">
 					<q-select
 						dense
 						class="full-width"
@@ -13,7 +12,7 @@
 						label="Kategori Akun"
 						emit-value
 						map-options
-						v-model="kategori"
+						v-model="filterKategori"
 						:options="optionsKategori"
 						:loading="loading"
 						clearable
@@ -26,7 +25,7 @@
 						label="Group"
 						emit-value
 						map-options
-						v-model="group"
+						v-model="filterGroup"
 						:options="optionsGroup"
 						:loading="loading"
 						clearable
@@ -37,7 +36,7 @@
 						outlined
 						dense
 						debounce="300"
-						v-model="filter"
+						v-model="filterText"
 						placeholder="Cari data akun/rekening..."
 						clearable
 					>
@@ -45,7 +44,12 @@
 							<q-icon name="search" />
 						</template>
 					</q-input>
-				</div>
+				</q-card-section>
+				<q-card-section v-show="!realtime" class="bg-warning q-pa-xs text-black">
+					<div class="text-caption text-center">
+						Data tidak realtime! Klik tombol muat ulang untuk mendapatkan data terbaru.
+					</div>
+				</q-card-section>
 			</q-card>
 		</q-card-section>
 		<q-card-section class="q-pa-sm">
@@ -57,7 +61,7 @@
 				:rows-per-page-options="[10, 25, 50, 100, 0]"
 				class="dt"
 				:columns="columns"
-				:filter="filter"
+				:filter="filterText"
 				no-data-label="Tidak ada data untuk ditampilkan!"
 				no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
 				row-key="id"
@@ -83,91 +87,64 @@
 							checked-icon="check"
 							unchecked-icon="clear"
 							color="green-7"
-							@update:model-value="(value, event) => toggleHidden(value, props.row.id)"
+							@update:model-value="(value, event) => toggle(value, props.row.id)"
 						/>
 					</q-td>
 				</template>
 			</q-table>
 		</q-card-section>
-		<q-dialog persistent="" v-model="crudShow">
-			<!-- <UgtPjgtForm
+		<q-dialog persistent="" v-model="showForm">
+			<ApbAccountForm
 				:data="{}"
-				@success-submit="(v) => $router.push(`/ugt/pjgt/${v.id}`)"
-				@success-delete="$router.go(-1)"
-			/> -->
+				@success-submit="
+					(v) => {
+						addToState(v);
+						$router.push(`/apb/accounts/${v.id}`);
+					}
+				"
+			/>
 		</q-dialog>
 	</CardPage>
 </template>
 <script setup>
-import { ref, onMounted, computed, shallowRef, watch } from 'vue';
-import ApbAccount from 'src/models/ApbAccount';
-import ArrayCrud from 'src/models/ArrayCrud';
+import { ref, onMounted, watch } from 'vue';
+import apbAccountsStore from 'src/stores/apb-accounts-store';
+import { storeToRefs } from 'pinia';
+import ApbAccountForm from 'src/components/forms/ApbAccountForm.vue';
 
-const loading = ref(false);
-const filter = ref('');
-const crudShow = ref(false);
-const accounts = shallowRef([]);
-const kategori = ref('');
-const group = ref('');
+const showForm = ref(false);
+const realtime = ref(false);
+const state = apbAccountsStore();
+const { accounts, loading, optionsKategori, optionsGroup, filterText, filterKategori, filterGroup, filteredAccounts } =
+	storeToRefs(state);
+const { toggleHidden, loadAll, add } = state;
 
-const toggleHidden = async (value, id) => {
-	try {
-		accounts.value = ArrayCrud.update(accounts.value, id, { hidden: value });
-		loading.value = true;
-		await ApbAccount.toggleHidden(id);
-	} catch (err) {
-		accounts.value = ArrayCrud.update(accounts.value, id, { hidden: value ? 0 : 1 });
-		console.error('🚀 ~ toggleHidden ~ err:', err);
-	} finally {
-		loading.value = false;
-	}
+const addToState = (data) => {
+	data.hidden = 0;
+	add(data);
 };
 
-async function loadData() {
-	try {
-		loading.value = true;
-		const data = await ApbAccount.getAll();
-		accounts.value = data.accounts;
-	} catch (_err) {
-		console.error('🚀 ~ loadData ~ _err:', _err);
-	} finally {
-		loading.value = false;
-	}
-}
+const reload = async () => {
+	await loadAll();
+	filterGroup.value = '';
+	filterKategori.value = '';
+	filterText.value = '';
+};
 
-const optionsKategori = computed(() => {
-	const kategori = accounts.value.map((account) => account.kategori).filter((group) => group !== null);
-	return [...new Set(kategori)];
-});
-
-const optionsGroup = computed(() => {
-	if (!kategori.value) {
-		const group = accounts.value.map((account) => account.group);
-		return [...new Set(group)].sort();
-	} else {
-		const group = accounts.value
-			.filter((account) => account.kategori === kategori.value)
-			.map((account) => account.group);
-		return [...new Set(group)].sort();
-	}
-});
-
-const filteredAccounts = computed(() => {
-	const filterGroup = accounts.value.filter((account) => {
-		return group.value ? account.group === group.value : true;
-	});
-	const filterKategori = filterGroup.filter((account) => {
-		return kategori.value ? account.kategori === kategori.value : true;
-	});
-	return filterKategori;
-});
+const toggle = async (value, id) => {
+	await toggleHidden(value, id);
+};
 
 onMounted(async () => {
-	await loadData();
+	realtime.value = false;
+	if (accounts.value?.length == 0) {
+		await reload();
+		realtime.value = true;
+	}
 });
 
-watch(kategori, () => {
-	group.value = '';
+watch(filterKategori, () => {
+	filterGroup.value = '';
 });
 
 const columns = [

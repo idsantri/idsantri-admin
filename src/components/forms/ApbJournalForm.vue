@@ -2,7 +2,7 @@
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Jurnal" :is-new="isNew" />
-			<q-card-section class="q-pa-sm">
+			<q-card-section>
 				<InputSelectAccount
 					dense
 					class="q-my-sm"

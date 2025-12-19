@@ -1,15 +1,15 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
-			<FormHeader title="Input Transaksi" :is-new="isNew" />
+			<FormHeader title="Input Akun" :is-new="isNew" />
 			<FormLoading v-if="loading" />
 			<q-card-section>
 				<q-input
 					dense
 					class="q-my-sm"
 					outlined
-					label="Keterangan"
-					v-model="inputs.keterangan"
+					label="ID"
+					v-model="inputs.id"
 					autogrow=""
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
@@ -17,12 +17,20 @@
 					dense
 					class="q-my-sm"
 					outlined
-					label="Atas Nama"
-					v-model="inputs.atas_nama"
+					label="Group"
+					v-model="inputs.group"
 					autogrow=""
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
-				<q-input dense class="q-my-sm" outlined label="Catatan" v-model="inputs.catatan" autogrow="" />
+				<q-input
+					dense
+					class="q-my-sm"
+					outlined
+					label="Nama"
+					v-model="inputs.nama"
+					autogrow=""
+					:rules="[(val) => !!val || 'Harus diisi!']"
+				/>
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
@@ -31,7 +39,7 @@
 <script setup>
 import { ref } from 'vue';
 import useCrudForm from './utils/useCrudForm';
-import ApbTransaction from 'src/models/ApbTransaction';
+import ApbAccount from 'src/models/ApbAccount';
 
 const props = defineProps({
 	data: { type: Object, required: true },
@@ -41,16 +49,16 @@ const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'su
 const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(ApbTransaction, {
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(ApbAccount, {
 	emit: emit,
-	responseKey: 'transaction',
+	responseKey: 'account',
 });
 
 const onSubmit = async () => {
 	const data = {
-		keterangan: inputs.value.keterangan,
-		atas_nama: inputs.value.atas_nama,
-		catatan: inputs.value.catatan,
+		id: inputs.value.id,
+		group: inputs.value.group,
+		nama: inputs.value.nama,
 	};
 
 	if (isNew) {
