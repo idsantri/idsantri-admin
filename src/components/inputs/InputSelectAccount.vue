@@ -26,7 +26,7 @@
 						label="Muat ulang"
 						icon="sync"
 						flat
-						@click="store.loadAccounts(false)"
+						@click="reload"
 					/>
 					<q-separator />
 					<q-btn
@@ -52,7 +52,6 @@ const input = defineModel();
 
 const store = accountsStore();
 const { loading, accounts, optionsSelect } = storeToRefs(store);
-
 const hintSelect = computed(() => {
 	if (input.value) {
 		const account = accounts.value?.find((acc) => acc?.id === input.value);
@@ -61,10 +60,10 @@ const hintSelect = computed(() => {
 		return 'Pilih akun';
 	}
 });
-
+const reload = () => store.loadAll(false);
 onMounted(async () => {
 	if (!accounts.value?.length) {
-		await store.loadAccounts(false);
+		await reload();
 	}
 });
 </script>
