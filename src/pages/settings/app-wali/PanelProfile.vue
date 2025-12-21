@@ -77,8 +77,7 @@
 	</div>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
-import apiPost from 'src/api/api-post';
+import ConfigApp from 'src/models/ConfigApp';
 import { onMounted, ref } from 'vue';
 
 const profile = ref('');
@@ -87,12 +86,14 @@ const isEdit = ref(false);
 const loading = ref(false);
 
 async function fetchData() {
-	const data = await apiGet({
-		endPoint: 'config/app-wali/profile',
-		loading: loading,
-	});
-	if (data && data.profile) {
-		profile.value = data.profile;
+	try {
+		loading.value = true;
+		const data = await ConfigApp.getAppWali('profile');
+		profile.value = data?.profile || '';
+	} catch (error) {
+		console.error('🚀 ~ fetchData ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 
@@ -101,14 +102,15 @@ onMounted(async () => {
 });
 
 const onSubmit = async () => {
-	const res = await apiPost({
-		endPoint: 'config/app-wali/profile',
-		loading: loading,
-		data: { profile: inputProfile.value },
-	});
-	if (res) {
+	try {
+		loading.value = true;
+		await ConfigApp.setAppWali({ profile: inputProfile.value }, 'profile');
+		profile.value = inputProfile.value;
 		isEdit.value = false;
-		profile.value = res.profile;
+	} catch (error) {
+		console.error('🚀 ~ onSubmit ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 };
 

@@ -1,35 +1,17 @@
 <template>
 	<q-card bordered flat>
-		<q-card-section
-			class="q-pa-sm text-subtitle2 bg-green-11 flex items-center"
-		>
+		<q-card-section class="q-pa-sm text-subtitle2 bg-green-11 flex items-center">
 			Data Santri
 			<q-space />
-			<q-btn
-				icon="sync"
-				dense
-				outline=""
-				size="sm"
-				class="q-px-sm"
-				@click="loadData"
-			/>
+			<q-btn icon="sync" dense outline="" size="sm" class="q-px-sm" @click="loadData" />
 		</q-card-section>
 
 		<q-card-section class="q-pa-sm">
 			<q-list>
 				<q-item class="no-padding">
 					<q-item-section avatar>
-						<q-skeleton
-							v-if="loading || !id"
-							type=""
-							class="full-width full-height"
-						/>
-						<q-img
-							v-else
-							:src="santri?.image_url || '/user-default.png'"
-							:ratio="3 / 4"
-							alt="santri"
-						/>
+						<q-skeleton v-if="loading || !id" type="" class="full-width full-height" />
+						<q-img v-else :src="santri?.image_url || '/user-default.png'" :ratio="3 / 4" alt="santri" />
 					</q-item-section>
 					<q-item-section>
 						<q-item-label overline>
@@ -49,11 +31,7 @@
 						</q-item-label>
 					</q-item-section>
 					<q-item-section avatar>
-						<q-skeleton
-							v-if="loading || !id"
-							type="QBtn"
-							class="full-width"
-						/>
+						<q-skeleton v-if="loading || !id" type="QBtn" class="full-width" />
 						<q-btn
 							v-else
 							round
@@ -72,7 +50,7 @@
 	</q-card>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
+import Santri from 'src/models/Santri';
 import santriStore from 'src/stores/santri-store';
 import { ref, watchEffect } from 'vue';
 
@@ -102,17 +80,21 @@ const loading = ref(false);
 const santri = ref({});
 
 const loadData = async () => {
-	const data = await apiGet({
-		endPoint: 'santri/' + props.id,
-		loading: loading,
-	});
-	if (data) {
+	try {
+		loading.value = true;
+
+		const data = await Santri.getById({ id: props.id });
+
 		santri.value = data.santri;
 
 		//store
 		santriStore().setSantri(data.santri);
 		santriStore().setOrtu(data.ortu);
 		santriStore().setWali(data.wali);
+	} catch (error) {
+		console.error('Error loading santri data:', error);
+	} finally {
+		loading.value = false;
 	}
 };
 

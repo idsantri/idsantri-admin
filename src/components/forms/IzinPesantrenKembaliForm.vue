@@ -3,14 +3,10 @@
 		<q-form @submit.prevent="setBack">
 			<FormHeader title="Tetapkan Tanggal Kembali" :is-new="false" />
 			<FormLoading v-if="loading" />
-			<q-card-section class="q-pa-sm">
+			<q-card-section>
 				<q-input
 					dense
-					:hint="
-						isDate(inputs.kembali_tgl)
-							? formatDateFull(inputs.kembali_tgl)
-							: ''
-					"
+					:hint="isDate(inputs.kembali_tgl) ? formatDateFull(inputs.kembali_tgl) : ''"
 					class="q-my-sm"
 					outlined
 					label="Tanggal (M)*"
@@ -20,21 +16,13 @@
 					error-color="negative"
 				/>
 			</q-card-section>
-			<FormActions
-				:btn-delete="!!data.kembali_tgl"
-				@on-delete="setNotBack"
-				label-delete="Belum Kembali"
-			/>
+			<FormActions :btn-delete="!!data.kembali_tgl" @on-delete="setNotBack" label-delete="Belum Kembali" />
 		</q-form>
 	</q-card>
 </template>
 <script setup>
 import { ref, watch } from 'vue';
-import {
-	formatDateFull,
-	isDate,
-	formatDateTimeHtmlToSql,
-} from 'src/utils/format-date';
+import { formatDateFull, isDate, formatDateTimeHtmlToSql } from 'src/utils/format-date';
 import IzinPesantren from 'src/models/IzinPesantren';
 
 const props = defineProps({

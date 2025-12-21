@@ -76,7 +76,7 @@ async function fetchTahun() {
 
 async function loadTahun() {
 	const cekData = listsMadrasahStore().getThAjaran;
-	if (cekData.length) {
+	if (cekData?.length) {
 		lists.value['th_ajaran'] = cekData;
 	} else {
 		await fetchTahun();
@@ -98,7 +98,7 @@ async function fetchTingkat(th_ajaran_h) {
 
 async function loadTingkat(th_ajaran_h) {
 	const cekData = listsMadrasahStore().getTingkatByTahun(th_ajaran_h);
-	if (cekData.length) {
+	if (cekData?.length) {
 		lists.value['tingkat'] = cekData;
 	} else {
 		await fetchTingkat(th_ajaran_h);
@@ -120,7 +120,7 @@ async function fetchKelas(th_ajaran_h, tingkat_id) {
 
 async function loadKelas(th_ajaran_h, tingkat_id) {
 	const cekData = listsMadrasahStore().getKelasByTingkatAndTahun(tingkat_id, th_ajaran_h);
-	if (cekData.length) {
+	if (cekData?.length) {
 		lists.value['kelas'] = cekData;
 	} else {
 		await fetchKelas(th_ajaran_h, tingkat_id);

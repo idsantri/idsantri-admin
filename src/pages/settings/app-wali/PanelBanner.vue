@@ -81,6 +81,7 @@
 					@onUpdate="onUpdate"
 					@onDelete="onDelete"
 					:errorUpdate="errorUpdate"
+					ref="cardRef"
 				/>
 			</div>
 			<CardLoading :showing="loading" />
@@ -88,29 +89,33 @@
 	</div>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
-import apiPost from 'src/api/api-post';
 import { onMounted, ref } from 'vue';
 import CardBanner from './CardBanner.vue';
+import ConfigApp from 'src/models/ConfigApp';
+import { notifyConfirm } from 'src/utils/notify';
 
 const bannerContent = ref('');
 const loading = ref(false);
 const banners = ref([]);
 const showFormAdd = ref(false);
 const errorUpdate = ref(false);
+const cardRef = ref(null);
 
 async function onDelete(id) {
+	const isConfirm = await notifyConfirm('Yakin menghapus banner ini?');
+	if (!isConfirm) {
+		return;
+	}
 	const jsonBanners = JSON.parse(JSON.stringify(banners.value));
 	const newBanners = jsonBanners.filter((banner) => banner.id !== id);
-	const res = await apiPost({
-		endPoint: 'config/app-wali/banners',
-		loading: loading,
-		data: { banners: newBanners },
-		notify: true,
-		message: 'Hapus banner?',
-	});
-	if (res) {
+	try {
+		loading.value = true;
+		await ConfigApp.setAppWali({ banners: newBanners }, 'banners');
 		banners.value = newBanners;
+	} catch (error) {
+		console.error('🚀 ~ onDelete ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 
@@ -122,27 +127,32 @@ async function onUpdate(banner) {
 		}
 		return ban;
 	});
-	const res = await apiPost({
-		endPoint: 'config/app-wali/banners',
-		loading: loading,
-		data: { banners: newBanners },
-	});
-	if (res) {
+	const i = newBanners.findIndex((ban) => ban.id === banner.id);
+	try {
+		loading.value = true;
+		await ConfigApp.setAppWali({ banners: newBanners }, 'bannersa');
 		banners.value = newBanners;
+		errorUpdate.value = false;
+		cardRef.value[i].setNotEdit();
+	} catch (error) {
+		console.error('🚀 ~ onUpdate ~ error:', error);
+		errorUpdate.value = true;
+	} finally {
+		loading.value = false;
 	}
-	// TODO: handle error
 }
 
 async function fetchData() {
-	const data = await apiGet({
-		endPoint: 'config/app-wali/banners',
-		loading: loading,
-	});
-	if (data && data.banners) {
-		banners.value = data.banners;
+	try {
+		loading.value = true;
+		const data = await ConfigApp.getAppWali('banners');
+		banners.value = data?.banners || [];
+	} catch (error) {
+		console.error('🚀 ~ fetchData ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
-
 onMounted(async () => {
 	await fetchData();
 });
@@ -156,16 +166,16 @@ async function onSubmit() {
 			content: bannerContent.value,
 		},
 	];
-
-	const res = await apiPost({
-		endPoint: 'config/app-wali/banners',
-		loading: loading,
-		data: { banners: newBanners },
-	});
-	if (res) {
+	try {
+		loading.value = true;
+		await ConfigApp.setAppWali({ banners: newBanners }, 'banners');
 		banners.value = newBanners;
-		showFormAdd.value = false;
 		bannerContent.value = '';
+		showFormAdd.value = false;
+	} catch (error) {
+		console.error('🚀 ~ onSubmit ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 </script>

@@ -61,6 +61,10 @@ export default defineStore('santri', {
 			}
 		},
 
+		setImage(imageUrl) {
+			this.santri.image_url = imageUrl + `?t=${new Date().getTime()}`;
+		},
+
 		setWali(payload) {
 			for (const key in this.wali) {
 				if (key in payload) {

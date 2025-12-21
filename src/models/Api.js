@@ -3,6 +3,7 @@ import apiGet from 'src/api/apiGet';
 import apiPost from 'src/api/apiPost';
 import apiUpdate from 'src/api/apiUpdate';
 import apiDelete from 'src/api/apiDelete';
+import apiGetBlob from 'src/api/apiGetBlob';
 
 export default class Api {
 	constructor(path) {
@@ -11,6 +12,7 @@ export default class Api {
 		this._apiPost = apiPost;
 		this._apiUpdate = apiUpdate;
 		this._apiDelete = apiDelete;
+		this._apiGetBlob = apiGetBlob;
 	}
 
 	_showSuccess(message) {

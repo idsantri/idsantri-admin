@@ -1,12 +1,10 @@
 <template lang="">
-	<q-btn-dropdown
-		color="green-11"
-		label="Cetak"
-		icon="print"
-		no-caps
-		class="text-green-10 q-px-md"
-		dense
-	>
+	<q-btn-dropdown color="green-11" no-caps class="text-green-10 q-px-md" dense :disable="loadingDownload">
+		<template v-slot:label>
+			<q-spinner v-if="loadingDownload" class="q-mr-sm" />
+			<q-icon v-else name="print" class="q-mr-sm" />
+			Cetak / Unduh
+		</template>
 		<q-list>
 			<q-item v-close-popup>
 				<q-item-section>
@@ -51,49 +49,51 @@
 	</q-dialog>
 </template>
 <script setup>
-import { onMounted, ref, toRefs } from 'vue';
-import apiDownload from 'src/api/api-download';
-import loadingStore from 'src/stores/loading-store';
+import { onMounted, ref } from 'vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
+import DownloadFile from 'src/models/DownloadFile';
 
-const { loadingMain } = toRefs(loadingStore());
 const urlReport = ref('');
 const showViewer = ref(false);
 const props = defineProps({ data: {} });
 const param = ref('');
+const loadingDownload = ref(false);
 
 onMounted(() => {
 	param.value = new URLSearchParams(props.data).toString();
 });
 
 async function downloadCard() {
-	await apiDownload({
-		endPoint: `reports/iuran-card/download?${param.value}`,
-		loading: loadingMain,
-		fileName: 'iuran-card',
-		confirm: true,
-		message: 'Download kartu iuran?',
-	});
+	try {
+		loadingDownload.value = true;
+		await DownloadFile.iuranCard(props.data, 'iuran-card-' + props.data.santri_id + '.pdf');
+	} catch (error) {
+		console.error('Error downloading card:', error);
+	} finally {
+		loadingDownload.value = false;
+	}
 }
 
 async function downloadCover() {
-	await apiDownload({
-		endPoint: `reports/iuran-cover/download?${param.value}`,
-		loading: loadingMain,
-		fileName: 'iuran-cover',
-		confirm: true,
-		message: 'Download cover kartu iuran?',
-	});
+	try {
+		loadingDownload.value = true;
+		await DownloadFile.iuranCover(props.data, 'iuran-cover-' + props.data.santri_id + '.pdf');
+	} catch (error) {
+		console.error('Error downloading cover:', error);
+	} finally {
+		loadingDownload.value = false;
+	}
 }
 
 async function downloadKuitansi() {
-	await apiDownload({
-		endPoint: `reports/iuran-kuitansi/download?${param.value}`,
-		loading: loadingMain,
-		fileName: 'iuran-kuitansi',
-		confirm: true,
-		message: 'Download kuitansi iuran?',
-	});
+	try {
+		loadingDownload.value = true;
+		await DownloadFile.iuranKuitansi(props.data, 'iuran-kuitansi-' + props.data.santri_id + '.pdf');
+	} catch (error) {
+		console.error('Error downloading kuitansi:', error);
+	} finally {
+		loadingDownload.value = false;
+	}
 }
 
 function printCard() {

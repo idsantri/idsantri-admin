@@ -47,14 +47,12 @@
 	</CardPage>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue';
-import apiGet from 'src/api/api-get';
-import apiPost from 'src/api/api-post';
+import { ref, onMounted, computed } from 'vue';
 import { snakeToTitleCase, snakeToKebabCase } from 'src/utils/format-text';
+import ConfigApp from 'src/models/ConfigApp';
 
 const reports = ref({});
 const loading = ref(false);
-const lists = ref([]);
 const selected = ref('');
 const selectedFootnote = ref('');
 
@@ -63,34 +61,40 @@ function onUpdate(v) {
 }
 
 async function onSubmit() {
-	const data = { footnote: selectedFootnote.value };
-	// console.log(data);
-	const res = await apiPost({
-		endPoint: `config/reports/${snakeToKebabCase(selected.value)}`,
-		data,
-		loading,
-	});
-	if (res) {
-		await loadData();
+	try {
+		loading.value = true;
+		const data = { footnote: selectedFootnote.value };
+		await ConfigApp.setReport(data, snakeToKebabCase(selected.value));
+		reports.value[selected.value].footnote = selectedFootnote.value;
+	} catch (error) {
+		console.error('🚀 ~ onSubmit ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
-async function loadData() {
-	const data = await apiGet({
-		endPoint: 'config/reports',
-		loading: loading,
-	});
-	Object.assign(reports.value, data.reports);
-	// console.log(profile.value);
-	const keys = Object.keys(data.reports);
 
+async function loadData() {
+	try {
+		loading.value = true;
+		const data = await ConfigApp.getReport();
+		reports.value = data.reports;
+	} catch (error) {
+		console.error('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
+	}
+}
+
+const lists = computed(() => {
+	const keys = Object.keys(reports.value);
 	const arrayObject = keys.map((item) => {
 		return {
 			label: snakeToTitleCase(item),
 			value: item,
 		};
 	});
-	lists.value = arrayObject;
-}
+	return arrayObject;
+});
 
 onMounted(async () => {
 	loadData();

@@ -3,7 +3,7 @@
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Izin Santri" :is-new="isNew" />
 			<FormLoading v-if="loading" />
-			<q-card-section class="q-pa-sm">
+			<q-card-section>
 				<InputSelectSantriId
 					:active-only="true"
 					@emit-input="(val) => Object.assign(inputs, val)"

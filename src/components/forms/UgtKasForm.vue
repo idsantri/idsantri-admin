@@ -3,7 +3,7 @@
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Kas UGT" :is-new="isNew" />
 			<FormLoading v-if="loading" />
-			<q-card-section class="q-pa-sm">
+			<q-card-section>
 				<q-input
 					dense
 					hint="Diisi oleh sistem"

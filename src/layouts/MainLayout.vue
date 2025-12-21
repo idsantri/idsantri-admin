@@ -22,6 +22,7 @@
 		<q-drawer v-model="leftDrawerOpen" show-if-above bordered class="bg-green-7">
 			<side-bar />
 		</q-drawer>
+		<q-ajax-bar position="top" color="green-12" size="2px" />
 
 		<q-page-container :key="componentKey">
 			<router-view :key="$route.fullPath" />

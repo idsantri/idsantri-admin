@@ -41,11 +41,11 @@ import { useRouter } from 'vue-router';
 import DataTable from 'datatables.net-vue3';
 import DataTablesLib from 'datatables.net-dt';
 import api from 'src/api';
-import getToken from 'src/api/get-token';
 import dialogStore from 'src/stores/dialog-store';
 import santriStore from 'src/stores/santri-store';
 import { notifyError, notifySuccess } from 'src/utils/notify';
 import { toArray } from 'src/utils/array-object';
+import useAuthStore from 'src/stores/auth-store';
 
 const dialog = dialogStore();
 const { searchSantri, crudSantri } = toRefs(dialog);
@@ -55,11 +55,12 @@ const addNew = () => {
 	santriStore().setNew();
 	crudSantri.value = true;
 };
-const router = useRouter();
 
+const router = useRouter();
+const token = useAuthStore().token || '';
 const url = `${api.defaults.baseURL}/santri/search`;
 const headers = {
-	Authorization: `Bearer ${getToken()}`,
+	Authorization: `Bearer ${token}`,
 };
 
 DataTable.use(DataTablesLib);

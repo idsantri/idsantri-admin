@@ -4,7 +4,7 @@
 		outlined
 		label="Bulan (Ujian)"
 		v-model="bulanUjian"
-		:options="lists['bulan_ujian']"
+		:options="listSetting"
 		option-value="bu"
 		option-label="bulan_ujian"
 		emit-value
@@ -15,7 +15,7 @@
 	/>
 </template>
 <script setup>
-import { getListsCustom } from 'src/api/api-get-lists';
+import AbsensiSetting from 'src/models/AbsensiSetting';
 import listsMadrasahStore from 'src/stores/lists-madrasah-store';
 import { notifyWarning } from 'src/utils/notify';
 import { onMounted, ref, watch } from 'vue';
@@ -38,29 +38,34 @@ const router = useRouter();
 const bulanUjian = ref(params.bulan_ujian);
 
 const loading = ref(false);
-const lists = ref([]);
+const listSetting = ref([]);
 const url = `${props.startUrl}/${params.th_ajaran_h}/${params.tingkat_id}/${params.kelas || '*'}`;
 
 onMounted(async () => {
 	if (params.tingkat_id) {
 		const cekData = listsMadrasahStore().getBulanUjianSettingByTingkatId(params.tingkat_id);
-		if (cekData.length) {
-			lists.value['bulan_ujian'] = cekData;
+		if (cekData?.length) {
+			listSetting.value = cekData;
 		} else {
-			const data = await getListsCustom({
-				url: 'absensi/settings',
-				params: { tingkat_id: params.tingkat_id },
-				key: 'bulan_ujian',
-				loading,
-			});
-			if (!data.length) {
-				notifyWarning(
-					'Jadwal ujian untuk jenjang ini belum diatur.<br>Silakan masuk ke menu pengaturan (kanan atas)!',
-				);
-				return;
+			try {
+				loading.value = true;
+				const data = await AbsensiSetting.getAll({
+					params: { tingkat_id: params.tingkat_id },
+					notifySuccess: false,
+				});
+				if (!data?.bulan_ujian?.length) {
+					notifyWarning(
+						'Jadwal ujian untuk jenjang ini belum diatur.<br>Silakan masuk ke menu pengaturan (kanan atas)!',
+					);
+					return;
+				}
+				listsMadrasahStore().addBulanUjianSetting(data.bulan_ujian);
+				listSetting.value = data.bulan_ujian;
+			} catch (error) {
+				console.error('🚀 ~ error:', error);
+			} finally {
+				loading.value = false;
 			}
-			listsMadrasahStore().addBulanUjianSetting(data);
-			lists.value['bulan_ujian'] = data;
 		}
 	}
 });
