@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
 import ApbBudget from 'src/models/ApbBudget';
+import ArrayCrud from 'src/models/ArrayCrud';
+import { notifyConfirm } from 'src/utils/notify';
 import { computed, ref, shallowRef } from 'vue';
 
 export default defineStore(
@@ -85,6 +87,7 @@ export default defineStore(
 				loadingTh.value = false;
 			}
 		}
+
 		async function loadByTahun(th_ajaran_h, notify = true) {
 			try {
 				loading.value = true;
@@ -92,6 +95,23 @@ export default defineStore(
 				budgets.value = data.budgets;
 			} catch (_err) {
 				console.error('🚀 ~ loadData ~ _err:', _err);
+			} finally {
+				loading.value = false;
+			}
+		}
+
+		async function removeData(id) {
+			const isConfirmed = await notifyConfirm('<span style="color: red">Hapus anggaran ini?</span>');
+			if (!isConfirmed) {
+				return false;
+			}
+
+			try {
+				loading.value = true;
+				await ApbBudget.remove({ id, confirm: false });
+				budgets.value = ArrayCrud.remove(budgets.value, id);
+			} catch (error) {
+				console.error('🚀 ~ remove ~ error:', error);
 			} finally {
 				loading.value = false;
 			}
@@ -106,6 +126,7 @@ export default defineStore(
 			thAjaranH,
 			loadByTahun,
 			listTahun,
+			removeData,
 			optionsThAjaran,
 			filterKategori,
 			filterGroup,

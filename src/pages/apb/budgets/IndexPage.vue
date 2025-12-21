@@ -1,6 +1,21 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Daftar Anggaran" @on-reload="reload" />
+		<CardHeader title="Daftar Anggaran" @on-reload="reload">
+			<template #more>
+				<q-list>
+					<!-- input -->
+					<q-item clickable v-close-popup @click="showForm = true">
+						<q-item-section avatar>
+							<q-icon color="green" name="sym_o_create_new_folder" />
+						</q-item-section>
+						<q-item-section>
+							<q-item-label overline> Buat Anggaran </q-item-label>
+							<q-item-label caption> tahun ajaran baru </q-item-label>
+						</q-item-section>
+					</q-item>
+				</q-list>
+			</template>
+		</CardHeader>
 
 		<q-card-section class="q-pt-sm q-pb-none q-px-sm">
 			<q-card bordered flat class="">
@@ -79,16 +94,53 @@
 				row-key="id"
 				:columns="columns"
 			>
+				<template v-slot:body-cell-actions="props">
+					<q-td :props="props">
+						<q-btn
+							icon="info"
+							label="Detail"
+							no-caps
+							outline
+							size="sm"
+							class="q-px-sm"
+							color="green-6"
+							:to="`/apb/budgets/${props.row.id}`"
+						/>
+					</q-td>
+				</template>
+				<template v-slot:body-cell-account_id="props">
+					<q-td :props="props">
+						<q-btn
+							size="sm"
+							no-caps
+							class="q-px-sm"
+							:label="props.row.account_id"
+							outline
+							color="negative"
+							:to="`/apb/accounts/${props.row.account_id}`"
+						/>
+					</q-td>
+				</template>
+				<template v-slot:body-cell-delete="props">
+					<q-td :props="props">
+						<q-btn icon="delete" flat color="negative" @click="handleDelete(props.row)" />
+					</q-td>
+				</template>
 			</q-table>
 		</q-card-section>
+		<q-dialog persistent="" v-model="showForm">
+			<ApbBudgetForm :data="transaction" @success-submit="(v) => handleSuccessSubmit(v)" />
+		</q-dialog>
 	</CardPage>
 </template>
 <script setup>
 import { storeToRefs } from 'pinia';
+import ApbBudgetForm from 'src/components/forms/ApbBudgetForm.vue';
 import apbBudgetsStore from 'src/stores/apb-budgets-store';
 import { onMounted, ref, watch } from 'vue';
 
 const realtime = ref(false);
+const showForm = ref(false);
 const state = apbBudgetsStore();
 const {
 	thAjaranH,
@@ -113,6 +165,20 @@ const reload = async () => {
 		await state.loadByTahun(thAjaranH.value);
 		realtime.value = true;
 	}
+};
+
+const handleDelete = async (row) => {
+	await state.removeData(row.id);
+};
+
+const handleSuccessSubmit = (v) => {
+	budgets.value = v;
+	realtime.value = true;
+	filterKategori.value = '';
+	filterGroup.value = '';
+	filterText.value = '';
+	optionsThAjaran.value.push(v[0].th_ajaran_h);
+	thAjaranH.value = v[0].th_ajaran_h;
 };
 
 onMounted(async () => {
@@ -140,9 +206,14 @@ watch(filterKategori, () => {
 
 const columns = [
 	{
+		name: 'actions',
+		label: '!',
+		align: 'center',
+	},
+	{
 		name: 'account_id',
 		label: 'Akun ID',
-		align: 'center',
+		align: 'left',
 		field: 'account_id',
 		sortable: true,
 	},
@@ -179,6 +250,11 @@ const columns = [
 		align: 'right',
 		sortable: true,
 		classes: (row) => (Number(row.total_allocated) - Number(row.total) > 0 ? 'text-primary' : 'text-negative'),
+	},
+	{
+		name: 'delete',
+		label: 'Hapus',
+		align: 'center',
 	},
 ];
 </script>
