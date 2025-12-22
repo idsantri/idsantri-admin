@@ -34,6 +34,7 @@
 				</q-list>
 			</template>
 		</CardHeader>
+		<CardLoading :showing="loading" />
 		<q-card-section class="q-pa-sm">
 			<q-table
 				class="q-pa-sm"
@@ -104,8 +105,8 @@
 				no-caps
 				dense
 				outline
-				icon="settings_applications"
-				:disable="!santri.length > 0"
+				icon="sym_o_edit_arrow_up"
+				:disable="!santri.length > 0 || loading"
 				@click="updateDomisili"
 			/>
 		</q-card-actions>
@@ -115,8 +116,7 @@
 	</CardPage>
 </template>
 <script setup>
-import { onMounted, ref, toRefs } from 'vue';
-import loadingStore from 'src/stores/loading-store';
+import { onMounted, ref } from 'vue';
 import MutasiForm from 'src/components/forms/MutasiForm.vue';
 import Mutasi from 'src/models/Mutasi';
 import DownloadUrl from 'src/models/DownloadUrl';
@@ -125,7 +125,6 @@ const santri = ref([]);
 const loading = ref(false);
 const showEdit = ref(false);
 const mutasiItem = ref({});
-const { loadingMain } = toRefs(loadingStore());
 
 async function loadData() {
 	try {
@@ -187,12 +186,12 @@ async function deleteAll() {
 
 async function downloadMutasi() {
 	try {
-		loadingMain.value = true;
+		loading.value = true;
 		await DownloadUrl.mutasi();
 	} catch (error) {
 		console.error('🚀 ~ downloadMutasi ~ error:', error);
 	} finally {
-		loadingMain.value = false;
+		loading.value = false;
 	}
 }
 </script>
