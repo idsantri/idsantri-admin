@@ -9,12 +9,12 @@
 		/>
 
 		<q-card-actions align="right" class="bg-green-1">
-			<div class="text-subtitle2 q-mr-sm text-italic">Pilih Tingkat Pendidikan:</div>
+			<div class="text-caption q-mr-sm text-italic">Pilih Tingkat Pendidikan:</div>
 			<InputSelectTingkatPendidikan
 				style="width: 300px"
 				v-model="tingkatId"
 				label="Tingkat Pendidikan"
-				:with-hint="false"
+				:bottomSlots="false"
 			/>
 		</q-card-actions>
 		<q-card-section class="q-pa-sm">

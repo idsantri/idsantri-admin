@@ -42,12 +42,6 @@
 		<!-- inject modal -->
 		<modals-main />
 
-		<div v-if="loadingMain">
-			<q-dialog v-model="loadingMain" persistent>
-				<q-spinner-cube color="green-12" size="8em" class="flex q-ma-lg q-mx-auto" />
-			</q-dialog>
-		</div>
-
 		<q-footer bordered class="bg-green-6 text-green-12">
 			<p class="text-center no-margin q-pa-xs">© by idsantri</p>
 		</q-footer>
@@ -55,8 +49,7 @@
 </template>
 
 <script setup>
-import { ref, toRefs } from 'vue';
-import loadingStore from 'stores/loading-store';
+import { ref } from 'vue';
 import config from 'src/config';
 import SideBar from './comp/SideBar.vue';
 import ModalsMain from './comp/ModalsMain.vue';
@@ -66,7 +59,6 @@ const leftDrawerOpen = ref(false);
 const toggleLeftDrawer = () => (leftDrawerOpen.value = !leftDrawerOpen.value);
 const componentKey = ref(0);
 const forceRerender = () => componentKey.value++;
-const { loadingMain } = toRefs(loadingStore());
 </script>
 
 <style lang="scss">

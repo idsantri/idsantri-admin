@@ -44,7 +44,7 @@ const ortuId = route.params.id;
 
 const dialog = dialogStore();
 const { searchOrtu, crudOrtu } = toRefs(dialog);
-const santri = ref({});
+const santri = ref([]);
 const loading = ref(false);
 
 async function loadData() {

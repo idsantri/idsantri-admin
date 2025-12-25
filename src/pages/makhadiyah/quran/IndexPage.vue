@@ -12,11 +12,19 @@
 					color="green-11"
 					glossy
 					class="q-px-sm text-green-10 q-mr-sm"
-					label="Download"
 					no-caps=""
-					icon="download"
 					@click="download"
-				/>
+					:disable="loadingDownload"
+				>
+					<template v-slot:default v-if="loadingDownload">
+						<q-spinner class="q-mr-sm" />
+						Download
+					</template>
+					<template v-slot:default v-else>
+						<q-icon name="download" class="q-mr-sm" />
+						Download
+					</template>
+				</q-btn>
 				<q-btn
 					dense
 					color="green-11"
@@ -43,19 +51,18 @@
 </template>
 <script setup>
 import DownloadUrl from 'src/models/DownloadUrl';
-import loadingStore from 'src/stores/loading-store';
-import { toRefs } from 'vue';
+import { ref } from 'vue';
 
-const { loadingMain } = toRefs(loadingStore());
+const loadingDownload = ref(false);
 
 async function download() {
 	try {
-		loadingMain.value = true;
+		loadingDownload.value = true;
 		await DownloadUrl.mutaallim();
 	} catch (e) {
 		console.error('🚀 ~ onDownload ~ e:', e);
 	} finally {
-		loadingMain.value = false;
+		loadingDownload.value = false;
 	}
 }
 </script>

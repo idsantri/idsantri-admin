@@ -11,15 +11,14 @@
 		:loading="loading"
 		behavior="menu"
 		clearable
-		:hint="hint"
 		v-model="input"
+		:bottom-slots="bottomSlots"
 	>
+		<template v-slot:hint>
+			{{ hint }}
+		</template>
 		<template v-slot:after>
-			<drop-down-after
-				v-if="btnSetting"
-				:route-to="url"
-				@reload="fetchList"
-			/>
+			<drop-down-after v-if="btnSetting" :route-to="url" @reload="fetchList" />
 		</template>
 	</q-select>
 </template>
@@ -36,6 +35,10 @@ const props = defineProps({
 		default: () => 'desc',
 	},
 	btnSetting: {
+		type: Boolean,
+		default: true,
+	},
+	bottomSlots: {
 		type: Boolean,
 		default: true,
 	},
