@@ -17,37 +17,62 @@ export default defineStore(
 		const filterGroup = ref('');
 		const optionsThAjaran = ref([]);
 
-		const totalBudgetPendapatan = computed(() => {
-			return budgets.value
-				.filter((budget) => budget.kategori === 'PENDAPATAN')
-				.reduce((total, budget) => {
-					return total + Number(budget.total);
-				}, 0);
+		const budgetsCalculate = computed(() => {
+			return budgets.value.map((budget) => {
+				const total = Number(budget.total_budget);
+				const absorbed = Number(budget.total_absorbed);
+
+				let percentage = 0;
+				let status = 'normal';
+
+				if (total > 0) {
+					percentage = ((absorbed / total) * 100).toFixed(2);
+				} else if (total === 0 && absorbed > 0) {
+					// Kasus khusus: Tidak ada budget tapi ada serapan
+					percentage = 100;
+					status = 'unbudgeted'; // Beri flag untuk styling
+				}
+
+				return {
+					...budget,
+					sisa: total - absorbed,
+					percentage: percentage,
+					status: status,
+				};
+			});
 		});
 
-		const totalBudgetBiaya = computed(() => {
-			return budgets.value
-				.filter((budget) => budget.kategori === 'BIAYA')
-				.reduce((total, budget) => {
-					return total + Number(budget.total);
-				}, 0);
-		});
+		// const totalBudgetPendapatan = computed(() => {
+		// 	return budgets.value
+		// 		.filter((budget) => budget.kategori === 'PENDAPATAN')
+		// 		.reduce((total, budget) => {
+		// 			return total + Number(budget.total_budget);
+		// 		}, 0);
+		// });
 
-		const totalAllocatedPendapatan = computed(() => {
-			return budgets.value
-				.filter((budget) => budget.kategori === 'PENDAPATAN')
-				.reduce((total, budget) => {
-					return total + Number(budget.total_allocated);
-				}, 0);
-		});
+		// const totalBudgetBiaya = computed(() => {
+		// 	return budgets.value
+		// 		.filter((budget) => budget.kategori === 'BIAYA')
+		// 		.reduce((total, budget) => {
+		// 			return total + Number(budget.total_budget);
+		// 		}, 0);
+		// });
 
-		const totalAllocatedBiaya = computed(() => {
-			return budgets.value
-				.filter((budget) => budget.kategori === 'BIAYA')
-				.reduce((total, budget) => {
-					return total + Number(budget.total_allocated);
-				}, 0);
-		});
+		// const totalAbsorbedPendapatan = computed(() => {
+		// 	return budgets.value
+		// 		.filter((budget) => budget.kategori === 'PENDAPATAN')
+		// 		.reduce((total, budget) => {
+		// 			return total + Number(budget.total_absorbed);
+		// 		}, 0);
+		// });
+
+		// const totalAbsorbedBiaya = computed(() => {
+		// 	return budgets.value
+		// 		.filter((budget) => budget.kategori === 'BIAYA')
+		// 		.reduce((total, budget) => {
+		// 			return total + Number(budget.total_absorbed);
+		// 		}, 0);
+		// });
 
 		const optionsGroup = computed(() => {
 			if (!filterKategori.value) {
@@ -67,7 +92,7 @@ export default defineStore(
 		});
 
 		const filteredData = computed(() => {
-			const f1 = budgets.value.filter((account) => {
+			const f1 = budgetsCalculate.value.filter((account) => {
 				return filterKategori.value ? account.kategori === filterKategori.value : true;
 			});
 			const f2 = f1.filter((account) => {
@@ -133,10 +158,10 @@ export default defineStore(
 			optionsGroup,
 			optionsKategori,
 			filteredData,
-			totalBudgetBiaya,
-			totalBudgetPendapatan,
-			totalAllocatedBiaya,
-			totalAllocatedPendapatan,
+			// totalBudgetBiaya,
+			// totalBudgetPendapatan,
+			// totalAbsorbedBiaya,
+			// totalAbsorbedPendapatan,
 		};
 	},
 	{

@@ -125,15 +125,25 @@ const ArrayCrud = (() => {
 	 * @param {Array} currentArray - Array saat ini
 	 * @param {Function|string} sortBy - Function atau key untuk sort
 	 * @param {string} order - "asc" atau "desc"
+	 * @param {boolean} nullsFirst - true jika null harus ditempatkan di awal
 	 * @returns {Array} Array yang sudah diurutkan
 	 */
-	function sort(currentArray, sortBy, order = 'asc') {
+	function sort(currentArray, sortBy, order = 'asc', nullsFirst = true) {
 		const newArray = [...currentArray];
 
 		if (typeof sortBy === 'string') {
 			newArray.sort((a, b) => {
 				let aVal = a[sortBy];
 				let bVal = b[sortBy];
+
+				// Pengecekan nilai null atau string kosong
+				const nullishA = aVal === null || aVal === undefined || aVal === '';
+				const nullishB = bVal === null || bVal === undefined || bVal === '';
+
+				// Jika salah satu nilai kosong, tentukan posisinya
+				if (nullishA && nullishB) return 0;
+				if (nullishA) return nullsFirst ? -1 : 1;
+				if (nullishB) return nullsFirst ? 1 : -1;
 
 				// Tambahkan pengecekan dan konversi untuk string agar case-insensitive
 				if (typeof aVal === 'string' && typeof bVal === 'string') {

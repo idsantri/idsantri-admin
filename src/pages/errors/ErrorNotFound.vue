@@ -13,8 +13,10 @@
 				label="Go Back"
 				no-caps
 				@click="$router.go(-1)"
+				icon="arrow_left"
 			/>
 			<q-btn
+				icon="home"
 				class="q-mt-xl q-ml-sm"
 				color="green-1"
 				text-color="green"

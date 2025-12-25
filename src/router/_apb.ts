@@ -34,7 +34,11 @@ export default [
 		children: [
 			{
 				path: '',
-				component: (): Component => import('src/pages/apb/budgets/IndexPage.vue'),
+				component: (): Component => import('src/pages/apb/budgets/PageIndex.vue'),
+			},
+			{
+				path: ':id',
+				component: (): Component => import('src/pages/apb/budgets/PageDetail.vue'),
 			},
 		],
 	},
