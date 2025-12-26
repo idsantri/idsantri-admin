@@ -28,11 +28,11 @@
 				<td>
 					<q-toggle
 						:model-value="account?.hidden"
-						:true-value="1"
-						:false-value="0"
+						:true-value="true"
+						:false-value="false"
 						checked-icon="check"
 						unchecked-icon="clear"
-						color="green-7"
+						color="negative"
 						@update:model-value="(value, event) => $emit('update', { ...account, hidden: value })"
 					/>
 				</td>
@@ -41,7 +41,7 @@
 	</q-markup-table>
 </template>
 <script setup>
-const props = defineProps({
+defineProps({
 	account: { type: Object, required: true },
 });
 </script>

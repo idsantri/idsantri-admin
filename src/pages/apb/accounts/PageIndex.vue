@@ -1,6 +1,20 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Daftar Akun" @on-reload="reload" :show-add="true" @on-add="showForm = true" />
+		<CardHeader title="Daftar Akun" @on-reload="reload" :show-add="true" @on-add="showForm = true">
+			<template #more>
+				<q-list>
+					<q-item clickable v-close-popup to="/apb/accounts/assets">
+						<q-item-section avatar>
+							<q-icon name="sym_o_business_center" />
+						</q-item-section>
+						<q-item-section>
+							<q-item-label> Aset </q-item-label>
+							<q-item-label caption> Data Aktiva </q-item-label>
+						</q-item-section>
+					</q-item>
+				</q-list>
+			</template>
+		</CardHeader>
 
 		<q-card-section class="q-pt-sm q-pb-none q-px-sm">
 			<q-card bordered flat>
@@ -82,11 +96,11 @@
 					<q-td :props="props">
 						<q-toggle
 							:model-value="props.value"
-							:true-value="1"
-							:false-value="0"
+							:true-value="true"
+							:false-value="false"
 							checked-icon="check"
 							unchecked-icon="clear"
-							color="green-7"
+							color="negative"
 							@update:model-value="(value, event) => toggle(value, props.row.id)"
 						/>
 					</q-td>

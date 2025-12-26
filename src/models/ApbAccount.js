@@ -20,5 +20,13 @@ class ApbAccount extends ApiCrud {
 
 		return resData.data;
 	}
+
+	async assets() {
+		const resData = await this._apiGet({
+			endPoint: `${this._path}/assets-summaries`,
+		});
+
+		return resData.data;
+	}
 }
 export default new ApbAccount();

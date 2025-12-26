@@ -23,6 +23,10 @@ export default [
 				component: (): Component => import('src/pages/apb/accounts/PageIndex.vue'),
 			},
 			{
+				path: 'assets',
+				component: (): Component => import('src/pages/apb/accounts/PageAsset.vue'),
+			},
+			{
 				path: ':id',
 				component: (): Component => import('src/pages/apb/accounts/PageDetail.vue'),
 			},

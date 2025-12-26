@@ -54,7 +54,7 @@ export default defineStore(
 				accounts.value = ArrayCrud.update(accounts.value, id, { hidden: value });
 				await ApbAccount.toggleHidden(id);
 			} catch (err) {
-				accounts.value = ArrayCrud.update(accounts.value, id, { hidden: value ? 0 : 1 });
+				accounts.value = ArrayCrud.update(accounts.value, id, { hidden: value ? false : true });
 				console.error('🚀 ~ toggleHidden ~ err:', err);
 			} finally {
 				loading.value = false;
