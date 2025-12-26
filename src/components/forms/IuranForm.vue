@@ -9,16 +9,15 @@
 					@emit-input="(val) => Object.assign(inputs, val)"
 					:data="props.data"
 					class="q-my-sm"
+					:ref="!inputs.santri_id ? 'firstInput' : null"
 				/>
-				<InputSelectArray
+
+				<InputSelectTahunAjaran
 					v-model="inputs.th_ajaran_h"
-					url="tahun-ajaran"
-					label="Tahun Ajaran"
-					sort="desc"
-					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
-					:selected="inputs.th_ajaran_h"
+					class="q-my-sm"
 					:disable="props.disableThAjaran"
+					:ref="inputs.santri_id && !props.disableThAjaran ? 'firstInput' : null"
 				/>
 				<InputSelectArray
 					v-model="inputs.item"
@@ -26,6 +25,7 @@
 					label="Nama Iuran"
 					class="q-my-sm"
 					@update:model-value="setNominal"
+					:ref="inputs.santri_id && props.disableThAjaran ? 'firstInput' : null"
 				/>
 				<InputCurrency
 					dense
@@ -44,27 +44,21 @@
 					class="q-my-sm"
 					v-show="inputs.id && inputs.lunas"
 				/>
-				<q-input
-					label="Keterangan"
-					v-model="inputs.keterangan"
-					dense
-					outlined=""
-					class="q-my-sm"
-					autogrow=""
-				/>
+				<q-input label="Keterangan" v-model="inputs.keterangan" dense outlined="" class="q-my-sm" autogrow="" />
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import useCrudForm from './utils/useCrudForm';
 import Iuran from 'src/models/Iuran';
 import listsStore from 'src/stores/lists-store';
+import InputSelectTahunAjaran from '../inputs/InputSelectTahunAjaran.vue';
 
 const props = defineProps({
 	data: { type: Object, required: false, default: () => {} },
@@ -72,25 +66,26 @@ const props = defineProps({
 	disableThAjaran: { type: Boolean, default: false },
 });
 
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const iuranStore = listsStore().getStateByKey('iuran');
 const inputs = ref({ ...props.data });
 const iuran = ref([...iuranStore]);
 const isNew = !props.data?.id;
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	Iuran,
-	{
-		emit: emit,
-		responseKey: 'iuran',
-	},
-);
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Iuran, {
+	emit: emit,
+	responseKey: 'iuran',
+});
+
+const firstInput = ref(null);
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) {
+		firstInput.value.focus();
+		// firstInput.value.showPopup();
+	}
+});
 
 const setNominal = (val) => {
 	const selectedOption = iuran.value.find((item) => item.val0 === val);

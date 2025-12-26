@@ -9,13 +9,10 @@
 		behavior="menu"
 		clearable
 		v-model="input"
+		ref="selectRef"
 	>
 		<template v-slot:after>
-			<drop-down-after
-				v-if="btnSetting"
-				:route-to="url"
-				@reload="fetchList"
-			/>
+			<drop-down-after v-if="btnSetting" :route-to="url" @reload="fetchList" />
 		</template>
 	</q-select>
 </template>
@@ -45,6 +42,16 @@ const loading = ref(false);
 const options = ref([]);
 const store = listsStore();
 const key = props.url.replace(/-/g, '_');
+
+const selectRef = ref(null);
+defineExpose({
+	focus: () => {
+		if (selectRef.value) selectRef.value.focus();
+	},
+	showPopup: () => {
+		if (selectRef.value) selectRef.value.showPopup();
+	},
+});
 
 onMounted(async () => {
 	const data = store.getStateByKey_Arr(key, props.sort);

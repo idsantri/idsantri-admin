@@ -3,11 +3,7 @@
 		<q-card-section class="q-pa-sm">
 			<q-select
 				dense
-				:hint="
-					$props.activeOnly
-						? 'Hanya menampilkan santri aktif'
-						: 'Ketikkan ID Santri'
-				"
+				:hint="$props.activeOnly ? 'Hanya menampilkan santri aktif' : 'Ketikkan ID Santri'"
 				outlined
 				label="ID Santri*"
 				v-model="input.santri_id"
@@ -26,16 +22,13 @@
 				:disable="input.santri_id ? true : false"
 				behavior="menu"
 				debounce="500"
+				ref="selectRef"
 			>
 				<template v-slot:option="scope">
 					<q-item v-bind="scope.itemProps">
 						<q-item-section>
-							<q-item-label
-								>{{ scope.opt.id }} &mdash; {{ scope.opt.nama }}
-							</q-item-label>
-							<q-item-label caption>{{
-								scope.opt.data_akhir
-							}}</q-item-label>
+							<q-item-label>{{ scope.opt.id }} &mdash; {{ scope.opt.nama }} </q-item-label>
+							<q-item-label caption>{{ scope.opt.data_akhir }}</q-item-label>
 						</q-item-section>
 					</q-item>
 				</template>
@@ -71,15 +64,21 @@ const loading = ref(false);
 const options = ref([]);
 
 function onInput() {
-	input.value.nama = options.value.find(
-		(o) => o.id == input.value?.santri_id,
-	)?.nama;
-	input.value.data_akhir = options.value.find(
-		(o) => o.id == input.value?.santri_id,
-	)?.data_akhir;
+	input.value.nama = options.value.find((o) => o.id == input.value?.santri_id)?.nama;
+	input.value.data_akhir = options.value.find((o) => o.id == input.value?.santri_id)?.data_akhir;
 
 	emit('emitInput', input.value);
 }
+
+const selectRef = ref(null);
+defineExpose({
+	focus: () => {
+		if (selectRef.value) selectRef.value.focus();
+	},
+	showPopup: () => {
+		if (selectRef.value) selectRef.value.showPopup();
+	},
+});
 
 onMounted(async () => {
 	const data = {

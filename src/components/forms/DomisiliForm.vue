@@ -19,22 +19,16 @@
 					url="domisili"
 					label="Domisili *"
 					:rules="[(val) => !!val || 'Harus diisi!']"
+					ref="firstInput"
 				/>
-				<q-input
-					class="q-my-sm"
-					dense
-					outlined
-					label="Keterangan"
-					v-model="inputs.keterangan"
-					autogrow=""
-				/>
+				<q-input class="q-my-sm" dense outlined label="Keterangan" v-model="inputs.keterangan" autogrow="" />
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import Domisili from 'src/models/Domisili';
 import useCrudForm from './utils/useCrudForm';
@@ -42,23 +36,24 @@ import useCrudForm from './utils/useCrudForm';
 const props = defineProps({
 	data: { type: Object, required: true },
 });
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	Domisili,
-	{
-		emit: emit,
-		responseKey: 'domisili',
-	},
-);
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Domisili, {
+	emit: emit,
+	responseKey: 'domisili',
+});
+
+const firstInput = ref(null);
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) {
+		firstInput.value.focus();
+		// firstInput.value.showPopup();
+	}
+});
 
 const onSubmit = async () => {
 	const data = {

@@ -11,6 +11,7 @@
 					v-model="inputs.urut"
 					label="Nomor Urut"
 					:rules="[(val) => !val || !isNaN(val) || 'Hanya angka']"
+					ref="firstInput"
 				/>
 
 				<q-input
@@ -44,7 +45,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 import listsStore from 'src/stores/lists-store';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
@@ -55,25 +56,23 @@ const props = defineProps({
 	data: { type: Object, required: false, default: () => {} },
 });
 
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const iuranStore = listsStore().getStateByKey('iuran');
 const inputs = ref({ ...props.data });
 const iuran = ref([...iuranStore]);
 const isNew = !props.data?.id;
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	IuranPaket,
-	{
-		emit: emit,
-		responseKey: 'iuran_paket',
-	},
-);
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(IuranPaket, {
+	emit: emit,
+	responseKey: 'iuran_paket',
+});
+
+const firstInput = ref(null);
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const setNominal = (val) => {
 	const selectedOption = iuran.value.find((item) => item.val0 === val);

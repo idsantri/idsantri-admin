@@ -13,6 +13,7 @@
 		clearable
 		v-model="input"
 		:bottom-slots="bottomSlots"
+		ref="selectRef"
 	>
 		<template v-slot:hint>
 			{{ hint }}
@@ -57,6 +58,16 @@ const hint = computed(() => {
 	} else {
 		return 'Pilih Tahun Ajaran';
 	}
+});
+
+const selectRef = ref(null);
+defineExpose({
+	focus: () => {
+		if (selectRef.value) selectRef.value.focus();
+	},
+	showPopup: () => {
+		if (selectRef.value) selectRef.value.showPopup();
+	},
 });
 
 onMounted(async () => {

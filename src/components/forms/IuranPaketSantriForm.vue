@@ -10,54 +10,46 @@
 					:data="props.data"
 					class="q-my-sm"
 				/>
-				<input-select-array
+				<InputSelectTahunAjaran
 					v-model="inputs.th_ajaran_h"
-					url="tahun-ajaran"
-					label="Tahun Ajaran"
-					sort="desc"
-					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
-					:selected="inputs.th_ajaran_h"
+					class="q-my-sm"
 					:disable="props.disableThAjaran"
+					ref="firstInput"
 				/>
-				<InputSelectIuranPaket
-					class="q-my-sm"
-					@on-input="(v) => (paketIuran = v)"
-				/>
-				<q-input
-					label="Keterangan"
-					v-model="inputs.keterangan"
-					dense
-					outlined=""
-					class="q-my-sm"
-				/>
+				<InputSelectIuranPaket class="q-my-sm" @on-input="(v) => (paketIuran = v)" />
+				<q-input label="Keterangan" v-model="inputs.keterangan" dense outlined="" class="q-my-sm" />
 			</q-card-section>
 			<FormActions :btn-delete="false" />
 		</q-form>
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
-import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import InputSelectIuranPaket from '../inputs/InputSelectIuranPaket.vue';
 import Iuran from 'src/models/Iuran';
+import InputSelectTahunAjaran from '../inputs/InputSelectTahunAjaran.vue';
 
 const props = defineProps({
 	data: { type: Object, required: false, default: () => {} },
 	title: { type: String, default: () => 'Input' },
 });
 
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({ ...props.data });
 const loading = ref(false);
 const paketIuran = ref([]);
+
+const firstInput = ref(null);
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) {
+		firstInput.value.focus();
+		// firstInput.value.showPopup();
+	}
+});
 
 const onSubmit = async () => {
 	const paket = paketIuran.value.map((o) => {
@@ -76,8 +68,7 @@ const onSubmit = async () => {
 
 		const response = await Iuran.storePaketSantri({
 			data,
-			message:
-				'PERHATIAN<br/>Jika item iuran sudah terdapat dalam daftar maka akan diabaikan.',
+			message: 'PERHATIAN<br/>Jika item iuran sudah terdapat dalam daftar maka akan diabaikan.',
 		});
 
 		if (response) {
