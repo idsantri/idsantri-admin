@@ -32,7 +32,7 @@
 							:label="j.account_id"
 							size="sm"
 							class="q-px-sm"
-							:to="`/apb/accounts/${j.account_id}`"
+							:to="`/apb/accounts/${j.account_id}?th=${thAjaranH}`"
 						/>
 					</td>
 					<td>{{ j.account?.group }}: {{ j.account?.nama }}</td>
@@ -99,6 +99,10 @@ import { storeToRefs } from 'pinia';
 const props = defineProps({
 	transactionId: {
 		type: [Number, String],
+		required: true,
+	},
+	thAjaranH: {
+		type: String,
 		required: true,
 	},
 });

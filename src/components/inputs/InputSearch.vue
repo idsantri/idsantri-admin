@@ -4,7 +4,7 @@
 		dense
 		debounce="300"
 		v-model="model"
-		placeholder="Cari"
+		placeholder="Tulis teks pencarian"
 		:bg-color="bgColor"
 		:color="color"
 		type="search"

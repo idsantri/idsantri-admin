@@ -24,10 +24,7 @@
 						class="tw:w-full tw:sm:max-w-sm"
 						outlined
 						label="Tanggal Awal"
-						emit-value
-						map-options
 						v-model="startDate"
-						:options="optionsThAjaran"
 						clearable
 					/>
 					<q-input
@@ -36,25 +33,14 @@
 						class="tw:w-full tw:sm:max-w-sm"
 						outlined
 						label="Tanggal Akhir"
-						emit-value
-						map-options
 						v-model="endDate"
 						clearable
-						behavior="menu"
 					/>
-					<q-input
+					<InputSearch
 						class="tw:w-full tw:sm:max-w-sm"
-						outlined
-						dense
-						debounce="300"
 						v-model="filter"
 						placeholder="Cari data transaksi..."
-						clearable
-					>
-						<template v-slot:append>
-							<q-icon name="search" />
-						</template>
-					</q-input>
+					/>
 				</q-card-section>
 				<q-card-section v-show="!realtime" class="bg-warning q-pa-xs text-black">
 					<div class="text-caption text-center">
@@ -76,8 +62,22 @@
 				no-data-label="Tidak ada data untuk ditampilkan!"
 				no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
 				row-key="name"
-				@row-click="(evt, row, index) => $router.push(`/apb/transactions/${row.id}`)"
 			>
+				<template v-slot:body-cell-id="props">
+					<q-td :props="props">
+						<q-btn
+							dense
+							no-caps
+							size="sm"
+							outline
+							class="text-green-10 q-px-sm"
+							:to="`/apb/transactions/${props.value}`"
+						>
+							<q-icon name="sym_o_info" class="q-mr-xs" />
+							{{ props.value }}
+						</q-btn>
+					</q-td>
+				</template>
 			</q-table>
 		</q-card-section>
 		<q-dialog persistent="" v-model="crudShow">
@@ -96,6 +96,7 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import ApbTransactionForm from 'src/components/forms/ApbTransactionForm.vue';
+import InputSearch from 'src/components/inputs/InputSearch.vue';
 import apbTransactionsStore from 'src/stores/apb-transactions-store';
 import { formatDate } from 'src/utils/format-date';
 import { onMounted, ref, watch } from 'vue';
@@ -148,7 +149,7 @@ const columns = [
 	{
 		name: 'id',
 		label: 'ID',
-		align: 'left',
+		align: 'center',
 		field: 'id',
 		sortable: true,
 	},

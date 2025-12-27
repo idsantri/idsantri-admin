@@ -1,17 +1,14 @@
 <template lang="">
 	<CardPage>
 		<CardHeader title="Detail Akun" @onReload="reload" :show-edit="true" @onEdit="showForm = true"> </CardHeader>
-		<q-card-section class="q-pa-sm tw:grid tw:grid-cols-1 tw:gap-2 tw:sm:grid-cols-5">
-			<q-card flat bordered class="tw:sm:col-span-2 tw:h-max">
-				<q-card-section class="q-pa-sm bg-green-7 text-green-11"> Akun </q-card-section>
 
-				<CardLoading :showing="loading" />
+		<q-card-section class="q-pa-sm" :key="key">
+			<q-card flat bordered>
+				<CardLoading :showing="loading" message="" size="4em" />
 				<CardAccount :account="account" @update="toggle" />
 			</q-card>
-
-			<!-- <pre>{{ account }}</pre> -->
-			<q-card flat bordered class="tw:sm:col-span-3">
-				<CardJournals :account_id="account?.id" />
+			<q-card flat bordered class="q-mt-sm">
+				<CardHistory :account_id="account?.id" />
 			</q-card>
 		</q-card-section>
 		<q-dialog persistent="" v-model="showForm">
@@ -34,7 +31,7 @@ import apbAccountsStore from 'src/stores/apb-accounts-store';
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import CardAccount from './CardAccount.vue';
-import CardJournals from './CardJournals.vue';
+import CardHistory from './CardHistory.vue';
 import ApbAccountForm from 'src/components/forms/ApbAccountForm.vue';
 
 const params = useRoute().params;
@@ -42,11 +39,14 @@ const router = useRouter();
 const state = apbAccountsStore();
 const { loading, accounts } = storeToRefs(state);
 const { loadById, toggleHidden, add, remove } = state;
-
+const key = ref(0);
 const account = computed(() => accounts.value.find((item) => item.id == params.id));
 const showForm = ref(false);
 
-const reload = async () => await loadById(params.id);
+const reload = async () => {
+	await loadById(params.id);
+	key.value++;
+};
 const addToState = async (data) => {
 	add(data);
 	if (data.id != account.value.id) {

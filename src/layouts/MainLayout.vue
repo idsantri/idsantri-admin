@@ -25,7 +25,7 @@
 		<q-ajax-bar position="top" color="green-12" size="2px" />
 
 		<q-page-container :key="componentKey">
-			<router-view :key="$route.fullPath" />
+			<router-view :key="$route.path" />
 
 			<!-- <router-view v-slot="{ Component, route }">
 				<transition name="fade" mode="out-in">

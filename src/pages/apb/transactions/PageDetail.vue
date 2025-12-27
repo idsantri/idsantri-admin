@@ -14,31 +14,31 @@
 
 					<tbody class="">
 						<tr>
-							<td>ID</td>
+							<td class="label">ID</td>
 							<td>{{ transaction?.id }}</td>
 						</tr>
 						<tr>
-							<td>Tanggal</td>
-							<td>{{ formatDate(transaction?.created_at, 'dd MMMM yyyy HH:mm') }}</td>
+							<td class="label">Tanggal</td>
+							<td>{{ formatDate(transaction?.created_at, "dd MMMM yyyy', Pukul 'HH:mm") }}</td>
 						</tr>
 						<tr>
-							<td>Tahun Ajaran</td>
+							<td class="label">Tahun Ajaran</td>
 							<td>{{ transaction?.th_ajaran_h }}</td>
 						</tr>
 						<tr>
-							<td>Keterangan</td>
+							<td class="label">Keterangan</td>
 							<td>{{ transaction?.keterangan }}</td>
 						</tr>
 						<tr>
-							<td>Nilai</td>
+							<td class="label">Nilai</td>
 							<td>{{ transaction?.nilai?.toRupiah() }}</td>
 						</tr>
 						<tr>
-							<td>Atas Nama</td>
+							<td class="label">Atas Nama</td>
 							<td>{{ transaction?.atas_nama }}</td>
 						</tr>
 						<tr>
-							<td>Catatan</td>
+							<td class="label">Catatan</td>
 							<td>{{ transaction?.catatan }}</td>
 						</tr>
 					</tbody>
@@ -46,6 +46,7 @@
 			</q-card>
 			<CardJournal
 				:transactionId="params.id"
+				:thAjaranH="transaction?.th_ajaran_h || ''"
 				@update:is-saved="(totalDebit) => (transaction.nilai = totalDebit)"
 			/>
 		</q-card-section>
@@ -87,5 +88,10 @@ onMounted(async () => {
 td {
 	white-space: normal;
 	word-wrap: break-word;
+	// height: 42px !important;
+}
+.label {
+	font-style: italic;
+	width: 120px;
 }
 </style>
