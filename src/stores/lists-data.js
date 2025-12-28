@@ -183,6 +183,14 @@ const data = [
 		protected: false,
 		sort: 'asc',
 	},
+	{
+		url: 'account-group',
+		label: 'Grup Akun',
+		style: 'single',
+		column: 1,
+		protected: false,
+		sort: 'asc',
+	},
 ];
 
 // Menambahkan properti 'key' ke setiap objek
