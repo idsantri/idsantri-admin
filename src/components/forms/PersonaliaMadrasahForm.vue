@@ -8,9 +8,7 @@
 					dense
 					outlined
 					label="Nama"
-					:model-value="
-						inputs?.nama + ' (' + inputs?.aparatur_id + ')'
-					"
+					:model-value="inputs?.nama + ' (' + inputs?.aparatur_id + ')'"
 					disable=""
 					filled=""
 					class="q-my-sm"
@@ -22,6 +20,7 @@
 					label="Jabatan"
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
+					ref="firstInput"
 				/>
 				<InputSelectTahunAjaran
 					v-model="inputs.th_ajaran_h"
@@ -34,35 +33,17 @@
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
-				<input-select-array
-					v-model="inputs.kelas"
-					url="kelas"
-					label="Kelas"
-					class="q-my-sm"
-				/>
+				<input-select-array v-model="inputs.kelas" url="kelas" label="Kelas" class="q-my-sm" />
 
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Ruang"
-					v-model="inputs.ruang"
-				/>
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Keterangan"
-					v-model="inputs.keterangan"
-					autogrow=""
-				/>
+				<q-input dense class="q-my-sm" outlined label="Ruang" v-model="inputs.ruang" />
+				<q-input dense class="q-my-sm" outlined label="Keterangan" v-model="inputs.keterangan" autogrow="" />
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingkatPendidikan.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import useCrudForm from './utils/useCrudForm';
@@ -73,23 +54,21 @@ const props = defineProps({
 	data: { type: Object, required: true, default: () => {} },
 });
 
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({ ...props.data });
 const isNew = !props.data.id;
+const firstInput = useTemplateRef('firstInput');
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	AparaturMadrasah,
-	{
-		emit: emit,
-		responseKey: 'aparatur_madrasah',
-	},
-);
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
+
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(AparaturMadrasah, {
+	emit: emit,
+	responseKey: 'aparatur_madrasah',
+});
 
 const onSubmit = async () => {
 	const data = {

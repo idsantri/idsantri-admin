@@ -50,7 +50,7 @@ const firstInput = useTemplateRef('firstInput');
 
 onMounted(async () => {
 	await nextTick();
-	firstInput.value.focus();
+	if (firstInput.value) firstInput.value.focus();
 });
 
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Alamat.Provinsi, {

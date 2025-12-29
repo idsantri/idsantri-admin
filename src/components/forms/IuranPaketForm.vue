@@ -45,7 +45,7 @@
 	</q-card>
 </template>
 <script setup>
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import listsStore from 'src/stores/lists-store';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
@@ -62,16 +62,16 @@ const iuranStore = listsStore().getStateByKey('iuran');
 const inputs = ref({ ...props.data });
 const iuran = ref([...iuranStore]);
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(IuranPaket, {
 	emit: emit,
 	responseKey: 'iuran_paket',
-});
-
-const firstInput = ref(null);
-onMounted(async () => {
-	await nextTick();
-	if (firstInput.value) firstInput.value.focus();
 });
 
 const setNominal = (val) => {

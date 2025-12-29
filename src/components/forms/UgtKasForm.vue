@@ -25,6 +25,7 @@
 							v-model="inputs.gt_id"
 							clearable
 							debounce="500"
+							ref="firstInput"
 						/>
 						<q-input
 							dense
@@ -72,7 +73,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref, watch } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef, watch } from 'vue';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 import useCrudForm from './utils/useCrudForm';
 import UgtKas from 'src/models/UgtKas';
@@ -81,6 +82,7 @@ import UgtGt from 'src/models/UgtGt';
 const props = defineProps({
 	data: Object,
 });
+
 const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({
@@ -92,6 +94,12 @@ const inputs = ref({
 const loadingGt = ref(false);
 const gt = ref({});
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(UgtKas, { emit, responseKey: 'kas' });
 

@@ -25,7 +25,7 @@
 	</q-card>
 </template>
 <script setup>
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectIuranPaket from '../inputs/InputSelectIuranPaket.vue';
 import Iuran from 'src/models/Iuran';
@@ -41,14 +41,11 @@ const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'su
 const inputs = ref({ ...props.data });
 const loading = ref(false);
 const paketIuran = ref([]);
+const firstInput = useTemplateRef('firstInput');
 
-const firstInput = ref(null);
 onMounted(async () => {
 	await nextTick();
-	if (firstInput.value) {
-		firstInput.value.focus();
-		// firstInput.value.showPopup();
-	}
+	if (firstInput.value) firstInput.value.focus();
 });
 
 const onSubmit = async () => {

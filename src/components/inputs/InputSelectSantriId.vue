@@ -50,7 +50,7 @@
 <script setup>
 import Santri from 'src/models/Santri';
 import { notifyWarning } from 'src/utils/notify';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 
 const props = defineProps({
 	activeOnly: { type: Boolean },
@@ -70,7 +70,7 @@ function onInput() {
 	emit('emitInput', input.value);
 }
 
-const selectRef = ref(null);
+const selectRef = useTemplateRef('selectRef');
 defineExpose({
 	focus: () => {
 		if (selectRef.value) selectRef.value.focus();

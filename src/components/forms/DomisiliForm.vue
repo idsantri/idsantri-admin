@@ -28,7 +28,7 @@
 	</q-card>
 </template>
 <script setup>
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import Domisili from 'src/models/Domisili';
 import useCrudForm from './utils/useCrudForm';
@@ -36,23 +36,21 @@ import useCrudForm from './utils/useCrudForm';
 const props = defineProps({
 	data: { type: Object, required: true },
 });
+
 const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Domisili, {
 	emit: emit,
 	responseKey: 'domisili',
-});
-
-const firstInput = ref(null);
-onMounted(async () => {
-	await nextTick();
-	if (firstInput.value) {
-		firstInput.value.focus();
-		// firstInput.value.showPopup();
-	}
 });
 
 const onSubmit = async () => {

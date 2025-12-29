@@ -17,6 +17,7 @@
 					v-model="inputs.th_ajaran_h"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					class="q-my-sm"
+					ref="firstInput"
 				/>
 				<InputSelectTingkatPendidikan
 					v-model="inputs.tingkat_id"
@@ -31,29 +32,15 @@
 					class="q-my-sm"
 				/>
 
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Nomor Absen"
-					v-model="inputs.no_absen"
-					type="number"
-				/>
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Keterangan"
-					v-model="inputs.keterangan"
-					autogrow=""
-				/>
+				<q-input dense class="q-my-sm" outlined label="Nomor Absen" v-model="inputs.no_absen" type="number" />
+				<q-input dense class="q-my-sm" outlined label="Keterangan" v-model="inputs.keterangan" autogrow="" />
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingkatPendidikan.vue';
 import Kelas from 'src/models/Kelas';
@@ -64,23 +51,21 @@ const props = defineProps({
 	data: { type: Object, required: true },
 });
 
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	Kelas,
-	{
-		emit: emit,
-		responseKey: 'kelas',
-	},
-);
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
+
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Kelas, {
+	emit: emit,
+	responseKey: 'kelas',
+});
 
 const onSubmit = async () => {
 	const data = {

@@ -57,11 +57,11 @@ const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'su
 
 const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
-
 const firstInput = useTemplateRef('firstInput');
+
 onMounted(async () => {
 	await nextTick();
-	firstInput.value.focus();
+	if (firstInput.value) firstInput.value.focus();
 });
 
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Alamat.Desa, {

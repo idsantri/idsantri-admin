@@ -13,6 +13,7 @@
 					autogrow=""
 					:loading="loading"
 					v-if="showInput.val0"
+					ref="firstInput"
 				/>
 				<q-input
 					label="text2"
@@ -40,7 +41,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import { kebabToTitleCase } from 'src/utils/format-text';
 import Lists from 'src/models/Lists';
 import useCrudForm from './utils/useCrudForm';
@@ -55,10 +56,17 @@ const props = defineProps({
 		required: true,
 	},
 });
+
 const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Lists, {
 	emit: emit,

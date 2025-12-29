@@ -99,7 +99,7 @@
 	</q-card>
 </template>
 <script setup>
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import { m2h, bacaHijri } from 'src/utils/hijri';
 import { isDate, formatDateFull } from 'src/utils/format-date';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
@@ -116,19 +116,16 @@ const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'su
 
 const inputs = ref({ kategori: 3, ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Indisipliner, {
 	emit: emit,
 	responseKey: 'indisipliner',
-});
-
-const firstInput = ref(null);
-onMounted(async () => {
-	await nextTick();
-	if (firstInput.value) {
-		firstInput.value.focus();
-		// firstInput.value.showPopup();
-	}
 });
 
 async function onSubmit() {

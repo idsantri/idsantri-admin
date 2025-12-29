@@ -18,7 +18,7 @@
 </template>
 <script setup>
 import listsStore from 'src/stores/lists-store';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 import DropDownAfter from './DropDownAfter.vue';
 import Lists from 'src/models/Lists';
 
@@ -43,7 +43,7 @@ const options = ref([]);
 const store = listsStore();
 const key = props.url.replace(/-/g, '_');
 
-const selectRef = ref(null);
+const selectRef = useTemplateRef('selectRef');
 defineExpose({
 	focus: () => {
 		if (selectRef.value) selectRef.value.focus();

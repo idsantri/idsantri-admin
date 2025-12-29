@@ -30,7 +30,7 @@
 	</q-card>
 </template>
 <script setup>
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import InputCurrency from '../inputs/InputCurrency.vue';
 import Iuran from 'src/models/Iuran';
@@ -43,14 +43,11 @@ const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'su
 
 const input = ref({ ...props.data });
 const loading = ref(false);
+const firstInput = useTemplateRef('firstInput');
 
-const firstInput = ref(null);
 onMounted(async () => {
 	await nextTick();
-	if (firstInput.value) {
-		firstInput.value.focus();
-		// firstInput.value.showPopup();
-	}
+	if (firstInput.value) firstInput.value.focus();
 });
 
 const onSubmit = async () => {
