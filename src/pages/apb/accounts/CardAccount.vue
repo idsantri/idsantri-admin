@@ -8,7 +8,7 @@
 				</div>
 				<div class="">
 					<div class="text-caption text-italic">Kategori</div>
-					<div class="text-body2">{{ account?.kategori }}</div>
+					<div class="text-body2">{{ account?.category }}</div>
 				</div>
 				<div class="">
 					<div class="text-caption text-italic">Group</div>
@@ -16,11 +16,11 @@
 				</div>
 				<div class="">
 					<div class="text-caption text-italic">Nama</div>
-					<div class="text-body2">{{ account?.nama }}</div>
+					<div class="text-body2">{{ account?.name }}</div>
 				</div>
 				<div class="">
 					<div class="text-caption text-italic">Saldo Normal</div>
-					<div class="text-body2">{{ account?.saldo_normal == 'D' ? 'Debit' : 'Kredit' }}</div>
+					<div class="text-body2">{{ account?.normal_balance == 'D' ? 'Debit' : 'Kredit' }}</div>
 				</div>
 				<div class="">
 					<!-- <div class="text-caption text-italic">Sembunyikan</div> -->

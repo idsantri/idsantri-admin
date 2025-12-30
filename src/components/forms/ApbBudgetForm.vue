@@ -16,9 +16,6 @@
 </template>
 <script setup>
 import { ref } from 'vue';
-import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
-import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingkatPendidikan.vue';
-import Kelas from 'src/models/Kelas';
 import useCrudForm from 'src/components/forms/utils/useCrudForm';
 import InputSelectTahunAjaran from '../inputs/InputSelectTahunAjaran.vue';
 import ApbBudget from 'src/models/ApbBudget';

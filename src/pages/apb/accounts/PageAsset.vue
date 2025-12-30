@@ -18,7 +18,7 @@
 					<q-item v-for="asset in assets" :key="asset.account_id">
 						<q-item-section>
 							<q-item-label overline>{{ asset.account_id }}</q-item-label>
-							<q-item-label>{{ asset.account_group }}: {{ asset.account_nama }}</q-item-label>
+							<q-item-label>{{ asset.account_group }}: {{ asset.account_name }}</q-item-label>
 						</q-item-section>
 						<q-item-section class="text-right">
 							<q-item-label caption> Saldo </q-item-label>

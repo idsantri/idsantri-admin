@@ -13,7 +13,7 @@ export default defineStore(
 		const filterText = ref('');
 		const filterThAjaranH = ref('');
 		const thAjaranH = ref('');
-		const filterKategori = ref('');
+		const filterCategory = ref('');
 		const filterGroup = ref('');
 		const optionsThAjaran = ref([]);
 
@@ -75,25 +75,25 @@ export default defineStore(
 		// });
 
 		const optionsGroup = computed(() => {
-			if (!filterKategori.value) {
+			if (!filterCategory.value) {
 				const group = budgets.value.map((account) => account.group);
 				return [...new Set(group)].sort();
 			} else {
 				const group = budgets.value
-					.filter((account) => account.kategori === filterKategori.value)
+					.filter((account) => account.category === filterCategory.value)
 					.map((account) => account.group);
 				return [...new Set(group)].sort();
 			}
 		});
 
-		const optionsKategori = computed(() => {
-			const kategori = budgets.value.map((account) => account.kategori).filter((group) => group !== null);
-			return [...new Set(kategori)];
+		const optionsCategory = computed(() => {
+			const category = budgets.value.map((account) => account.category).filter((group) => group !== null);
+			return [...new Set(category)];
 		});
 
 		const filteredData = computed(() => {
 			const f1 = budgetsCalculate.value.filter((account) => {
-				return filterKategori.value ? account.kategori === filterKategori.value : true;
+				return filterCategory.value ? account.category === filterCategory.value : true;
 			});
 			const f2 = f1.filter((account) => {
 				return filterGroup.value ? account.group === filterGroup.value : true;
@@ -153,10 +153,10 @@ export default defineStore(
 			listTahun,
 			removeData,
 			optionsThAjaran,
-			filterKategori,
+			filterCategory,
 			filterGroup,
 			optionsGroup,
-			optionsKategori,
+			optionsCategory,
 			filteredData,
 			// totalBudgetBiaya,
 			// totalBudgetPendapatan,

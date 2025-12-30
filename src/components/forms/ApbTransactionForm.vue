@@ -9,7 +9,7 @@
 					class="q-my-sm"
 					outlined
 					label="Keterangan"
-					v-model="inputs.keterangan"
+					v-model="inputs.description"
 					autogrow=""
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
@@ -18,11 +18,11 @@
 					class="q-my-sm"
 					outlined
 					label="Atas Nama"
-					v-model="inputs.atas_nama"
+					v-model="inputs.by_name"
 					autogrow=""
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
-				<q-input dense class="q-my-sm" outlined label="Catatan" v-model="inputs.catatan" autogrow="" />
+				<q-input dense class="q-my-sm" outlined label="Catatan" v-model="inputs.note" autogrow="" />
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
@@ -48,9 +48,9 @@ const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(ApbTra
 
 const onSubmit = async () => {
 	const data = {
-		keterangan: inputs.value.keterangan,
-		atas_nama: inputs.value.atas_nama,
-		catatan: inputs.value.catatan,
+		description: inputs.value.description,
+		by_name: inputs.value.by_name,
+		note: inputs.value.note,
 	};
 
 	if (isNew) {

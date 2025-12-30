@@ -35,12 +35,12 @@
 							:to="`/apb/accounts/${j.account_id}?th=${thAjaranH}`"
 						/>
 					</td>
-					<td>{{ j.account?.group }}: {{ j.account?.nama }}</td>
+					<td>{{ j.account?.group }}: {{ j.account?.name }}</td>
 					<td class="text-right" title="Masuk">
 						{{ j.debit ? j.debit.toRupiah() : '-' }}
 					</td>
 					<td class="text-right" title="Keluar">
-						{{ j.kredit ? j.kredit.toRupiah() : '-' }}
+						{{ j.credit ? j.credit.toRupiah() : '-' }}
 					</td>
 					<td class="text-center">
 						<q-btn dense flat icon="sym_o_delete" color="negative" @click="deleteJournal(j)" />
@@ -56,7 +56,7 @@
 						{{ totalDebit.toRupiah() }}
 					</td>
 					<td class="text-right">
-						{{ totalKredit.toRupiah() }}
+						{{ totalCredit.toRupiah() }}
 					</td>
 					<td class="text-center text-green-10"></td>
 				</tr>
@@ -131,8 +131,8 @@ async function loadJournals() {
 }
 
 const totalDebit = computed(() => journals.value.reduce((sum, j) => sum + (j.debit || 0), 0));
-const totalKredit = computed(() => journals.value.reduce((sum, j) => sum + (j.kredit || 0), 0));
-const isBalance = computed(() => totalDebit.value === totalKredit.value);
+const totalCredit = computed(() => journals.value.reduce((sum, j) => sum + (j.credit || 0), 0));
+const isBalance = computed(() => totalDebit.value === totalCredit.value);
 
 onMounted(() => {
 	loadJournals();
@@ -174,7 +174,7 @@ async function saveJournals() {
 			id: j.id || null,
 			account_id: j.account_id,
 			debit: j.debit,
-			kredit: j.kredit,
+			credit: j.credit,
 		}));
 
 		const data = await ApbJournal.saveBatch(props.transactionId, payload);

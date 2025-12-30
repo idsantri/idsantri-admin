@@ -15,8 +15,7 @@
 				icon="wallet"
 				label="Data Transaksi"
 				no-caps
-				@click="null"
-				disable
+				:to="`/apb/accounts/${account_id}?th=${th_ajaran_h}`"
 			/>
 		</q-card-section>
 		<q-card-section class="q-pa-sm">
@@ -51,18 +50,18 @@
 				<tbody>
 					<tr v-for="detail in orderedDetails" :key="detail.id">
 						<td class="text-center" style="width: 75px" title="klik untuk mengubah nomor urut">
-							<q-input borderless dense v-model="detail.urut" input-class="text-center" />
+							<q-input borderless dense v-model="detail.sequence" input-class="text-center" />
 						</td>
 						<td class="text-left">{{ detail?.item }}</td>
 						<td class="text-right">{{ detail?.qty }}</td>
-						<td class="text-left">{{ detail?.satuan }}</td>
-						<td class="text-right">{{ detail?.nominal ? detail?.nominal?.toRupiah() : '-' }}</td>
-						<td class="text-right">{{ detail?.subtotal ? detail?.subtotal?.toRupiah() : '-' }}</td>
-						<td class="text-left">{{ detail?.siklus }}</td>
-						<td class="text-left">{{ detail?.waktu }}</td>
-						<td class="text-left">{{ detail?.penanggung_jawab }}</td>
+						<td class="text-left">{{ detail?.unit }}</td>
+						<td class="text-right">{{ detail?.price ? detail?.nominal?.toRupiah() : '-' }}</td>
+						<td class="text-right">{{ detail?.sub_total ? detail?.sub_total?.toRupiah() : '-' }}</td>
+						<td class="text-left">{{ detail?.cycle }}</td>
+						<td class="text-left">{{ detail?.needed_at }}</td>
+						<td class="text-left">{{ detail?.executor }}</td>
 						<td class="text-left">
-							{{ detail?.catatan }}
+							{{ detail?.note }}
 						</td>
 						<td class="text-center">
 							<q-btn
@@ -114,6 +113,12 @@ const props = defineProps({
 		type: [String, Number],
 		required: true,
 	},
+	account_id: {
+		type: [String],
+	},
+	th_ajaran_h: {
+		type: [String],
+	},
 });
 const emit = defineEmits(['updateTotalBudget']);
 
@@ -121,8 +126,8 @@ const showForm = ref(false);
 const formData = ref({});
 const details = ref([]);
 const loading = ref(false);
-const total = computed(() => details.value.reduce((acc, cur) => acc + Number(cur.subtotal), 0));
-const orderedDetails = computed(() => ArrayCrud.sort(details.value, 'urut', 'asc', false));
+const total = computed(() => details.value.reduce((acc, cur) => acc + Number(cur.sub_total), 0));
+const orderedDetails = computed(() => ArrayCrud.sort(details.value, 'sequence', 'asc', false));
 
 async function loadData() {
 	try {
@@ -167,7 +172,7 @@ const handleDelete = (id) => {
 };
 
 const unwatchUrut = watch(
-	() => details.value.map((item) => item.urut),
+	() => details.value.map((item) => item.sequence),
 	(newUrut, oldUrut) => {
 		// Abaikan jika ini adalah pengisian data pertama kali (fetch API)
 		if (oldUrut.length === 0 || newUrut.length !== oldUrut.length) {
@@ -185,10 +190,10 @@ const unwatchUrut = watch(
 
 async function updateNomorUrut(id, newUrut, oldUrut) {
 	try {
-		await ApbBudgetDetail.update({ id, data: { urut: newUrut }, notifySuccess: false });
+		await ApbBudgetDetail.update({ id, data: { sequence: newUrut }, notifySuccess: false });
 	} catch (e) {
 		// rollback
-		details.value = ArrayCrud.update(details.value, id, { urut: oldUrut });
+		details.value = ArrayCrud.update(details.value, id, { sequence: oldUrut });
 		console.error('🚀 ~ updateNomorUrut ~ e:', e);
 		unwatchUrut();
 	}

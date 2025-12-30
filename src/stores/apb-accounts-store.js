@@ -9,30 +9,30 @@ export default defineStore(
 		const loading = ref(false);
 		const accounts = shallowRef([]);
 		const filterText = ref('');
-		const filterKategori = ref('');
+		const filterCategory = ref('');
 		const filterGroup = ref('');
 
 		const optionsSelect = computed(() => {
 			return accounts.value
 				.filter((account) => account.hidden == 0)
 				.map((account) => {
-					return { group_nama: account.group + ': ' + account.nama, ...account };
+					return { group_name: account.group + ': ' + account.name, ...account };
 				})
 				.sort((a, b) => a.group.localeCompare(b.group));
 		});
 
-		const optionsKategori = computed(() => {
-			const kategori = accounts.value.map((account) => account.kategori).filter((group) => group !== null);
-			return [...new Set(kategori)];
+		const optionsCategory = computed(() => {
+			const category = accounts.value.map((account) => account.category).filter((group) => group !== null);
+			return [...new Set(category)];
 		});
 
 		const optionsGroup = computed(() => {
-			if (!filterKategori.value) {
+			if (!filterCategory.value) {
 				const group = accounts.value.map((account) => account.group);
 				return [...new Set(group)].sort();
 			} else {
 				const group = accounts.value
-					.filter((account) => account.kategori === filterKategori.value)
+					.filter((account) => account.category === filterCategory.value)
 					.map((account) => account.group);
 				return [...new Set(group)].sort();
 			}
@@ -43,7 +43,7 @@ export default defineStore(
 				return filterGroup.value ? account.group === filterGroup.value : true;
 			});
 			const f2 = f1.filter((account) => {
-				return filterKategori.value ? account.kategori === filterKategori.value : true;
+				return filterCategory.value ? account.category === filterCategory.value : true;
 			});
 			return f2;
 		});
@@ -98,9 +98,9 @@ export default defineStore(
 			accounts,
 			filteredAccounts,
 			filterText,
-			filterKategori,
+			filterCategory,
 			filterGroup,
-			optionsKategori,
+			optionsCategory,
 			optionsGroup,
 			optionsSelect,
 			toggleHidden,

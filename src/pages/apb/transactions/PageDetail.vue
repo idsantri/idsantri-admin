@@ -27,19 +27,19 @@
 						</tr>
 						<tr>
 							<td class="label">Keterangan</td>
-							<td>{{ transaction?.keterangan }}</td>
+							<td>{{ transaction?.description }}</td>
 						</tr>
 						<tr>
 							<td class="label">Nilai</td>
-							<td>{{ transaction?.nilai?.toRupiah() }}</td>
+							<td>{{ transaction?.amount?.toRupiah() }}</td>
 						</tr>
 						<tr>
 							<td class="label">Atas Nama</td>
-							<td>{{ transaction?.atas_nama }}</td>
+							<td>{{ transaction?.by_name }}</td>
 						</tr>
 						<tr>
 							<td class="label">Catatan</td>
-							<td>{{ transaction?.catatan }}</td>
+							<td>{{ transaction?.note }}</td>
 						</tr>
 					</tbody>
 				</q-markup-table>

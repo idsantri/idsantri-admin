@@ -12,7 +12,8 @@
 						<tr>
 							<td class="label">Akun</td>
 							<td>
-								[{{ budget?.account_id }}] {{ budget?.group }}: <strong>{{ budget?.nama }}</strong>
+								[{{ budget?.account_id }}] {{ budget?.category }} {{ budget?.group }}:
+								<strong>{{ budget?.name }}</strong>
 							</td>
 						</tr>
 						<tr>
@@ -36,7 +37,12 @@
 					</tbody>
 				</q-markup-table>
 				<q-card-section class="q-pa-sm">
-					<CardDetail :budget_id="params.id" @updateTotalBudget="updateTotal" />
+					<CardDetail
+						:budget_id="params.id"
+						:th_ajaran_h="budget?.th_ajaran_h"
+						:account_id="budget?.account_id"
+						@updateTotalBudget="updateTotal"
+					/>
 				</q-card-section>
 			</q-card>
 		</q-card-section>
@@ -49,6 +55,12 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import CardDetail from './CardDetail.vue';
 import ArrayCrud from 'src/models/ArrayCrud';
+
+/**
+ * TODO:
+ * - Get by Id
+ * - Get by Tahun Ajaran & Account Id
+ */
 
 const state = apbBudgetsStore();
 const { params } = useRoute();

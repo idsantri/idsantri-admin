@@ -40,8 +40,8 @@
 						label="Kategori Akun"
 						emit-value
 						map-options
-						v-model="filterKategori"
-						:options="optionsKategori"
+						v-model="filterCategory"
+						:options="optionsCategory"
 						:loading="loading"
 						clearable
 						behavior="menu"
@@ -95,17 +95,18 @@
 				:columns="columns"
 			>
 				<template v-slot:body-cell-actions="props">
-					<q-td :props="props">
+					<q-td :props="props" title="Detail Anggaran">
 						<q-btn
-							icon="info"
-							label="Detail"
 							no-caps
 							outline
 							size="sm"
-							class="q-px-sm"
-							color="green-6"
+							class="q-px-none"
+							color="green-7"
 							:to="`/apb/budgets/${props.row.id}`"
-						/>
+						>
+							<q-icon name="info" class="q-mx-xs" />
+							<span class="q-mx-xs"> Detail </span>
+						</q-btn>
 					</q-td>
 				</template>
 				<template v-slot:body-cell-account_id="props">
@@ -148,17 +149,17 @@ const {
 	loading,
 	loadingTh,
 	optionsThAjaran,
-	optionsKategori,
+	optionsCategory,
 	optionsGroup,
 	filterText,
-	filterKategori,
+	filterCategory,
 	filterGroup,
 	filteredData,
 } = storeToRefs(state);
 
 const reload = async () => {
 	await state.listTahun();
-	filterKategori.value = '';
+	filterCategory.value = '';
 	filterGroup.value = '';
 	filterText.value = '';
 	if (thAjaranH.value) {
@@ -174,7 +175,7 @@ const handleDelete = async (row) => {
 const handleSuccessSubmit = (v) => {
 	budgets.value = v;
 	realtime.value = true;
-	filterKategori.value = '';
+	filterCategory.value = '';
 	filterGroup.value = '';
 	filterText.value = '';
 	optionsThAjaran.value.push(v[0].th_ajaran_h);
@@ -190,7 +191,7 @@ onMounted(async () => {
 
 watch(thAjaranH, async (val) => {
 	filterGroup.value = '';
-	filterKategori.value = '';
+	filterCategory.value = '';
 	filterText.value = '';
 	if (val) {
 		await state.loadByTahun(val);
@@ -200,7 +201,7 @@ watch(thAjaranH, async (val) => {
 	}
 });
 
-watch(filterKategori, () => {
+watch(filterCategory, () => {
 	filterGroup.value = '';
 });
 
@@ -218,9 +219,9 @@ const columns = [
 		sortable: true,
 	},
 	{
-		name: 'group_nama',
+		name: 'group_name',
 		label: 'Akun ',
-		field: (row) => `${row.group}: ${row.nama}`,
+		field: (row) => `${row.group}: ${row.name}`,
 		align: 'left',
 		sortable: true,
 		style: 'white-space: normal; word-wrap: break-word;',

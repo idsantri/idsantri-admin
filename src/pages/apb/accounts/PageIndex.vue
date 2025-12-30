@@ -3,6 +3,15 @@
 		<CardHeader title="Daftar Akun" @on-reload="reload" :show-add="true" @on-add="showForm = true">
 			<template #more>
 				<q-list>
+					<q-item clickable v-close-popup to="/apb/account-groups">
+						<q-item-section avatar>
+							<q-icon name="sym_o_account_tree" />
+						</q-item-section>
+						<q-item-section>
+							<q-item-label> Grup </q-item-label>
+							<q-item-label caption> Grup Akun </q-item-label>
+						</q-item-section>
+					</q-item>
 					<q-item clickable v-close-popup to="/apb/accounts/assets">
 						<q-item-section avatar>
 							<q-icon name="sym_o_business_center" />
@@ -26,8 +35,8 @@
 						label="Kategori Akun"
 						emit-value
 						map-options
-						v-model="filterKategori"
-						:options="optionsKategori"
+						v-model="filterCategory"
+						:options="optionsCategory"
 						:loading="loading"
 						clearable
 						behavior="menu"
@@ -129,7 +138,7 @@ import ApbAccountForm from 'src/components/forms/ApbAccountForm.vue';
 const showForm = ref(false);
 const realtime = ref(false);
 const state = apbAccountsStore();
-const { accounts, loading, optionsKategori, optionsGroup, filterText, filterKategori, filterGroup, filteredAccounts } =
+const { accounts, loading, optionsCategory, optionsGroup, filterText, filterCategory, filterGroup, filteredAccounts } =
 	storeToRefs(state);
 const { toggleHidden, loadAll, add } = state;
 
@@ -141,7 +150,7 @@ const addToState = (data) => {
 const reload = async () => {
 	await loadAll();
 	filterGroup.value = '';
-	filterKategori.value = '';
+	filterCategory.value = '';
 	filterText.value = '';
 };
 
@@ -157,7 +166,7 @@ onMounted(async () => {
 	}
 });
 
-watch(filterKategori, () => {
+watch(filterCategory, () => {
 	filterGroup.value = '';
 });
 
@@ -170,26 +179,26 @@ const columns = [
 		sortable: true,
 	},
 	{
+		name: 'category__normal_balance',
+		label: 'Kategori',
+		align: 'left',
+		field: (row) => `${row.category} (${row.normal_balance})`,
+		sortable: true,
+	},
+	{
 		name: 'group',
-		label: 'Group',
+		label: 'Grup',
 		field: 'group',
 		align: 'left',
 		sortable: true,
 	},
 	{
-		name: 'nama',
+		name: 'name',
 		label: 'Nama Akun',
 		align: 'left',
-		field: 'nama',
+		field: 'name',
 		sortable: true,
 		style: 'white-space: normal; word-wrap: break-word;',
-	},
-	{
-		name: 'kategori_normal',
-		label: 'Kategori',
-		align: 'left',
-		field: (row) => `${row.kategori} (${row.saldo_normal})`,
-		sortable: true,
 	},
 	{
 		name: 'hidden',

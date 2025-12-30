@@ -34,7 +34,7 @@
 					class="q-my-sm"
 					outlined
 					label="Nama"
-					v-model="inputs.nama"
+					v-model="inputs.name"
 					autogrow=""
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
@@ -66,7 +66,7 @@ const onSubmit = async () => {
 	const data = {
 		id: inputs.value.id,
 		group: inputs.value.group,
-		nama: inputs.value.nama,
+		name: inputs.value.name,
 	};
 
 	if (isNew) {

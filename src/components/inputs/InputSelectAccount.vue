@@ -9,7 +9,7 @@
 		:loading="loading"
 		behavior="menu"
 		option-value="id"
-		option-label="group_nama"
+		option-label="group_name"
 		clearable
 		v-model="input"
 		:rules="[(val) => !!val || 'Harus diisi!']"
@@ -55,7 +55,7 @@ const { loading, accounts, optionsSelect } = storeToRefs(store);
 const hintSelect = computed(() => {
 	if (input.value) {
 		const account = accounts.value?.find((acc) => acc?.id === input.value);
-		return account?.kategori + ' [' + account?.id + '] ' + account?.group + ': ' + account?.nama || '';
+		return account?.category + ' [' + account?.id + '] ' + account?.group + ': ' + account?.name || '';
 	} else {
 		return 'Pilih akun';
 	}

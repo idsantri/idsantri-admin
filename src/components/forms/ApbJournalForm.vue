@@ -24,7 +24,7 @@
 					dense
 					class="q-my-sm"
 					outlined
-					v-model="inputs.kredit"
+					v-model="inputs.credit"
 					required
 					label="Kredit"
 					:rules="[(val) => !!val || 'Harus diisi!']"
@@ -45,12 +45,12 @@ const props = defineProps({
 });
 const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
-const inputs = ref({ debit: 0, kredit: 0, ...props.data });
+const inputs = ref({ debit: 0, credit: 0, ...props.data });
 const isNew = !props.data?.temp_id;
 
 const onSubmit = async () => {
 	// select one debit or kredit
-	if ((!inputs.value.debit && !inputs.value.kredit) || (inputs.value.debit && inputs.value.kredit)) {
+	if ((!inputs.value.debit && !inputs.value.credit) || (inputs.value.debit && inputs.value.credit)) {
 		notifyWarning('Harap isi salah satu antara debit atau kredit!');
 		return;
 	}
