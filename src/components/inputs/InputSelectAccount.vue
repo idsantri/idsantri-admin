@@ -1,30 +1,33 @@
 <template lang="">
 	<div :class="[$attrs.class]">
-		<div class="tw:flex tw:gap-2 tw:items-center tw:justify-between q-mb-sm">
-			<q-radio
-				v-model="category"
-				checked-icon="task_alt"
-				unchecked-icon="panorama_fish_eye"
-				val="Aktiva"
-				label="Aktiva"
-				dense
-			/>
-			<q-radio
-				v-model="category"
-				checked-icon="task_alt"
-				unchecked-icon="panorama_fish_eye"
-				val="Pendapatan"
-				label="Pendapatan"
-				dense
-			/>
-			<q-radio
-				v-model="category"
-				checked-icon="task_alt"
-				unchecked-icon="panorama_fish_eye"
-				val="Biaya"
-				label="Biaya"
-				dense
-			/>
+		<div class="tw:flex tw:gap-2 tw:items-center tw:justify-between tw:gap-x-4 q-mb-sm">
+			<div class="text-italic text-caption">Filter Akun</div>
+			<div class="tw:flex tw:gap-2 tw:items-center tw:justify-between tw:flex-grow">
+				<q-radio
+					v-model="category"
+					checked-icon="task_alt"
+					unchecked-icon="panorama_fish_eye"
+					val="Aktiva"
+					label="Aktiva"
+					dense
+				/>
+				<q-radio
+					v-model="category"
+					checked-icon="task_alt"
+					unchecked-icon="panorama_fish_eye"
+					val="Pendapatan"
+					label="Pendapatan"
+					dense
+				/>
+				<q-radio
+					v-model="category"
+					checked-icon="task_alt"
+					unchecked-icon="panorama_fish_eye"
+					val="Biaya"
+					label="Biaya"
+					dense
+				/>
+			</div>
 		</div>
 		<q-select
 			label="Pilih Akun"
@@ -55,7 +58,7 @@
 							@click="reload"
 						/>
 						<q-separator />
-						<q-btn-dropdown
+						<q-btn
 							class="block full-width"
 							v-close-popup
 							no-caps
@@ -79,6 +82,7 @@ const input = defineModel();
 const category = ref('');
 const store = accountsStore();
 const { loading, accounts, optionsSelect } = storeToRefs(store);
+
 const hintSelect = computed(() => {
 	if (input.value) {
 		const account = accounts.value?.find((acc) => acc?.id === input.value);
@@ -87,16 +91,15 @@ const hintSelect = computed(() => {
 		return 'Pilih akun';
 	}
 });
+
+const options = computed(() =>
+	category.value
+		? optionsSelect.value.filter((acc) => acc.category.toLowerCase() === category.value.toLowerCase())
+		: optionsSelect.value,
+);
+
 const reload = () => store.loadAll(false);
-const options = computed(() => {
-	if (category.value) {
-		return optionsSelect.value.filter(
-			(account) => account.category.toLowerCase() === category.value.toLocaleLowerCase(),
-		);
-	} else {
-		return optionsSelect.value;
-	}
-});
+
 onMounted(async () => {
 	if (!accounts.value?.length) {
 		await reload();
