@@ -12,7 +12,7 @@
 				dense
 				outline
 				glossy
-				icon="wallet"
+				icon="sym_o_credit_card_clock"
 				label="Data Transaksi"
 				no-caps
 				:to="`/apb/accounts/${account_id}?th=${th_ajaran_h}`"
