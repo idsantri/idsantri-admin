@@ -11,7 +11,7 @@
 					<div class="text-body2">{{ account?.category }}</div>
 				</div>
 				<div class="">
-					<div class="text-caption text-italic">Group</div>
+					<div class="text-caption text-italic">Grup</div>
 					<div class="text-body2">{{ account?.group }}</div>
 				</div>
 				<div class="">

@@ -32,10 +32,9 @@ export default defineStore(
 					percentage = 100;
 					status = 'unbudgeted'; // Beri flag untuk styling
 				}
-
 				return {
 					...budget,
-					sisa: total - absorbed,
+					sisa: budget.category.toUpperCase() === 'PENDAPATAN' ? absorbed - total : total - absorbed,
 					percentage: percentage,
 					status: status,
 				};

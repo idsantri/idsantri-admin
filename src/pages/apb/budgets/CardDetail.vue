@@ -27,7 +27,7 @@
 						<th class="text-left">Nama Item</th>
 						<th class="text-right">Q</th>
 						<th class="text-left">Satuan</th>
-						<th class="text-right">Nominal</th>
+						<th class="text-right">Harga</th>
 						<th class="text-right">Sub Total</th>
 						<th class="text-left">Siklus</th>
 						<th class="text-left">Waktu</th>
@@ -55,7 +55,7 @@
 						<td class="text-left">{{ detail?.item }}</td>
 						<td class="text-right">{{ detail?.qty }}</td>
 						<td class="text-left">{{ detail?.unit }}</td>
-						<td class="text-right">{{ detail?.price ? detail?.nominal?.toRupiah() : '-' }}</td>
+						<td class="text-right">{{ detail?.price ? detail?.price?.toRupiah() : '-' }}</td>
 						<td class="text-right">{{ detail?.sub_total ? detail?.sub_total?.toRupiah() : '-' }}</td>
 						<td class="text-left">{{ detail?.cycle }}</td>
 						<td class="text-left">{{ detail?.needed_at }}</td>

@@ -246,7 +246,7 @@ const columns = [
 	},
 	{
 		name: 'sisa',
-		label: 'Selisih',
+		label: 'Sisa',
 		field: 'sisa',
 		format: (val) => `${val ? (Number(val) >= 0 ? '+' : '-') + Math.abs(val).toRupiah() : 0}`,
 		align: 'right',
