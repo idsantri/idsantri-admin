@@ -16,7 +16,11 @@
 				label="Data Transaksi"
 				no-caps
 				:to="`/apb/accounts/${account_id}?th=${th_ajaran_h}`"
-			/>
+			>
+				<q-tooltip class="bg-green-1 text-green-10">
+					Riwayat transaksi akun {{ account_id }} <br />pada tahun ajaran {{ th_ajaran_h }}
+				</q-tooltip>
+			</q-btn>
 		</q-card-section>
 		<q-card-section class="q-pa-sm">
 			<q-markup-table bordered flat>
