@@ -3,7 +3,7 @@
 		<CardHeader title="Daftar Akun" @on-reload="reload" :show-add="true" @on-add="showForm = true">
 			<template #more>
 				<q-list>
-					<q-item clickable v-close-popup to="/apb/account-groups">
+					<q-item clickable v-close-popup to="/apb/accounts/groups">
 						<q-item-section avatar>
 							<q-icon name="sym_o_account_tree" />
 						</q-item-section>
@@ -149,6 +149,7 @@ const addToState = (data) => {
 
 const reload = async () => {
 	await loadAll();
+	realtime.value = true;
 	filterGroup.value = '';
 	filterCategory.value = '';
 	filterText.value = '';
@@ -162,7 +163,6 @@ onMounted(async () => {
 	realtime.value = false;
 	if (accounts.value?.length == 0) {
 		await reload();
-		realtime.value = true;
 	}
 });
 

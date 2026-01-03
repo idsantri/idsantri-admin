@@ -27,6 +27,10 @@ export default [
 				component: (): Component => import('src/pages/apb/accounts/PageAsset.vue'),
 			},
 			{
+				path: 'groups',
+				component: (): Component => import('src/pages/apb/accounts/PageGroup.vue'),
+			},
+			{
 				path: ':id',
 				component: (): Component => import('src/pages/apb/accounts/PageDetail.vue'),
 			},
