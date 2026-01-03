@@ -1,7 +1,7 @@
 <template lang="">
 	<div :class="[$attrs.class]">
 		<div class="tw:flex tw:gap-2 tw:items-center tw:justify-between tw:gap-x-4 q-mb-sm">
-			<div class="text-italic text-caption">Filter Akun</div>
+			<div class="text-italic text-caption">Kategori</div>
 			<div class="tw:flex tw:gap-2 tw:items-center tw:justify-between tw:flex-grow">
 				<q-radio
 					v-model="category"
@@ -27,10 +27,11 @@
 					label="Biaya"
 					dense
 				/>
+				<div style="width: 40px"></div>
 			</div>
 		</div>
 		<q-select
-			label="Pilih Akun"
+			label="Nama Akun"
 			dense
 			outlined
 			emit-value

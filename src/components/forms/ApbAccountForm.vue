@@ -13,27 +13,16 @@
 					autogrow=""
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
-				<InputSelectArray
-					v-model="inputs.group"
-					url="account-group"
-					label="Grup"
+				<InputSelectAccountGroup
 					class="q-my-sm"
+					v-model="inputs.group"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 				/>
 				<q-input
 					dense
 					class="q-my-sm"
 					outlined
-					label="Group"
-					v-model="inputs.group"
-					autogrow=""
-					:rules="[(val) => !!val || 'Harus diisi!']"
-				/>
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Nama"
+					label="Nama Akun"
 					v-model="inputs.name"
 					autogrow=""
 					:rules="[(val) => !!val || 'Harus diisi!']"
@@ -47,7 +36,7 @@
 import { ref } from 'vue';
 import useCrudForm from './utils/useCrudForm';
 import ApbAccount from 'src/models/ApbAccount';
-import InputSelectArray from '../inputs/InputSelectArray.vue';
+import InputSelectAccountGroup from 'src/components/inputs/InputSelectAccountGroup.vue';
 
 const props = defineProps({
 	data: { type: Object, required: true },

@@ -62,10 +62,22 @@
 						<q-btn no-caps flat icon="edit" color="primary" @click="onEdit(props.row)" />
 					</q-td>
 				</template>
+				<template v-slot:body-cell-accounts="props">
+					<q-td :props="props" class="text-italic text-primary">
+						<router-link
+							v-for="item in props.row.accounts"
+							:key="item.id"
+							:to="`/apb/accounts/${item.id}`"
+							class="tw:text-xs"
+						>
+							{{ item.id }}: {{ item.name }}; &nbsp;
+						</router-link>
+					</q-td>
+				</template>
 			</q-table>
 		</q-card-section>
 		<q-dialog persistent="" v-model="showForm">
-			<ApbGroupAccountForm
+			<ApbAccountGroupForm
 				:data="group"
 				@success-create="onCreated"
 				@success-update="onUpdated"
@@ -76,7 +88,7 @@
 </template>
 <script setup>
 import { storeToRefs } from 'pinia';
-import ApbGroupAccountForm from 'src/components/forms/ApbGroupAccountForm.vue';
+import ApbAccountGroupForm from 'src/components/forms/ApbAccountGroupForm.vue';
 import { useAccountGroupStore } from 'stores/apb-account-groups-store';
 import { onMounted, ref, watch } from 'vue';
 
@@ -149,6 +161,14 @@ const columns = [
 		field: 'name',
 		sortable: true,
 		style: 'white-space: normal; word-wrap: break-word;',
+	},
+	{
+		name: 'accounts',
+		label: 'Daftar Akun',
+		align: 'left',
+		field: 'accounts',
+		sortable: false,
+		style: 'white-space: normal; word-wrap: break-word; min-width: 300px;',
 	},
 ];
 </script>

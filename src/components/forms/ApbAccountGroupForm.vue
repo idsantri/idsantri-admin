@@ -30,7 +30,6 @@
 <script setup>
 import { ref } from 'vue';
 import useCrudForm from './utils/useCrudForm';
-import InputSelectArray from '../inputs/InputSelectArray.vue';
 import ApbGroup from 'src/models/ApbGroup';
 
 const props = defineProps({
