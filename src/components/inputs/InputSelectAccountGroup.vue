@@ -44,7 +44,7 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useAccountGroupStore } from 'src/stores/apb-account-groups-store';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 
 const input = defineModel();
 const store = useAccountGroupStore();

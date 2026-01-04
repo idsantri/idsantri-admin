@@ -1,8 +1,8 @@
 import ApiCrud from './ApiCrud.js';
 
-class ApbBudget extends ApiCrud {
+class ApbBudgetDetail extends ApiCrud {
 	constructor() {
 		super('apb/budget-details');
 	}
 }
-export default new ApbBudget();
+export default new ApbBudgetDetail();

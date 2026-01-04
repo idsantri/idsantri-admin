@@ -45,6 +45,10 @@ export default [
 				component: (): Component => import('src/pages/apb/budgets/PageIndex.vue'),
 			},
 			{
+				path: 'configs',
+				component: (): Component => import('src/pages/apb/budgets/PageConfig.vue'),
+			},
+			{
 				path: ':id',
 				component: (): Component => import('src/pages/apb/budgets/PageDetail.vue'),
 			},
