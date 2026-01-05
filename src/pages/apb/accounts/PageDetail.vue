@@ -27,7 +27,7 @@
 </template>
 <script setup>
 import { storeToRefs } from 'pinia';
-import apbAccountsStore from 'src/stores/apb-accounts-store';
+import { useAccountsStore } from 'src/stores/apb-accounts-store';
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import CardAccount from './CardAccount.vue';
@@ -36,7 +36,7 @@ import ApbAccountForm from 'src/components/forms/ApbAccountForm.vue';
 
 const params = useRoute().params;
 const router = useRouter();
-const state = apbAccountsStore();
+const state = useAccountsStore();
 const { loading, accounts } = storeToRefs(state);
 const { loadById, toggleHidden, add, remove } = state;
 const key = ref(0);

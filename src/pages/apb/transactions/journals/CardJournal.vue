@@ -93,7 +93,7 @@ import { computed, onMounted, ref } from 'vue';
 import FormJournal from '../../../../components/forms/ApbJournalForm.vue';
 import ArrayCrud from 'src/models/ArrayCrud';
 import { uid } from 'quasar';
-import accountsStore from 'src/stores/apb-accounts-store';
+import { useAccountsStore } from 'src/stores/apb-accounts-store';
 import { storeToRefs } from 'pinia';
 
 const props = defineProps({
@@ -106,13 +106,14 @@ const props = defineProps({
 		required: true,
 	},
 });
+const emit = defineEmits(['update:isSaved']);
+
 const isSaved = ref(true);
 const loading = ref(false);
 const journals = ref([]);
 const journal = ref(null);
 const crudShow = ref(false);
-const emit = defineEmits(['update:isSaved']);
-const { accounts } = storeToRefs(accountsStore());
+const { accounts } = storeToRefs(useAccountsStore());
 
 async function loadJournals() {
 	try {

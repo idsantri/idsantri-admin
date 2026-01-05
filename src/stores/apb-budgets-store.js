@@ -4,7 +4,7 @@ import ArrayCrud from 'src/models/ArrayCrud';
 import { notifyConfirm } from 'src/utils/notify';
 import { computed, ref, shallowRef } from 'vue';
 
-export default defineStore(
+export const useBudgetStore = defineStore(
 	'budgets-store',
 	() => {
 		const loading = ref(false);

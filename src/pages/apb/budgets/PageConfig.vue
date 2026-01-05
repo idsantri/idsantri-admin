@@ -1,6 +1,6 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Limitasi Anggaran Belanja (5.x)" @on-reload="reload"> </CardHeader>
+		<CardHeader title="Limitasi/Target Anggaran" @on-reload="reload"> </CardHeader>
 		<q-card-section class="q-pt-sm q-pb-none q-px-sm">
 			<q-card bordered flat class="">
 				<q-card-section class="tw:grid tw:sm:flex tw:sm:justify-between tw:gap-2 q-pa-sm">
@@ -86,7 +86,14 @@
 									saveLimit(props.row.id, { newValue: Number(newVal), oldValue: Number(oldVal) })
 							"
 						>
-							<q-input type="number" v-model="scope.value" dense outline autofocus />
+							<q-input
+								type="number"
+								v-model="scope.value"
+								dense
+								outline
+								autofocus
+								hint="% dari anggaran pendapatan"
+							/>
 						</q-popup-edit>
 					</q-td>
 				</template>
@@ -103,10 +110,16 @@
 						/>
 					</q-td>
 				</template>
+				<template v-slot:body-cell-limit_rp="props">
+					<q-td :props="props" title="limit % x anggaran pendapatan">
+						{{ props.value }}
+					</q-td>
+				</template>
 				<template v-slot:bottom-row>
 					<q-tr
 						:class="['text-bold', totalLimit > 100 ? 'bg-red-2 text-red-10' : 'bg-green-11 text-green-10']"
 					>
+						<q-td style="padding: 0; height: 40px" class=""> </q-td>
 						<q-td style="padding: 0; height: 40px" class=""> </q-td>
 						<q-td style="padding: 0; height: 40px" class=""> </q-td>
 						<q-td style="padding: 0; height: 40px" class=""> </q-td>
@@ -153,7 +166,9 @@ onMounted(async () => {
 	if (!thAjaranH.value?.length) {
 		await state.loadListTahun();
 	}
+	// console.log(query);
 	if (query.th) filterTahun.value = query.th;
+	if (query.text) filterText.value = query.text;
 });
 
 watch(filterTahun, async (newTh) => {
@@ -166,6 +181,10 @@ watch(filterTahun, async (newTh) => {
 		configs.value = [];
 		total_budget.value = {};
 	}
+});
+
+watch(filterText, async (text) => {
+	router.replace({ query: { text } });
 });
 
 const columns = [
@@ -184,6 +203,13 @@ const columns = [
 		sortable: false,
 	},
 	{
+		name: 'category',
+		label: 'Kategori',
+		align: 'left',
+		field: 'category',
+		sortable: true,
+	},
+	{
 		name: 'group',
 		label: 'Grup',
 		align: 'left',
@@ -192,19 +218,23 @@ const columns = [
 	},
 	{
 		name: 'limit',
-		label: 'Limit (%)',
+		label: 'Limit/Target (%)',
 		align: 'right',
 		field: (row) => Number(row.limit),
 		format: (val) => `${val?.toFixed(2) ?? 0}%`,
 		sortable: true,
+		// classes: 'bg-yellow-1',
+		// headerClasses: 'bg-yellow-2',
 	},
 	{
 		name: 'limit_rp',
-		label: 'Limit (Rp)',
+		label: 'Limit/Target (Rp)',
 		align: 'right',
 		field: 'limit_rp',
 		format: (val) => `${val?.toRupiah(true, 2)}`,
 		sortable: true,
+		// classes: 'bg-yellow-1',
+		// headerClasses: 'bg-yellow-2',
 	},
 ];
 </script>

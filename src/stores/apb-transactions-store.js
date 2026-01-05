@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import ApbTransaction from 'src/models/ApbTransaction';
 import ArrayCrud from 'src/models/ArrayCrud';
 
-export default defineStore('transactions-store', {
+export const useTransactionStore = defineStore('transactions-store', {
 	state: () => ({
 		transactions: [],
 		loading: false,

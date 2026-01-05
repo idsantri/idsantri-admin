@@ -3,7 +3,7 @@ import ApbAccount from 'src/models/ApbAccount';
 import ArrayCrud from 'src/models/ArrayCrud';
 import { computed, ref, shallowRef } from 'vue';
 
-export default defineStore(
+export const useAccountsStore = defineStore(
 	'accounts-store',
 	() => {
 		const loading = ref(false);

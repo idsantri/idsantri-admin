@@ -76,12 +76,12 @@
 </template>
 <script setup>
 import { storeToRefs } from 'pinia';
-import accountsStore from 'src/stores/apb-accounts-store';
+import { useAccountsStore } from 'src/stores/apb-accounts-store';
 import { computed, onMounted, ref } from 'vue';
 
 const input = defineModel();
 const category = ref('');
-const store = accountsStore();
+const store = useAccountsStore();
 const { loading, accounts, optionsSelect } = storeToRefs(store);
 
 const hintSelect = computed(() => {

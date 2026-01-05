@@ -69,12 +69,12 @@ import { formatDate } from 'src/utils/format-date';
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import CardJournal from './journals/CardJournal.vue';
-import apbTransactionsStore from 'src/stores/apb-transactions-store';
+import { useTransactionStore } from 'src/stores/apb-transactions-store';
 import { storeToRefs } from 'pinia';
 import ApbTransactionForm from 'src/components/forms/ApbTransactionForm.vue';
 
 const params = useRoute().params;
-const state = apbTransactionsStore();
+const state = useTransactionStore();
 const { loading, transactions } = storeToRefs(state);
 const showForm = ref(false);
 const transaction = computed(() => transactions.value.find((item) => item.id == params.id));

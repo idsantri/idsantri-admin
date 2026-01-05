@@ -7,7 +7,9 @@
 					<tbody>
 						<tr>
 							<td class="label">Tahun Ajaran</td>
-							<td>{{ budget?.th_ajaran_h }}</td>
+							<td class="">
+								{{ budget?.th_ajaran_h }}
+							</td>
 						</tr>
 						<tr>
 							<td class="label">Akun</td>
@@ -34,6 +36,40 @@
 								{{ (Number(budget?.total_budget) - Number(budget?.total_absorbed)).toRupiah() }}
 							</td>
 						</tr>
+						<tr>
+							<td class="label">Status Anggaran</td>
+							<td class="flex items-center">
+								<q-toggle
+									dense
+									class="q-pr-lg"
+									:model-value="budget.locked || false"
+									disabled
+									:label="
+										budget?.locked === true
+											? 'Terkunci'
+											: budget?.locked === false
+												? 'Terbuka'
+												: 'Tidak diatur'
+									"
+									color="negative"
+									:unchecked-icon="budget?.value === false ? 'lock_open' : 'clear'"
+									checked-icon="lock"
+								/>
+								<span class="text-italic text-caption" v-if="budget.locked">
+									Anggaran terkunci. Anda tidak dapat melakukan perubahan. Hubungi Admin!
+								</span>
+								<q-space />
+								<q-btn
+									label="Pengaturan"
+									icon-right="settings"
+									dense
+									flat
+									no-caps
+									color="green-7"
+									:to="`/apb/budgets/configs?th=${budget?.th_ajaran_h}&text=${budget?.group}`"
+								/>
+							</td>
+						</tr>
 					</tbody>
 				</q-markup-table>
 				<q-card-section class="q-pa-sm">
@@ -50,7 +86,7 @@
 </template>
 <script setup>
 import { storeToRefs } from 'pinia';
-import apbBudgetsStore from 'src/stores/apb-budgets-store';
+import { useBudgetStore } from 'src/stores/apb-budgets-store';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import CardDetail from './CardDetail.vue';
@@ -62,7 +98,7 @@ import ArrayCrud from 'src/models/ArrayCrud';
  * - Get by Tahun Ajaran & Account Id
  */
 
-const state = apbBudgetsStore();
+const state = useBudgetStore();
 const { params } = useRoute();
 const { budgets } = storeToRefs(state);
 const budget = computed(() => budgets.value.find((item) => item.id == params.id));

@@ -131,13 +131,13 @@
 </template>
 <script setup>
 import { ref, onMounted, watch } from 'vue';
-import apbAccountsStore from 'src/stores/apb-accounts-store';
+import { useAccountsStore } from 'src/stores/apb-accounts-store';
 import { storeToRefs } from 'pinia';
 import ApbAccountForm from 'src/components/forms/ApbAccountForm.vue';
 
 const showForm = ref(false);
 const realtime = ref(false);
-const state = apbAccountsStore();
+const state = useAccountsStore();
 const { accounts, loading, optionsCategory, optionsGroup, filterText, filterCategory, filterGroup, filteredAccounts } =
 	storeToRefs(state);
 const { toggleHidden, loadAll, add } = state;

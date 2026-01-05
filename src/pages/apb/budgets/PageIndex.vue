@@ -131,6 +131,20 @@
 						/>
 					</q-td>
 				</template>
+				<template v-slot:body-cell-locked="props">
+					<q-td :props="props">
+						<q-toggle
+							:model-value="props.value || false"
+							:true-value="true"
+							:false-value="false"
+							color="negative"
+							:unchecked-icon="props.value === false ? 'lock_open' : 'clear'"
+							checked-icon="lock"
+							disable
+							keep-color
+						/>
+					</q-td>
+				</template>
 				<template v-slot:body-cell-delete="props">
 					<q-td :props="props">
 						<q-btn icon="delete" flat color="negative" @click="handleDelete(props.row)" />
@@ -139,19 +153,19 @@
 			</q-table>
 		</q-card-section>
 		<q-dialog persistent="" v-model="showForm">
-			<ApbBudgetForm :data="transaction" @success-submit="(v) => handleSuccessSubmit(v)" />
+			<ApbBudgetForm :data="{}" @success-submit="(v) => handleSuccessSubmit(v)" />
 		</q-dialog>
 	</CardPage>
 </template>
 <script setup>
 import { storeToRefs } from 'pinia';
 import ApbBudgetForm from 'src/components/forms/ApbBudgetForm.vue';
-import apbBudgetsStore from 'src/stores/apb-budgets-store';
+import { useBudgetStore } from 'src/stores/apb-budgets-store';
 import { onMounted, ref, watch } from 'vue';
 
 const realtime = ref(false);
 const showForm = ref(false);
-const state = apbBudgetsStore();
+const state = useBudgetStore();
 const {
 	thAjaranH,
 	budgets,
@@ -269,6 +283,12 @@ const columns = [
 		format: (val) => `${val}%`,
 		align: 'right',
 		sortable: true,
+	},
+	{
+		name: 'locked',
+		label: 'Kunci',
+		field: 'locked',
+		align: 'center',
 	},
 	{
 		name: 'delete',

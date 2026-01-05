@@ -97,13 +97,13 @@
 import { storeToRefs } from 'pinia';
 import ApbTransactionForm from 'src/components/forms/ApbTransactionForm.vue';
 import InputSearch from 'src/components/inputs/InputSearch.vue';
-import apbTransactionsStore from 'src/stores/apb-transactions-store';
+import { useTransactionStore } from 'src/stores/apb-transactions-store';
 import { formatDate } from 'src/utils/format-date';
 import { onMounted, ref, watch } from 'vue';
 
 const crudShow = ref(false);
 const realtime = ref(false);
-const state = apbTransactionsStore();
+const state = useTransactionStore();
 const { transactions, loadingTh, optionsThAjaran, loading, filter, thAjaranH, startDate, endDate } = storeToRefs(state);
 
 onMounted(async () => {
