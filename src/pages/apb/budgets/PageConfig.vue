@@ -133,7 +133,7 @@
 						{{ props.value }}
 					</q-td>
 				</template>
-				<template v-slot:bottom-row>
+				<template v-slot:bottom-row v-if="filterCategory">
 					<q-tr
 						:class="['text-bold', totalLimit > 100 ? 'bg-red-2 text-red-10' : 'bg-green-11 text-green-10']"
 					>
@@ -144,6 +144,7 @@
 						<q-td style="padding-y: 0; height: 40px" class="text-right">
 							{{ totalLimit }}% <span class="q-pl-md"></span>
 						</q-td>
+						<q-td style="padding: 0; height: 40px" class=""> </q-td>
 						<q-td style="padding: 0; height: 40px" class=""> </q-td>
 					</q-tr>
 				</template>
@@ -260,9 +261,25 @@ const columns = [
 		label: 'Limit/Target (Rp)',
 		align: 'right',
 		field: 'limit_rp',
-		format: (val) => `${val?.toRupiah(true, 2)}`,
+		format: (val) => `${val ? val.toRupiah(true, 2) : 0}`,
 		sortable: true,
 		// classes: 'bg-yellow-1',
+		// headerClasses: 'bg-yellow-2',
+	},
+	{
+		name: 'total_budget_group',
+		label: 'Dianggarkan (Rp)',
+		align: 'right',
+		field: 'total_budget_group',
+		format: (val) => `${val ? val.toRupiah(true, 2) : 0}`,
+		sortable: true,
+		classes: (row) => {
+			if (row.category == 'BIAYA') {
+				return Number(row.total_budget_group) > Number(row.limit_rp) ? 'text-negative' : 'text-primary';
+			} else {
+				return Number(row.total_budget_group) < Number(row.limit_rp) ? 'text-negative' : 'text-primary';
+			}
+		},
 		// headerClasses: 'bg-yellow-2',
 	},
 ];
