@@ -17,7 +17,19 @@
 						clearable
 						behavior="menu"
 					/>
-
+					<q-select
+						dense
+						class="tw:w-full tw:sm:max-w-sm"
+						outlined
+						label="Kategori Akun"
+						emit-value
+						map-options
+						v-model="filterCategory"
+						:options="categories"
+						:loading="loading"
+						clearable
+						behavior="menu"
+					/>
 					<q-input
 						class="tw:w-full tw:sm:max-w-sm"
 						outlined
@@ -48,7 +60,7 @@
 						flat
 						class="tw:w-full tw:sm:max-w-sm tw:flex tw:items-center tw:justify-between bg-green-12 q-pa-sm"
 					>
-						<span class="text-italic">Anggaran Belanja</span> &nbsp;
+						<span class="text-italic">Anggaran Biaya</span> &nbsp;
 						<span class="text-subtitle2">{{ total_budget.budget_5?.toRupiah() }}</span>
 					</q-card>
 				</q-card-section>
@@ -111,7 +123,13 @@
 					</q-td>
 				</template>
 				<template v-slot:body-cell-limit_rp="props">
-					<q-td :props="props" title="limit % x anggaran pendapatan">
+					<q-td :props="props">
+						<q-tooltip v-if="props.row.category == 'BIAYA'">
+							Pendapatan ({{ total_budget.budget_4?.toRupiah() }}) x {{ props.row.limit }}%
+						</q-tooltip>
+						<q-tooltip v-if="props.row.category == 'PENDAPATAN'">
+							Biaya ({{ total_budget.budget_5?.toRupiah() }}) x {{ props.row.limit }}%
+						</q-tooltip>
 						{{ props.value }}
 					</q-td>
 				</template>
@@ -141,8 +159,19 @@ import { useRoute, useRouter } from 'vue-router';
 
 const state = useBudgetConfigStore();
 const realtime = ref(false);
-const { loading, loadingTh, configs, total_budget, getConfigs, filterText, filterTahun, totalLimit, thAjaranH } =
-	storeToRefs(state);
+const {
+	loading,
+	loadingTh,
+	configs,
+	total_budget,
+	getConfigs,
+	filterText,
+	filterTahun,
+	filterCategory,
+	totalLimit,
+	thAjaranH,
+	categories,
+} = storeToRefs(state);
 const { query } = useRoute();
 const router = useRouter();
 

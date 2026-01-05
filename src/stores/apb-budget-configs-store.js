@@ -11,15 +11,32 @@ export const useBudgetConfigStore = defineStore('budget-configs-store', {
 		thAjaranH: [],
 		filterText: '',
 		filterTahun: '',
+		filterCategory: '',
 	}),
 
 	getters: {
-		getConfigs: ({ configs, total_budget }) =>
-			configs.map((config) => {
-				const limit_rp = (total_budget?.budget_4 * Number(config.limit || 0)) / 100;
+		getConfigs: ({ configs, total_budget, filterCategory }) => {
+			const mapped = configs.map((config) => {
+				const limit_rp =
+					config.category == 'BIAYA'
+						? (total_budget?.budget_4 * Number(config.limit || 0)) / 100
+						: (total_budget?.budget_5 * Number(config.limit || 0)) / 100;
 				return { ...config, limit_rp };
-			}),
-		totalLimit: (state) => state.configs.reduce((total, config) => total + Number(config.limit), 0).toFixed(2),
+			});
+			if (!filterCategory) {
+				return mapped;
+			}
+			return mapped.filter((config) => config.category === filterCategory);
+		},
+
+		categories: (state) => {
+			const mapped = state.configs.map((config) => config.category);
+			return [...new Set(mapped)];
+		},
+
+		totalLimit() {
+			return this.getConfigs.reduce((total, config) => total + Number(config.limit), 0).toFixed(2);
+		},
 	},
 
 	actions: {
