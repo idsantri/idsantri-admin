@@ -235,6 +235,13 @@ const columns = [
 		align: 'center',
 	},
 	{
+		name: 'th_ajaran_h',
+		label: 'Tahun Ajaran',
+		align: 'left',
+		field: 'th_ajaran_h',
+		sortable: true,
+	},
+	{
 		name: 'account_id',
 		label: 'Akun ID',
 		align: 'left',

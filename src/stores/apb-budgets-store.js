@@ -2,14 +2,14 @@ import { defineStore } from 'pinia';
 import ApbBudget from 'src/models/ApbBudget';
 import ArrayCrud from 'src/models/ArrayCrud';
 import { notifyConfirm } from 'src/utils/notify';
-import { computed, ref, shallowRef } from 'vue';
+import { computed, ref } from 'vue';
 
 export const useBudgetStore = defineStore(
 	'budgets-store',
 	() => {
 		const loading = ref(false);
 		const loadingTh = ref(false);
-		const budgets = shallowRef([]);
+		const budgets = ref([]);
 		const filterText = ref('');
 		const filterThAjaranH = ref('');
 		const thAjaranH = ref('');
@@ -124,6 +124,19 @@ export const useBudgetStore = defineStore(
 			}
 		}
 
+		async function loadById(id) {
+			try {
+				loading.value = true;
+				const data = await ApbBudget.getById({ id });
+				budgets.value = ArrayCrud.update(budgets.value, id, data.budget);
+				return data.budget;
+			} catch (_err) {
+				console.error('🚀 ~ loadData ~ _err:', _err);
+			} finally {
+				loading.value = false;
+			}
+		}
+
 		async function removeData(id) {
 			const isConfirmed = await notifyConfirm('<span style="color: red">Hapus anggaran ini?</span>');
 			if (!isConfirmed) {
@@ -134,6 +147,7 @@ export const useBudgetStore = defineStore(
 				loading.value = true;
 				await ApbBudget.remove({ id, confirm: false });
 				budgets.value = ArrayCrud.remove(budgets.value, id);
+				return true;
 			} catch (error) {
 				console.error('🚀 ~ remove ~ error:', error);
 			} finally {
@@ -149,6 +163,7 @@ export const useBudgetStore = defineStore(
 			filterThAjaranH,
 			thAjaranH,
 			loadByTahun,
+			loadById,
 			listTahun,
 			removeData,
 			optionsThAjaran,

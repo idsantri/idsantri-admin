@@ -12,5 +12,13 @@ class ApbBudgetConfig extends ApiCrud {
 
 		return resData.data;
 	}
+
+	// async getByThAndGroup(th_ajaran_h, group) {
+	// 	const resData = await this._apiGet({
+	// 		endPoint: `${this._path}/q/${th_ajaran_h}/${group}`,
+	// 	});
+
+	// 	return resData.data;
+	// }
 }
 export default new ApbBudgetConfig();

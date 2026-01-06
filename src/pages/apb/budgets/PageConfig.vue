@@ -85,6 +85,22 @@
 				no-results-label="Tidak ditemukan kata kunci yang sesuai dengan pencarian Anda!"
 				row-key="id"
 			>
+				<template v-slot:body-cell-expand="props">
+					<q-td :props="props">
+						<q-btn-dropdown
+							menu-self="top start"
+							color="info"
+							dense
+							size="sm"
+							outline
+							class="q-px-sm"
+							:disabled="!props.row.total_budget_group > 0"
+						>
+							<ConfigMenus :config="props.row" />
+						</q-btn-dropdown>
+					</q-td>
+				</template>
+
 				<template v-slot:body-cell-limit="props">
 					<q-td :props="props">
 						<span class="text-pre-wrap">{{ props.value }}</span>
@@ -157,6 +173,7 @@ import { storeToRefs } from 'pinia';
 import { useBudgetConfigStore } from 'src/stores/apb-budget-configs-store';
 import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import ConfigMenus from './ConfigMenus.vue';
 
 const state = useBudgetConfigStore();
 const realtime = ref(false);
@@ -219,8 +236,15 @@ watch(filterText, async (text) => {
 
 const columns = [
 	{
+		name: 'expand',
+		label: '!',
+		align: 'center',
+		field: '',
+		sortable: false,
+	},
+	{
 		name: 'locked',
-		label: 'Kunci Anggaran',
+		label: 'Kunci',
 		align: 'center',
 		field: 'locked',
 		sortable: false,

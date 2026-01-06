@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import ApbBudgetConfig from 'src/models/ApbBudgetConfig';
 import ArrayCrud from 'src/models/ArrayCrud';
+import { useBudgetStore } from './apb-budgets-store';
 
 export const useBudgetConfigStore = defineStore('budget-configs-store', {
 	state: () => ({
@@ -65,11 +66,24 @@ export const useBudgetConfigStore = defineStore('budget-configs-store', {
 			}
 		},
 
+		updateBudgets(config) {
+			const budgetState = useBudgetStore();
+			const filtered = budgetState.budgets.filter(
+				(budget) => budget.th_ajaran_h === config.th_ajaran_h && budget.group === config.group,
+			);
+			filtered.forEach((budget) => {
+				budgetState.budgets = ArrayCrud.update(budgetState.budgets, budget.id, {
+					locked: config.locked ? true : false,
+				});
+			});
+		},
+
 		async toggleLock(id, value) {
 			try {
 				this.loading = true;
 				this.configs = ArrayCrud.update(this.configs, id, { locked: value ? true : false });
-				await ApbBudgetConfig.update({ id, data: { locked: value } });
+				const data = await ApbBudgetConfig.update({ id, data: { locked: value } });
+				this.updateBudgets(data.config);
 			} catch (err) {
 				this.configs = ArrayCrud.update(this.configs, id, { locked: value ? false : true });
 				console.error('🚀 ~ toggleHidden ~ err:', err);

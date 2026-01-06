@@ -1,96 +1,37 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Anggaran" :show-reload="false" @on-reload="null" :show-edit="false" />
-		<q-card-section class="q-pa-sm">
-			<q-card bordered flat class="">
-				<q-markup-table class="">
-					<tbody>
-						<tr>
-							<td class="label">Tahun Ajaran</td>
-							<td class="">
-								{{ budget?.th_ajaran_h }}
-							</td>
-						</tr>
-						<tr>
-							<td class="label">Akun</td>
-							<td>
-								[{{ budget?.account_id }}] {{ budget?.category }} {{ budget?.group }}:
-								<strong>{{ budget?.name }}</strong>
-							</td>
-						</tr>
-						<tr>
-							<td class="label">Total Anggaran</td>
-							<td>
-								{{ budget?.total_budget.toRupiah() }}
-							</td>
-						</tr>
-						<tr>
-							<td class="label">Total Serapan/Alokasi</td>
-							<td>
-								{{ budget?.total_absorbed ? budget?.total_absorbed.toRupiah() : 0 }}
-							</td>
-						</tr>
-						<tr>
-							<td class="label">Sisa</td>
-							<td>
-								{{ (Number(budget?.total_budget) - Number(budget?.total_absorbed)).toRupiah() }}
-							</td>
-						</tr>
-						<tr>
-							<td class="label">Status Anggaran</td>
-							<td class="flex items-center">
-								<q-toggle
-									dense
-									class="q-pr-lg"
-									:model-value="budget.locked || false"
-									disabled
-									:label="
-										budget?.locked === true
-											? 'Terkunci'
-											: budget?.locked === false
-												? 'Terbuka'
-												: 'Tidak diatur'
-									"
-									color="negative"
-									:unchecked-icon="budget?.value === false ? 'lock_open' : 'clear'"
-									checked-icon="lock"
-								/>
-								<span class="text-italic text-caption" v-if="budget.locked">
-									Anggaran terkunci. Anda tidak dapat melakukan perubahan. Hubungi Admin!
-								</span>
-								<q-space />
-								<q-btn
-									label="Pengaturan"
-									icon-right="settings"
-									dense
-									flat
-									no-caps
-									color="green-7"
-									:to="`/apb/budgets/configs?th=${budget?.th_ajaran_h}&text=${budget?.group}`"
-								/>
-							</td>
-						</tr>
-					</tbody>
-				</q-markup-table>
-				<q-card-section class="q-pa-sm">
-					<CardDetail
-						:budget_id="params.id"
-						:th_ajaran_h="budget?.th_ajaran_h"
-						:account_id="budget?.account_id"
-						@updateTotalBudget="updateTotal"
-					/>
-				</q-card-section>
+		<CardHeader title="Detail Anggaran" :show-reload="true" @on-reload="null" :show-edit="false" />
+		<q-card-section class="tw:grid tw:sm:flex tw:sm:justify-between tw:gap-2 q-pa-sm">
+			<q-card class="tw:w-full" bordered flat>
+				<CardBudget :budget="budget" @onDelete="handleDelete" />
 			</q-card>
+			<q-card class="tw:w-full" bordered flat>
+				<CardConfig
+					:th_ajaran_h="budget?.th_ajaran_h"
+					:group="budget?.group"
+					:account_id="budget?.account_id"
+				/>
+			</q-card>
+		</q-card-section>
+		<q-card-section class="q-px-sm q-pb-sm q-pt-none">
+			<CardDetail
+				:budget_id="params.id"
+				:th_ajaran_h="budget?.th_ajaran_h"
+				:account_id="budget?.account_id"
+				@updateTotalBudget="updateTotal"
+			/>
 		</q-card-section>
 	</CardPage>
 </template>
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useBudgetStore } from 'src/stores/apb-budgets-store';
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { onBeforeMount, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import CardDetail from './CardDetail.vue';
 import ArrayCrud from 'src/models/ArrayCrud';
+import CardBudget from './CardBudget.vue';
+import CardConfig from './CardConfig.vue';
 
 /**
  * TODO:
@@ -99,21 +40,27 @@ import ArrayCrud from 'src/models/ArrayCrud';
  */
 
 const state = useBudgetStore();
+const router = useRouter();
 const { params } = useRoute();
 const { budgets } = storeToRefs(state);
-const budget = computed(() => budgets.value.find((item) => item.id == params.id));
+const budget = ref({});
+
+onBeforeMount(async () => {
+	let found = budgets.value.find((item) => item.id == params.id);
+	if (!found) {
+		found = await state.loadById(params.id);
+	}
+	budget.value = found;
+});
 
 const updateTotal = (total_budget) => {
 	budgets.value = ArrayCrud.update(budgets.value, budget.value.id, { ...budget.value, total_budget });
 };
+const handleDelete = async () => {
+	const del = await state.removeData(budget.value.id);
+	if (del) {
+		router.go(-1);
+	}
+};
 </script>
-<style lang="scss" scoped>
-.label {
-	font-style: italic;
-	width: 200px;
-}
-td {
-	white-space: normal;
-	word-wrap: break-word;
-}
-</style>
+<style lang="scss" scoped></style>
