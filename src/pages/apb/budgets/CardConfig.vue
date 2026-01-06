@@ -44,7 +44,7 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useBudgetStore } from 'src/stores/apb-budgets-store';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 
 const props = defineProps({
 	th_ajaran_h: {
@@ -70,5 +70,17 @@ const filtered = computed(() => {
 const total = computed(() => {
 	return filtered.value.reduce((acc, cur) => acc + Number(cur.total_budget), 0);
 });
+
+watch(
+	() => [props.th_ajaran_h, props.group],
+	async (newVal) => {
+		const newTahun = newVal[0];
+		const newGroup = newVal[1];
+		if (newTahun && newGroup && !filtered.value?.length) {
+			await budgetState.loadByTahun(newTahun);
+		}
+	},
+	{ immediate: true, deep: true },
+);
 </script>
 <style lang=""></style>

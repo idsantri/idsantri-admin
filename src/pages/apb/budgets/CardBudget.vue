@@ -1,5 +1,6 @@
 <template lang="">
 	<q-list class="" bordered>
+		<CardLoading :showing="loading" />
 		<q-item>
 			<q-item-section class="">
 				<q-item-label caption>Tahun Ajaran</q-item-label>
@@ -76,6 +77,15 @@
 	</q-list>
 </template>
 <script setup>
-defineProps({ budget: Object });
+defineProps({
+	budget: {
+		type: Object,
+		default: () => ({}),
+	},
+	loading: {
+		type: Boolean,
+		default: false,
+	},
+});
 </script>
 <style lang=""></style>

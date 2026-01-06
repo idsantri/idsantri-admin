@@ -36,7 +36,7 @@
 						label="Tahun Ajaran"
 						emit-value
 						map-options
-						v-model="thAjaranH"
+						v-model="filterThAjaranH"
 						:options="optionsThAjaran"
 						:loading="loadingTh"
 						clearable
@@ -167,7 +167,7 @@ const realtime = ref(false);
 const showForm = ref(false);
 const state = useBudgetStore();
 const {
-	thAjaranH,
+	filterThAjaranH,
 	budgets,
 	loading,
 	loadingTh,
@@ -185,8 +185,8 @@ const reload = async () => {
 	filterCategory.value = '';
 	filterGroup.value = '';
 	filterText.value = '';
-	if (thAjaranH.value) {
-		await state.loadByTahun(thAjaranH.value);
+	if (filterThAjaranH.value) {
+		await state.loadByTahun(filterThAjaranH.value);
 		realtime.value = true;
 	}
 };
@@ -202,7 +202,7 @@ const handleSuccessSubmit = (v) => {
 	filterGroup.value = '';
 	filterText.value = '';
 	optionsThAjaran.value.push(v[0].th_ajaran_h);
-	thAjaranH.value = v[0].th_ajaran_h;
+	filterThAjaranH.value = v[0].th_ajaran_h;
 };
 
 onMounted(async () => {
@@ -212,7 +212,7 @@ onMounted(async () => {
 	}
 });
 
-watch(thAjaranH, async (val) => {
+watch(filterThAjaranH, async (val) => {
 	filterGroup.value = '';
 	filterCategory.value = '';
 	filterText.value = '';

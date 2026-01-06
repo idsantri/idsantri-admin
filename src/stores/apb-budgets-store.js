@@ -12,7 +12,6 @@ export const useBudgetStore = defineStore(
 		const budgets = ref([]);
 		const filterText = ref('');
 		const filterThAjaranH = ref('');
-		const thAjaranH = ref('');
 		const filterCategory = ref('');
 		const filterGroup = ref('');
 		const optionsThAjaran = ref([]);
@@ -117,6 +116,7 @@ export const useBudgetStore = defineStore(
 				loading.value = true;
 				const data = await ApbBudget.getAll({ params: { th_ajaran_h }, notifySuccess: notify });
 				budgets.value = data.budgets;
+				filterThAjaranH.value = th_ajaran_h;
 			} catch (_err) {
 				console.error('🚀 ~ loadData ~ _err:', _err);
 			} finally {
@@ -159,16 +159,15 @@ export const useBudgetStore = defineStore(
 			loading,
 			loadingTh,
 			budgets,
-			filterText,
-			filterThAjaranH,
-			thAjaranH,
 			loadByTahun,
 			loadById,
 			listTahun,
 			removeData,
-			optionsThAjaran,
+			filterText,
+			filterThAjaranH,
 			filterCategory,
 			filterGroup,
+			optionsThAjaran,
 			optionsGroup,
 			optionsCategory,
 			filteredData,

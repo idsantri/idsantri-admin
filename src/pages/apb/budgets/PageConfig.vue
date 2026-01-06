@@ -1,6 +1,30 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Limitasi/Target Anggaran" @on-reload="reload"> </CardHeader>
+		<CardHeader title="Konfigurasi Limitasi/Target Anggaran" @on-reload="reload">
+			<template #more>
+				<q-list>
+					<!-- input -->
+					<q-item clickable v-close-popup @click="showForm = true">
+						<q-item-section avatar>
+							<q-icon color="green" name="sym_o_create_new_folder" />
+						</q-item-section>
+						<q-item-section>
+							<q-item-label overline> Buat Konfigurasi </q-item-label>
+							<q-item-label caption> anggaran tahun ajaran baru </q-item-label>
+						</q-item-section>
+					</q-item>
+					<q-item clickable v-close-popup to="/apb/budgets">
+						<q-item-section avatar>
+							<q-icon color="green" name="sym_o_account_balance_wallet" />
+						</q-item-section>
+						<q-item-section>
+							<q-item-label overline> Anggaran </q-item-label>
+							<q-item-label caption> Pendapatan dan Belanja </q-item-label>
+						</q-item-section>
+					</q-item>
+				</q-list>
+			</template>
+		</CardHeader>
 		<q-card-section class="q-pt-sm q-pb-none q-px-sm">
 			<q-card bordered flat class="">
 				<q-card-section class="tw:grid tw:sm:flex tw:sm:justify-between tw:gap-2 q-pa-sm">
@@ -157,6 +181,7 @@
 						<q-td style="padding: 0; height: 40px" class=""> </q-td>
 						<q-td style="padding: 0; height: 40px" class=""> </q-td>
 						<q-td style="padding: 0; height: 40px" class=""> </q-td>
+						<q-td style="padding: 0; height: 40px" class=""> </q-td>
 						<q-td style="padding-y: 0; height: 40px" class="text-right">
 							{{ totalLimit }}% <span class="q-pl-md"></span>
 						</q-td>
@@ -166,6 +191,9 @@
 				</template>
 			</q-table>
 		</q-card-section>
+		<q-dialog persistent="" v-model="showForm">
+			<ApbBudgetConfigForm :data="{}" @success-submit="(v) => handleSuccessSubmit(v)" />
+		</q-dialog>
 	</CardPage>
 </template>
 <script setup>
@@ -174,6 +202,7 @@ import { useBudgetConfigStore } from 'src/stores/apb-budget-configs-store';
 import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import ConfigMenus from './ConfigMenus.vue';
+import ApbBudgetConfigForm from 'src/components/forms/ApbBudgetConfigForm.vue';
 
 const state = useBudgetConfigStore();
 const realtime = ref(false);
@@ -192,7 +221,14 @@ const {
 } = storeToRefs(state);
 const { query } = useRoute();
 const router = useRouter();
-
+const showForm = ref(false);
+const handleSuccessSubmit = (data) => {
+	showForm.value = false;
+	configs.value = data.configs;
+	total_budget.value = data.total_budget;
+	filterTahun.value = data.total_budget.th_ajaran_h;
+	realtime.value = true;
+};
 const reload = async () => {
 	await state.loadListTahun();
 	if (filterTahun.value) {

@@ -1,9 +1,9 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Detail Anggaran" :show-reload="true" @on-reload="null" :show-edit="false" />
+		<CardHeader title="Detail Anggaran" :show-reload="true" @on-reload="reload" :show-edit="false" />
 		<q-card-section class="tw:grid tw:sm:flex tw:sm:justify-between tw:gap-2 q-pa-sm">
 			<q-card class="tw:w-full" bordered flat>
-				<CardBudget :budget="budget" @onDelete="handleDelete" />
+				<CardBudget :budget="budget" @onDelete="handleDelete" :loading="loading" />
 			</q-card>
 			<q-card class="tw:w-full" bordered flat>
 				<CardConfig
@@ -33,16 +33,10 @@ import ArrayCrud from 'src/models/ArrayCrud';
 import CardBudget from './CardBudget.vue';
 import CardConfig from './CardConfig.vue';
 
-/**
- * TODO:
- * - Get by Id
- * - Get by Tahun Ajaran & Account Id
- */
-
 const state = useBudgetStore();
 const router = useRouter();
 const { params } = useRoute();
-const { budgets } = storeToRefs(state);
+const { budgets, loading } = storeToRefs(state);
 const budget = ref({});
 
 onBeforeMount(async () => {
@@ -52,6 +46,10 @@ onBeforeMount(async () => {
 	}
 	budget.value = found;
 });
+
+async function reload() {
+	await state.loadByTahun(budget.value.th_ajaran_h);
+}
 
 const updateTotal = (total_budget) => {
 	budgets.value = ArrayCrud.update(budgets.value, budget.value.id, { ...budget.value, total_budget });
