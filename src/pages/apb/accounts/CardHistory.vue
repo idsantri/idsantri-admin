@@ -23,7 +23,34 @@
 				:disable="!journals?.length"
 			/>
 		</div>
-
+		<q-card v-if="!!budget?.id" bordered flat class="q-mb-sm bg-green-1">
+			<q-card-section class="q-pa-xs flex items-center justify-between">
+				<div class="tw:flex tw:gap-4 tw:items-center">
+					<div class="bg-transparent text-subtitle2" flat bordered>
+						<span class="text-caption text-italic"> Total Anggaran: </span>
+						{{ budget?.total_budget?.toRupiah() }}
+					</div>
+					<div class="bg-transparent text-subtitle2" flat bordered>
+						<span class="text-caption text-italic"> Total Serapan: </span>
+						{{ budget?.total_absorbed?.toRupiah() }}
+					</div>
+					<div class="bg-transparent text-subtitle2" flat bordered>
+						<span class="text-caption text-italic"> Total Sisa: </span>
+						{{ (Number(budget?.total_budget) - Number(budget?.total_absorbed)).toRupiah() }}
+					</div>
+				</div>
+				<q-btn
+					:disable="!budget?.id"
+					outline
+					no-caps
+					dense
+					class="q-px-sm"
+					color="green-10"
+					label="Lihat selengkapnya"
+					:to="`/apb/budgets/${budget?.id}`"
+				/>
+			</q-card-section>
+		</q-card>
 		<q-table
 			:columns="columns"
 			bordered
@@ -70,6 +97,7 @@ const optionsTahun = ref([]);
 const loadingTahun = ref(false);
 const thAjaranH = ref(null);
 const journals = ref([]);
+const budget = ref(null);
 const loading = ref(false);
 const router = useRouter();
 const { query } = useRoute();
@@ -92,6 +120,7 @@ async function loadJournals(th_ajaran_h) {
 		loading.value = true;
 		const data = await ApbJournal.accountAndTahun(props.account_id, th_ajaran_h);
 		journals.value = data.journals;
+		budget.value = data.budget;
 	} catch (error) {
 		console.error('🚀 ~ loadJournals ~ error:', error);
 	} finally {
