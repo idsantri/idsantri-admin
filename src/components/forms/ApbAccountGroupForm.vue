@@ -12,6 +12,7 @@
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:options="['AKTIVA', 'PENDAPATAN', 'BIAYA']"
+					ref="firstInput"
 				/>
 				<q-input
 					dense
@@ -28,7 +29,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import useCrudForm from './utils/useCrudForm';
 import ApbGroup from 'src/models/ApbGroup';
 
@@ -39,6 +40,12 @@ const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'su
 
 const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(ApbGroup, {
 	emit: emit,

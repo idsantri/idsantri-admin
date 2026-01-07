@@ -12,6 +12,7 @@
 					v-model="inputs.id"
 					autogrow=""
 					:rules="[(val) => !!val || 'Harus diisi!']"
+					ref="firstInput"
 				/>
 				<InputSelectAccountGroup
 					class="q-my-sm"
@@ -33,7 +34,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import useCrudForm from './utils/useCrudForm';
 import ApbAccount from 'src/models/ApbAccount';
 import InputSelectAccountGroup from 'src/components/inputs/InputSelectAccountGroup.vue';
@@ -45,6 +46,12 @@ const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'su
 
 const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(ApbAccount, {
 	emit: emit,

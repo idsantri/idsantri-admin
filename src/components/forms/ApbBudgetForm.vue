@@ -8,6 +8,7 @@
 					v-model="inputs.th_ajaran_h"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					class="q-my-sm"
+					ref="firstInput"
 				/>
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
@@ -15,7 +16,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import useCrudForm from 'src/components/forms/utils/useCrudForm';
 import InputSelectTahunAjaran from '../inputs/InputSelectTahunAjaran.vue';
 import ApbBudget from 'src/models/ApbBudget';
@@ -29,6 +30,12 @@ const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'su
 
 const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const { handleDelete, handleCreate, loading } = useCrudForm(ApbBudget, {
 	emit: emit,

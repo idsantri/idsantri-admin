@@ -45,6 +45,7 @@
 			v-model="input"
 			:rules="[(val) => !!val || 'Harus diisi!']"
 			:hint="hintSelect"
+			ref="selectRef"
 		>
 			<template v-slot:after>
 				<q-card flat bordered>
@@ -77,7 +78,7 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useAccountsStore } from 'src/stores/apb-accounts-store';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, useTemplateRef } from 'vue';
 
 const input = defineModel();
 const category = ref('');
@@ -98,6 +99,15 @@ const options = computed(() =>
 		? optionsSelect.value.filter((acc) => acc.category.toLowerCase() === category.value.toLowerCase())
 		: optionsSelect.value,
 );
+const selectRef = useTemplateRef('selectRef');
+defineExpose({
+	focus: () => {
+		if (selectRef.value) selectRef.value.focus();
+	},
+	showPopup: () => {
+		if (selectRef.value) selectRef.value.showPopup();
+	},
+});
 
 const reload = () => store.loadAll(false);
 

@@ -10,6 +10,7 @@
 					label="Jenis Akun"
 					v-model="inputs.account_id"
 					:rules="[(val) => !!val || 'Harus diisi!']"
+					ref="firstInput"
 				/>
 				<InputCurrency
 					dense
@@ -35,7 +36,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 import { notifyWarning } from 'src/utils/notify';
 import InputSelectAccount from 'src/components/inputs/InputSelectAccount.vue';
@@ -47,7 +48,12 @@ const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'su
 
 const inputs = ref({ debit: 0, credit: 0, ...props.data });
 const isNew = !props.data?.temp_id;
+const firstInput = useTemplateRef('firstInput');
 
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 const onSubmit = async () => {
 	// select one debit or kredit
 	if ((!inputs.value.debit && !inputs.value.credit) || (inputs.value.debit && inputs.value.credit)) {

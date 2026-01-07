@@ -11,6 +11,7 @@
 					outlined=""
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
+					ref="firstInput"
 				/>
 				<q-input
 					label="Kuantitas / Banyaknya *"
@@ -54,7 +55,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import useCrudForm from 'src/components/forms/utils/useCrudForm';
 import ApbBudgetDetail from 'src/models/ApbBudgetDetail';
@@ -68,6 +69,12 @@ const emits = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 's
 
 const inputs = ref({ unit: 'kali', ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(ApbBudgetDetail, {
 	emit: emits,
