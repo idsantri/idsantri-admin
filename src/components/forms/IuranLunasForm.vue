@@ -4,30 +4,9 @@
 			<FormHeader title="Set Iuran Lunas" :is-new="false" />
 			<FormLoading v-if="loading" />
 			<q-card-section>
-				<q-input
-					disable
-					label="Nama"
-					v-model="input.nama"
-					dense
-					outlined=""
-					class="q-my-sm"
-				/>
-				<q-input
-					disable
-					label="Tahun Ajaran"
-					v-model="input.th_ajaran_h"
-					dense
-					outlined=""
-					class="q-my-sm"
-				/>
-				<q-input
-					disable
-					label="Nama Iuran"
-					v-model="input.item"
-					dense
-					outlined=""
-					class="q-my-sm"
-				/>
+				<q-input disable label="Nama" v-model="input.nama" dense outlined="" class="q-my-sm" />
+				<q-input disable label="Tahun Ajaran" v-model="input.th_ajaran_h" dense outlined="" class="q-my-sm" />
+				<q-input disable label="Nama Iuran" v-model="input.item" dense outlined="" class="q-my-sm" />
 				<InputCurrency
 					disable
 					dense
@@ -43,6 +22,7 @@
 					label="Via"
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
+					ref="firstInput"
 				/>
 			</q-card-section>
 			<FormActions :btn-delete="false" />
@@ -50,7 +30,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import InputCurrency from '../inputs/InputCurrency.vue';
 import Iuran from 'src/models/Iuran';
@@ -59,15 +39,16 @@ const props = defineProps({
 	data: { type: Object, required: true },
 });
 
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const input = ref({ ...props.data });
 const loading = ref(false);
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const onSubmit = async () => {
 	try {

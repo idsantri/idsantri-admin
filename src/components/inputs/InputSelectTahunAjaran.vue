@@ -13,6 +13,7 @@
 		clearable
 		v-model="input"
 		:bottom-slots="bottomSlots"
+		ref="selectRef"
 	>
 		<template v-slot:hint>
 			{{ hint }}
@@ -24,7 +25,7 @@
 </template>
 <script setup>
 import listsStore from 'src/stores/lists-store';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, useTemplateRef } from 'vue';
 import DropDownAfter from './DropDownAfter.vue';
 import Lists from 'src/models/Lists';
 
@@ -57,6 +58,16 @@ const hint = computed(() => {
 	} else {
 		return 'Pilih Tahun Ajaran';
 	}
+});
+
+const selectRef = useTemplateRef('selectRef');
+defineExpose({
+	focus: () => {
+		if (selectRef.value) selectRef.value.focus();
+	},
+	showPopup: () => {
+		if (selectRef.value) selectRef.value.showPopup();
+	},
 });
 
 onMounted(async () => {

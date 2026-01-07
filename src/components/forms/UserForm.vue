@@ -4,14 +4,7 @@
 			<FormHeader title="Update Profil" :is-new="false" />
 			<FormLoading v-if="loading" />
 			<q-card-section>
-				<q-input
-					class="q-my-sm"
-					dense
-					outlined
-					label="Nama"
-					v-model="inputs.name"
-					hint=""
-				/>
+				<q-input class="q-my-sm" dense outlined label="Nama" v-model="inputs.name" hint="" ref="firstInput" />
 				<q-input
 					class="q-my-sm"
 					dense
@@ -35,15 +28,9 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 import User from 'src/models/User';
-
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+import { nextTick } from 'vue';
 
 const props = defineProps({
 	data: {
@@ -51,8 +38,17 @@ const props = defineProps({
 		required: true,
 	},
 });
+
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
+
 const inputs = ref({ ...props.data });
 const loading = ref(false);
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 async function onSubmit() {
 	const data = {

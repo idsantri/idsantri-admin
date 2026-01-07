@@ -11,6 +11,7 @@
 					v-model="inputs.sequence"
 					hint="Nomor urut tampil"
 					class="q-my-sm"
+					ref="firstInput"
 				/>
 				<InputSelectTingkatPendidikan
 					v-model="inputs.tingkat_id"
@@ -53,7 +54,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import InputSelectTingkatPendidikan from 'src/components/inputs/InputSelectTingkatPendidikan.vue';
 import useCrudForm from './utils/useCrudForm';
 import Mapel from 'src/models/Mapel';
@@ -62,10 +63,17 @@ import InputToggle from '../inputs/InputToggle.vue';
 const props = defineProps({
 	data: { type: Object, required: true },
 });
+
 const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({ category: 'Fan Dasar', show: 1, ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Mapel, { emit, responseKey: 'mapel' });
 

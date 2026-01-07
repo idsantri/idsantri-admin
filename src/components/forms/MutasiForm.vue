@@ -39,6 +39,7 @@
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:clearable="false"
+					ref="firstInput"
 				/>
 				<q-input
 					v-model="inputs.new_keterangan"
@@ -54,17 +55,10 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import Mutasi from 'src/models/Mutasi';
 import useCrudForm from './utils/useCrudForm';
-
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
 
 const props = defineProps({
 	data: {
@@ -72,7 +66,17 @@ const props = defineProps({
 		required: true,
 	},
 });
+
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
+
 const inputs = ref({ ...props.data });
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
+
 const { handleDelete, handleUpdate, loading } = useCrudForm(Mutasi, {
 	emit,
 	responseKey: 'mutasi',

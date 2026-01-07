@@ -23,6 +23,7 @@
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:selected="inputs.th_ajaran_h"
+					ref="firstInput"
 				/>
 
 				<q-select
@@ -44,7 +45,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import useCrudForm from './utils/useCrudForm';
 import AparaturQuran from 'src/models/AparaturQuran';
@@ -57,6 +58,12 @@ const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'su
 
 const inputs = ref({ jabatan: 'Muallim', ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(AparaturQuran, {
 	emit: emit,

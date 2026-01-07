@@ -14,6 +14,7 @@
 					type="datetime-local"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					error-color="negative"
+					ref="firstInput"
 				/>
 			</q-card-section>
 			<FormActions :btn-delete="!!data.kembali_tgl" @on-delete="setNotBack" label-delete="Belum Kembali" />
@@ -21,17 +22,24 @@
 	</q-card>
 </template>
 <script setup>
-import { ref, watch } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef, watch } from 'vue';
 import { formatDateFull, isDate, formatDateTimeHtmlToSql } from 'src/utils/format-date';
 import IzinPesantren from 'src/models/IzinPesantren';
 
 const props = defineProps({
 	data: Object,
 });
+
 const emit = defineEmits(['successSubmit']);
 
 const inputs = ref({ ...props.data });
 const loading = ref(false);
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 async function setBack() {
 	try {
