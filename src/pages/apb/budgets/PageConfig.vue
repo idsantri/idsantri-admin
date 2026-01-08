@@ -251,6 +251,7 @@ onMounted(async () => {
 	}
 	// console.log(query);
 	if (query.th) filterTahun.value = query.th;
+	if (query.category) filterCategory.value = query.category;
 	if (query.text) filterText.value = query.text;
 });
 

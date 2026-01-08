@@ -10,6 +10,7 @@
 					:th_ajaran_h="budget?.th_ajaran_h"
 					:group="budget?.group"
 					:account_id="budget?.account_id"
+					:category="budget?.category"
 				/>
 			</q-card>
 		</q-card-section>

@@ -70,7 +70,7 @@
 					flat
 					no-caps
 					color="positive"
-					:to="`/apb/budgets/configs?th=${budget?.th_ajaran_h}&text=${budget?.group}`"
+					:to="`/apb/budgets/configs?th=${budget?.th_ajaran_h}&category=${budget?.category}&text=${budget?.group}`"
 				/>
 			</q-item-section>
 		</q-item>
