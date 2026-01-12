@@ -99,6 +99,7 @@ import ApbTransactionForm from 'src/components/forms/ApbTransactionForm.vue';
 import InputSearch from 'src/components/inputs/InputSearch.vue';
 import { useTransactionStore } from 'src/stores/apb-transactions-store';
 import { formatDate } from 'src/utils/format-date';
+import { formatHijri, masehiToHijri } from 'src/utils/hijri';
 import { onMounted, ref, watch } from 'vue';
 
 const crudShow = ref(false);
@@ -178,10 +179,18 @@ const columns = [
 	},
 	{
 		name: 'created_at',
-		label: 'Dibuat Pada',
+		label: 'Dibuat (M)',
 		align: 'left',
 		field: 'created_at',
 		format: (val) => formatDate(val, 'dd-MM-yyyy'),
+		sortable: true,
+	},
+	{
+		name: 'hijri',
+		label: 'Dibuat (H)',
+		align: 'left',
+		field: (row) => masehiToHijri(row.created_at),
+		format: (val) => formatHijri(val),
 		sortable: true,
 	},
 	{

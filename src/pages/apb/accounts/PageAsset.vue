@@ -1,6 +1,13 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Saldo Aktiva" @on-reload="reload" :show-add="false"> </CardHeader>
+		<CardHeader title="Saldo Aktiva" @on-reload="reload" :show-add="false">
+			<template #more>
+				<q-list>
+					<ToAccount />
+					<ToAccountGroup />
+				</q-list>
+			</template>
+		</CardHeader>
 		<q-card-section class="q-pa-sm">
 			<q-card bordered flat style="min-height: 300px">
 				<CardLoading :showing="loading" />
@@ -41,6 +48,8 @@
 <script setup>
 import ApbAccount from 'src/models/ApbAccount';
 import { computed, onMounted, ref } from 'vue';
+import ToAccount from '../more/ToAccount.vue';
+import ToAccountGroup from '../more/ToAccountGroup.vue';
 
 const assets = ref([]);
 const loading = ref(false);

@@ -1,6 +1,13 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Daftar Grup Akun" @on-reload="reload" :show-add="true" @on-add="onAdd"> </CardHeader>
+		<CardHeader title="Daftar Grup Akun" @on-reload="reload" :show-add="true" @on-add="onAdd">
+			<template #more>
+				<q-list>
+					<ToAccount />
+					<ToAccountAsset />
+				</q-list>
+			</template>
+		</CardHeader>
 		<CardLoading :showing="loading" />
 		<q-card-section class="q-pt-sm q-pb-none q-px-sm">
 			<q-card bordered flat>
@@ -91,6 +98,8 @@ import { storeToRefs } from 'pinia';
 import ApbAccountGroupForm from 'src/components/forms/ApbAccountGroupForm.vue';
 import { useAccountGroupStore } from 'stores/apb-account-groups-store';
 import { onMounted, ref, watch } from 'vue';
+import ToAccount from '../more/ToAccount.vue';
+import ToAccountAsset from '../more/ToAccountAsset.vue';
 
 const realtime = ref(false);
 const showForm = ref(false);

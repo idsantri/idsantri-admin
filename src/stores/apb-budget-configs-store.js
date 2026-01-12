@@ -35,8 +35,14 @@ export const useBudgetConfigStore = defineStore('budget-configs-store', {
 			return [...new Set(mapped)];
 		},
 
-		totalLimit() {
-			return this.getConfigs.reduce((total, config) => total + Number(config.limit), 0).toFixed(2);
+		totalLimitCategory() {
+			if (!this.filterCategory) {
+				return 0;
+			}
+			return this.configs
+				.filter((config) => config.category === this.filterCategory)
+				.reduce((total, config) => total + Number(config.limit), 0)
+				.toFixed(2);
 		},
 	},
 

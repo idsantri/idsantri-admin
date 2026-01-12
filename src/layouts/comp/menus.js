@@ -214,7 +214,7 @@ const menus = {
 			to: '/apb/transactions',
 			icon: 'sym_o_currency_exchange',
 			label: 'Transaksi',
-			caption: 'Transaksi Keuangan',
+			caption: 'Daftar Transaksi Keuangan',
 			disable: false,
 			display: !!menu.apb,
 		},

@@ -3,24 +3,8 @@
 		<CardHeader title="Daftar Akun" @on-reload="reload" :show-add="true" @on-add="showForm = true">
 			<template #more>
 				<q-list>
-					<q-item clickable v-close-popup to="/apb/accounts/groups">
-						<q-item-section avatar>
-							<q-icon name="sym_o_account_tree" />
-						</q-item-section>
-						<q-item-section>
-							<q-item-label> Grup </q-item-label>
-							<q-item-label caption> Grup Akun </q-item-label>
-						</q-item-section>
-					</q-item>
-					<q-item clickable v-close-popup to="/apb/accounts/assets">
-						<q-item-section avatar>
-							<q-icon name="sym_o_business_center" />
-						</q-item-section>
-						<q-item-section>
-							<q-item-label> Aset </q-item-label>
-							<q-item-label caption> Data Aktiva </q-item-label>
-						</q-item-section>
-					</q-item>
+					<ToAccountGroup />
+					<ToAccountAsset />
 				</q-list>
 			</template>
 		</CardHeader>
@@ -134,6 +118,8 @@ import { ref, onMounted, watch } from 'vue';
 import { useAccountsStore } from 'src/stores/apb-accounts-store';
 import { storeToRefs } from 'pinia';
 import ApbAccountForm from 'src/components/forms/ApbAccountForm.vue';
+import ToAccountGroup from '../more/ToAccountGroup.vue';
+import ToAccountAsset from '../more/ToAccountAsset.vue';
 
 const showForm = ref(false);
 const realtime = ref(false);

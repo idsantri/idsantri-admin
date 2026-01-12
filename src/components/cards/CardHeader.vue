@@ -28,8 +28,8 @@
 					<q-btn
 						v-if="showEdit"
 						no-caps
-						:label="$q.screen.lt.sm ? '' : 'Edit'"
-						icon="edit"
+						:label="$q.screen.lt.sm ? '' : labelEdit"
+						:icon="iconEdit"
 						dense
 						class="q-px-sm"
 						outline
@@ -40,8 +40,8 @@
 					<q-btn
 						v-if="showAdd"
 						no-caps
-						:label="$q.screen.lt.sm ? '' : 'Tambah'"
-						icon="add"
+						:label="$q.screen.lt.sm ? '' : labelAdd"
+						:icon="iconAdd"
 						dense
 						class="q-px-sm"
 						outline
@@ -84,6 +84,10 @@ defineProps({
 	showBack: { type: Boolean, default: true },
 	showEdit: { type: Boolean, default: false },
 	showAdd: { type: Boolean, default: false },
+	labelEdit: { type: String, default: 'Edit' },
+	labelAdd: { type: String, default: 'Tambah' },
+	iconEdit: { type: String, default: 'edit' },
+	iconAdd: { type: String, default: 'add' },
 	disableEdit: { type: Boolean, default: false },
 	disableAdd: { type: Boolean, default: false },
 

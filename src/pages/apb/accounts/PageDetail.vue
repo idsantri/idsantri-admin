@@ -1,6 +1,14 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Detail Akun" @onReload="reload" :show-edit="true" @onEdit="showForm = true"> </CardHeader>
+		<CardHeader title="Detail Akun" @onReload="reload" :show-edit="true" @onEdit="showForm = true">
+			<template #more>
+				<q-list>
+					<ToAccount />
+					<ToAccountGroup />
+					<ToAccountAsset />
+				</q-list>
+			</template>
+		</CardHeader>
 
 		<q-card-section class="q-pa-sm" :key="key">
 			<q-card flat bordered>
@@ -33,6 +41,9 @@ import { useRoute, useRouter } from 'vue-router';
 import CardAccount from './CardAccount.vue';
 import CardHistory from './CardHistory.vue';
 import ApbAccountForm from 'src/components/forms/ApbAccountForm.vue';
+import ToAccount from '../more/ToAccount.vue';
+import ToAccountAsset from '../more/ToAccountAsset.vue';
+import ToAccountGroup from '../more/ToAccountGroup.vue';
 
 const params = useRoute().params;
 const router = useRouter();

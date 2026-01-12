@@ -84,6 +84,7 @@ import InputSearch from 'src/components/inputs/InputSearch.vue';
 import ApbJournal from 'src/models/ApbJournal';
 import ApbTransaction from 'src/models/ApbTransaction';
 import { formatDate } from 'src/utils/format-date';
+import { formatHijri, masehiToHijri } from 'src/utils/hijri';
 import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -154,10 +155,18 @@ const columns = [
 	},
 	{
 		name: 'transaction_date',
-		label: 'Dibuat Pada',
+		label: 'Dibuat (M)',
 		align: 'left',
 		field: 'transaction_date',
 		format: (val) => formatDate(val, 'dd-MM-yyyy'),
+		sortable: true,
+	},
+	{
+		name: 'hijri',
+		label: 'Dibuat (H)',
+		align: 'left',
+		field: (row) => masehiToHijri(row.transaction_date),
+		format: (val) => formatHijri(val),
 		sortable: true,
 	},
 	// 	{

@@ -1,27 +1,19 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Daftar Anggaran" @on-reload="reload">
+		<CardHeader
+			title="Daftar Anggaran"
+			@on-reload="reload"
+			:show-add="true"
+			label-add="Anggaran Baru"
+			@on-add="showForm = true"
+			icon-add="sym_o_variable_add"
+		>
 			<template #more>
 				<q-list>
-					<!-- input -->
-					<q-item clickable v-close-popup @click="showForm = true">
-						<q-item-section avatar>
-							<q-icon color="green" name="sym_o_create_new_folder" />
-						</q-item-section>
-						<q-item-section>
-							<q-item-label overline> Buat Anggaran </q-item-label>
-							<q-item-label caption> tahun ajaran baru </q-item-label>
-						</q-item-section>
-					</q-item>
-					<q-item clickable v-close-popup to="/apb/budgets/configs">
-						<q-item-section avatar>
-							<q-icon color="green" name="sym_o_readiness_score" />
-						</q-item-section>
-						<q-item-section>
-							<q-item-label overline> Pengaturan </q-item-label>
-							<q-item-label caption> Limitasi Anggaran </q-item-label>
-						</q-item-section>
-					</q-item>
+					<ToBudgetConfig />
+					<ToAccount />
+					<ToAccountGroup />
+					<ToAccountAsset />
 				</q-list>
 			</template>
 		</CardHeader>
@@ -162,6 +154,10 @@ import { storeToRefs } from 'pinia';
 import ApbBudgetForm from 'src/components/forms/ApbBudgetForm.vue';
 import { useBudgetStore } from 'src/stores/apb-budgets-store';
 import { onMounted, ref, watch } from 'vue';
+import ToBudgetConfig from '../more/ToBudgetConfig.vue';
+import ToAccount from '../more/ToAccount.vue';
+import ToAccountAsset from '../more/ToAccountAsset.vue';
+import ToAccountGroup from '../more/ToAccountGroup.vue';
 
 const realtime = ref(false);
 const showForm = ref(false);

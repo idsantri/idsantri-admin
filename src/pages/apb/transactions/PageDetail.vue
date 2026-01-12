@@ -6,7 +6,14 @@
 			@on-reload="reload"
 			:show-edit="true"
 			@on-edit="showForm = true"
-		/>
+		>
+			<template #more>
+				<q-list>
+					<ToAccount />
+					<ToTransaction />
+				</q-list>
+			</template>
+		</CardHeader>
 		<q-card-section class="q-pa-sm q-gutter-y-sm" style="max-width: 1024px">
 			<q-card bordered flat class="">
 				<q-markup-table>
@@ -18,8 +25,11 @@
 							<td>{{ transaction?.id }}</td>
 						</tr>
 						<tr>
-							<td class="label">Tanggal</td>
-							<td>{{ formatDate(transaction?.created_at, "dd MMMM yyyy', Pukul 'HH:mm") }}</td>
+							<td class="label">Dibuat Pada</td>
+							<td>
+								{{ formatDate(transaction?.created_at, "dd MMMM yyyy', Pukul 'HH:mm") }}
+								({{ bacaHijri(masehiToHijri(transaction?.created_at)) }} H)
+							</td>
 						</tr>
 						<tr>
 							<td class="label">Tahun Ajaran</td>
@@ -72,6 +82,9 @@ import CardJournal from './journals/CardJournal.vue';
 import { useTransactionStore } from 'src/stores/apb-transactions-store';
 import { storeToRefs } from 'pinia';
 import ApbTransactionForm from 'src/components/forms/ApbTransactionForm.vue';
+import { masehiToHijri, bacaHijri } from 'src/utils/hijri';
+import ToAccount from '../more/ToAccount.vue';
+import ToTransaction from '../more/ToTransaction.vue';
 
 const params = useRoute().params;
 const state = useTransactionStore();

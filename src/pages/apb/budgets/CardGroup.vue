@@ -38,7 +38,7 @@
 							flat
 							no-caps
 							color="info"
-							:to="`/apb/budgets/${budget.id}`"
+							:to="`/apb/budgets/${budget.id}?tab=accounts`"
 							replace
 						/>
 					</q-item-section>
@@ -100,7 +100,7 @@
 						<q-icon
 							v-if="warned"
 							class="q-mx-xs"
-							name="sym_o_dangerous"
+							name="sym_o_warning"
 							dense
 							flat
 							no-caps
@@ -116,7 +116,8 @@
 import { storeToRefs } from 'pinia';
 import { useBudgetConfigStore } from 'src/stores/apb-budget-configs-store';
 import { useBudgetStore } from 'src/stores/apb-budgets-store';
-import { computed, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
 const props = defineProps({
 	th_ajaran_h: {
@@ -137,10 +138,17 @@ const props = defineProps({
 	},
 });
 const tab = ref('group');
+const { query } = useRoute();
 const budgetState = useBudgetStore();
 const configState = useBudgetConfigStore();
 const { budgets, loading: loadingBudget } = storeToRefs(budgetState);
 const { getConfigs, loading: loadingConfig } = storeToRefs(configState);
+
+onMounted(() => {
+	if (query.tab) {
+		tab.value = query.tab;
+	}
+});
 
 const config = computed(() => {
 	return getConfigs.value.find((c) => c.th_ajaran_h === props.th_ajaran_h && c.group === props.group);
@@ -157,12 +165,12 @@ const totalGroup = computed(() => {
 const warned = computed(() => {
 	if (config.value) {
 		if (config.value.category == 'BIAYA') {
-			if (Number(config.value.limit_rp) > totalGroup.value) {
+			if (Number(config.value.limit_rp) < totalGroup.value) {
 				return true;
 			}
 		}
 		if (config.value.category == 'PENDAPATAN') {
-			if (Number(config.value.limit_rp) < totalGroup.value) {
+			if (Number(config.value.limit_rp) > totalGroup.value) {
 				return true;
 			}
 		}

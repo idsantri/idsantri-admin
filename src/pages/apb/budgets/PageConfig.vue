@@ -1,27 +1,19 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Konfigurasi Limitasi/Target Anggaran" @on-reload="reload">
+		<CardHeader
+			title="Konfigurasi Limitasi/Target Anggaran"
+			@on-reload="reload"
+			:show-add="true"
+			@on-add="showForm = true"
+			label-add="Konfigurasi Baru"
+			icon-add="sym_o_create_new_folder"
+		>
 			<template #more>
 				<q-list>
-					<!-- input -->
-					<q-item clickable v-close-popup @click="showForm = true">
-						<q-item-section avatar>
-							<q-icon color="green" name="sym_o_create_new_folder" />
-						</q-item-section>
-						<q-item-section>
-							<q-item-label overline> Buat Konfigurasi </q-item-label>
-							<q-item-label caption> anggaran tahun ajaran baru </q-item-label>
-						</q-item-section>
-					</q-item>
-					<q-item clickable v-close-popup to="/apb/budgets">
-						<q-item-section avatar>
-							<q-icon color="green" name="sym_o_account_balance_wallet" />
-						</q-item-section>
-						<q-item-section>
-							<q-item-label overline> Anggaran </q-item-label>
-							<q-item-label caption> Pendapatan dan Belanja </q-item-label>
-						</q-item-section>
-					</q-item>
+					<ToBudget />
+					<ToAccount />
+					<ToAccountGroup />
+					<ToAccountAsset />
 				</q-list>
 			</template>
 		</CardHeader>
@@ -175,18 +167,19 @@
 				</template>
 				<template v-slot:bottom-row v-if="filterCategory">
 					<q-tr
-						:class="['text-bold', totalLimit > 100 ? 'bg-red-2 text-red-10' : 'bg-green-11 text-green-10']"
+						:class="[
+							'total-row',
+							totalLimitCategory > 100 ? 'bg-red-2 text-red-10' : 'bg-green-11 text-green-10',
+						]"
 					>
-						<q-td style="padding: 0; height: 40px" class=""> </q-td>
-						<q-td style="padding: 0; height: 40px" class=""> </q-td>
-						<q-td style="padding: 0; height: 40px" class=""> </q-td>
-						<q-td style="padding: 0; height: 40px" class=""> </q-td>
-						<q-td style="padding: 0; height: 40px" class=""> </q-td>
-						<q-td style="padding-y: 0; height: 40px" class="text-right">
-							{{ totalLimit }}% <span class="q-pl-md"></span>
-						</q-td>
-						<q-td style="padding: 0; height: 40px" class=""> </q-td>
-						<q-td style="padding: 0; height: 40px" class=""> </q-td>
+						<q-td class=""> </q-td>
+						<q-td class=""> </q-td>
+						<q-td class=""> </q-td>
+						<q-td class=""> </q-td>
+						<q-td class=""> </q-td>
+						<q-td class="text-right"> {{ totalLimitCategory }}% <span class="q-pl-md"></span> </q-td>
+						<q-td class=""> </q-td>
+						<q-td class=""> </q-td>
 					</q-tr>
 				</template>
 			</q-table>
@@ -203,7 +196,10 @@ import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import ConfigMenus from './ConfigMenus.vue';
 import ApbBudgetConfigForm from 'src/components/forms/ApbBudgetConfigForm.vue';
-
+import ToBudget from '../more/ToBudget.vue';
+import ToAccount from '../more/ToAccount.vue';
+import ToAccountAsset from '../more/ToAccountAsset.vue';
+import ToAccountGroup from '../more/ToAccountGroup.vue';
 const state = useBudgetConfigStore();
 const realtime = ref(false);
 const {
@@ -215,7 +211,7 @@ const {
 	filterText,
 	filterTahun,
 	filterCategory,
-	totalLimit,
+	totalLimitCategory,
 	thAjaranH,
 	categories,
 } = storeToRefs(state);
@@ -256,6 +252,8 @@ onMounted(async () => {
 });
 
 watch(filterTahun, async (newTh) => {
+	filterCategory.value = '';
+	filterText.value = '';
 	if (newTh) {
 		router.replace({ query: { th: newTh } });
 		await state.loadByTahun(newTh);
@@ -265,6 +263,11 @@ watch(filterTahun, async (newTh) => {
 		configs.value = [];
 		total_budget.value = {};
 	}
+});
+
+watch(filterCategory, async (category) => {
+	filterText.value = '';
+	router.replace({ query: { category } });
 });
 
 watch(filterText, async (text) => {
@@ -345,4 +348,11 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style lang="scss" scoped>
+.total-row td {
+	height: 32px;
+	padding-bottom: 0;
+	padding-top: 0;
+	font-weight: bold;
+}
+</style>

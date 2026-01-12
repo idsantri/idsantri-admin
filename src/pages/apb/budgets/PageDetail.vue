@@ -1,12 +1,20 @@
 <template lang="">
 	<CardPage>
-		<CardHeader title="Detail Anggaran" :show-reload="true" @on-reload="reload" :show-edit="false" />
+		<CardHeader title="Detail Anggaran" :show-reload="true" @on-reload="reload" :show-edit="false">
+			<template #more>
+				<q-list>
+					<ToAccount />
+					<ToAccountGroup />
+					<ToAccountAsset />
+				</q-list>
+			</template>
+		</CardHeader>
 		<q-card-section class="tw:grid tw:sm:flex tw:sm:justify-between tw:gap-2 q-pa-sm">
 			<q-card class="tw:w-full" bordered flat>
 				<CardBudget :budget="budget" @onDelete="handleDelete" :loading="loading" />
 			</q-card>
 			<q-card class="tw:w-full" bordered flat>
-				<CardConfig
+				<CardGroup
 					:th_ajaran_h="budget?.th_ajaran_h"
 					:group="budget?.group"
 					:account_id="budget?.account_id"
@@ -32,7 +40,10 @@ import { useRoute, useRouter } from 'vue-router';
 import CardDetail from './CardDetail.vue';
 import ArrayCrud from 'src/models/ArrayCrud';
 import CardBudget from './CardBudget.vue';
-import CardConfig from './CardConfig.vue';
+import CardGroup from './CardGroup.vue';
+import ToAccount from '../more/ToAccount.vue';
+import ToAccountGroup from '../more/ToAccountGroup.vue';
+import ToAccountAsset from '../more/ToAccountAsset.vue';
 
 const state = useBudgetStore();
 const router = useRouter();
