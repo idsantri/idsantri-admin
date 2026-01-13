@@ -5,6 +5,8 @@
 				<q-list>
 					<ToAccount />
 					<ToAccountAsset />
+					<ToBudget />
+					<ToBudgetConfig />
 				</q-list>
 			</template>
 		</CardHeader>
@@ -81,6 +83,19 @@
 						</router-link>
 					</q-td>
 				</template>
+				<template v-slot:body-cell-active="props">
+					<q-td :props="props">
+						<q-toggle
+							:model-value="props.value"
+							:true-value="true"
+							:false-value="false"
+							checked-icon="check"
+							unchecked-icon="clear"
+							color="positive"
+							@update:model-value="(value, event) => toggle(value, props.row)"
+						/>
+					</q-td>
+				</template>
 			</q-table>
 		</q-card-section>
 		<q-dialog persistent="" v-model="showForm">
@@ -100,6 +115,8 @@ import { useAccountGroupStore } from 'stores/apb-account-groups-store';
 import { onMounted, ref, watch } from 'vue';
 import ToAccount from '../more/ToAccount.vue';
 import ToAccountAsset from '../more/ToAccountAsset.vue';
+import ToBudgetConfig from '../more/ToBudgetConfig.vue';
+import ToBudget from '../more/ToBudget.vue';
 
 const realtime = ref(false);
 const showForm = ref(false);
@@ -132,6 +149,10 @@ onMounted(async () => {
 watch(filterCategory, () => {
 	filterText.value = '';
 });
+
+const toggle = async (newValue, group) => {
+	await state.updateActive(newValue, group);
+};
 
 const onCreated = async (group) => {
 	state.create(group);
@@ -178,6 +199,13 @@ const columns = [
 		field: 'accounts',
 		sortable: false,
 		style: 'white-space: normal; word-wrap: break-word; min-width: 300px;',
+	},
+	{
+		name: 'active',
+		label: 'Aktif',
+		align: 'center',
+		field: 'active',
+		sortable: false,
 	},
 ];
 </script>

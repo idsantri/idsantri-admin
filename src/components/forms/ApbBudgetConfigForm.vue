@@ -45,6 +45,7 @@ const onSubmit = async () => {
 				<li>Buat Pengaturan Anggaran baru untuk tahun ajaran <strong>${inputs.value.th_ajaran_h}</strong>.</li>
 				<li>Grup dan Tahun Ajaran bersifat unik (no duplicate). Data yang sudah ada TIDAK akan ditimpa.</li>
 				<li>Aksi ini akan menyalin seluruh grup dengan kategori Pendapatan dan Biaya.</li>
+				<li>Grup non aktif tidak akan disertakan.</li>
 			</ul>
 		</div>`;
 

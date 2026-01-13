@@ -49,7 +49,7 @@ const onSubmit = async () => {
 			<ul style="list-style-type: square;" class="q-ml-md">
 				<li>Buat Anggaran baru untuk tahun ajaran <strong>${inputs.value.th_ajaran_h}</strong>.</li>
 				<li>Akun dan Tahun Ajaran bersifat unik (no duplicate). Data yang sudah ada TIDAK akan ditimpa.</li>
-				<li>Aksi ini akan menyalin seluruh akun dengan kepala 4 dan 5 (Pendapatan dan Biaya).</li>
+				<li>Aksi ini akan menyalin seluruh akun dengan kategori Pendapatan dan Biaya.</li>
 				<li>Akun yang disembunyikan (hidden) tidak akan disertakan.</li>
 			</ul>
 		</div>`;

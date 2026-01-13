@@ -38,6 +38,26 @@ export const useAccountGroupStore = defineStore('account-group-store', {
 			}
 		},
 
+		async updateActive(newValue, group) {
+			try {
+				this.loading = true;
+				this.groups = ArrayCrud.update(this.groups, group.id, { active: newValue });
+				await ApbGroup.update({
+					id: group.id,
+					data: {
+						name: group.name,
+						category: group.category,
+						active: newValue,
+					},
+				});
+			} catch (err) {
+				this.groups = ArrayCrud.update(this.groups, group.id, { active: newValue ? false : true });
+				console.error('🚀 ~ toggleHidden ~ err:', err);
+			} finally {
+				this.loading = false;
+			}
+		},
+
 		update(id, data) {
 			this.groups = ArrayCrud.update(this.groups, id, data);
 		},
