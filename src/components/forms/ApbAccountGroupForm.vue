@@ -18,7 +18,7 @@
 					dense
 					class="q-my-sm"
 					outlined
-					label="Nama"
+					label="Nama Grup"
 					v-model="inputs.name"
 					autogrow=""
 					:rules="[(val) => !!val || 'Harus diisi!']"
