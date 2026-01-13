@@ -11,21 +11,21 @@
 		:loading="loading"
 		behavior="menu"
 		clearable
-		:hint="hint"
 		v-model="input"
+		:bottom-slots="bottomSlots"
+		ref="selectRef"
 	>
+		<template v-slot:hint>
+			{{ hint }}
+		</template>
 		<template v-slot:after>
-			<drop-down-after
-				v-if="btnSetting"
-				:route-to="url"
-				@reload="fetchList"
-			/>
+			<drop-down-after v-if="btnSetting" :route-to="url" @reload="fetchList" />
 		</template>
 	</q-select>
 </template>
 <script setup>
 import listsStore from 'src/stores/lists-store';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, useTemplateRef } from 'vue';
 import DropDownAfter from './DropDownAfter.vue';
 import Lists from 'src/models/Lists';
 
@@ -36,6 +36,10 @@ const props = defineProps({
 		default: () => 'desc',
 	},
 	btnSetting: {
+		type: Boolean,
+		default: true,
+	},
+	bottomSlots: {
 		type: Boolean,
 		default: true,
 	},
@@ -54,6 +58,16 @@ const hint = computed(() => {
 	} else {
 		return 'Pilih Tahun Ajaran';
 	}
+});
+
+const selectRef = useTemplateRef('selectRef');
+defineExpose({
+	focus: () => {
+		if (selectRef.value) selectRef.value.focus();
+	},
+	showPopup: () => {
+		if (selectRef.value) selectRef.value.showPopup();
+	},
 });
 
 onMounted(async () => {

@@ -5,7 +5,7 @@
 			<q-card style="max-width: 600px" flat bordered>
 				<q-card-section class="q-pa-sm bg-green-7 text-green-1"> Pilih Data yang Akan Diunduh </q-card-section>
 				<q-card-section class="q-pa-sm">
-					<q-scroll-area style="height: 700px">
+					<q-scroll-area style="height: 70vh">
 						<q-spinner-facebook
 							v-if="loading"
 							color="green-6"
@@ -50,24 +50,28 @@
 	</CardPage>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
 import { ref, onMounted } from 'vue';
 import { notifyError } from 'src/utils/notify';
+import Iuran from 'src/models/Iuran';
+import DownloadUrl from 'src/models/DownloadUrl';
 
 const loading = ref(false);
 const trx = ref([{}]);
 const loadingDownload = ref(false);
 async function loadData() {
-	const data = await apiGet({
-		endPoint: 'iuran/va-group',
-		loading,
-	});
-	trx.value = data.va_group.map((item) => ({ ...item, selected: false }));
+	try {
+		loading.value = true;
+		const data = await Iuran.vaGroup();
+		trx.value = data.va_group.map((item) => ({ ...item, selected: false }));
+	} catch (error) {
+		console.error('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
+	}
 }
 
 onMounted(async () => {
 	await loadData();
-	// console.log(trx.value);
 });
 
 async function onDownload() {
@@ -77,18 +81,14 @@ async function onDownload() {
 		return;
 	}
 
-	const data = await apiGet({
-		endPoint: 'export/iuran-va',
-		params: { va_group: selectedItems },
-		loading: loadingDownload,
-	});
-	if (!data) return;
-	if (!data.url) return notifyWarning('Url tidak ditemukan');
-
-	const link = document.createElement('a');
-	link.href = data.url;
-	link.click();
-	link.remove();
+	try {
+		loadingDownload.value = true;
+		await DownloadUrl.iuranVA({ va_group: selectedItems });
+	} catch (e) {
+		console.error('🚀 ~ onDownload ~ e:', e);
+	} finally {
+		loadingDownload.value = false;
+	}
 }
 </script>
 <style lang=""></style>

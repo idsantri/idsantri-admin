@@ -68,7 +68,7 @@
 							</q-td>
 							<q-td key="alamat" :props="props" :title="props.row.alamat">
 								{{
-									props.row.alamat.length > 30
+									props.row.alamat?.length > 30
 										? props.row.alamat.substr(0, 30) + '&mldr;'
 										: props.row.alamat
 								}}
@@ -92,9 +92,8 @@
 	</div>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
-import apiUpdate from 'src/api/api-update';
 import FilterKelas from 'src/components/filters/FilterKelas.vue';
+import Kelas from 'src/models/Kelas';
 import { notifyConfirm, notifyWarning } from 'src/utils/notify';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
@@ -124,38 +123,47 @@ async function automate() {
 
 async function updateNoAbsen() {
 	const absen = murid.value.map(({ id, no_absen }) => {
-		return {
-			id,
-			no_absen,
-		};
+		return { id, no_absen };
 	});
 
-	const updated = await apiUpdate({
-		endPoint: 'kelas/no-absen',
-		data: absen,
-		loading,
-		confirm: true,
-		// message: 'Update nomor absen?',
-	});
+	// const updated = await apiUpdate({
+	// 	endPoint: 'kelas/no-absen',
+	// 	data: absen,
+	// 	loading,
+	// 	confirm: true,
+	// 	// message: 'Update nomor absen?',
+	// });
 
-	if (updated) murid.value = updated.murid;
+	// if (updated) murid.value = updated.murid;
+	try {
+		loading.value = true;
+		const data = await Kelas.updateNoAbsen(absen);
+		murid.value = data.murid;
+	} catch (error) {
+		console.error('🚀 ~ updateNoAbsen ~ error:', error);
+	} finally {
+		loading.value = false;
+	}
 }
 
 onMounted(async () => {
 	if (params.th_ajaran_h && params.tingkat_id && params.kelas) {
-		const data = await apiGet({
-			endPoint: 'kelas',
-			params,
-			loading,
-		});
-		const map = data.murid.map((m) => {
-			return { ...m, alamat: `${m.desa} ${m.kecamatan} ${m.kabupaten}` };
-		});
-		murid.value = map;
+		try {
+			loading.value = true;
+			const data = await Kelas.getAll({ params });
+
+			const mapped = data.murid.map((m) => {
+				return { ...m, alamat: `${m.desa} ${m.kecamatan} ${m.kabupaten}` };
+			});
+			murid.value = mapped;
+		} catch (error) {
+			console.error('🚀 ~ error:', error);
+		} finally {
+			loading.value = false;
+		}
 	} else {
 		murid.value = [];
 	}
-	// console.log(murid.value);
 });
 
 const columns = [

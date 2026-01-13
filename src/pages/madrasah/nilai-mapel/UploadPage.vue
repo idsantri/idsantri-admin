@@ -170,8 +170,8 @@
 	</CardPage>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
-import apiPost from 'src/api/api-post';
+import Mapel from 'src/models/Mapel';
+import NilaiMapel from 'src/models/NilaiMapel';
 import { notifyWarning } from 'src/utils/notify';
 import { onMounted, ref, watch } from 'vue';
 import { read, utils } from 'xlsx';
@@ -184,14 +184,22 @@ const mapel = ref([{}]);
 const step = ref(1);
 const loading = ref(false);
 
+async function loadData() {
+	try {
+		loading.value = true;
+		const data = await Mapel.getAll();
+		mapel.value = data.mapel;
+		const ids = data.mapel.map((item) => item.id);
+		mapelIds.value = ids;
+	} catch (error) {
+		console.error('🚀 ~ error:', error);
+	} finally {
+		loading.value = false;
+	}
+}
+
 onMounted(async () => {
-	const data = await apiGet({
-		endPoint: 'mapel',
-		loading: loading,
-	});
-	mapel.value = data.mapel;
-	const ids = data.mapel.map((item) => item.id);
-	mapelIds.value = ids;
+	await loadData();
 });
 
 const handleFileChange = (event) => {
@@ -254,13 +262,14 @@ async function onSubmit() {
 		ujian_ke: input.value.ujian_ke,
 	});
 
-	const post = await apiPost({
-		endPoint: 'nilai-mapel',
-		data: { data: nilai },
-		loading: loading,
-	});
-	if (post) {
+	try {
+		loading.value = true;
+		await NilaiMapel.create({ data: { data: nilai } });
 		step.value = 1;
+	} catch (error) {
+		console.error('🚀 ~ onSubmit ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 

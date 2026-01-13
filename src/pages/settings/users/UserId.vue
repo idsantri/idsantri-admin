@@ -119,9 +119,9 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import apiGet from 'src/api/api-get';
 import { kebabToTitleCase } from 'src/utils/format-text';
 import Users from 'src/models/Users';
+import Image from 'src/models/Image';
 
 const user = ref({});
 const loading = ref(false);
@@ -157,11 +157,15 @@ async function confirmUser(val) {
 
 async function loadImage() {
 	if (user.value?.id) {
-		const img = await apiGet({
-			endPoint: `images/users/${user.value.id}`,
-			loading: loading,
-		});
-		user.value.image = img.image_url || '/user-default.png';
+		try {
+			loading.value = true;
+			const img = await Image.user(user.value.id);
+			user.value.image = img?.image_url ? img.image_url + `?t=${new Date().getTime()}` : '/user-default.png';
+		} catch (error) {
+			console.log('🚀 ~ loadImage ~ error:', error);
+		} finally {
+			loading.value = false;
+		}
 	}
 }
 

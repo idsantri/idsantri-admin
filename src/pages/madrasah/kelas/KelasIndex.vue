@@ -120,10 +120,9 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import apiGet from 'src/api/api-get';
-import apiUpdate from 'src/api/api-update';
 import CardSantri from 'src/components/santri/CardSantri.vue';
 import KelasForm from 'src/components/forms/KelasForm.vue';
+import Kelas from 'src/models/Kelas';
 
 const keyRoute = ref(0);
 const route = useRoute();
@@ -134,35 +133,30 @@ const crudShow = ref(false);
 const santri = ref({});
 
 async function updateAktif(val) {
-	// console.log(val);
-	// return;
 	const aktif = val == 1 ? true : false;
 	const before = val == 1 ? 0 : 1;
-	const updated = await apiUpdate({
-		endPoint: `kelas/${id}/set-active`,
-		data: { aktif: aktif },
-		confirm: false,
-	});
-	if (!updated) {
+	try {
+		await Kelas.updateAktif(id, aktif);
+	} catch (error) {
 		kelas.value.aktif = before;
+		console.error('🚀 ~ updateAktif ~ error:', error);
 	}
 }
 
 async function loadData() {
-	// kelas.value = {};
-	const data = await apiGet({
-		endPoint: `kelas/${id}`,
-		loading: spinner,
-	});
-	if (data.kelas) {
+	try {
+		spinner.value = true;
+		const data = await Kelas.getById({ id });
 		kelas.value = data.kelas;
-		// keyRoute.value++;
+	} catch (error) {
+		console.error('🚀 ~ loadData ~ error:', error);
+	} finally {
+		spinner.value = false;
 	}
 }
 
 onMounted(async () => {
 	await loadData();
-	// console.log('🚀 ~ fetchData ~ kelas.value:', kelas.value);
 });
 </script>
 <style lang=""></style>

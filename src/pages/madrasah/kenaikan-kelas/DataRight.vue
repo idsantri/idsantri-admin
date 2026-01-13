@@ -98,7 +98,7 @@ import HeadRight from './HeadRight.vue';
 import kenaikanKelasStore from 'src/stores/kenaikan-kelas-store';
 import EditNewMurid from './EditNewMurid.vue';
 import { notifyConfirm } from 'src/utils/notify';
-import apiPost from 'src/api/api-post';
+import Kelas from 'src/models/Kelas';
 
 const kenaikan = kenaikanKelasStore();
 const muridTrue = computed(() => kenaikan.getMuridTrue());
@@ -138,7 +138,6 @@ function edit(item) {
 }
 
 async function onSubmit() {
-	// console.log(muridTrue.value);
 	let msg = '';
 	msg += '<hr/>';
 	msg += '<p style="margin:0">Tahun Ajaran Baru: <strong>' + muridTrue.value[0].new_th_ajaran_h + '</strong></p>';
@@ -154,7 +153,7 @@ async function onSubmit() {
 	if (!confirmed) {
 		return;
 	}
-	const data = muridTrue.value.map((v) => {
+	const murid = muridTrue.value.map((v) => {
 		return {
 			santri_id: v.santri_id,
 			th_ajaran_h: v.new_th_ajaran_h,
@@ -163,17 +162,17 @@ async function onSubmit() {
 			keterangan: v.new_keterangan,
 		};
 	});
-	// console.log(murid);
 
-	const post = await apiPost({
-		endPoint: 'kelas/kenaikan',
-		loading,
-		data: { murid: data },
-	});
-	if (post) {
+	try {
+		loading.value = true;
+		await Kelas.kenaikan({ murid });
 		kenaikan.deleteTrueProses();
 		kenaikan.newDataFilter.tingkat_id = '';
 		kenaikan.newDataFilter.kelas = '';
+	} catch (error) {
+		console.error('🚀 ~ onSubmit ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 </script>

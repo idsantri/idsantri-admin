@@ -36,6 +36,15 @@ import config from 'src/config';
 
 const releases = [
 	{
+		ver: '1.6.0',
+		date: 'Januari 2026',
+		release: {
+			'Fitur Baru': ['Kebendaharaan'],
+			Kebendaharaan: ['Manajemen Akun', 'Manajemen Anggaran', 'Manajemen Transaksi Keuangan', 'Laporan Keuangan'],
+			Improve: ['Perbaikan dan peningkatan performa'],
+		},
+	},
+	{
 		ver: '1.5.2',
 		date: 'November 2025',
 		release: {

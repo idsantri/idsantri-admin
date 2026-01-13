@@ -95,8 +95,8 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
-import apiGet from 'src/api/api-get';
 import IuranPaketForm from 'src/components/forms/IuranPaketForm.vue';
+import IuranPaket from 'src/models/IuranPaket';
 
 const loading = ref(false);
 const iuranPaket = ref([]);
@@ -105,9 +105,14 @@ const crudShow = ref(false);
 const dataPaket = ref({});
 
 async function getData() {
-	const data = await apiGet({ endPoint: 'iuran-paket', loading });
-	if (data) {
+	try {
+		loading.value = true;
+		const data = await IuranPaket.getAll();
 		iuranPaket.value = data.iuran_paket;
+	} catch (error) {
+		console.error('🚀 ~ getData ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 

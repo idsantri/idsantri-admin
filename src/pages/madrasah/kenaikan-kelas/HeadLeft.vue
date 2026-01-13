@@ -38,8 +38,7 @@
 </template>
 <script setup>
 import { storeToRefs } from 'pinia';
-import apiGet from 'src/api/api-get';
-import { getListsCustom } from 'src/api/api-get-lists';
+import Kelas from 'src/models/Kelas';
 import kenaikanKelasStore from 'src/stores/kenaikan-kelas-store';
 import listsMadrasahStore from 'src/stores/lists-madrasah-store';
 import { onMounted, ref, toRef, watch } from 'vue';
@@ -48,7 +47,6 @@ const lists = ref([]);
 const loadingArray = ref([]);
 
 const { oldDataFilter: filter } = storeToRefs(kenaikanKelasStore());
-const loading = ref(false);
 
 const props = defineProps({
 	reload: {
@@ -63,61 +61,69 @@ onMounted(async () => {
 	await loadTahun();
 });
 
+async function fetchTahun() {
+	try {
+		loadingArray.value['th_ajaran'] = true;
+		const data = await Kelas.list();
+		listsMadrasahStore().setThAjaran(data.th_ajaran);
+		lists.value['th_ajaran'] = data.th_ajaran;
+	} catch (error) {
+		console.error('🚀 ~ loadTahun ~ error:', error);
+	} finally {
+		loadingArray.value['th_ajaran'] = false;
+	}
+}
+
 async function loadTahun() {
 	const cekData = listsMadrasahStore().getThAjaran;
-	if (cekData.length) {
+	if (cekData?.length) {
 		lists.value['th_ajaran'] = cekData;
 	} else {
-		const data = await getListsCustom({
-			url: 'kelas/lists',
-			key: 'th_ajaran',
-			loadingArray,
-		});
-		listsMadrasahStore().setThAjaran(data);
-		lists.value['th_ajaran'] = data;
+		await fetchTahun();
+	}
+}
+
+async function fetchTingkat(th_ajaran_h) {
+	try {
+		loadingArray.value['tingkat'] = true;
+		const data = await Kelas.list({ th_ajaran_h });
+		listsMadrasahStore().addTingkatToTahun(data.tingkat, th_ajaran_h);
+		lists.value['tingkat'] = data.tingkat;
+	} catch (error) {
+		console.error('🚀 ~ loadTingkat ~ error:', error);
+	} finally {
+		loadingArray.value['tingkat'] = false;
 	}
 }
 
 async function loadTingkat(th_ajaran_h) {
 	const cekData = listsMadrasahStore().getTingkatByTahun(th_ajaran_h);
-	if (cekData.length) {
+	if (cekData?.length) {
 		lists.value['tingkat'] = cekData;
-		// console.log(cekData);
 	} else {
-		const data = await getListsCustom({
-			url: 'kelas/lists',
-			params: { th_ajaran_h: th_ajaran_h },
-			key: 'tingkat',
-			loadingArray,
-			sort: 'asc',
-		});
-		listsMadrasahStore().addTingkatToTahun(data, th_ajaran_h);
-		lists.value['tingkat'] = data;
+		await fetchTingkat(th_ajaran_h);
 	}
 }
 
-async function loadKelas(tingkat_id, th_ajaran_h) {
-	const cekData = listsMadrasahStore().getKelasByTingkatAndTahun(
-		tingkat_id,
-		th_ajaran_h,
-	);
-	if (cekData.length) {
+async function fetchKelas(th_ajaran_h, tingkat_id) {
+	try {
+		loadingArray.value['kelas'] = true;
+		const data = await Kelas.list({ th_ajaran_h, tingkat_id });
+		listsMadrasahStore().addKelasToTingkatByTahun(data.kelas, tingkat_id, th_ajaran_h);
+		lists.value['kelas'] = data.kelas;
+	} catch (error) {
+		console.error('🚀 ~ loadKelas ~ error:', error);
+	} finally {
+		loadingArray.value['kelas'] = false;
+	}
+}
+
+async function loadKelas(th_ajaran_h, tingkat_id) {
+	const cekData = listsMadrasahStore().getKelasByTingkatAndTahun(tingkat_id, th_ajaran_h);
+	if (cekData?.length) {
 		lists.value['kelas'] = cekData;
 	} else {
-		const data = await getListsCustom({
-			url: 'kelas/lists',
-			params: { th_ajaran_h, tingkat_id },
-			key: 'kelas',
-			loadingArray,
-			sort: 'asc',
-		});
-
-		listsMadrasahStore().addKelasToTingkatByTahun(
-			data,
-			tingkat_id,
-			th_ajaran_h,
-		);
-		lists.value['kelas'] = data;
+		await fetchKelas(th_ajaran_h, tingkat_id);
 	}
 }
 
@@ -141,7 +147,7 @@ watch(
 	async (newValue) => {
 		if (newValue) {
 			filter.value.kelas = '';
-			await loadKelas(newValue, filter.value.th_ajaran_h);
+			await loadKelas(filter.value.th_ajaran_h, newValue);
 		}
 	},
 );
@@ -154,6 +160,19 @@ watch(reloadRef, async () => {
 	await loadTahun();
 });
 
+async function getDataKelas(params = {}) {
+	try {
+		emit('onLoading', true);
+		const data = await Kelas.getAll({ params, notifySuccess: false });
+		return data;
+	} catch (error) {
+		console.error('🚀 ~ getDataKelas ~ error:', error);
+		return null;
+	} finally {
+		emit('onLoading', false);
+	}
+}
+
 // add to store
 watch(
 	filter,
@@ -163,14 +182,8 @@ watch(
 		if (value.th_ajaran_h && value.tingkat_id && value.kelas) {
 			value.status = 'Aktif';
 			value.aktif = true;
-			emit('onLoading', true);
-			const data = await apiGet({
-				endPoint: 'kelas',
-				params: value,
-				loading,
-			});
+			const data = await getDataKelas(value);
 			kenaikanKelasStore().addMurid(data.murid);
-			emit('onLoading', false);
 		}
 	},
 	{ deep: true },

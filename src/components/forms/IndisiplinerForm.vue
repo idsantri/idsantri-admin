@@ -3,12 +3,13 @@
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Santri Indisipliner" :is-new="isNew" />
 			<FormLoading v-if="loading" />
-			<q-card-section class="q-pa-sm">
+			<q-card-section>
 				<InputSelectSantriId
 					:active-only="true"
 					@emit-input="(val) => Object.assign(inputs, val)"
 					:data="props.data"
 					class="q-my-sm"
+					:ref="!inputs.santri_id ? 'firstInput' : null"
 				/>
 				<q-input
 					dense
@@ -24,6 +25,7 @@
 					type="date"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					error-color="negative"
+					:ref="inputs.santri_id ? 'firstInput' : null"
 				/>
 
 				<q-input
@@ -97,7 +99,7 @@
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import { m2h, bacaHijri } from 'src/utils/hijri';
 import { isDate, formatDateFull } from 'src/utils/format-date';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
@@ -114,6 +116,12 @@ const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'su
 
 const inputs = ref({ kategori: 3, ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Indisipliner, {
 	emit: emit,

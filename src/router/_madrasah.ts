@@ -128,7 +128,7 @@ export default [
 				name: 'Atur Nomor Absen',
 			},
 			{
-				path: 'input/:absensi/:th_ajaran_h?/:tingkat_id?/:kelas?/:set_bulan_ujian?',
+				path: 'input/:absensi/:th_ajaran_h?/:tingkat_id?/:kelas?/:bulan_ujian?',
 				component: (): Component => import('src/pages/madrasah/absensi/AbsensiInput.vue'),
 				name: 'Input Data',
 			},

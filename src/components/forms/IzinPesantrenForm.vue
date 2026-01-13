@@ -3,12 +3,13 @@
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Izin Santri" :is-new="isNew" />
 			<FormLoading v-if="loading" />
-			<q-card-section class="q-pa-sm">
+			<q-card-section>
 				<InputSelectSantriId
 					:active-only="true"
 					@emit-input="(val) => Object.assign(inputs, val)"
 					:data="props.data"
 					class="q-my-sm"
+					:ref="!inputs.santri_id ? 'firstInput' : null"
 				/>
 				<input-select-array
 					v-model="inputs.sifat"
@@ -16,6 +17,7 @@
 					label="Sifat"
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
+					:ref="inputs.santri_id ? 'firstInput' : null"
 				/>
 				<q-select
 					label="Pengajuan"
@@ -71,7 +73,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import { isDate, formatDateFull } from 'src/utils/format-date';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
@@ -86,6 +88,13 @@ const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'su
 
 const inputs = ref({ pengajuan: 'Baru', tujuan: 'Sesuai alamat rumah', ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
+
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(IzinPesantren, {
 	emit: emit,
 	responseKey: 'izin_pesantren',

@@ -118,9 +118,9 @@ function displayFilter() {
 		text += ' ➡️ <em class="text-weight-light">Ujian Ke: </em><strong>' + u.label + '</strong>';
 	}
 
-	if (params.set_bulan_ujian) {
+	if (params.bulan_ujian) {
 		const tk = listsMadrasahStore().getBulanUjianSettingByTingkatId(params.tingkat_id);
-		const bu = tk.find((b) => b.bu == params.set_bulan_ujian);
+		const bu = tk.find((b) => b.bu == params.bulan_ujian);
 		text += ' ➡️ <em class="text-weight-light">Bulan (Ujian): </em><strong>' + bu.bulan_ujian + '</strong>';
 	}
 

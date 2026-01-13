@@ -11,6 +11,11 @@
 			<MenuItem v-for="item in sekretariat" :key="item.to" :item="item" />
 		</ExpansionItem>
 
+		<!-- BENDAHARA -->
+		<ExpansionItem v-if="apb?.length" label="Bendahara" caption="Keuangan dan Anggaran" :separator="true">
+			<MenuItem v-for="item in apb" :key="item.to" :item="item" />
+		</ExpansionItem>
+
 		<!-- MAKHADIYAH -->
 		<ExpansionItem v-if="makhadiyah?.length" label="Makhadiyah" caption="Kedaerahan">
 			<MenuItem v-for="item in makhadiyah" :key="item.to" :item="item" />
@@ -48,5 +53,5 @@
 import LogoCircle from 'src/components/LogoCircle.vue';
 import ExpansionItem from './ExpansionItem.vue';
 import MenuItem from './MenuItem.vue';
-import { sekretariat, makhadiyah, madrasah, keamanan, ugt, info, setting } from './menus';
+import { sekretariat, makhadiyah, madrasah, keamanan, ugt, info, setting, apb } from './menus';
 </script>

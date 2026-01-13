@@ -1,14 +1,9 @@
 <template lang="">
 	<div class="flex justify-between items-center">
 		<div>
-			<div class="text-italic text-weight-light">
-				Nomor WA Customer Service:
-			</div>
+			<div class="text-italic text-weight-light">Nomor WA Customer Service:</div>
 			<div v-if="isEdit">
-				<q-form
-					@submit.prevent="onSubmit"
-					class="flex items-start q-gutter-x-sm"
-				>
+				<q-form @submit.prevent="onSubmit" class="flex items-start q-gutter-x-sm">
 					<q-input
 						v-model="inputCs"
 						outlined
@@ -17,9 +12,7 @@
 						:disable="loading"
 						clearable
 						placeholder="628xxxx"
-						:rules="[
-							(val) => !val || !isNaN(val) || 'Hanya angka!',
-						]"
+						:rules="[(val) => !val || !isNaN(val) || 'Hanya angka!']"
 					/>
 					<q-btn
 						type="submit"
@@ -43,12 +36,7 @@
 				</div>
 				<div v-else>
 					<div class="text-weight-bold">
-						{{
-							cs.replace(
-								/(\d{2})(\d{3})(\d{4})(\d{4})/,
-								'$1 $2-$3-$4',
-							)
-						}}
+						{{ cs.replace(/(\d{2})(\d{3})(\d{4})(\d{4})/, '$1 $2-$3-$4') }}
 					</div>
 				</div>
 			</div>
@@ -65,8 +53,7 @@
 	</div>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
-import apiPost from 'src/api/api-post';
+import ConfigApp from 'src/models/ConfigApp';
 import { onMounted, ref } from 'vue';
 
 const isEdit = ref(false);
@@ -75,12 +62,14 @@ const loading = ref(false);
 const cs = ref('');
 
 async function fetchData() {
-	const data = await apiGet({
-		endPoint: 'config/app-wali/cs',
-		loading: loading,
-	});
-	if (data && data.cs) {
-		cs.value = data.cs;
+	try {
+		loading.value = true;
+		const data = await ConfigApp.getAppWali('cs');
+		cs.value = data?.cs || '';
+	} catch (_err) {
+		console.error('🚀 ~ fetchData ~ _err:', _err);
+	} finally {
+		loading.value = false;
 	}
 }
 
@@ -89,14 +78,15 @@ onMounted(async () => {
 });
 
 const onSubmit = async () => {
-	const res = await apiPost({
-		endPoint: 'config/app-wali/cs',
-		loading: loading,
-		data: { cs: inputCs.value },
-	});
-	if (res) {
-		cs.value = res.cs;
+	try {
+		loading.value = true;
+		await ConfigApp.setAppWali({ cs: inputCs.value }, 'cs');
+		cs.value = inputCs.value;
 		isEdit.value = false;
+	} catch (error) {
+		console.error('🚀 ~ onSubmit ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 };
 

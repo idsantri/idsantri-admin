@@ -33,19 +33,17 @@
 			</q-card>
 		</div>
 		<div class="">
-			<MutaallimCard
-				:santri="{ id: selected.santri_id, nama: selected.nama }"
-			/>
+			<MutaallimCard :santri="{ id: selected.santri_id, nama: selected.nama }" />
 		</div>
 	</div>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
 import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import MutaallimCard from './MutaallimCard.vue';
 import TableHeader from './TableHeader.vue';
 import FilterMarhalah from './FilterMarhalah.vue';
 import { columnMutaallim } from './column-header';
+import Mutaallim from 'src/models/Mutaallim';
 
 const selected = ref({});
 const mutaallim = ref([]);
@@ -56,24 +54,24 @@ const modelMarhalah = ref('');
 const modelFaslah = ref([]);
 
 async function loadData() {
-	const data = await apiGet({ endPoint: 'mutaallim/aktif', loading });
-	if (data) {
+	try {
+		loading.value = true;
+		const data = await Mutaallim.aktif();
 		mutaallim.value = data.mutaallim;
-		// console.log(data.mutaallim);
+	} catch (e) {
+		console.error('🚀 ~ loadData ~ e:', e);
+	} finally {
+		loading.value = false;
 	}
 }
 
 const filteredMutaallim = computed(() => {
 	if (!modelMarhalah.value) return mutaallim.value;
 	if (!modelFaslah.value?.length) {
-		return mutaallim.value.filter(
-			(item) => item.marhalah === modelMarhalah.value,
-		);
+		return mutaallim.value.filter((item) => item.marhalah === modelMarhalah.value);
 	}
 	return mutaallim.value.filter(
-		(item) =>
-			item.marhalah === modelMarhalah.value &&
-			modelFaslah.value.includes(item.faslah),
+		(item) => item.marhalah === modelMarhalah.value && modelFaslah.value.includes(item.faslah),
 	);
 });
 

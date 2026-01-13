@@ -9,19 +9,16 @@
 		behavior="menu"
 		clearable
 		v-model="input"
+		ref="selectRef"
 	>
 		<template v-slot:after>
-			<drop-down-after
-				v-if="btnSetting"
-				:route-to="url"
-				@reload="fetchList"
-			/>
+			<drop-down-after v-if="btnSetting" :route-to="url" @reload="fetchList" />
 		</template>
 	</q-select>
 </template>
 <script setup>
 import listsStore from 'src/stores/lists-store';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
 import DropDownAfter from './DropDownAfter.vue';
 import Lists from 'src/models/Lists';
 
@@ -45,6 +42,16 @@ const loading = ref(false);
 const options = ref([]);
 const store = listsStore();
 const key = props.url.replace(/-/g, '_');
+
+const selectRef = useTemplateRef('selectRef');
+defineExpose({
+	focus: () => {
+		if (selectRef.value) selectRef.value.focus();
+	},
+	showPopup: () => {
+		if (selectRef.value) selectRef.value.showPopup();
+	},
+});
 
 onMounted(async () => {
 	const data = store.getStateByKey_Arr(key, props.sort);

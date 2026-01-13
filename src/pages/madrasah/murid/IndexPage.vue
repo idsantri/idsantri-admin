@@ -51,8 +51,8 @@
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { notifyWarning } from 'src/utils/notify';
-import apiGet from 'src/api/api-get';
 import FilterKelas from 'src/components/filters/FilterKelas.vue';
+import DownloadUrl from 'src/models/DownloadUrl';
 
 const { params } = useRoute();
 const loadingDownload = ref(false);
@@ -64,21 +64,14 @@ async function downloadExcel() {
 		return;
 	}
 
-	const data = await apiGet({
-		endPoint: 'export/kelas',
-		loading: loadingDownload,
-		params: {
-			th_ajaran_h: params.th_ajaran_h,
-			tingkat_id: params.tingkat_id,
-		},
-	});
-
-	if (!data) return;
-	if (!data.url) return notifyWarning('Url tidak ditemukan');
-
-	const link = document.createElement('a');
-	link.href = data.url;
-	link.click();
-	link.remove();
+	try {
+		loadingDownload.value = true;
+		await DownloadUrl.kelas(params);
+	} catch (error) {
+		console.error('🚀 ~ downloadExcel ~ error:', error);
+		notifyWarning('Gagal mengunduh file');
+	} finally {
+		loadingDownload.value = false;
+	}
 }
 </script>

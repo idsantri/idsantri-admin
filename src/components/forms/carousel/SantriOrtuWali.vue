@@ -25,7 +25,7 @@
 		label="Nama Orang Tua"
 		:model-value="ortu?.ayah + ' | ' + ortu?.ibu"
 		readonly=""
-		:loading="loading['ortu']"
+		:loading="loadingOrtu"
 	>
 		<template v-slot:after>
 			<q-btn
@@ -69,7 +69,7 @@
 		label="Nama Wali"
 		:model-value="wali?.nama + ' (' + wali?.sex + ')'"
 		readonly=""
-		:loading="loading['wali']"
+		:loading="loadingWali"
 	>
 		<template v-slot:after>
 			<q-btn
@@ -94,8 +94,9 @@
 import { reactive, ref, toRefs, watch } from 'vue';
 import dialogStore from 'src/stores/dialog-store';
 import santriState from 'src/stores/santri-store';
-import apiGet from 'src/api/api-get';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
+import Ortu from 'src/models/Ortu';
+import Wali from 'src/models/Wali';
 
 const inputs = defineModel();
 const dialog = dialogStore();
@@ -104,22 +105,47 @@ const { searchOrtu, searchWali } = toRefs(dialog);
 const ortu = reactive(santriState().ortu);
 const wali = reactive(santriState().wali);
 
-const loading = ref([]);
+const loadingOrtu = ref(false);
+const loadingWali = ref(false);
 
 const check = async (param, id) => {
 	if (!id) return;
-	loading.value[param] = true;
-	const data = await apiGet({ endPoint: `${param}/${id}` });
-	// console.log(data);
-	if (data) {
-		if (param == 'ortu') santriState().setOrtu(data.ortu);
-		if (param == 'wali') santriState().setWali(data.wali);
-	} else {
-		if (param == 'ortu') santriState().setOrtu({ ayah: null, ibu: null });
-		if (param == 'wali') santriState().setWali({ nama: null, sex: null });
+
+	if (param == 'ortu') {
+		await loadOrtu(id);
+		return;
 	}
-	loading.value[param] = false;
+	if (param == 'wali') {
+		await loadWali(id);
+		return;
+	}
 };
+
+async function loadOrtu(id) {
+	try {
+		loadingOrtu.value = true;
+		const data = await Ortu.getById({ id });
+		santriState().setOrtu(data.ortu);
+	} catch (error) {
+		santriState().setOrtu({ ayah: null, ibu: null });
+		console.error('🚀 ~ loadOrtu ~ error:', error);
+	} finally {
+		loadingOrtu.value = false;
+	}
+}
+
+async function loadWali(id) {
+	try {
+		loadingWali.value = true;
+		const data = await Wali.getById({ id });
+		santriState().setWali(data.wali);
+	} catch (error) {
+		santriState().setWali({ nama: null, sex: null });
+		console.error('🚀 ~ loadWali ~ error:', error);
+	} finally {
+		loadingWali.value = false;
+	}
+}
 
 async function pasteOrtu() {
 	inputs.value.ortu_id = await navigator.clipboard.readText();

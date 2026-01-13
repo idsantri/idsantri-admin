@@ -1,4 +1,5 @@
 // ArrayCrud - IIFE Factory Function Pattern
+
 const ArrayCrud = (() => {
 	// Private utility functions
 	const _validateObject = (obj) => {
@@ -39,15 +40,15 @@ const ArrayCrud = (() => {
 	 * UPDATE - Mengupdate object berdasarkan id
 	 * @param {Array} currentArray - Array saat ini (ref.value)
 	 * @param {number|string} objectId - ID object yang akan diupdate
-	 * @param {Object} updateData - Data baru untuk update
+	 * @param {Object} updatedData - Data baru untuk update
 	 * @returns {Array} Array baru untuk update state
 	 */
-	function update(currentArray, objectId, updateData) {
-		_validateObject(updateData);
+	function update(currentArray, objectId, updatedData, key = 'id') {
+		_validateObject(updatedData);
 
 		const newArray = currentArray.map((item) => {
-			if (item.id === objectId) {
-				return { ...item, ...updateData };
+			if (item[key] === objectId) {
+				return { ...item, ...updatedData };
 			}
 			return item;
 		});
@@ -56,13 +57,34 @@ const ArrayCrud = (() => {
 	}
 
 	/**
+	 * UPDATE OR CREATE (UPSERT) - Update jika ada, create jika tidak ada
+	 * @param {Array} currentArray - Array saat ini
+	 * @param {Object} data - Data yang akan dimasukkan/diupdate
+	 * @param {string} key - Key pencarian (default: 'id')
+	 * @param {string} position - Posisi jika create ("first" atau "last" default)
+	 * @returns {Array} Array baru untuk update state
+	 */
+	function updateOrCreate(currentArray, data, key = 'id', position = 'last') {
+		_validateObject(data);
+		const objectId = data[key];
+
+		if (exists(currentArray, objectId)) {
+			// Jika data ada, gunakan fungsi update yang sudah ada
+			return update(currentArray, objectId, data, key);
+		} else {
+			// Jika data tidak ada, gunakan fungsi create yang sudah ada
+			return create(currentArray, data, position);
+		}
+	}
+
+	/**
 	 * DELETE - Menghapus object berdasarkan id
 	 * @param {Array} currentArray - Array saat ini (ref.value)
 	 * @param {number|string} objectId - ID object yang akan dihapus
 	 * @returns {Array} Array baru untuk update state
 	 */
-	function remove(currentArray, objectId) {
-		return currentArray.filter((item) => item.id !== objectId);
+	function remove(currentArray, objectId, key = 'id') {
+		return currentArray.filter((item) => item[key] !== objectId);
 	}
 
 	/**
@@ -103,15 +125,25 @@ const ArrayCrud = (() => {
 	 * @param {Array} currentArray - Array saat ini
 	 * @param {Function|string} sortBy - Function atau key untuk sort
 	 * @param {string} order - "asc" atau "desc"
+	 * @param {boolean} nullsFirst - true jika null harus ditempatkan di awal
 	 * @returns {Array} Array yang sudah diurutkan
 	 */
-	function sort(currentArray, sortBy, order = 'asc') {
+	function sort(currentArray, sortBy, order = 'asc', nullsFirst = true) {
 		const newArray = [...currentArray];
 
 		if (typeof sortBy === 'string') {
 			newArray.sort((a, b) => {
 				let aVal = a[sortBy];
 				let bVal = b[sortBy];
+
+				// Pengecekan nilai null atau string kosong
+				const nullishA = aVal === null || aVal === undefined || aVal === '';
+				const nullishB = bVal === null || bVal === undefined || bVal === '';
+
+				// Jika salah satu nilai kosong, tentukan posisinya
+				if (nullishA && nullishB) return 0;
+				if (nullishA) return nullsFirst ? -1 : 1;
+				if (nullishB) return nullsFirst ? 1 : -1;
 
 				// Tambahkan pengecekan dan konversi untuk string agar case-insensitive
 				if (typeof aVal === 'string' && typeof bVal === 'string') {
@@ -169,6 +201,7 @@ const ArrayCrud = (() => {
 	return {
 		create,
 		update,
+		updateOrCreate,
 		remove,
 		findById,
 		exists,

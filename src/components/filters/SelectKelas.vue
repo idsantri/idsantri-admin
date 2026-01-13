@@ -4,10 +4,10 @@
 		outlined
 		label="Kelas"
 		v-model="kelas"
-		:options="lists['kelas']"
+		:options="listKelas"
 		emit-value
 		map-options
-		:loading="loading['kelas']"
+		:loading="loading"
 		clearable=""
 		behavior="menu"
 	/>
@@ -15,8 +15,8 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { getListsCustom } from 'src/api/api-get-lists';
 import listsMadrasahStore from 'stores/lists-madrasah-store';
+import Kelas from 'src/models/Kelas';
 
 const props = defineProps({
 	startUrl: {
@@ -30,39 +30,32 @@ const props = defineProps({
 });
 const emit = defineEmits(['onSelect']);
 
-const lists = ref([]);
+const listKelas = ref([]);
 const { params } = useRoute();
 const kelas = ref(params.kelas);
-const loading = ref([]);
+const loading = ref(false);
 const router = useRouter();
 const url = `${props.startUrl}/${params.th_ajaran_h}/${params.tingkat_id}`;
 
 onMounted(async () => {
 	if (params.th_ajaran_h && params.tingkat_id) {
-		const cekData = listsMadrasahStore().getKelasByTingkatAndTahun(
-			params.tingkat_id,
-			params.th_ajaran_h,
-		);
-		if (cekData.length) {
-			lists.value['kelas'] = cekData;
+		const cekData = listsMadrasahStore().getKelasByTingkatAndTahun(params.tingkat_id, params.th_ajaran_h);
+		if (cekData?.length) {
+			listKelas.value = cekData;
 		} else {
-			const data = await getListsCustom({
-				url: 'kelas/lists',
-				params: {
+			try {
+				loading.value = true;
+				const data = await Kelas.list({
 					th_ajaran_h: params.th_ajaran_h,
 					tingkat_id: params.tingkat_id,
-				},
-				key: 'kelas',
-				loadingArray: loading,
-				sort: 'asc',
-			});
-
-			listsMadrasahStore().addKelasToTingkatByTahun(
-				data,
-				params.tingkat_id,
-				params.th_ajaran_h,
-			);
-			lists.value['kelas'] = data;
+				});
+				listsMadrasahStore().addKelasToTingkatByTahun(data.kelas, params.tingkat_id, params.th_ajaran_h);
+				listKelas.value = data.kelas;
+			} catch (error) {
+				console.error('🚀 ~ error:', error);
+			} finally {
+				loading.value = false;
+			}
 		}
 	}
 });
@@ -77,8 +70,8 @@ watch(kelas, (newValue, oldValue) => {
 		}
 		if (newValue != oldValue) {
 			let endUrl = '';
-			if (params.set_bulan_ujian) {
-				endUrl = '/' + params.set_bulan_ujian;
+			if (params.bulan_ujian) {
+				endUrl = '/' + params.bulan_ujian;
 			} else if (params.ujian_ke) {
 				endUrl = '/' + params.ujian_ke;
 			}

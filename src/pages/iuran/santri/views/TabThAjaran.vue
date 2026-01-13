@@ -31,10 +31,10 @@
 	</div>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import IuranSantriByTh from './IuranSantriByTh.vue';
+import Iuran from 'src/models/Iuran';
 
 const iuran = ref([]);
 const loading = ref(false);
@@ -42,13 +42,15 @@ const { params } = useRoute();
 const arrThAjaran = ref([]);
 
 async function loadData() {
-	const data = await apiGet({
-		endPoint: 'iuran/santri/' + params.id,
-		loading: loading,
-	});
-	if (data) {
+	try {
+		loading.value = true;
+		const data = await Iuran.bySantri(params.id);
 		iuran.value = data.iuran ?? [];
 		arrThAjaran.value = iuran.value.map((v) => v.th_ajaran_h);
+	} catch (error) {
+		console.error('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 

@@ -7,11 +7,12 @@
 					<q-item :class="kelas.id == params.id ? 'bg-green-1' : ''">
 						<q-item-section side>
 							<q-btn
+								outline
 								round
 								dense
 								glossy
 								color="green-6"
-								icon="play_arrow"
+								icon="info"
 								:to="`/madrasah/kelas/${kelas.id}/riwayat`"
 								:disable="kelas.id == params.id"
 							/>
@@ -71,8 +72,8 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import apiGet from 'src/api/api-get';
 import KelasForm from 'src/components/forms/KelasForm.vue';
+import Kelas from 'src/models/Kelas';
 
 const props = defineProps({ santri_id: { type: [String, Number] } });
 const crudShow = ref(false);
@@ -91,13 +92,15 @@ function addData() {
 }
 
 async function getKelas(santri_id) {
-	const data = await apiGet({
-		endPoint: `kelas/santri/${santri_id}`,
-		loading: loading,
-	});
-	if (data.kelas) {
+	try {
+		loading.value = true;
+		const data = await Kelas.santri(santri_id);
 		kelas.value = data.kelas;
 		santri.value = data.santri;
+	} catch (error) {
+		console.error('🚀 ~ getKelas ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 

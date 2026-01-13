@@ -16,7 +16,7 @@
 		v-if="showing"
 		class="tw:absolute tw:inset-0 tw:z-10 tw:flex tw:items-center tw:flex-col tw:justify-center tw:backdrop-blur-[1px] tw:bg-orange-100/25"
 	>
-		<q-spinner-puff size="8em" color="green-14" />
+		<q-spinner-puff :size="size" color="green-14" />
 		<div v-if="message" class="text-subtitle2 text-green-10">{{ message }}</div>
 	</div>
 </template>
@@ -29,6 +29,10 @@ defineProps({
 	message: {
 		type: String,
 		default: 'Tunggu sebentar …',
+	},
+	size: {
+		type: String,
+		default: '8em',
 	},
 });
 </script>

@@ -12,11 +12,19 @@
 					color="green-11"
 					glossy
 					class="q-px-sm text-green-10 q-mr-sm"
-					label="Download"
 					no-caps=""
-					icon="download"
 					@click="download"
-				/>
+					:disable="loadingDownload"
+				>
+					<template v-slot:default v-if="loadingDownload">
+						<q-spinner class="q-mr-sm" />
+						Download
+					</template>
+					<template v-slot:default v-else>
+						<q-icon name="download" class="q-mr-sm" />
+						Download
+					</template>
+				</q-btn>
 				<q-btn
 					dense
 					color="green-11"
@@ -42,26 +50,20 @@
 	</CardPage>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
-import loadingStore from 'src/stores/loading-store';
-import { toRefs } from 'vue';
+import DownloadUrl from 'src/models/DownloadUrl';
+import { ref } from 'vue';
 
-const { loadingMain } = toRefs(loadingStore());
+const loadingDownload = ref(false);
 
 async function download() {
-	// console.log(isActive.value);
-	const data = await apiGet({
-		endPoint: 'export/mutaallim',
-		loading: loadingMain,
-	});
-
-	if (!data) return;
-	if (!data.url) return notifyWarning('Url tidak ditemukan');
-
-	const link = document.createElement('a');
-	link.href = data.url;
-	link.click();
-	link.remove();
+	try {
+		loadingDownload.value = true;
+		await DownloadUrl.mutaallim();
+	} catch (e) {
+		console.error('🚀 ~ onDownload ~ e:', e);
+	} finally {
+		loadingDownload.value = false;
+	}
 }
 </script>
 <style lang=""></style>

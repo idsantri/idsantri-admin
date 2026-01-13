@@ -32,9 +32,8 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
-import apiGet from 'src/api/api-get';
-import { notifyWarning } from 'src/utils/notify';
 import Status from 'src/models/Status';
+import DownloadUrl from 'src/models/DownloadUrl';
 
 const status = ref([]);
 const selectedStatus = ref([]);
@@ -58,22 +57,14 @@ onMounted(async () => {
 });
 
 async function download() {
-	// console.log(isActive.value);
-	const data = await apiGet({
-		endPoint: 'export/santri',
-		loading: loading,
-		params: {
-			status: selectedStatus.value,
-		},
-	});
-
-	if (!data) return;
-	if (!data.url) return notifyWarning('Url tidak ditemukan');
-
-	const link = document.createElement('a');
-	link.href = data.url;
-	link.click();
-	link.remove();
+	try {
+		loading.value = true;
+		await DownloadUrl.santri({ status: selectedStatus.value });
+	} catch (e) {
+		console.error('🚀 ~ onDownload ~ e:', e);
+	} finally {
+		loading.value = false;
+	}
 }
 </script>
 <style lang=""></style>

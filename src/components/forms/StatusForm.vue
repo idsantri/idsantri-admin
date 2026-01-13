@@ -20,22 +20,16 @@
 					label="Status *"
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
+					ref="firstInput"
 				/>
-				<q-input
-					dense
-					class="q-my-sm"
-					outlined
-					label="Keterangan"
-					v-model="inputs.keterangan"
-					autogrow=""
-				/>
+				<q-input dense class="q-my-sm" outlined label="Keterangan" v-model="inputs.keterangan" autogrow="" />
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
 		</q-form>
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import Status from 'src/models/Status';
 import useCrudForm from './utils/useCrudForm';
@@ -43,23 +37,22 @@ import useCrudForm from './utils/useCrudForm';
 const props = defineProps({
 	data: { type: Object, required: true },
 });
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	Status,
-	{
-		emit: emit,
-		responseKey: 'status',
-	},
-);
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
+
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Status, {
+	emit: emit,
+	responseKey: 'status',
+});
 const onSubmit = async () => {
 	const data = {
 		santri_id: inputs.value.santri_id,

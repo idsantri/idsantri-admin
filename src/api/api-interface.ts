@@ -31,6 +31,7 @@ interface DownloadParams extends Params {
 	fileName?: string;
 	confirm?: boolean;
 	message?: string;
+	contentType: string;
 }
 
 interface ListsParams {
@@ -46,12 +47,4 @@ interface ListsCustomParams extends ListsParams {
 	url: string;
 }
 
-export type {
-	GetParams,
-	PostParams,
-	UpdateParams,
-	DeleteParams,
-	DownloadParams,
-	ListsParams,
-	ListsCustomParams,
-};
+export type { GetParams, PostParams, UpdateParams, DeleteParams, DownloadParams, ListsParams, ListsCustomParams };

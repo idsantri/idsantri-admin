@@ -12,7 +12,7 @@
 		:height="props.height"
 		:url="api.defaults.baseURL + props.url"
 		:params="paramsImage"
-		:headers="{ Authorization: `Bearer ${getToken()}` }"
+		:headers="{ Authorization: `Bearer ${token}` }"
 		withCredentials
 		:img-format="props.imgFormat"
 	></my-upload>
@@ -22,7 +22,7 @@ import myUpload from 'vue-image-crop-upload';
 import { notifyError, notifySuccess } from 'src/utils/notify';
 import { onUpdated, ref, watch } from 'vue';
 import api from 'src/api';
-import getToken from 'src/api/get-token';
+import useAuthStore from 'src/stores/auth-store';
 
 /**
  * communicate parents children
@@ -39,6 +39,7 @@ const props = defineProps({
 	fieldImage: { type: String, default: 'image' },
 });
 const emit = defineEmits(['updateUploader', 'successUpload']);
+const token = useAuthStore().token || '';
 
 const internalShowUploader = ref(false);
 watch(

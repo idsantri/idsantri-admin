@@ -4,7 +4,7 @@
 		outlined
 		label="Bulan (Ujian)"
 		v-model="bulanUjian"
-		:options="lists"
+		:options="listBU"
 		option-value="bu"
 		option-label="bulan_ujian"
 		emit-value
@@ -15,7 +15,7 @@
 	/>
 </template>
 <script setup>
-import { getListsCustom } from 'src/api/api-get-lists';
+import Absensi from 'src/models/Absensi';
 import listsMadrasahStore from 'src/stores/lists-madrasah-store';
 import { notifyWarning } from 'src/utils/notify';
 import { onMounted, ref, watch } from 'vue';
@@ -38,34 +38,36 @@ const router = useRouter();
 const bulanUjian = ref(params.list_bulan_ujian);
 
 const loading = ref(false);
-const lists = ref([]);
+const listBU = ref([]);
 const url = `${props.startUrl}/${params.th_ajaran_h}/${params.tingkat_id}`;
 
 onMounted(async () => {
 	if (params.th_ajaran_h && params.tingkat_id) {
-		const cekData =
-			listsMadrasahStore().getBulanUjianListByTahunAndTingkatId(
-				params.th_ajaran_h,
-				params.tingkat_id,
-			);
-		if (cekData.length) {
-			lists.value = cekData;
+		const cekData = listsMadrasahStore().getBulanUjianListByTahunAndTingkatId(
+			params.th_ajaran_h,
+			params.tingkat_id,
+		);
+		if (cekData?.length) {
+			listBU.value = cekData;
 		} else {
-			const data = await getListsCustom({
-				url: `absensi/${params.absensi}/lists/bulan-ujian`,
-				params: {
+			try {
+				loading.value = true;
+				const data = await Absensi.getListBulanUjian(params.absensi, {
 					th_ajaran_h: params.th_ajaran_h,
 					tingkat_id: params.tingkat_id,
-				},
-				key: 'bulan_ujian',
-				loading,
-			});
-			if (!data.length) {
-				notifyWarning('Tidak ada laporan untuk filter yang dipilih!');
-				return;
+				});
+
+				if (!data.bulan_ujian?.length) {
+					notifyWarning('Tidak ada laporan untuk filter yang dipilih!');
+					return;
+				}
+				listsMadrasahStore().addBulanUjianList(data.bulan_ujian);
+				listBU.value = data.bulan_ujian;
+			} catch (error) {
+				console.error('🚀 ~ error:', error);
+			} finally {
+				loading.value = false;
 			}
-			listsMadrasahStore().addBulanUjianList(data);
-			lists.value = data;
 		}
 	}
 });

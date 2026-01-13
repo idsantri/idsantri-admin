@@ -13,6 +13,7 @@ import _info from './_info';
 import _makhadiyah from './_makhadiyah';
 import _iuran from './_iuran';
 import _alumni from './_alumni';
+import _apb from './_apb';
 
 const routes: RouteRecordRaw[] = [
 	// layout auth
@@ -98,6 +99,11 @@ const routes: RouteRecordRaw[] = [
 				path: 'info',
 				meta: { title: 'Info' },
 				children: _info,
+			},
+			{
+				path: 'apb',
+				meta: { title: 'APB' },
+				children: _apb,
 			},
 			{
 				path: 'profile',
