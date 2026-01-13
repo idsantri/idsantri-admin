@@ -8,7 +8,7 @@
 					dense
 					outlined
 					v-model="inputs.category"
-					label="Grup"
+					label="Kategori"
 					class="q-my-sm"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:options="['AKTIVA', 'PENDAPATAN', 'BIAYA']"
