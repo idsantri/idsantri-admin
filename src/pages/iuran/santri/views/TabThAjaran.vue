@@ -4,7 +4,7 @@
 			<div class="col bg-green-1" style="max-width: 90px">
 				<q-tabs vertical dense="" align="left" no-caps active-bg-color="green-11">
 					<div v-for="(th, index) in arrThAjaran" :key="index">
-						<q-route-tab :name="th" :label="th" :to="`/iuran/santri/${params.id}/${th}`" />
+						<q-route-tab :name="th" :label="th" :to="`/iuran/santri/${params.id}/${th}`" replace />
 					</div>
 				</q-tabs>
 			</div>
