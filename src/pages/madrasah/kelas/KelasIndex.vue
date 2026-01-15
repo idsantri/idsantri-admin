@@ -79,12 +79,18 @@
 							indicator-color="green-11"
 							active-color="green-11"
 						>
-							<q-route-tab name="riwayat" label="Riwayat" :to="`/madrasah/kelas/${kelas.id}/riwayat`" />
-							<q-route-tab name="izin" label="Izin" :to="`/madrasah/kelas/${kelas.id}/izin`" />
+							<q-route-tab
+								name="riwayat"
+								label="Riwayat"
+								:to="`/madrasah/kelas/${kelas.id}/riwayat`"
+								replace
+							/>
+							<q-route-tab name="izin" label="Izin" :to="`/madrasah/kelas/${kelas.id}/izin`" replace />
 							<q-route-tab
 								name="nilai"
 								label="Nilai Mapel"
 								:to="`/madrasah/kelas/${kelas.id}/nilai-mapel`"
+								replace
 							/>
 						</q-tabs>
 						<q-card-section class="q-pa-sm" :key="keyRoute">

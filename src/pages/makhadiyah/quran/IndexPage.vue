@@ -3,9 +3,9 @@
 		<CardHeader title="Modul Pendidikan Tajwid al-Quran" :showReload="false" />
 		<q-card-section class="q-pa-sm">
 			<q-tabs dense align="left">
-				<q-route-tab label="Santri" to="/quran/santri" exact no-caps />
-				<q-route-tab label="Mutaallim" to="/quran/mutaallim" exact no-caps />
-				<q-route-tab label="Muallim" to="/quran/muallim" exact no-caps />
+				<q-route-tab label="Santri" to="/quran/santri" exact no-caps replace />
+				<q-route-tab label="Mutaallim" to="/quran/mutaallim" exact no-caps replace />
+				<q-route-tab label="Muallim" to="/quran/muallim" exact no-caps replace />
 				<q-space />
 				<q-btn
 					dense
