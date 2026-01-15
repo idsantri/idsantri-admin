@@ -20,7 +20,10 @@
 						<q-item-label overline> Santri </q-item-label>
 						<q-item-label>
 							<q-skeleton v-if="loading || !id" type="text" />
-							<div v-else>{{ santri.nama }} ({{ santri.sex }})</div>
+							<div v-else>
+								{{ santri.nama }} ({{ santri.sex }};
+								{{ santri.tgl_lahir ? getAgeYear(santri.tgl_lahir) : '?' }} tahun)
+							</div>
 						</q-item-label>
 						<q-item-label caption lines="1">
 							<q-skeleton v-if="loading || !id" type="text" />
@@ -101,6 +104,7 @@
 import { ref, watchEffect } from 'vue';
 import santriStore from 'src/stores/santri-store';
 import Santri from 'src/models/Santri';
+import { getAgeYear } from 'src/utils/format-date';
 
 const emit = defineEmits(['loaded']);
 const props = defineProps({

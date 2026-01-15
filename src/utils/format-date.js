@@ -68,14 +68,7 @@ function isDate(dateStr, splitter = '-') {
 		}
 
 		// Pastikan panjang hour, minute, dan second adalah dua digit
-		if (
-			hour < 0 ||
-			hour > 23 ||
-			minute < 0 ||
-			minute > 59 ||
-			second < 0 ||
-			second > 59
-		) {
+		if (hour < 0 || hour > 23 || minute < 0 || minute > 59 || second < 0 || second > 59) {
 			return false;
 		}
 	}
@@ -219,6 +212,44 @@ function formatDateShort(inputDate) {
 	return `${day}-${month}-${year}`;
 }
 
+function getAge(startDate, endDate = new Date()) {
+	const result = { tahun: 0, bulan: 0, hari: 0, message: '' };
+	if (!startDate) {
+		return { ...result, message: 'Tanggal awal tidak boleh kosong' };
+	}
+
+	const start = startDate instanceof Date ? startDate : new Date(startDate);
+	const end = endDate instanceof Date ? endDate : new Date(endDate);
+
+	if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+		return { ...result, message: 'Tanggal tidak valid' };
+	}
+
+	let tahun = end.getFullYear() - start.getFullYear();
+	let bulan = end.getMonth() - start.getMonth();
+	let hari = end.getDate() - start.getDate();
+
+	// Jika hari negatif, pinjam dari bulan
+	if (hari < 0) {
+		bulan--;
+		const bulanSebelumnya = new Date(end.getFullYear(), end.getMonth(), 0);
+		hari += bulanSebelumnya.getDate();
+	}
+
+	// Jika bulan negatif, pinjam dari tahun
+	if (bulan < 0) {
+		tahun--;
+		bulan += 12;
+	}
+
+	return { tahun, bulan, hari, message: 'Sukses' };
+}
+
+function getAgeYear(startDate, endDate) {
+	const age = getAge(startDate, endDate);
+	return age.tahun;
+}
+
 export {
 	isDate,
 	formatDateSql,
@@ -227,4 +258,6 @@ export {
 	formatDateFullDay,
 	formatDateTimeHtmlToSql,
 	formatDate,
+	getAge,
+	getAgeYear,
 };
