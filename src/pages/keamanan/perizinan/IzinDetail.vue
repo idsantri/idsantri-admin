@@ -79,7 +79,7 @@
 													{{
 														formatDateFull(izin.dari_tgl) +
 														' | ' +
-														bacaHijri(m2h(izin.dari_tgl))
+														bacaHijri(masehiToHijri(izin.dari_tgl))
 													}}
 												</td>
 											</tr>
@@ -89,7 +89,7 @@
 													{{
 														formatDateFull(izin.sampai_tgl) +
 														' | ' +
-														bacaHijri(m2h(izin.sampai_tgl))
+														bacaHijri(masehiToHijri(izin.sampai_tgl))
 													}}
 												</td>
 											</tr>
@@ -128,7 +128,7 @@
 													{{
 														formatDateFull(izin.kembali_tgl) +
 														' | ' +
-														bacaHijri(m2h(izin.kembali_tgl))
+														bacaHijri(masehiToHijri(izin.kembali_tgl))
 													}}
 												</td>
 											</tr>
@@ -176,7 +176,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { formatDateFull } from 'src/utils/format-date';
-import { bacaHijri, m2h } from 'src/utils/hijri';
+import { bacaHijri, masehiToHijri } from 'src/utils/hijri';
 import ReportViewer from 'src/components/ReportViewer.vue';
 import IzinRiwayat from './part/IzinRiwayat.vue';
 import CardSantriSimple from 'src/components/santri/CardSantriSimple.vue';

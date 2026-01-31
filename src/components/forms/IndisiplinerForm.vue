@@ -15,7 +15,7 @@
 					dense
 					:hint="
 						isDate(inputs.tgl_kasus)
-							? formatDateFull(inputs.tgl_kasus) + ' | ' + bacaHijri(m2h(inputs.tgl_kasus))
+							? formatDateFull(inputs.tgl_kasus) + ' | ' + bacaHijri(masehiToHijri(inputs.tgl_kasus))
 							: ''
 					"
 					class="q-my-sm"
@@ -32,7 +32,7 @@
 					dense
 					:hint="
 						isDate(inputs.tgl_sidang)
-							? formatDateFull(inputs.tgl_sidang) + ' | ' + bacaHijri(m2h(inputs.tgl_sidang))
+							? formatDateFull(inputs.tgl_sidang) + ' | ' + bacaHijri(masehiToHijri(inputs.tgl_sidang))
 							: ''
 					"
 					class="q-my-sm"
@@ -100,7 +100,7 @@
 </template>
 <script setup>
 import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
-import { m2h, bacaHijri } from 'src/utils/hijri';
+import { masehiToHijri, bacaHijri } from 'src/utils/hijri';
 import { isDate, formatDateFull } from 'src/utils/format-date';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectTatibSantri from 'src/components/inputs/InputSelectTatibSantri.vue';

@@ -46,7 +46,7 @@
 						</q-item-label>
 						<q-item-label caption>
 							{{ formatDate(item.created_at, 'dd-MM-yyyy') }} |
-							{{ m2hFormat(formatDate(item.created_at, 'yyyy-MM-dd')) }}
+							{{ formatHijri(masehiToHijri(item.created_at)) }}
 							<span v-if="item.aktif">
 								<span>|</span>
 								<span class="text-weight-bold text-green-10"> Aktif </span>
@@ -74,7 +74,7 @@ import CardSantriSimple from 'src/components/santri/CardSantriSimple.vue';
 import Mutaallim from 'src/models/Mutaallim';
 import { getObjectById } from 'src/utils/array-object';
 import { formatDate } from 'src/utils/format-date';
-import { m2hFormat } from 'src/utils/hijri';
+import { masehiToHijri, formatHijri } from 'src/utils/hijri';
 import { onUpdated, ref } from 'vue';
 
 const { santri } = defineProps({ santri: { type: Object } });

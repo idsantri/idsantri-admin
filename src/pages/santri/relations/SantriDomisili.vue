@@ -17,7 +17,7 @@
 import { ref, onMounted, computed } from 'vue';
 import TempArray from 'src/pages/santri/relations/TemplateArray.vue';
 import { formatDate } from 'src/utils/format-date.js';
-import { m2hFormat } from 'src/utils/hijri.js';
+import { formatHijri, masehiToHijri } from 'src/utils/hijri.js';
 import { deleteById, getObjectById, replaceById } from 'src/utils/array-object';
 import { useRoute } from 'vue-router';
 import DomisiliForm from 'src/components/forms/DomisiliForm.vue';
@@ -46,7 +46,7 @@ async function loadData() {
 
 const dataMap = computed(() =>
 	dataArr.value.map((v) => ({
-		Tanggal: formatDate(v.created_at, 'dd-MM-yyyy') + ' | ' + m2hFormat(formatDate(v.created_at, 'yyyy-MM-dd')),
+		Tanggal: formatDate(v.created_at, 'dd-MM-yyyy') + ' | ' + formatHijri(masehiToHijri(v.created_at)),
 		Domisili: v.domisili,
 		Keterangan: v.keterangan || '-',
 		id: v.id,
