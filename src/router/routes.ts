@@ -14,6 +14,7 @@ import _makhadiyah from './_makhadiyah';
 import _iuran from './_iuran';
 import _alumni from './_alumni';
 import _apb from './_apb';
+import _pulangan from './_pulangan';
 
 const routes: RouteRecordRaw[] = [
 	// layout auth
@@ -44,6 +45,11 @@ const routes: RouteRecordRaw[] = [
 				path: 'alumni',
 				meta: { title: 'Data Alumni' },
 				children: _alumni,
+			},
+			{
+				path: 'pulangan',
+				meta: { title: 'Data Pulangan' },
+				children: _pulangan,
 			},
 			{
 				path: 'wali',

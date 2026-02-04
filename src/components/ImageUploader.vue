@@ -89,7 +89,7 @@ const cropUploadSuccess = (jsonData /*, field*/) => {
 	// console.log(jsonData);
 	// console.log('field: ' + field);
 	notifySuccess(jsonData.message);
-	emit('successUpload');
+	emit('successUpload', jsonData.data);
 };
 
 /**

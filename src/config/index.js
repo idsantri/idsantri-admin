@@ -11,6 +11,7 @@ const config = {
 	MENU: {
 		sekretariat: {
 			alumni: true,
+			pulangan: true,
 		},
 		makhadiyah: {
 			mutasi: true,
