@@ -1,13 +1,13 @@
 const config = {
-	INS_DESC: 'Demo Lokal',
-	INS_NAME: 'Pondok Pesantren',
-	INS_SHORT: 'Demo Aplikasi (lokal)',
-	BASE_API: 'http://localhost:8000',
+	INS_DESC: 'Pondok Pesantren',
+	INS_NAME: 'Syaichona Moh Cholil',
+	INS_SHORT: 'Syaichona',
+	BASE_API: 'https://syaichona.idsantri.my.id',
 	END_API: '/admin',
-	DEV: true,
-	PWA_NAME: 'ID Santri (Admin)',
-	PWA_SHORT_NAME: 'ID Santri',
-	PWA_DESCRIPTION: 'Aplikasi ID Santri (Admin)',
+	DEV: false,
+	PWA_NAME: 'Admin Syaichona.id',
+	PWA_SHORT_NAME: 'Admin Syaichona',
+	PWA_DESCRIPTION: 'Aplikasi Syaichona (Admin)',
 	MENU: {
 		sekretariat: {
 			alumni: true,
@@ -22,7 +22,7 @@ const config = {
 			indisipliner: true,
 		},
 		ugt: true,
-		apb: true,
+		apb: false,
 		setting: {
 			appWali: true,
 			virtualAccount: true,
