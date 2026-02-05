@@ -38,7 +38,7 @@
 			</q-card-section>
 			<upload-image
 				:show-uploader="showUploader"
-				:url="`/pulangan/${id}/image`"
+				:url="`/pulangan/config/${id}/image`"
 				:width="200"
 				:height="200"
 				img-format="png"

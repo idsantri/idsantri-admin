@@ -83,7 +83,7 @@
 								<td class="">{{ pul?.p_nama }} ({{ pul?.p_jabatan }})</td>
 							</tr>
 							<tr>
-								<td class="label">Keterangan</td>
+								<td class="label" style="vertical-align: top">Keterangan</td>
 								<td><span v-html="pul?.keterangan"></span></td>
 							</tr>
 						</tbody>

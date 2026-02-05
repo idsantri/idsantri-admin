@@ -137,7 +137,7 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import ArrayCrud from 'src/models/ArrayCrud';
-import Pulang from 'src/models/Pulang';
+import PulanganSantri from 'src/models/PulanganSantri';
 import { usePulanganStore } from 'src/stores/pulangan-store';
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -173,8 +173,8 @@ const filteredPulang = computed(() => {
 const reload = async () => {
 	try {
 		loading.value = true;
-		const data = await Pulang.getAll({ params: { pulangan: pul.value.slug } });
-		pulang.value = data.pulang;
+		const data = await PulanganSantri.getAll({ params: { identity: pul.value.slug } });
+		pulang.value = data.santri_pulang;
 	} catch (error) {
 		console.log('🚀 ~ reload ~ error:', error);
 	} finally {
@@ -190,7 +190,7 @@ const togglePulang = async (newValue, id) => {
 	try {
 		pulang.value = ArrayCrud.update(pulang.value, id, { is_pulang: newValue });
 		loading.value = true;
-		await Pulang.update({ id, data: { is_pulang: newValue } });
+		await PulanganSantri.update({ id, data: { is_pulang: newValue } });
 	} catch (error) {
 		console.log('🚀 ~ togglePulang ~ error:', error);
 		// roll back
@@ -203,7 +203,7 @@ const togglePulang = async (newValue, id) => {
 const deleteData = async () => {
 	try {
 		loading.value = true;
-		await Pulang.remove({ id: pul.value.slug, message: 'Hapus semua data ini?' });
+		await PulanganSantri.remove({ id: pul.value.slug, message: 'Hapus semua data ini?' });
 		router.go(-1);
 	} catch (error) {
 		console.log('🚀 ~ deleteData ~ error:', error);

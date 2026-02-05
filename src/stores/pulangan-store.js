@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import ArrayCrud from 'src/models/ArrayCrud';
-import Pulangan from 'src/models/Pulangan';
+import Pulangan from 'src/models/PulanganConfig';
 
 export const usePulanganStore = defineStore('pulangan-store', {
 	state: () => ({

@@ -81,12 +81,11 @@
 </template>
 <script setup>
 import { nextTick, onMounted, ref, useTemplateRef, watch } from 'vue';
-import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import useCrudForm from 'src/components/forms/utils/useCrudForm';
 import InputSelectTahunAjaran from '../inputs/InputSelectTahunAjaran.vue';
-import Pulangan from 'src/models/Pulangan';
+import Pulangan from 'src/models/PulanganConfig';
 import { masehiToHijri, bacaHijri } from 'src/utils/hijri';
-import { isDate, formatDateFull, formatDate } from 'src/utils/format-date';
+import { isDate, formatDate } from 'src/utils/format-date';
 
 const props = defineProps({
 	data: { type: Object, required: true },
