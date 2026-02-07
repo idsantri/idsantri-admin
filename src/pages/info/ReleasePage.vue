@@ -36,6 +36,13 @@ import config from 'src/config';
 
 const releases = [
 	{
+		ver: '1.7.0',
+		date: 'Februari 2026',
+		release: {
+			'Fitur Baru': ['Pulangan dan Liburan Santri'],
+		},
+	},
+	{
 		ver: '1.6.0',
 		date: 'Januari 2026',
 		release: {
