@@ -1,0 +1,1 @@
+import{A as t}from"./ApiCrud-CA5HHKOk.js";class s extends t{constructor(){super("apb/transactions")}async listTahunAjaran(){return(await this._apiGet({endPoint:`${this._path}/lists/th-ajaran-h`})).data}async listTahunAjaranAccount(a){return(await this._apiGet({endPoint:`${this._path}/lists/th-ajaran-h`,params:{account_id:a}})).data}}const e=new s;export{e as A};

@@ -1,0 +1,1 @@
+import{A as s}from"./ApiCrud-CA5HHKOk.js";class a extends s{constructor(){super("lists")}async getByKey(t){return(await this._apiGet({endPoint:`${this._path}/${t}`})).data}}const n=new a;export{n as L};
