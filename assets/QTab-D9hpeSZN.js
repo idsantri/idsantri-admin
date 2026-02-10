@@ -1,0 +1,1 @@
+import{u as o,a as t,b as m}from"./QTabs-BT48BI6t.js";import{h as p}from"./index-BTpW0qoK.js";const u=p({name:"QTab",props:t,emits:o,setup(s,{slots:a,emit:e}){const{renderTab:r}=m(s,a,e);return()=>r("div")}});export{u as Q};
