@@ -71,7 +71,7 @@
 												{{
 													formatDateFull(indisipliner.tgl_kasus) +
 													' | ' +
-													m2hBacaHijri(indisipliner.tgl_kasus)
+													bacaHijri(masehiToHijri(indisipliner.tgl_kasus))
 												}}
 											</td>
 										</tr>
@@ -81,7 +81,7 @@
 												{{
 													formatDateFull(indisipliner.tgl_sidang) +
 													' | ' +
-													m2hBacaHijri(indisipliner.tgl_sidang)
+													bacaHijri(masehiToHijri(indisipliner.tgl_sidang))
 												}}
 											</td>
 										</tr>
@@ -145,7 +145,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { formatDateFull } from 'src/utils/format-date';
-import { m2hBacaHijri } from 'src/utils/hijri';
+import { masehiToHijri, bacaHijri } from 'src/utils/hijri';
 import IndisiplinerRiwayat from './part/IndisiplinerRiwayat.vue';
 import CardSantriSimple from 'src/components/santri/CardSantriSimple.vue';
 import IndisiplinerForm from 'src/components/forms/IndisiplinerForm.vue';

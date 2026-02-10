@@ -33,7 +33,7 @@ export default route(function (/* { store, ssrContext } */) {
 
 	Router.beforeEach((to, _from, next) => {
 		if (to.fullPath == '/') {
-			return next('/cari');
+			return next('/home');
 		}
 
 		const store = authStore();

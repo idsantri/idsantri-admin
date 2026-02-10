@@ -25,6 +25,14 @@ const menus = {
 			disable: false,
 			display: !!menu.sekretariat.alumni,
 		},
+		{
+			to: '/pulangan',
+			icon: 'sym_o_flights_and_hotels',
+			label: 'Pulangan',
+			caption: 'Liburan Santri',
+			disable: false,
+			display: !!menu.sekretariat.pulangan,
+		},
 	],
 	makhadiyah: [
 		{

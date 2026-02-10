@@ -20,7 +20,7 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { formatDateShort } from 'src/utils/format-date';
-import { formatHijri, m2h } from 'src/utils/hijri';
+import { formatHijri, masehiToHijri } from 'src/utils/hijri';
 import { getObjectById } from 'src/utils/array-object';
 import TempArray from 'src/pages/santri/relations/TemplateArray.vue';
 import IzinMadrasahForm from 'src/components/forms/IzinMadrasahForm.vue';
@@ -45,7 +45,7 @@ async function loadData() {
 		kelas.value = data.kelas;
 
 		izinMap.value = data.izin_madrasah.map((v) => ({
-			Tanggal: formatDateShort(v.dari_tgl) + ' | ' + formatHijri(m2h(v.dari_tgl)),
+			Tanggal: formatDateShort(v.dari_tgl) + ' | ' + formatHijri(masehiToHijri(v.dari_tgl)),
 			Durasi: v.durasi + ' hari',
 			Keperluan: v.keperluan + `${v.keterangan?.length > 0 ? ' (' + v.keterangan + ')' : ''}`,
 			Catatan: v.catatan,

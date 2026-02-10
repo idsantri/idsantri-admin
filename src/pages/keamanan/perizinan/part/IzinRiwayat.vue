@@ -42,7 +42,11 @@
 									<tr>
 										<td class="label">Tanggal:</td>
 										<td class="flex">
-											{{ formatDateShort(izin.dari_tgl) + ' | ' + m2hFormat(izin.dari_tgl) }}
+											{{
+												formatDateShort(izin.dari_tgl) +
+												' | ' +
+												formatHijri(masehiToHijri(izin.dari_tgl))
+											}}
 											<q-space />
 											{{ izin.th_ajaran_h }}
 										</td>
@@ -103,7 +107,7 @@
 </template>
 <script setup>
 import { formatDateShort } from 'src/utils/format-date';
-import { m2hFormat } from 'src/utils/hijri';
+import { masehiToHijri, formatHijri } from 'src/utils/hijri';
 import { onMounted, onUpdated, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import IzinPesantrenForm from 'src/components/forms/IzinPesantrenForm.vue';
