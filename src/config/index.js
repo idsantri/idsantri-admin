@@ -10,8 +10,8 @@ const config = {
 	PWA_DESCRIPTION: 'Aplikasi Demangan (Admin)',
 	MENU: {
 		sekretariat: {
-			alumni: true,
-			pulangan: true,
+			alumni: false,
+			pulangan: false,
 		},
 		makhadiyah: {
 			mutasi: true,
@@ -21,7 +21,7 @@ const config = {
 			izin_pesantren: true,
 			indisipliner: false,
 		},
-		ugt: true,
+		ugt: false,
 		setting: {
 			appWali: false,
 			virtualAccount: false,
