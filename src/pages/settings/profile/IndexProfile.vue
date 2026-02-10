@@ -156,8 +156,7 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-import apiGet from 'src/api/api-get';
-import apiPost from 'src/api/api-post';
+import ConfigApp from 'src/models/ConfigApp';
 
 const loading = ref(false);
 // init data
@@ -169,27 +168,30 @@ const profile = ref({
 });
 
 async function loadData() {
-	const data = await apiGet({
-		endPoint: 'config/profiles',
-		loading: loading,
-	});
-	Object.assign(profile.value, data.profiles);
-	// console.log(profile.value);
+	try {
+		loading.value = true;
+		const data = await ConfigApp.getProfile();
+		profile.value = data.profiles;
+	} catch (error) {
+		console.error('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
+	}
 }
 
 onMounted(async () => {
 	await loadData();
 });
+
 async function onSubmit() {
 	const data = JSON.parse(JSON.stringify(profile.value));
-	// console.log(data);
-	const res = await apiPost({
-		endPoint: 'config/profiles',
-		data,
-		loading,
-	});
-	if (!res) {
-		await loadData();
+	try {
+		loading.value = true;
+		await ConfigApp.setProfile(data);
+	} catch (error) {
+		console.error('🚀 ~ onSubmit ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 

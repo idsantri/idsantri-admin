@@ -166,9 +166,8 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import apiGet from 'src/api/api-get';
-import apiPost from 'src/api/api-post';
 import FilterKelas from 'components/filters/FilterKelas.vue';
+import NilaiAhwal from 'src/models/NilaiAhwal';
 
 const textFilter = ref('');
 const { params } = useRoute();
@@ -177,35 +176,38 @@ const ahwal = ref([{ sopan: 0, disiplin: 0, rapi: 0 }]);
 const clone = reactive([{}]);
 
 async function fetchData() {
-	const data = await apiGet({
-		endPoint: 'nilai-ahwal',
-		params: {
-			th_ajaran_h: params.th_ajaran_h,
-			tingkat_id: params.tingkat_id,
-			kelas: params.kelas,
-			ujian_ke: params.ujian_ke,
-		},
-		loading,
-	});
-	ahwal.value = data.ahwal;
-	Object.assign(clone, JSON.parse(JSON.stringify(data.ahwal)));
+	try {
+		loading.value = true;
+		const data = await NilaiAhwal.getAll({
+			params: {
+				th_ajaran_h: params.th_ajaran_h,
+				tingkat_id: params.tingkat_id,
+				kelas: params.kelas,
+				ujian_ke: params.ujian_ke,
+			},
+		});
+		ahwal.value = data.ahwal;
+		Object.assign(clone, JSON.parse(JSON.stringify(data.ahwal)));
+	} catch (e) {
+		console.error('🚀 ~ fetchData ~ e:', e);
+	} finally {
+		loading.value = false;
+	}
 }
 
 async function updateRating(hal, row) {
-	// console.log(hal, row);
-	const post = await apiPost({
-		endPoint: 'nilai-ahwal',
-		data: {
-			kelas_id: row.kelas_id,
-			hal: hal,
-			ujian_ke: params.ujian_ke,
-			skor: row[hal],
-		},
-	});
-	// console.log(clone);
-	if (post) {
+	try {
+		await NilaiAhwal.create({
+			data: {
+				kelas_id: row.kelas_id,
+				hal: hal,
+				ujian_ke: params.ujian_ke,
+				skor: row[hal],
+			},
+		});
 		Object.assign(clone, JSON.parse(JSON.stringify(ahwal.value)));
-	} else {
+	} catch (error) {
+		console.error('🚀 ~ updateRating ~ error:', error);
 		ahwal.value = JSON.parse(JSON.stringify(clone));
 	}
 }
@@ -214,8 +216,6 @@ onMounted(async () => {
 	if (params.th_ajaran_h && params.tingkat_id && params.kelas && params.ujian_ke) {
 		await fetchData();
 	}
-
-	// console.log('a', ahwal.value);
 });
 
 const columns = [

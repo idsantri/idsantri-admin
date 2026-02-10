@@ -1,5 +1,5 @@
 <template lang="">
-	<q-markup-table flat bordered style="height: 520px">
+	<q-markup-table flat bordered style="height: 530px">
 		<thead>
 			<tr>
 				<th class="text-left">

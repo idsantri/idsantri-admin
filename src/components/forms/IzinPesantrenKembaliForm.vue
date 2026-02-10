@@ -3,14 +3,10 @@
 		<q-form @submit.prevent="setBack">
 			<FormHeader title="Tetapkan Tanggal Kembali" :is-new="false" />
 			<FormLoading v-if="loading" />
-			<q-card-section class="q-pa-sm">
+			<q-card-section>
 				<q-input
 					dense
-					:hint="
-						isDate(inputs.kembali_tgl)
-							? formatDateFull(inputs.kembali_tgl)
-							: ''
-					"
+					:hint="isDate(inputs.kembali_tgl) ? formatDateFull(inputs.kembali_tgl) : ''"
 					class="q-my-sm"
 					outlined
 					label="Tanggal (M)*"
@@ -18,32 +14,32 @@
 					type="datetime-local"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					error-color="negative"
+					ref="firstInput"
 				/>
 			</q-card-section>
-			<FormActions
-				:btn-delete="!!data.kembali_tgl"
-				@on-delete="setNotBack"
-				label-delete="Belum Kembali"
-			/>
+			<FormActions :btn-delete="!!data.kembali_tgl" @on-delete="setNotBack" label-delete="Belum Kembali" />
 		</q-form>
 	</q-card>
 </template>
 <script setup>
-import { ref, watch } from 'vue';
-import {
-	formatDateFull,
-	isDate,
-	formatDateTimeHtmlToSql,
-} from 'src/utils/format-date';
+import { nextTick, onMounted, ref, useTemplateRef, watch } from 'vue';
+import { formatDateFull, isDate, formatDateTimeHtmlToSql } from 'src/utils/format-date';
 import IzinPesantren from 'src/models/IzinPesantren';
 
 const props = defineProps({
 	data: Object,
 });
+
 const emit = defineEmits(['successSubmit']);
 
 const inputs = ref({ ...props.data });
 const loading = ref(false);
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 async function setBack() {
 	try {

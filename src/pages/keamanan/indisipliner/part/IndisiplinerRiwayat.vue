@@ -45,7 +45,7 @@
 											{{
 												formatDateShort(indisipliner.tgl_sidang) +
 												' | ' +
-												m2hFormat(indisipliner.tgl_sidang)
+												formatHijri(masehiToHijri(indisipliner.tgl_sidang))
 											}}
 											<q-space />
 											{{ indisipliner.th_ajaran_h }}
@@ -99,7 +99,7 @@
 </template>
 <script setup>
 import { formatDateShort } from 'src/utils/format-date';
-import { m2hFormat } from 'src/utils/hijri';
+import { masehiToHijri, formatHijri } from 'src/utils/hijri';
 import { onMounted, onUpdated, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import IndisiplinerForm from 'src/components/forms/IndisiplinerForm.vue';

@@ -20,12 +20,12 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { formatDateShort } from 'src/utils/format-date';
-import { formatHijri, m2h } from 'src/utils/hijri';
+import { formatHijri, masehiToHijri } from 'src/utils/hijri';
 import { getObjectById } from 'src/utils/array-object';
-import apiGet from 'src/api/api-get';
 import TempArray from 'src/pages/santri/relations/TemplateArray.vue';
 import IzinMadrasahForm from 'src/components/forms/IzinMadrasahForm.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
+import IzinMadrasah from 'src/models/IzinMadrasah';
 
 const route = useRoute();
 const params = route.params;
@@ -38,20 +38,23 @@ const kelas = ref({});
 const urlReport = ref('');
 
 async function loadData() {
-	const data = await apiGet({
-		endPoint: `izin-madrasah/kelas/${params.id}`,
-		loading,
-	});
-	if (data.izin_madrasah) {
+	try {
+		loading.value = true;
+		const data = await IzinMadrasah.riwayat(params.id);
 		izin.value = data.izin_madrasah;
 		kelas.value = data.kelas;
+
 		izinMap.value = data.izin_madrasah.map((v) => ({
-			Tanggal: formatDateShort(v.dari_tgl) + ' | ' + formatHijri(m2h(v.dari_tgl)),
+			Tanggal: formatDateShort(v.dari_tgl) + ' | ' + formatHijri(masehiToHijri(v.dari_tgl)),
 			Durasi: v.durasi + ' hari',
 			Keperluan: v.keperluan + `${v.keterangan?.length > 0 ? ' (' + v.keterangan + ')' : ''}`,
 			Catatan: v.catatan,
 			id: v.id,
 		}));
+	} catch (error) {
+		console.error('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 

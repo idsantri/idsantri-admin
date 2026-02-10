@@ -1,8 +1,6 @@
 <template lang="">
 	<q-card class="q-mt-sm" flat bordered>
-		<q-card-section
-			class="q-pa-sm bg-green-1 flex justify-between items-center"
-		>
+		<q-card-section class="q-pa-sm bg-green-1 flex justify-between items-center">
 			<div class="text-weight-bold">Banner {{ index + 1 }}</div>
 			<div>
 				<q-btn
@@ -47,12 +45,7 @@
 									icon: $q.iconSet.editor.align,
 									fixedLabel: true,
 									list: 'only-icons',
-									options: [
-										'left',
-										'center',
-										'right',
-										'justify',
-									],
+									options: ['left', 'center', 'right', 'justify'],
 								},
 							],
 							['bold', 'italic', 'underline'],
@@ -62,15 +55,7 @@
 									label: $q.lang.editor.formatting,
 									icon: $q.iconSet.editor.formatting,
 									list: 'no-icons',
-									options: [
-										'p',
-										'h1',
-										'h2',
-										'h3',
-										'h4',
-										'h5',
-										'h6',
-									],
+									options: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
 								},
 								{
 									label: $q.lang.editor.fontSize,
@@ -78,15 +63,7 @@
 									fixedLabel: true,
 									fixedIcon: true,
 									list: 'no-icons',
-									options: [
-										'size-1',
-										'size-2',
-										'size-3',
-										'size-4',
-										'size-5',
-										'size-6',
-										'size-7',
-									],
+									options: ['size-1', 'size-2', 'size-3', 'size-4', 'size-5', 'size-6', 'size-7'],
 								},
 								'removeFormat',
 							],
@@ -125,5 +102,12 @@ function onSubmit() {
 		content: bannerContent.value,
 	});
 }
+
+function setNotEdit() {
+	isEdit.value = false;
+}
+defineExpose({
+	setNotEdit,
+});
 </script>
 <style lang=""></style>

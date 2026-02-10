@@ -3,7 +3,7 @@
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Permohonan Berhenti" :is-new="true" />
 
-			<q-card-section class="q-pa-sm">
+			<q-card-section>
 				<q-input dense class="q-my-sm" outlined label="Santri ID" v-model="santri.id" filled disable />
 				<q-input dense class="q-my-sm" outlined label="Nama" v-model="santri.nama" filled disable />
 				<q-select
@@ -17,6 +17,7 @@
 					use-input
 					new-value-mode="add"
 					behavior="menu"
+					ref="firstInput"
 				/>
 				<q-select
 					dense
@@ -83,11 +84,10 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import { notifyError } from 'src/utils/notify';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 
-const emit = defineEmits(['successSubmit']);
 const props = defineProps({
 	data: {
 		type: Object,
@@ -95,8 +95,16 @@ const props = defineProps({
 	},
 });
 
+const emit = defineEmits(['successSubmit']);
+
 const input = ref({ jenis_permohonan: 'Berhenti', tunggakan: 'Lunas' });
 const santri = ref({ ...props.data });
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 async function onSubmit() {
 	const obj = JSON.parse(JSON.stringify(input.value));

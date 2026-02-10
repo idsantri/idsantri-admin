@@ -4,12 +4,12 @@
 		outlined
 		label="Tingkat"
 		v-model="tingkat_id"
-		:options="lists['tingkat']"
+		:options="listTingkat"
 		option-value="tingkat_id"
 		option-label="tingkat"
 		emit-value
 		map-options
-		:loading="loading['tingkat']"
+		:loading="loading"
 		behavior="menu"
 		clearable
 	/>
@@ -17,8 +17,8 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { getListsCustom } from 'src/api/api-get-lists';
 import listsMadrasahStore from 'stores/lists-madrasah-store';
+import Kelas from 'src/models/Kelas';
 
 const props = defineProps({
 	startUrl: {
@@ -31,8 +31,8 @@ const props = defineProps({
 	},
 });
 
-const lists = ref([]);
-const loading = ref([]);
+const listTingkat = ref([]);
+const loading = ref(false);
 const router = useRouter();
 const { params } = useRoute();
 const tingkat_id = ref(params.tingkat_id);
@@ -40,21 +40,20 @@ const url = `${props.startUrl}/${params.th_ajaran_h}`;
 
 onMounted(async () => {
 	if (params.th_ajaran_h) {
-		const cekData = listsMadrasahStore().getTingkatByTahun(
-			params.th_ajaran_h,
-		);
-		if (cekData.length) {
-			lists.value['tingkat'] = cekData;
+		const cekData = listsMadrasahStore().getTingkatByTahun(params.th_ajaran_h);
+		if (cekData?.length) {
+			listTingkat.value = cekData;
 		} else {
-			const data = await getListsCustom({
-				url: 'kelas/lists',
-				params: { th_ajaran_h: params.th_ajaran_h },
-				key: 'tingkat',
-				loadingArray: loading,
-				sort: 'asc',
-			});
-			listsMadrasahStore().addTingkatToTahun(data, params.th_ajaran_h);
-			lists.value['tingkat'] = data;
+			try {
+				loading.value = true;
+				const data = await Kelas.list({ th_ajaran_h: params.th_ajaran_h });
+				listsMadrasahStore().addTingkatToTahun(data.tingkat, params.th_ajaran_h);
+				listTingkat.value = data.tingkat;
+			} catch (error) {
+				console.error('🚀 ~ error:', error);
+			} finally {
+				loading.value = false;
+			}
 		}
 	}
 });

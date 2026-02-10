@@ -65,22 +65,22 @@
 <script setup>
 import { ref, toRefs, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { formatDateFull } from '../../utils/format-date';
+import { formatDateFull, getAge } from '../../utils/format-date';
 import CardIdentity from './CardIdentity.vue';
 import UploadImage from 'src/components/ImageUploader.vue';
 import santriStore from 'src/stores/santri-store';
 import { bacaHijri } from 'src/utils/hijri';
 import SantriRelations from 'src/pages/santri/SantriRelations.vue';
 import dialogStore from 'src/stores/dialog-store';
-import apiGet from 'src/api/api-get';
 import DropDownPrint from './DropDownPrint.vue';
 import { storeToRefs } from 'pinia';
 import Santri from 'src/models/Santri';
 import CardListTabel from 'src/components/cards/CardListTabel.vue';
 import { formatAlamatLengkap } from 'src/utils/format-text';
+import Image from 'src/models/Image';
 
 const { santri } = storeToRefs(santriStore());
-
+const store = santriStore();
 const route = useRoute();
 const santriId = route.params.id;
 
@@ -91,13 +91,27 @@ const loading = ref(false);
 const loadingImage = ref(false);
 
 async function loadImage() {
-	const img = await apiGet({
-		endPoint: `images/santri/${santriId}`,
-		loading: loadingImage,
-	});
-	// console.log(img.image_url);
-	santri.image_url = img.image_url;
+	try {
+		loadingImage.value = true;
+		const img = await Image.santri(santriId);
+		store.setImage(img?.image_url || null);
+	} catch (_err) {
+		console.error('🚀 ~ loadImage ~ _err:', _err);
+	} finally {
+		loadingImage.value = false;
+	}
 }
+
+const umur = computed(() => {
+	if (!santri.value?.tgl_lahir) {
+		return '-';
+	} else {
+		const umur = getAge(santri.value.tgl_lahir);
+		return umur.tahun + ' tahun, ' + umur.bulan + ' bulan, ' + umur.hari + ' hari';
+	}
+
+	getAge(santri.value.tgl_lahir);
+});
 
 async function loadData() {
 	santriStore().$reset();
@@ -147,6 +161,7 @@ const identity = computed(() => ({
 		santri.value.kode_pos,
 	),
 	Kelahiran: `${santri.value.tmp_lahir || '-'}, ${formatDateFull(santri.value.tgl_lahir)}`,
+	Umur: umur.value,
 	'Data Akhir': santri.value.data_akhir || '-',
 }));
 

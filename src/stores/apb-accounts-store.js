@@ -1,0 +1,118 @@
+import { defineStore } from 'pinia';
+import ApbAccount from 'src/models/ApbAccount';
+import ArrayCrud from 'src/models/ArrayCrud';
+import { computed, ref, shallowRef } from 'vue';
+
+export const useAccountsStore = defineStore(
+	'accounts-store',
+	() => {
+		const loading = ref(false);
+		const accounts = shallowRef([]);
+		const filterText = ref('');
+		const filterCategory = ref('');
+		const filterGroup = ref('');
+
+		const optionsSelect = computed(() => {
+			return accounts.value
+				.filter((account) => account.hidden == 0)
+				.map((account) => {
+					return { group_name: account.group + ': ' + account.name, ...account };
+				})
+				.sort((a, b) => a.group.localeCompare(b.group));
+		});
+
+		const optionsCategory = computed(() => {
+			const category = accounts.value.map((account) => account.category).filter((group) => group !== null);
+			return [...new Set(category)];
+		});
+
+		const optionsGroup = computed(() => {
+			if (!filterCategory.value) {
+				const group = accounts.value.map((account) => account.group);
+				return [...new Set(group)].sort();
+			} else {
+				const group = accounts.value
+					.filter((account) => account.category === filterCategory.value)
+					.map((account) => account.group);
+				return [...new Set(group)].sort();
+			}
+		});
+
+		const filteredAccounts = computed(() => {
+			const f1 = accounts.value.filter((account) => {
+				return filterGroup.value ? account.group === filterGroup.value : true;
+			});
+			const f2 = f1.filter((account) => {
+				return filterCategory.value ? account.category === filterCategory.value : true;
+			});
+			return f2;
+		});
+
+		async function toggleHidden(value, id) {
+			try {
+				loading.value = true;
+				accounts.value = ArrayCrud.update(accounts.value, id, { hidden: value });
+				await ApbAccount.toggleHidden(id);
+			} catch (err) {
+				accounts.value = ArrayCrud.update(accounts.value, id, { hidden: value ? false : true });
+				console.error('🚀 ~ toggleHidden ~ err:', err);
+			} finally {
+				loading.value = false;
+			}
+		}
+
+		async function loadAll(notify = true) {
+			try {
+				loading.value = true;
+				const data = await ApbAccount.getAll({ notifySuccess: notify });
+				accounts.value = data.accounts;
+			} catch (_err) {
+				console.error('🚀 ~ loadData ~ _err:', _err);
+			} finally {
+				loading.value = false;
+			}
+		}
+
+		const add = (account) => {
+			accounts.value = ArrayCrud.updateOrCreate(accounts.value, account, 'id', 'first');
+		};
+
+		const remove = (id) => {
+			accounts.value = ArrayCrud.remove(accounts.value, id);
+		};
+
+		async function loadById(id, notify = true) {
+			try {
+				loading.value = true;
+				const data = await ApbAccount.getById({ id, notifySuccess: notify });
+				add(data.account);
+			} catch (_err) {
+				console.error('🚀 ~ loadData ~ _err:', _err);
+			} finally {
+				loading.value = false;
+			}
+		}
+
+		return {
+			loading,
+			accounts,
+			filteredAccounts,
+			filterText,
+			filterCategory,
+			filterGroup,
+			optionsCategory,
+			optionsGroup,
+			optionsSelect,
+			toggleHidden,
+			loadAll,
+			loadById,
+			add,
+			remove,
+		};
+	},
+	{
+		persist: {
+			storage: sessionStorage,
+		},
+	},
+);

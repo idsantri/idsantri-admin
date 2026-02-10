@@ -12,18 +12,13 @@
 		behavior="menu"
 		clearable
 		v-model="input"
-		:bottom-slots="withHint"
+		:bottom-slots="bottomSlots"
 	>
 		<template v-slot:hint>
-			<div>{{ hint }}</div>
+			{{ hint }}
 		</template>
 		<template v-slot:after>
-			<drop-down-after
-				v-if="btnSetting"
-				route-to=""
-				@reload="fetchList"
-				:disableRoute="true"
-			/>
+			<drop-down-after v-if="btnSetting" route-to="" @reload="fetchList" :disableRoute="true" />
 		</template>
 	</q-select>
 </template>
@@ -39,7 +34,7 @@ defineProps({
 		type: Boolean,
 		default: true,
 	},
-	withHint: {
+	bottomSlots: {
 		type: Boolean,
 		default: true,
 	},

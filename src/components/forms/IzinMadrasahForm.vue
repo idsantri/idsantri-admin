@@ -32,6 +32,7 @@
 					type="date"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					error-color="negative"
+					ref="firstInput"
 				/>
 				<q-input
 					dense
@@ -62,7 +63,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import { formatDateFull, isDate } from 'src/utils/format-date';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import useCrudForm from './utils/useCrudForm';
@@ -71,10 +72,17 @@ import IzinMadrasah from 'src/models/IzinMadrasah';
 const props = defineProps({
 	data: { type: Object, required: true },
 });
+
 const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({ keperluan: 'Sakit', durasi: 1, ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
+
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
 
 const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(IzinMadrasah, {
 	emit,

@@ -28,7 +28,7 @@
 		dense
 		:hint="
 			isDate(inputs.i_tgl_lahir)
-				? formatDateFull(inputs.i_tgl_lahir) + ' | ' + bacaHijri(m2h(inputs.i_tgl_lahir))
+				? formatDateFull(inputs.i_tgl_lahir) + ' | ' + bacaHijri(masehiToHijri(inputs.i_tgl_lahir))
 				: ''
 		"
 		class="q-my-sm"
@@ -69,7 +69,7 @@
 	/>
 </template>
 <script setup>
-import { m2h, bacaHijri } from 'src/utils/hijri';
+import { masehiToHijri, bacaHijri } from 'src/utils/hijri';
 import { isDate, formatDateFull } from 'src/utils/format-date';
 import InputSelectKotaLahir from 'src/components/inputs/InputSelectKotaLahir.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';

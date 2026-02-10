@@ -52,26 +52,17 @@
 	</q-card>
 </template>
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import TableRight from './RightTable.vue';
 import mutasiStore from 'src/stores/mutasi-store';
 import { storeToRefs } from 'pinia';
-import apiPost from 'src/api/api-post';
+import Mutasi from 'src/models/Mutasi';
 
 const mutasi = mutasiStore();
 const { newFilter: input } = storeToRefs(mutasi);
 const santri = computed(() => mutasi.getProsesTrue());
 const loading = ref(false);
-
-onMounted(() => {
-	removeBottomRow();
-});
-
-function removeBottomRow() {
-	const el = document.querySelectorAll('div.q-field__bottom.row.items-start.q-field__bottom');
-	el.forEach((e) => e.remove());
-}
 
 async function onSubmit() {
 	const map = santri.value.map((s) => {
@@ -82,13 +73,16 @@ async function onSubmit() {
 		};
 	});
 	const data = { santri: map };
-	const post = await apiPost({
-		endPoint: 'mutasi',
-		loading,
-		data,
-	});
-	if (post) {
-		mutasi.deleteTrueProses();
+	try {
+		loading.value = true;
+		const create = await Mutasi.create({ data, confirm: true });
+		if (create) {
+			mutasi.deleteTrueProses();
+		}
+	} catch (error) {
+		console.error('🚀 ~ onSubmit ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 </script>

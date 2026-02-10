@@ -3,11 +3,13 @@
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Data GT" :is-new="isNew" />
 			<FormLoading v-if="loading" />
-			<q-card-section class="q-pa-sm">
+			<q-card-section>
 				<InputSelectSantriId
 					:active-only="true"
 					@emit-input="(val) => Object.assign(inputs, val)"
 					:data="props.data"
+					class="q-my-sm"
+					:ref="!inputs.santri_id ? 'firstInput' : null"
 				/>
 				<q-select
 					class="q-my-sm"
@@ -26,6 +28,8 @@
 					clearable=""
 					@update:model-value="onInputPjgt"
 					behavior="menu"
+					:rules="[(val) => !!val || 'Harus diisi!']"
+					:ref="inputs.santri_id ? 'firstInput' : null"
 				>
 					<template v-slot:option="scope">
 						<q-item v-bind="scope.itemProps">
@@ -74,7 +78,7 @@
 	</q-card>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import useCrudForm from './utils/useCrudForm';
 import UgtGt from 'src/models/UgtGt';
@@ -84,12 +88,14 @@ import UgtPjgt from 'src/models/UgtPjgt';
 const props = defineProps({
 	data: Object,
 });
+
 const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({ ...props.data });
 const pjgtList = ref([]);
 const pjgtLoading = ref(false);
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
 
 async function getPjgt() {
 	try {
@@ -105,6 +111,8 @@ async function getPjgt() {
 
 onMounted(async () => {
 	await getPjgt();
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
 });
 
 function onInputPjgt() {

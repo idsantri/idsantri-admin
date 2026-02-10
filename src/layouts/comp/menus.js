@@ -23,7 +23,15 @@ const menus = {
 			label: 'Alumni',
 			caption: 'Data Alumni',
 			disable: false,
-			display: menu.sekretariat.alumni,
+			display: !!menu.sekretariat.alumni,
+		},
+		{
+			to: '/pulangan',
+			icon: 'sym_o_flights_and_hotels',
+			label: 'Pulangan',
+			caption: 'Liburan Santri',
+			disable: false,
+			display: !!menu.sekretariat.pulangan,
 		},
 	],
 	makhadiyah: [
@@ -33,7 +41,7 @@ const menus = {
 			label: 'Mutasi',
 			caption: 'Mutasi dan Relokasi',
 			disable: false,
-			display: menu.makhadiyah.mutasi,
+			display: !!menu.makhadiyah.mutasi,
 		},
 		{
 			to: '/quran',
@@ -41,7 +49,7 @@ const menus = {
 			label: 'Quran',
 			caption: 'Pendidikan Tajwid al-Quran',
 			disable: false,
-			display: menu.makhadiyah.quran,
+			display: !!menu.makhadiyah.quran,
 		},
 	],
 	madrasah: [
@@ -88,7 +96,7 @@ const menus = {
 			label: 'Perizinan',
 			caption: 'Data Perizinan Pesantren',
 			disable: false,
-			display: menu.keamanan.izin_pesantren,
+			display: !!menu.keamanan.izin_pesantren,
 		},
 		{
 			to: '/keamanan/indisipliner',
@@ -96,7 +104,7 @@ const menus = {
 			label: 'Pelanggaran',
 			caption: 'Data Pelanggaran',
 			disable: false,
-			display: menu.keamanan.indisipliner,
+			display: !!menu.keamanan.indisipliner,
 		},
 	],
 	ugt: [
@@ -106,7 +114,7 @@ const menus = {
 			label: 'PJGT',
 			caption: 'Penanggung Jawab Guru Tugas',
 			disable: false,
-			display: menu.ugt,
+			display: !!menu.ugt,
 		},
 		{
 			to: '/ugt/gt',
@@ -114,7 +122,7 @@ const menus = {
 			label: 'GT',
 			caption: 'Guru Tugas',
 			disable: false,
-			display: menu.ugt,
+			display: !!menu.ugt,
 		},
 		{
 			to: '/ugt/kas',
@@ -122,7 +130,7 @@ const menus = {
 			label: 'Kas',
 			caption: 'Keuangan',
 			disable: false,
-			display: menu.ugt,
+			display: !!menu.ugt,
 		},
 	],
 	setting: [
@@ -167,7 +175,7 @@ const menus = {
 			label: 'App Wali',
 			caption: 'Aplikasi Wali Santri',
 			disable: false,
-			display: menu.setting.appWali,
+			display: !!menu.setting.appWali,
 		},
 		{
 			to: '/settings/va',
@@ -175,7 +183,7 @@ const menus = {
 			label: 'Virtual Account',
 			caption: 'Virtual Account Iuran',
 			disable: false,
-			display: menu.setting.virtualAccount,
+			display: !!menu.setting.virtualAccount,
 		},
 	],
 	info: [
@@ -201,6 +209,40 @@ const menus = {
 			disable: true,
 		},
 	],
+	apb: [
+		{
+			to: '/apb/accounts',
+			icon: 'sym_o_account_balance',
+			label: 'Akun',
+			caption: 'Daftar Akun Akuntansi',
+			disable: false,
+			display: !!menu.apb,
+		},
+		{
+			to: '/apb/transactions',
+			icon: 'sym_o_currency_exchange',
+			label: 'Transaksi',
+			caption: 'Daftar Transaksi Keuangan',
+			disable: false,
+			display: !!menu.apb,
+		},
+		{
+			to: '/apb/budgets',
+			icon: 'sym_o_account_balance_wallet',
+			label: 'Anggaran',
+			caption: 'Belanja dan Pendapatan',
+			disable: false,
+			display: !!menu.apb,
+		},
+		{
+			to: '/apb/statistics',
+			icon: 'sym_o_finance',
+			label: 'Statistik',
+			caption: 'Statistik Keuangan',
+			disable: true,
+			display: !!menu.apb,
+		},
+	],
 };
 
 const sekretariat = menus.sekretariat.filter((item) => item.display != false);
@@ -210,5 +252,6 @@ const keamanan = menus.keamanan.filter((item) => item.display != false);
 const ugt = menus.ugt.filter((item) => item.display != false);
 const setting = menus.setting.filter((item) => item.display != false);
 const info = menus.info.filter((item) => item.display != false);
+const apb = menus.apb.filter((item) => item.display != false);
 
-export { sekretariat, makhadiyah, madrasah, keamanan, ugt, setting, info };
+export { sekretariat, makhadiyah, madrasah, keamanan, ugt, setting, info, apb };

@@ -15,41 +15,16 @@
 		:class="[$attrs.class]"
 	>
 		<template v-slot:after>
-			<q-btn
-				no-caps
-				icon="settings"
-				to="/iuran/paket"
-				v-close-popup
-				outline=""
-				dense
-				class="q-pa-sm"
-			/>
-			<q-btn
-				color="green"
-				no-caps
-				icon="info"
-				outline=""
-				dense
-				class="q-pa-sm"
-				@click="expanded = !expanded"
-			/>
+			<q-btn no-caps icon="settings" to="/iuran/paket" v-close-popup outline="" dense class="q-pa-sm" />
+			<q-btn color="green" no-caps icon="info" outline="" dense class="q-pa-sm" @click="expanded = !expanded" />
 		</template>
 	</q-select>
 	<q-slide-transition appear>
 		<q-card-section class="no-padding q-my-sm" v-show="expanded">
-			<q-card
-				bordered
-				flat
-				class="bg-green-1 scroll"
-				style="height: 150px"
-			>
+			<q-card bordered flat class="bg-green-1 scroll" style="height: 150px">
 				<q-card-section class="q-pa-sm q-card--bordered">
 					<q-list separator>
-						<q-item
-							v-for="(item, index) in filterPaket()"
-							:key="index"
-							dense
-						>
+						<q-item v-for="(item, index) in filterPaket()" :key="index" dense>
 							<q-item-section>
 								<q-item-label class="flex">
 									{{ item.urut ?? '#' }}.
@@ -75,7 +50,7 @@
 	</q-slide-transition>
 </template>
 <script setup>
-import apiGet from 'src/api/api-get';
+import IuranPaket from 'src/models/IuranPaket';
 import { onMounted, ref, watch } from 'vue';
 const loadingPaket = ref(false);
 const expanded = ref(false);
@@ -93,12 +68,14 @@ watch(inputPaket, (newVal) => {
 });
 
 async function getData() {
-	const data = await apiGet({
-		endPoint: 'iuran-paket',
-		loading: loadingPaket,
-	});
-	if (data) {
+	try {
+		loadingPaket.value = true;
+		const data = await IuranPaket.getAll();
 		iuranPaket.value = data.iuran_paket;
+	} catch (error) {
+		console.error('Error fetching iuran paket detail:', error);
+	} finally {
+		loadingPaket.value = false;
 	}
 }
 

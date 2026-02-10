@@ -262,8 +262,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import apiGet from 'src/api/api-get';
 import FilterKelas from 'components/filters/FilterKelas.vue';
+import NilaiMapel from 'src/models/NilaiMapel';
 
 const { params } = useRoute();
 const nilai = ref([{}]);
@@ -349,36 +349,42 @@ const columns = [
 async function expand(props) {
 	props.expand = !props.expand;
 	if (props.expand) {
-		loadingDetail.value[props.key] = true;
-		nilaiDetail.value[props.key] = null;
-		const data = await apiGet({
-			endPoint: 'nilai-mapel',
-			params: {
-				kelas_id: props.key,
-				category: 'rapor',
-			},
-		});
-		// console.log('detail', data.nilai);
-		loadingDetail.value[props.key] = false;
-		nilaiDetail.value[props.key] = data.nilai;
+		try {
+			loadingDetail.value[props.key] = true;
+			nilaiDetail.value[props.key] = null;
+			const data = await NilaiMapel.getAll({
+				params: {
+					kelas_id: props.key,
+					category: 'rapor',
+				},
+				notifySuccess: false,
+			});
+			nilaiDetail.value[props.key] = data.nilai;
+		} catch (error) {
+			console.error('🚀 ~ expand ~ error:', error);
+		} finally {
+			loadingDetail.value[props.key] = false;
+		}
 	}
 }
 
 onMounted(async () => {
 	if (params.th_ajaran_h && params.tingkat_id && params.kelas) {
-		const data = await apiGet({
-			endPoint: 'nilai-mapel/rerata',
-			params: {
+		try {
+			loading.value = true;
+			const data = await NilaiMapel.rerata({
 				th_ajaran_h: params.th_ajaran_h,
 				tingkat_id: params.tingkat_id,
 				kelas: params.kelas,
 				category: 'rapor',
-			},
-			loading,
-		});
-		nilai.value = data.nilai;
+			});
+			nilai.value = data.nilai;
+		} catch (error) {
+			console.error('🚀 ~ error:', error);
+		} finally {
+			loading.value = false;
+		}
 	}
-	// console.log(nilai.value);
 });
 
 function hitungRataRata(data, n) {

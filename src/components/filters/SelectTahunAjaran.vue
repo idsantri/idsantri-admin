@@ -4,20 +4,20 @@
 		outlined
 		label="Tahun Ajaran"
 		v-model="th_ajaran_h"
-		:options="lists['th_ajaran']"
+		:options="listThAjaran"
 		option-value="th_ajaran_h"
 		option-label="th_ajaran_h"
 		emit-value
 		map-options
-		:loading="loading['th_ajaran']"
+		:loading="loading"
 		behavior="menu"
 	/>
 </template>
 <script setup>
 import { onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { getListsCustom } from 'src/api/api-get-lists';
 import listsMadrasahStore from 'stores/lists-madrasah-store';
+import Kelas from 'src/models/Kelas';
 
 const props = defineProps({
 	startUrl: {
@@ -30,24 +30,27 @@ const props = defineProps({
 	},
 });
 
-const lists = ref([]);
+const listThAjaran = ref([]);
 const { params } = useRoute();
 const th_ajaran_h = ref(params.th_ajaran_h);
-const loading = ref([]);
+const loading = ref(false);
 const router = useRouter();
 
 onMounted(async () => {
 	const cekData = listsMadrasahStore().getThAjaran;
-	if (cekData.length) {
-		lists.value['th_ajaran'] = cekData;
+	if (cekData?.length) {
+		listThAjaran.value = cekData;
 	} else {
-		const data = await getListsCustom({
-			url: 'kelas/lists',
-			key: 'th_ajaran',
-			loadingArray: loading,
-		});
-		listsMadrasahStore().setThAjaran(data);
-		lists.value['th_ajaran'] = data;
+		try {
+			loading.value = true;
+			const data = await Kelas.list();
+			listsMadrasahStore().setThAjaran(data.th_ajaran);
+			listThAjaran.value = data.th_ajaran;
+		} catch (error) {
+			console.error('🚀 ~ error:', error);
+		} finally {
+			loading.value = false;
+		}
 	}
 });
 

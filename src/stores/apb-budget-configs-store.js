@@ -1,0 +1,118 @@
+import { defineStore } from 'pinia';
+import ApbBudgetConfig from 'src/models/ApbBudgetConfig';
+import ArrayCrud from 'src/models/ArrayCrud';
+import { useBudgetStore } from './apb-budgets-store';
+
+export const useBudgetConfigStore = defineStore('budget-configs-store', {
+	state: () => ({
+		loading: false,
+		loadingTh: false,
+		configs: [],
+		total_budget: {},
+		thAjaranH: [],
+		filterText: '',
+		filterTahun: '',
+		filterCategory: '',
+	}),
+
+	getters: {
+		getConfigs: ({ configs, total_budget, filterCategory }) => {
+			const mapped = configs.map((config) => {
+				const limit_rp =
+					config.category == 'BIAYA'
+						? (total_budget?.budget_4 * Number(config.limit || 0)) / 100
+						: (total_budget?.budget_5 * Number(config.limit || 0)) / 100;
+				return { ...config, limit_rp };
+			});
+			if (!filterCategory) {
+				return mapped;
+			}
+			return mapped.filter((config) => config.category === filterCategory);
+		},
+
+		categories: (state) => {
+			const mapped = state.configs.map((config) => config.category);
+			return [...new Set(mapped)];
+		},
+
+		totalLimitCategory() {
+			if (!this.filterCategory) {
+				return 0;
+			}
+			return this.configs
+				.filter((config) => config.category === this.filterCategory)
+				.reduce((total, config) => total + Number(config.limit), 0)
+				.toFixed(2);
+		},
+	},
+
+	actions: {
+		async loadListTahun() {
+			try {
+				this.loadingTh = true;
+				const data = await ApbBudgetConfig.listTahunAjaran();
+				this.thAjaranH = data.th_ajaran_h;
+			} catch (error) {
+				console.error(error);
+			} finally {
+				this.loadingTh = false;
+			}
+		},
+
+		async loadByTahun(th_ajaran_h) {
+			try {
+				this.loading = true;
+				const data = await ApbBudgetConfig.getAll({ params: { th_ajaran_h } });
+				this.configs = data.configs;
+				this.total_budget = data.total_budget;
+			} catch (_err) {
+				console.error('🚀 ~ loadData ~ _err:', _err);
+			} finally {
+				this.loading = false;
+			}
+		},
+
+		updateBudgets(config) {
+			const budgetState = useBudgetStore();
+			const filtered = budgetState.budgets.filter(
+				(budget) => budget.th_ajaran_h === config.th_ajaran_h && budget.group === config.group,
+			);
+			filtered.forEach((budget) => {
+				budgetState.budgets = ArrayCrud.update(budgetState.budgets, budget.id, {
+					locked: config.locked ? true : false,
+				});
+			});
+		},
+
+		async toggleLock(id, value) {
+			try {
+				this.loading = true;
+				this.configs = ArrayCrud.update(this.configs, id, { locked: value ? true : false });
+				const data = await ApbBudgetConfig.update({ id, data: { locked: value } });
+				this.updateBudgets(data.config);
+			} catch (err) {
+				this.configs = ArrayCrud.update(this.configs, id, { locked: value ? false : true });
+				console.error('🚀 ~ toggleHidden ~ err:', err);
+			} finally {
+				this.loading = false;
+			}
+		},
+
+		async updateLimit(id, { oldValue, newValue }) {
+			try {
+				this.loading = true;
+				const data = await ApbBudgetConfig.update({ id, data: { limit: newValue } });
+				this.configs = ArrayCrud.update(this.configs, id, data.config);
+			} catch (err) {
+				this.configs = ArrayCrud.update(this.configs, id, { limit: oldValue });
+				console.error('🚀 ~ toggleHidden ~ err:', err);
+			} finally {
+				this.loading = false;
+			}
+		},
+	},
+
+	persist: {
+		storage: sessionStorage,
+	},
+});

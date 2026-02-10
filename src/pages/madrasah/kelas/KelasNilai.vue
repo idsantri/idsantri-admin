@@ -112,7 +112,7 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import apiGet from 'src/api/api-get';
+import NilaiMapel from 'src/models/NilaiMapel';
 
 const tab = ref('ujian');
 const route = useRoute();
@@ -137,16 +137,20 @@ const info =
 	'Berlaku standar nilai-minimal rapor dan ijazah.';
 
 async function getNilai(category) {
-	const data = await apiGet({
-		endPoint: 'nilai-mapel',
-		loading,
-		params: {
-			kelas_id: route.params.id,
-			category: category,
-		},
-	});
-	if (data.nilai) {
+	try {
+		loading.value = true;
+		const data = await NilaiMapel.getAll({
+			params: {
+				kelas_id: route.params.id,
+				category: category,
+			},
+			notifySuccess: false,
+		});
 		nilai.value = data.nilai;
+	} catch (error) {
+		console.error('🚀 ~ getNilai ~ error:', error);
+	} finally {
+		loading.value = false;
 	}
 }
 

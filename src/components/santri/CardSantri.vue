@@ -20,7 +20,10 @@
 						<q-item-label overline> Santri </q-item-label>
 						<q-item-label>
 							<q-skeleton v-if="loading || !id" type="text" />
-							<div v-else>{{ santri.nama }} ({{ santri.sex }})</div>
+							<div v-else>
+								{{ santri.nama }} ({{ santri.sex }};
+								{{ santri.tgl_lahir ? getAgeYear(santri.tgl_lahir) : '?' }} tahun)
+							</div>
 						</q-item-label>
 						<q-item-label caption lines="1">
 							<q-skeleton v-if="loading || !id" type="text" />
@@ -99,8 +102,9 @@
 </template>
 <script setup>
 import { ref, watchEffect } from 'vue';
-import apiGet from 'src/api/api-get';
 import santriStore from 'src/stores/santri-store';
+import Santri from 'src/models/Santri';
+import { getAgeYear } from 'src/utils/format-date';
 
 const emit = defineEmits(['loaded']);
 const props = defineProps({
@@ -130,11 +134,11 @@ const ortu = ref({});
 const wali = ref({});
 
 const loadData = async () => {
-	const data = await apiGet({
-		endPoint: 'santri/' + props.id,
-		loading: loading,
-	});
-	if (data) {
+	try {
+		loading.value = true;
+
+		const data = await Santri.getById({ id: props.id });
+
 		santri.value = data.santri;
 		wali.value = data.wali;
 		ortu.value = data.ortu;
@@ -143,6 +147,10 @@ const loadData = async () => {
 		santriStore().setSantri(data.santri);
 		santriStore().setOrtu(data.ortu);
 		santriStore().setWali(data.wali);
+	} catch (error) {
+		console.error('Error loading santri data:', error);
+	} finally {
+		loading.value = false;
 	}
 };
 

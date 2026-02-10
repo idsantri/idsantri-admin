@@ -42,6 +42,7 @@
 							behavior="menu"
 							required
 							:rules="[(val) => !!val || 'Harus diisi!']"
+							:loading="loading['th_ajaran']"
 						/>
 						<q-select
 							dense
@@ -120,10 +121,9 @@
 </template>
 <script setup>
 import { onMounted, ref, watch } from 'vue';
-import apiGet from 'src/api/api-get';
-import { getListsCustom } from 'src/api/api-get-lists';
 import listsMadrasahStore from 'src/stores/lists-madrasah-store';
-import { notifyWarning } from 'src/utils/notify';
+import Kelas from 'src/models/Kelas';
+import DownloadUrl from 'src/models/DownloadUrl';
 
 const loadingForm = ref(false);
 const input = ref({});
@@ -154,35 +154,32 @@ lists.value['th_ajaran'] = th;
 onMounted(async () => {
 	const th = listsMadrasahStore().getThAjaran;
 	lists.value['th_ajaran'] = th;
-	if (th.length == 0) {
-		const data = await getListsCustom({
-			url: 'kelas/lists',
-			key: 'th_ajaran',
-			loadingArray: loading,
-		});
-		listsMadrasahStore().setThAjaran(data);
-		lists.value['th_ajaran'] = data;
+	if (!th?.length) {
+		try {
+			loading.value['th_ajaran'] = true;
+			const data = await Kelas.list();
+			listsMadrasahStore().setThAjaran(data.th_ajaran);
+			lists.value['th_ajaran'] = data.th_ajaran;
+		} catch (error) {
+			console.error('🚀 ~ error:', error);
+		} finally {
+			loading.value['th_ajaran'] = false;
+		}
 	} else {
 		lists.value['th_ajaran'] = th;
 	}
-	// console.log('t', lists.value['th_ajaran']);
 });
 
 async function onSubmit() {
 	const params = JSON.parse(JSON.stringify(input.value));
-	const data = await apiGet({
-		endPoint: 'export/nilai-mapel',
-		loading: loadingForm,
-		params,
-	});
-
-	if (!data) return;
-	if (!data.url) return notifyWarning('Url tidak ditemukan');
-
-	const link = document.createElement('a');
-	link.href = data.url;
-	link.click();
-	link.remove();
+	try {
+		loadingForm.value = true;
+		await DownloadUrl.nilaiMapel(params);
+	} catch (error) {
+		console.error('🚀 ~ onSubmit ~ error:', error);
+	} finally {
+		loadingForm.value = false;
+	}
 }
 
 watch(
@@ -195,15 +192,16 @@ watch(
 			if (cekTingkat.length) {
 				lists.value['tingkat'] = cekTingkat;
 			} else {
-				const data = await getListsCustom({
-					url: 'kelas/lists',
-					params: { th_ajaran_h: newModel },
-					key: 'tingkat',
-					loadingArray: loading,
-					sort: 'asc',
-				});
-				listsMadrasahStore().addTingkatToTahun(data, newModel);
-				lists.value['tingkat'] = data;
+				try {
+					loading.value['tingkat'] = true;
+					const data = await Kelas.list({ th_ajaran_h: newModel });
+					listsMadrasahStore().addTingkatToTahun(data.tingkat, newModel);
+					lists.value['tingkat'] = data.tingkat;
+				} catch (error) {
+					console.error('🚀 ~ error:', error);
+				} finally {
+					loading.value['tingkat'] = false;
+				}
 			}
 		} else {
 			lists.value['tingkat'] = [];
@@ -221,19 +219,16 @@ watch(
 			if (cekKelas.length) {
 				lists.value['kelas'] = cekKelas;
 			} else {
-				const data = await getListsCustom({
-					url: 'kelas/lists',
-					params: {
-						th_ajaran_h: input.value.th_ajaran_h,
-						tingkat_id: newModel,
-					},
-					key: 'kelas',
-					loadingArray: loading,
-					sort: 'asc',
-				});
-
-				listsMadrasahStore().addKelasToTingkatByTahun(data, newModel, input.value.th_ajaran_h);
-				lists.value['kelas'] = data;
+				try {
+					loading.value['kelas'] = true;
+					const data = await Kelas.list({ th_ajaran_h: input.value.th_ajaran_h, tingkat_id: newModel });
+					listsMadrasahStore().addKelasToTingkatByTahun(data.kelas, newModel, input.value.th_ajaran_h);
+					lists.value['kelas'] = data.kelas;
+				} catch (error) {
+					console.error('🚀 ~ error:', error);
+				} finally {
+					loading.value['kelas'] = false;
+				}
 			}
 		} else {
 			lists.value['kelas'] = [];

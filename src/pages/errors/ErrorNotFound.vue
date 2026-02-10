@@ -1,16 +1,23 @@
 <template>
-	<div
-		class="fullscreen bg-green text-green-1 text-center q-pa-md flex flex-center"
-	>
+	<div class="fullscreen bg-green text-green-1 text-center q-pa-md flex flex-center">
 		<div>
 			<div style="font-size: 30vh">404</div>
 
-			<div class="text-h2" style="opacity: 0.4">
-				Oops. Nothing here...
-			</div>
+			<div class="text-h2" style="opacity: 0.4">Oops. Nothing here...</div>
 
 			<q-btn
-				class="q-mt-xl"
+				class="q-mt-xl q-mr-sm"
+				color="green-1"
+				text-color="green"
+				unelevated
+				label="Go Back"
+				no-caps
+				@click="$router.go(-1)"
+				icon="arrow_left"
+			/>
+			<q-btn
+				icon="home"
+				class="q-mt-xl q-ml-sm"
 				color="green-1"
 				text-color="green"
 				unelevated

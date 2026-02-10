@@ -1,12 +1,9 @@
 <template lang="">
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
-			<FormHeader
-				:title="'Input List ' + kebabToTitleCase(data?.key || '')"
-				:is-new="isNew"
-			/>
+			<FormHeader :title="'Input List ' + kebabToTitleCase(data?.key || '')" :is-new="isNew" />
 			<FormLoading v-if="loading" />
-			<q-card-section class="q-pa-sm">
+			<q-card-section>
 				<q-input
 					label="text1"
 					dense
@@ -16,6 +13,7 @@
 					autogrow=""
 					:loading="loading"
 					v-if="showInput.val0"
+					ref="firstInput"
 				/>
 				<q-input
 					label="text2"
@@ -43,7 +41,7 @@
 	</q-card>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import { kebabToTitleCase } from 'src/utils/format-text';
 import Lists from 'src/models/Lists';
 import useCrudForm from './utils/useCrudForm';
@@ -58,23 +56,22 @@ const props = defineProps({
 		required: true,
 	},
 });
-const emit = defineEmits([
-	'successDelete',
-	'successSubmit',
-	'successUpdate',
-	'successCreate',
-]);
+
+const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
 const inputs = ref({ ...props.data });
 const isNew = !props.data?.id;
+const firstInput = useTemplateRef('firstInput');
 
-const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(
-	Lists,
-	{
-		emit: emit,
-		responseKey: 'list',
-	},
-);
+onMounted(async () => {
+	await nextTick();
+	if (firstInput.value) firstInput.value.focus();
+});
+
+const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(Lists, {
+	emit: emit,
+	responseKey: 'list',
+});
 
 async function onSubmit() {
 	const data = JSON.parse(JSON.stringify(inputs.value));

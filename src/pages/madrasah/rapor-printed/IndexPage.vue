@@ -60,8 +60,7 @@
 	</CardPage>
 </template>
 <script setup>
-import apiDelete from 'src/api/api-delete';
-import apiGet from 'src/api/api-get';
+import Rapor from 'src/models/Rapor';
 import { onMounted, ref } from 'vue';
 
 const rapor = ref([]);
@@ -69,11 +68,15 @@ const loading = ref(false);
 const filter = ref('');
 
 async function loadData() {
-	const data = await apiGet({
-		endPoint: 'rapor/setting',
-		loading,
-	});
-	Object.assign(rapor.value, data.rapor_setting);
+	try {
+		loading.value = true;
+		const data = await Rapor.setting();
+		rapor.value = data.rapor_setting;
+	} catch (error) {
+		console.error('🚀 ~ loadData ~ error:', error);
+	} finally {
+		loading.value = false;
+	}
 }
 
 onMounted(async () => {
@@ -81,8 +84,15 @@ onMounted(async () => {
 });
 
 async function deleteRow(id) {
-	const del = await apiDelete({ endPoint: `rapor/${id}`, loading });
-	if (del) await loadData();
+	try {
+		loading.value = true;
+		await Rapor.remove({ id });
+		await loadData();
+	} catch (error) {
+		console.error('🚀 ~ deleteRow ~ error:', error);
+	} finally {
+		loading.value = false;
+	}
 }
 
 const columns = [

@@ -46,7 +46,8 @@
 import { ref, watch } from 'vue';
 import TableHeader from './TableHeader.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
-import apiGet from 'src/api/api-get';
+import AparaturQuran from 'src/models/AparaturQuran';
+
 const filter = ref('');
 const th_ajaran_h = ref('');
 const muallim = ref([]);
@@ -61,13 +62,14 @@ async function onReload() {
 }
 
 async function loadData(th_ajaran_h) {
-	const data = await apiGet({
-		endPoint: `aparatur-quran`,
-		params: { th_ajaran_h: th_ajaran_h, jabatan: 'Muallim' },
-		loading,
-	});
-	if (data) {
+	try {
+		loading.value = true;
+		const data = AparaturQuran.getAll({ params: { th_ajaran_h: th_ajaran_h, jabatan: 'Muallim' } });
 		muallim.value = data.aparatur_quran;
+	} catch (e) {
+		console.error('🚀 ~ loadData ~ e:', e);
+	} finally {
+		loading.value = false;
 	}
 }
 
