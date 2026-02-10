@@ -22,6 +22,7 @@ const config = {
 			indisipliner: false,
 		},
 		ugt: false,
+		apb: false,
 		setting: {
 			appWali: false,
 			virtualAccount: false,
