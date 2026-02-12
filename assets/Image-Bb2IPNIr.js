@@ -1,1 +1,0 @@
-import{A as s}from"./Api-Ivu-dWRs.js";class r extends s{constructor(){super("images")}async santri(a){return(await this._apiGet({endPoint:`${this._path}/santri/${a}`})).data}async user(a){return(await this._apiGet({endPoint:`${this._path}/users/${a}`})).data}async aparatur(a){return(await this._apiGet({endPoint:`${this._path}/aparatur/${a}`})).data}}const i=new r;export{i as I};
