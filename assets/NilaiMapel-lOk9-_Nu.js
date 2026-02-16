@@ -1,0 +1,1 @@
+import{A as t}from"./ApiCrud-FTDmQjbi.js";class e extends t{constructor(){super("nilai-mapel")}async rerata(a={}){return(await this._apiGet({endPoint:`${this._path}/rerata`,params:a})).data}}const n=new e;export{n as N};
