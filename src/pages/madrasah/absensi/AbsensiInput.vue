@@ -285,12 +285,15 @@ const model =
 			: null;
 
 async function deleteAbsensi() {
-	const kelas_id = absences.value.map((abs) => abs.kelas_id);
-	const bulan_ujian = params.bulan_ujian;
-
+	const config = {
+		th_ajaran_h: params.th_ajaran_h,
+		tingkat_id: params.tingkat_id,
+		kelas: params.kelas,
+		bulan_ujian: params.bulan_ujian,
+	};
 	try {
 		spinner.value = true;
-		await model.removeAbsensi({ bulan_ujian, kelas_id });
+		await model.removeAbsensi(config);
 		absences.value = [];
 		const url = `/madrasah/absensi/input/${params.absensi}/${params.th_ajaran_h}/${params.tingkat_id}/${params.kelas}`;
 		router.push(url);
