@@ -1,0 +1,1 @@
+import{A as e}from"./ApiCrud-BSS5T12d.js";class r extends e{constructor(){super("ortu")}async search(){throw new Error("Use datatables.net method instead of this")}async getSantri({ortuId:s,notifySuccess:a=!0}){const t=await this._apiGet({endPoint:`${this._path}/${s}/santri`});return a&&this._showSuccess(t.message),t.data}}const i=new r;export{i as O};
