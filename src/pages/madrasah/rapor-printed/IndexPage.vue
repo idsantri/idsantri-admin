@@ -70,7 +70,7 @@ const filter = ref('');
 async function loadData() {
 	try {
 		loading.value = true;
-		const data = await Rapor.setting();
+		const data = await Rapor.getAll();
 		rapor.value = data.rapor_setting;
 	} catch (error) {
 		console.error('🚀 ~ loadData ~ error:', error);
