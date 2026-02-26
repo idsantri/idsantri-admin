@@ -1,10 +1,8 @@
 <template lang="">
 	<q-card flat bordered>
-		<q-card-section class="no-padding">
-			<q-toolbar class="bg-green-1">
-				<q-toolbar-title class="text-subtitle1"> Identitas Santri </q-toolbar-title>
-				<q-btn icon="sync" outline @click="loadData" />
-			</q-toolbar>
+		<q-card-section class="q-pa-sm bg-green-1 flex items-center justify-between">
+			<div class="text-subtitle2">Identitas Santri</div>
+			<q-btn icon="sync" flat dense @click="loadData" />
 		</q-card-section>
 		<q-card-section class="q-py-sm q-px-none">
 			<q-list dense>
