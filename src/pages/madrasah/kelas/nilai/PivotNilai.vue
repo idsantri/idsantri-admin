@@ -112,7 +112,7 @@ async function getNilaiPivot(category) {
 	try {
 		loading.value = true;
 		const data = await NilaiMapel.pivotByKelas(props.kelasId, category);
-		nilai.value = data.nilai;
+		nilai.value = data.nilai_mapel;
 	} catch (error) {
 		console.error('🚀 ~ getNilaiPivot ~ error:', error);
 	} finally {

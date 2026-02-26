@@ -353,7 +353,7 @@ async function expand(props) {
 			loadingDetail.value[props.key] = true;
 			nilaiDetail.value[props.key] = null;
 			const data = await NilaiMapel.pivotByKelas(props.key, 'rapor');
-			nilaiDetail.value[props.key] = data.nilai;
+			nilaiDetail.value[props.key] = data.nilai_mapel;
 		} catch (error) {
 			console.error('🚀 ~ expand ~ error:', error);
 		} finally {
@@ -372,7 +372,7 @@ onMounted(async () => {
 				kelas: params.kelas,
 				category: 'rapor',
 			});
-			nilai.value = data.nilai;
+			nilai.value = data.nilai_mapel;
 		} catch (error) {
 			console.error('🚀 ~ error:', error);
 		} finally {
