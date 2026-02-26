@@ -1,73 +1,60 @@
 <template lang="">
-	<div>
-		<q-card bordered flat>
-			<div v-if="!kelas?.length" class="text-italic text-center q-pa-lg">Tidak ada untuk ditampilkan</div>
-			<div v-else>
-				<q-list v-for="(kelas, index) in kelas" :key="index">
-					<q-item :class="kelas.id == params.id ? 'bg-green-1' : ''">
-						<q-item-section side>
-							<q-btn
-								outline
-								round
-								dense
-								glossy
-								color="green-6"
-								icon="info"
-								:to="`/madrasah/kelas/${kelas.id}/riwayat`"
-								:disable="kelas.id == params.id"
-							/>
-						</q-item-section>
-						<q-item-section>
-							<q-item-label overline class="flex">
-								{{ kelas.th_ajaran_h }}
-								|
-								{{ kelas.th_ajaran_m }}
-								<q-space />
-								{{ kelas.id }}
-							</q-item-label>
-							<q-item-label>
-								{{ kelas.tingkat }} &mdash;
-								{{ kelas.kelas }}
-								{{ kelas.no_absen ? '(' + String('0' + kelas.no_absen).slice(-2) + ')' : '' }}
-							</q-item-label>
-							<q-item-label caption class="text-italic">
-								{{ kelas.keterangan ? kelas.keterangan : '-' }}
-							</q-item-label>
-						</q-item-section>
-					</q-item>
-					<q-separator />
-				</q-list>
-			</div>
-			<CardLoading :showing="loading" />
-
-			<q-dialog v-model="crudShow">
-				<KelasForm :data="dataObj" @success-create="(res) => $router.push(`/madrasah/kelas/${res.id}`)" />
-			</q-dialog>
-		</q-card>
-		<div class="absolute-bottom-right q-ma-sm">
-			<q-btn
-				style=""
-				icon="sync"
-				round=""
-				dense=""
-				outline
-				color="green-10"
-				glossy=""
-				class="q-mr-sm"
-				@click="getKelas(santri_id)"
-			/>
-			<q-btn
-				style="opacity: 0.8"
-				icon="add"
-				round=""
-				dense=""
-				color="green-10"
-				glossy=""
-				class="text-green-11"
-				@click="addData"
-			/>
-		</div>
-	</div>
+	<q-card bordered flat>
+		<q-card-section class="bg-green-2 text-subtitle2 q-pa-sm flex items-center">
+			<q-btn flat dense icon="sync" @click="getKelas(santri_id)" />
+			<div class="text-green-10">Riwayat Kelas</div>
+			<q-space />
+			<q-btn outline icon="add" @click="addData" label="Tambah" no-caps />
+		</q-card-section>
+		<CardLoading :showing="loading" />
+		<q-list separator="">
+			<template v-if="!kelas?.length">
+				<q-item>
+					<q-item-section>
+						<q-item-label class="text-center text-body2 text-negative text-italic q-pa-lg">
+							Tidak ada untuk ditampilkan.<br />Silakan tambahkan kelas terlebih dahulu!
+						</q-item-label>
+					</q-item-section>
+				</q-item>
+			</template>
+			<template v-else>
+				<q-item v-for="(kelas, index) in kelas" :key="index" :class="kelas.id == params.id ? 'bg-green-1' : ''">
+					<q-item-section avatar>
+						<q-btn
+							outline
+							round
+							dense
+							glossy
+							color="green-7"
+							icon="info"
+							:to="`/madrasah/kelas/${kelas.id}/riwayat`"
+							:disable="kelas.id == params.id"
+						/>
+					</q-item-section>
+					<q-item-section>
+						<q-item-label overline class="flex">
+							{{ kelas.th_ajaran_h }}
+							|
+							{{ kelas.th_ajaran_m }}
+							<q-space />
+							{{ kelas.id }}
+						</q-item-label>
+						<q-item-label>
+							{{ kelas.tingkat }} &mdash;
+							{{ kelas.kelas }}
+							{{ kelas.no_absen ? '(' + String('0' + kelas.no_absen).slice(-2) + ')' : '' }}
+						</q-item-label>
+						<q-item-label caption class="text-italic">
+							{{ kelas.keterangan ?? '' }}
+						</q-item-label>
+					</q-item-section>
+				</q-item>
+			</template>
+		</q-list>
+		<q-dialog v-model="crudShow">
+			<KelasForm :data="dataObj" @success-create="(res) => $router.push(`/madrasah/kelas/${res.id}`)" />
+		</q-dialog>
+	</q-card>
 </template>
 <script setup>
 import { ref, watch } from 'vue';
