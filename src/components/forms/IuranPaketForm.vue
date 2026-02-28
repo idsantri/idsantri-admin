@@ -46,7 +46,7 @@
 </template>
 <script setup>
 import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
-import listsStore from 'src/stores/lists-store';
+import { useListsStore } from 'src/stores/lists-store';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import IuranPaket from 'src/models/IuranPaket';
@@ -58,7 +58,7 @@ const props = defineProps({
 
 const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
-const iuranStore = listsStore().getStateByKey('iuran');
+const iuranStore = useListsStore().getStateByKey('iuran');
 const inputs = ref({ ...props.data });
 const iuran = ref([...iuranStore]);
 const isNew = !props.data?.id;

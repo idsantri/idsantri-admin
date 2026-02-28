@@ -2,7 +2,10 @@
 	<CardPage>
 		<CardHeader title="Data Murid" @onReload="loadData" />
 
-		<q-card-section class="tw:grid tw:sm:flex tw:sm:justify-between tw:gap-2 q-pa-sm" style="max-width: 1400px">
+		<q-card-section
+			class="tw:flex tw:flex-col tw:sm:flex-row tw:sm:justify-between tw:gap-2 q-pa-sm"
+			style="max-width: 1400px"
+		>
 			<div class="tw:w-full">
 				<q-card bordered flat>
 					<!-- santri -->

@@ -12,7 +12,7 @@
 					color="green-11"
 					title="Muat ulang"
 				/>
-				<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11"> Riwayat Indisipliner </q-toolbar-title>
+				<q-toolbar-title class="text-subtitle1 text-green-11 q-px-none"> Riwayat Indisipliner </q-toolbar-title>
 				<q-btn
 					color="green-11"
 					outline
