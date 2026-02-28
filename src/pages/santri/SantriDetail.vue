@@ -15,41 +15,40 @@
 			</template>
 		</CardHeader>
 
-		<q-card-section class="no-padding">
-			<div class="row">
-				<!-- santri -->
-				<div class="col-12 col-sm-6 col-md-4 q-pa-sm">
-					<CardListTabel class="q-mb-sm" :data="register" :loading="loading" title="Registrasi" />
+		<q-card-section
+			class="tw:flex tw:flex-col tw:sm:flex-row tw:sm:justify-between tw:gap-2 q-pa-sm"
+			style="max-width: 1200px"
+		>
+			<!-- santri -->
+			<div class="tw:w-full">
+				<CardListTabel class="q-mb-sm" :data="register" :loading="loading" title="Registrasi" />
 
-					<!-- identitas -->
-					<CardIdentity
-						class="q-mb-sm"
-						title="Identitas"
-						:data="identity"
-						:loading="loading"
-						:loadingImage="loadingImage"
-						:image="santri?.image_url || '/user-default.png'"
-					>
-						<template #button>
-							<q-btn
-								class="q-mt-sm full-width"
-								icon="upload"
-								no-caps=""
-								label="Foto"
-								dense=""
-								size="sm"
-								outline=""
-								color="green-10"
-								@click="showUploader = true"
-							/>
-						</template>
-					</CardIdentity>
-				</div>
-
-				<!-- relations -->
-				<div class="col-12 col-sm-6 col-md-5 q-pa-sm">
-					<santri-relations :santri-id="santriId" />
-				</div>
+				<!-- identitas -->
+				<CardIdentity
+					title="Identitas"
+					:data="identity"
+					:loading="loading"
+					:loadingImage="loadingImage"
+					:image="santri?.image_url || '/user-default.png'"
+				>
+					<template #button>
+						<q-btn
+							class="q-mt-sm full-width"
+							icon="upload"
+							no-caps=""
+							label="Foto"
+							dense=""
+							size="sm"
+							outline=""
+							color="green-10"
+							@click="showUploader = true"
+						/>
+					</template>
+				</CardIdentity>
+			</div>
+			<!-- relations -->
+			<div class="tw:w-full">
+				<santri-relations :santri-id="santriId" />
 			</div>
 		</q-card-section>
 		<!-- modal -->

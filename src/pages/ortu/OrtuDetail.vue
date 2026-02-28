@@ -14,16 +14,17 @@
 			</template>
 		</CardHeader>
 
-		<q-card-section class="no-padding">
-			<div class="row" style="max-width: 1024px">
-				<div class="col-12 col-md-6 q-pa-sm">
-					<CardListTabel :data="identity" :loading="loading" title="Identitas" class="q-mb-sm" />
-					<CardListTabel :data="dataAyah" :loading="loading" title="Data Ayah" class="q-mb-sm" />
-					<CardListTabel :data="dataIbu" :loading="loading" title="Data Ibu" class="q-mb-sm" />
-				</div>
-				<div class="col-12 col-md-6 q-pa-sm">
-					<card-list-santri :data="santri" :loading="loading" title="Data Santri (Anak)" class="q-mb-sm" />
-				</div>
+		<q-card-section
+			class="tw:flex tw:flex-col tw:sm:flex-row tw:sm:justify-between tw:gap-2 q-pa-sm"
+			style="max-width: 1200px"
+		>
+			<div class="tw:w-full">
+				<CardListTabel :data="identity" :loading="loading" title="Identitas" class="q-mb-sm" />
+				<CardListTabel :data="dataAyah" :loading="loading" title="Data Ayah" class="q-mb-sm" />
+				<CardListTabel :data="dataIbu" :loading="loading" title="Data Ibu" class="" />
+			</div>
+			<div class="tw:w-full">
+				<card-list-santri :data="santri" :loading="loading" title="Data Santri (Anak)" class="" />
 			</div>
 		</q-card-section>
 	</CardPage>
