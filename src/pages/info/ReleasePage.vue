@@ -39,7 +39,11 @@ const releases = [
 		ver: '1.7.0',
 		date: 'Februari 2026',
 		release: {
-			'Fitur Baru': ['Pulangan dan Liburan Santri'],
+			'Fitur Baru': [
+				'Pulangan dan Liburan Santri',
+				'Input nilai mata pelajaran (mapel) per mata pelajaran dan murid',
+			],
+			Improve: ['Perbaikan dan peningkatan performa'],
 		},
 	},
 	{

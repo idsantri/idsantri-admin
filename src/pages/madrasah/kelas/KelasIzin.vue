@@ -1,20 +1,60 @@
 <template lang="">
-	<div>
-		<temp-array
-			:data="izinMap"
-			:spinner="loading"
-			:btn-print="true"
-			@add="handleAdd"
-			@edit="handleEdit"
-			@print="handlePrint"
-		/>
+	<q-card bordered flat>
+		<q-card-section class="bg-green-2 text-subtitle2 q-pa-sm flex items-center">
+			<q-btn flat dense icon="sync" @click="loadData" />
+			<div class="text-green-10">Riwayat Izin Madrasah</div>
+			<q-space />
+			<q-btn outline icon="add" @click="handleAdd" label="Tambah" no-caps />
+		</q-card-section>
+		<CardLoading :showing="loading" />
+
+		<q-list separator="">
+			<template v-if="!izin.length">
+				<q-item>
+					<q-item-section>
+						<q-item-label class="text-center text-body2 text-negative text-italic q-pa-lg">
+							Tidak ada data untuk ditampilkan.<br />Silakan tambahkan izin terlebih dahulu!
+						</q-item-label>
+					</q-item-section>
+				</q-item>
+			</template>
+			<template v-else>
+				<q-item v-for="item in izin" :key="item.id" class="">
+					<q-item-section avatar>
+						<q-btn dense glossy="" icon="edit" round="" outline color="green-8" @click="handleEdit(item)" />
+					</q-item-section>
+					<q-item-section>
+						<q-item-label lines="1">
+							{{ formatDateShort(item.dari_tgl) + ' | ' + formatHijri(masehiToHijri(item.dari_tgl)) }}
+							({{ item.durasi }} hari)
+						</q-item-label>
+						<q-item-label overline>
+							{{ item.keperluan }} {{ item.keterangan ? '(' + item.keterangan + ')' : '' }}
+						</q-item-label>
+						<q-item-label caption class="text-italic">
+							{{ item.catatan ? item.catatan : '' }}
+						</q-item-label>
+					</q-item-section>
+					<q-item-section avatar>
+						<q-btn
+							class="bg-green-10 text-green-11"
+							dense
+							glossy=""
+							icon="print"
+							round=""
+							@click="handlePrint(item)"
+						/>
+					</q-item-section>
+				</q-item>
+			</template>
+		</q-list>
 		<q-dialog v-model="crudShow">
 			<IzinMadrasahForm :data="izinObj" @success-submit="loadData" @success-delete="loadData" />
 		</q-dialog>
 		<q-dialog v-model="showViewer">
 			<ReportViewer :url="urlReport" />
 		</q-dialog>
-	</div>
+	</q-card>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
@@ -22,7 +62,6 @@ import { useRoute } from 'vue-router';
 import { formatDateShort } from 'src/utils/format-date';
 import { formatHijri, masehiToHijri } from 'src/utils/hijri';
 import { getObjectById } from 'src/utils/array-object';
-import TempArray from 'src/pages/santri/relations/TemplateArray.vue';
 import IzinMadrasahForm from 'src/components/forms/IzinMadrasahForm.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
 import IzinMadrasah from 'src/models/IzinMadrasah';
@@ -30,7 +69,6 @@ import IzinMadrasah from 'src/models/IzinMadrasah';
 const route = useRoute();
 const params = route.params;
 const izin = ref([]);
-const izinMap = ref([]);
 const izinObj = ref({});
 const loading = ref(false);
 const crudShow = ref(false);
@@ -43,14 +81,6 @@ async function loadData() {
 		const data = await IzinMadrasah.riwayat(params.id);
 		izin.value = data.izin_madrasah;
 		kelas.value = data.kelas;
-
-		izinMap.value = data.izin_madrasah.map((v) => ({
-			Tanggal: formatDateShort(v.dari_tgl) + ' | ' + formatHijri(masehiToHijri(v.dari_tgl)),
-			Durasi: v.durasi + ' hari',
-			Keperluan: v.keperluan + `${v.keterangan?.length > 0 ? ' (' + v.keterangan + ')' : ''}`,
-			Catatan: v.catatan,
-			id: v.id,
-		}));
 	} catch (error) {
 		console.error('🚀 ~ loadData ~ error:', error);
 	} finally {

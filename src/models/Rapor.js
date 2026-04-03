@@ -12,13 +12,5 @@ class Rapor extends ApiCrud {
 	update() {
 		throw new Error('Method not implemented.');
 	}
-
-	async setting() {
-		const resData = await this._apiGet({
-			endPoint: `${this._path}/setting`,
-		});
-
-		return resData.data;
-	}
 }
 export default new Rapor();
