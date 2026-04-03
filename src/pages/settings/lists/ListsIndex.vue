@@ -39,13 +39,12 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import listsStore from 'src/stores/lists-store';
+import { listData } from 'src/stores/lists-store';
 
 const router = useRouter();
 const { params } = useRoute();
 const listKey = params.listKey;
 
-const { listData } = listsStore();
 const listModel = ref(listData.find(({ url }) => url == listKey));
 const options = ref([]);
 

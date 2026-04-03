@@ -57,7 +57,7 @@ import InputSelectSantriId from 'src/components/inputs/InputSelectSantriId.vue';
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';
 import useCrudForm from './utils/useCrudForm';
 import Iuran from 'src/models/Iuran';
-import listsStore from 'src/stores/lists-store';
+import { useListsStore } from 'src/stores/lists-store';
 import InputSelectTahunAjaran from '../inputs/InputSelectTahunAjaran.vue';
 
 const props = defineProps({
@@ -68,7 +68,7 @@ const props = defineProps({
 
 const emit = defineEmits(['successDelete', 'successSubmit', 'successUpdate', 'successCreate']);
 
-const iuranStore = listsStore().getStateByKey('iuran');
+const iuranStore = useListsStore().getStateByKey('iuran');
 const inputs = ref({ ...props.data });
 const iuran = ref([...iuranStore]);
 const isNew = !props.data?.id;

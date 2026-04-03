@@ -172,8 +172,8 @@
 <script setup>
 import Mapel from 'src/models/Mapel';
 import NilaiMapel from 'src/models/NilaiMapel';
-import { notifyWarning } from 'src/utils/notify';
-import { onMounted, ref, watch } from 'vue';
+import { notifyError, notifyWarning } from 'src/utils/notify';
+import { nextTick, onMounted, ref, watch } from 'vue';
 import { read, utils } from 'xlsx';
 
 const input = ref({ category: 'ujian' });
@@ -202,29 +202,49 @@ onMounted(async () => {
 	await loadData();
 });
 
-const handleFileChange = (event) => {
+const handleFileChange = async (event) => {
+	// 1. Ambil file
 	const file = event.target.files[0];
+	if (!file) return;
+
+	// 2. Aktifkan loading
+	loading.value = true;
+
+	// 3. BERI JEDA agar browser sempat menggambar (render) indikator loading di layar
+	await nextTick();
+
 	const reader = new FileReader();
 
 	reader.onload = (e) => {
-		const data = e.target.result;
-		const workbook = read(data, { type: 'array' });
-		const sheetName = workbook.SheetNames[0];
-		const worksheet = workbook.Sheets[sheetName];
-		const dataJson = utils.sheet_to_json(worksheet, {
-			// blankrows: true,
-			defval: null,
-		});
+		try {
+			const data = e.target.result;
+			const workbook = read(data, { type: 'array' });
+			const sheetName = workbook.SheetNames[0];
+			const worksheet = workbook.Sheets[sheetName];
+			const dataJson = utils.sheet_to_json(worksheet, {
+				// blankrows: true,
+				defval: null,
+			});
 
-		if (validateData(dataJson, mapelIds.value)) {
-			nilaiPivot.value = dataJson;
-			step.value = 2;
-		} else {
-			notifyWarning('Data tidak dapat diproses');
-			notifyWarning('Pastikan baris pertama adalah judul kolom dan baris berikutnya adalah konten data');
+			if (validateData(dataJson, mapelIds.value)) {
+				nilaiPivot.value = dataJson;
+				step.value = 2;
+			} else {
+				notifyWarning('Data tidak dapat diproses');
+				notifyWarning('Pastikan baris pertama adalah judul kolom dan baris berikutnya adalah konten data');
+			}
+		} catch (error) {
+			notifyError('Gagal membaca file');
+			console.error(error);
+		} finally {
+			// 4. MATIKAN LOADING DI SINI (Setelah proses selesai/error)
+			loading.value = false;
 		}
-		// console.log(nilaiPivot.value);
-		// console.log(nilaiMapel.value);
+	};
+
+	reader.onerror = () => {
+		loading.value = false;
+		notifyError('Gagal membaca file fisik');
 	};
 
 	reader.readAsArrayBuffer(file);
@@ -237,7 +257,7 @@ function validateData(dataPivot, mapelIds) {
 	);
 }
 
-function arrayNilaiMapel({ nilaiPivot, mapelIds, category, ujian_ke }) {
+function arrayNilaiMapel({ nilaiPivot, mapelIds }) {
 	let result = [];
 	mapelIds.forEach((mapelKey) => {
 		// cek key ada di data
@@ -245,8 +265,7 @@ function arrayNilaiMapel({ nilaiPivot, mapelIds, category, ujian_ke }) {
 			const row = nilaiPivot.map((item) => ({
 				kelas_id: item.kelas_id,
 				mapel_id: mapelKey,
-				ujian_ke: parseInt(ujian_ke),
-				['n_' + category]: item[mapelKey] || null,
+				nilai: item[mapelKey] || null,
 			}));
 			result = result.concat(row);
 		}
@@ -258,13 +277,21 @@ async function onSubmit() {
 	const nilai = arrayNilaiMapel({
 		nilaiPivot: nilaiPivot.value,
 		mapelIds: mapelIds.value,
-		category: input.value.category,
-		ujian_ke: input.value.ujian_ke,
 	});
+	const payload = {
+		ujian_ke: parseInt(input.value.ujian_ke),
+		kategori: input.value.category?.toLowerCase(),
+		data: nilai,
+	};
+
+	// console.log('🚀 ~ onSubmit ~ payload:', payload);
+	// return;
 
 	try {
 		loading.value = true;
-		await NilaiMapel.create({ data: { data: nilai } });
+		await NilaiMapel.create({
+			data: payload,
+		});
 		step.value = 1;
 	} catch (error) {
 		console.error('🚀 ~ onSubmit ~ error:', error);

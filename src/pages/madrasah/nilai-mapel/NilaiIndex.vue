@@ -352,14 +352,8 @@ async function expand(props) {
 		try {
 			loadingDetail.value[props.key] = true;
 			nilaiDetail.value[props.key] = null;
-			const data = await NilaiMapel.getAll({
-				params: {
-					kelas_id: props.key,
-					category: 'rapor',
-				},
-				notifySuccess: false,
-			});
-			nilaiDetail.value[props.key] = data.nilai;
+			const data = await NilaiMapel.pivotByKelas(props.key, 'rapor');
+			nilaiDetail.value[props.key] = data.nilai_mapel;
 		} catch (error) {
 			console.error('🚀 ~ expand ~ error:', error);
 		} finally {
@@ -378,7 +372,7 @@ onMounted(async () => {
 				kelas: params.kelas,
 				category: 'rapor',
 			});
-			nilai.value = data.nilai;
+			nilai.value = data.nilai_mapel;
 		} catch (error) {
 			console.error('🚀 ~ error:', error);
 		} finally {

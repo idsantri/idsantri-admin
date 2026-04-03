@@ -29,12 +29,7 @@
 			</div>
 		</q-card-section>
 		<q-dialog v-model="crud">
-			<ListsForm
-				:data="objList"
-				:show-input="showInput"
-				@success-delete="fetchData"
-				@success-submit="fetchData"
-			/>
+			<ListsForm :data="objList" :show-input="showInput" @success-delete="reload" @success-submit="reload" />
 		</q-dialog>
 	</div>
 </template>
@@ -46,40 +41,28 @@ import ListsForm from 'src/components/forms/ListsForm.vue';
 import ListsSingle from './ListsStyleSingle.vue';
 import ListsDouble from './ListsStyleDouble.vue';
 import ListsTriple from './ListsStyleTriple.vue';
-import listsStore from 'src/stores/lists-store';
-import Lists from 'src/models/Lists';
+import { useListsStore, listData } from 'src/stores/lists-store';
+import { storeToRefs } from 'pinia';
 
 const crud = ref(false);
 const { params } = useRoute();
-const loading = ref(false);
 const listGet = ref([]);
 const objList = ref({});
 const showInput = ref({});
-const store = listsStore();
-const { listData } = store;
-
-onMounted(async () => {
-	await fetchData();
-});
+const store = useListsStore();
+const storeRef = storeToRefs(store);
+const { loading } = storeRef;
 
 const selected = listData.find(({ url }) => url == params.listKey);
 
-async function fetchData() {
-	try {
-		loading.value = true;
-		const data = await Lists.getByKey(selected.url);
-		listGet.value = data[selected.key];
-
-		const checkState = store.checkState(selected.key);
-		if (checkState) {
-			store.$patch({ [selected.key]: data[selected.key] });
-		}
-	} catch (error) {
-		console.log('error get list ', error);
-	} finally {
-		loading.value = false;
-	}
+async function reload() {
+	await store.fetchList(selected.url);
+	listGet.value = store.getStateByKey(selected.key);
 }
+
+onMounted(async () => {
+	await reload();
+});
 
 function setInput() {
 	if (selected.column == 1) {

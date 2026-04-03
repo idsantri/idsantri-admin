@@ -12,13 +12,8 @@
 		clearable
 	>
 		<template v-slot:after>
-			<q-card flat bordered>
-				<q-btn-dropdown
-					flat
-					dropdown-icon="more_vert"
-					class="q-px-sm"
-					color=""
-				>
+			<q-card flat bordered class="bg-transparent">
+				<q-btn-dropdown flat dropdown-icon="more_vert" class="q-px-xs flex" color="">
 					<q-btn
 						no-caps
 						label="Reload"

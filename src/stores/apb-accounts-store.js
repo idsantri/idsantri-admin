@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia';
 import ApbAccount from 'src/models/ApbAccount';
 import ArrayCrud from 'src/models/ArrayCrud';
-import { computed, ref, shallowRef } from 'vue';
+import { computed, ref } from 'vue';
 
 export const useAccountsStore = defineStore(
 	'accounts-store',
 	() => {
 		const loading = ref(false);
-		const accounts = shallowRef([]);
+		const accounts = ref([]);
 		const filterText = ref('');
 		const filterCategory = ref('');
 		const filterGroup = ref('');

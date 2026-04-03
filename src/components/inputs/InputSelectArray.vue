@@ -12,15 +12,15 @@
 		ref="selectRef"
 	>
 		<template v-slot:after>
-			<drop-down-after v-if="btnSetting" :route-to="url" @reload="fetchList" />
+			<drop-down-after v-if="btnSetting" :route-to="url" @reload="reload" />
 		</template>
 	</q-select>
 </template>
 <script setup>
-import listsStore from 'src/stores/lists-store';
-import { onMounted, ref, useTemplateRef } from 'vue';
+import { useListsStore } from 'src/stores/lists-store';
+import { computed, onMounted, useTemplateRef } from 'vue';
 import DropDownAfter from './DropDownAfter.vue';
-import Lists from 'src/models/Lists';
+import { storeToRefs } from 'pinia';
 
 const input = defineModel();
 const props = defineProps({
@@ -30,7 +30,7 @@ const props = defineProps({
 	},
 	sort: {
 		type: String,
-		default: 'asc',
+		default: () => 'asc',
 	},
 	btnSetting: {
 		type: Boolean,
@@ -38,10 +38,24 @@ const props = defineProps({
 	},
 });
 
-const loading = ref(false);
-const options = ref([]);
-const store = listsStore();
+const store = useListsStore();
+const storeRef = storeToRefs(store);
+const { loading } = storeRef;
 const key = props.url.replace(/-/g, '_');
+
+const options = computed(() => {
+	return store.getStateByKey(key, props.sort, true);
+});
+
+async function reload() {
+	await store.fetchList(props.url);
+}
+
+onMounted(async () => {
+	if (!options.value || options.value.length == 0) {
+		await reload();
+	}
+});
 
 const selectRef = useTemplateRef('selectRef');
 defineExpose({
@@ -52,27 +66,5 @@ defineExpose({
 		if (selectRef.value) selectRef.value.showPopup();
 	},
 });
-
-onMounted(async () => {
-	const data = store.getStateByKey_Arr(key, props.sort);
-	if (data.length) {
-		options.value = data;
-	} else {
-		await fetchList();
-		options.value = store.getStateByKey_Arr(key, props.sort);
-	}
-});
-
-async function fetchList() {
-	try {
-		loading.value = true;
-		const data = await Lists.getByKey(props.url);
-		store.$patch({ [key]: data[key] });
-	} catch (error) {
-		console.log('error get list ', error);
-	} finally {
-		loading.value = false;
-	}
-}
 </script>
 <style lang=""></style>
