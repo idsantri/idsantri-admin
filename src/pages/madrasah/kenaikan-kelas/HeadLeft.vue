@@ -12,6 +12,7 @@
 			class=""
 			label="Tahun Ajaran"
 			hide-bottom-space
+                behavior="menu"
 		/>
 		<q-select
 			:model-value="filter.tingkat_id"
@@ -24,6 +25,7 @@
 			dense
 			class="q-mt-sm"
 			label="Tingkat"
+                behavior="menu"
 		/>
 		<q-select
 			v-model="filter.kelas"
@@ -33,6 +35,7 @@
 			dense
 			class="q-mt-sm"
 			label="Kelas"
+                behavior="menu"
 		/>
 	</div>
 </template>
