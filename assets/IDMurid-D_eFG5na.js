@@ -1,0 +1,1 @@
+import{P as e,d as t}from"./runtime-core.esm-bundler-Brw4kTr3.js";import{t as n}from"./_plugin-vue_export-helper-BDNMzG2s.js";var r={};function i(n,r,i,a,o,s){return e(),t(`div`,null,`id murid`)}var a=n(r,[[`render`,i]]);export{a as default};

@@ -1,0 +1,1 @@
+import{t as e}from"./ApiCrud-D8L_SV4m.js";var t=new class extends e{constructor(){super(`wali`)}async search(){throw Error(`Use datatables.net method instead of this`)}async getSantri({waliId:e,notifySuccess:t=!0}){let n=await this._apiGet({endPoint:`${this._path}/${e}/santri`});return t&&this._showSuccess(n.message),n.data}};export{t};

@@ -1,0 +1,1 @@
+var e=e=>{let t=[];return Array.isArray(e)?t=e:typeof e==`object`?t=Object.keys(e).map(t=>e[t]):t.push(e),t};function t(e,t){return(Array.isArray(e)?e:e.value).find(e=>e.id===t)}function n(e,t){let n=e.findIndex(e=>e.id==t);return n!==-1&&e.splice(n,1),e}function r(e,t,n){let r=e.findIndex(e=>e.id===t);return r!==-1&&(e[r]=n),e}export{e as i,t as n,r,n as t};
