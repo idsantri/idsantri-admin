@@ -25,8 +25,8 @@ jobs:
           corepack prepare pnpm@latest --activate
 
       - name: Install dependencies
-        env:
-          PNPM_ONLY_BUILT_DEPENDENCIES_IGNORE_BY_DEFAULT: "true"
+        # env:
+        #   PNPM_ONLY_BUILT_DEPENDENCIES_IGNORE_BY_DEFAULT: "true"
         run: pnpm install --no-frozen-lockfile
 
       - name: Clean Config
