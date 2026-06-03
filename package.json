@@ -61,14 +61,6 @@
 		"workbox-routing": "^7.3.0",
 		"workbox-strategies": "^7.3.0"
 	},
-	"pnpm": {
-		"onlyBuiltDependencies": [
-			"@parcel/watcher",
-			"@tailwindcss/oxide",
-			"core-js",
-			"esbuild"
-		]
-	},
 	"browserslist": [
 		"last 10 Chrome versions",
 		"last 10 Firefox versions",
