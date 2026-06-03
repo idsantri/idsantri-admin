@@ -25,9 +25,7 @@ jobs:
           corepack prepare pnpm@latest --activate
 
       - name: Install dependencies
-        # env:
-        #   PNPM_ONLY_BUILT_DEPENDENCIES_IGNORE_BY_DEFAULT: "true"
-        run: PNPM_ONLY_BUILT_DEPENDENCIES_IGNORE_BY_DEFAULT=true pnpm install --no-frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Clean Config
         run: pnpm exec quasar clean --qconf
