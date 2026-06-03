@@ -26,7 +26,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm config set auto-install-peers true
           pnpm install --frozen-lockfile
 
       - name: Clean Config
