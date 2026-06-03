@@ -1,0 +1,1 @@
+var e=e=>{let t;return t=isNaN(e)?0:Number(e),t.toString().replace(/\B(?=(\d{3})+(?!\d))/g,`.`)};function t(e){let t=e.match(/\d/g);return t?t.join(``):``}export{t as n,e as t};

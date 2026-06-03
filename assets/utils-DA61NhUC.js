@@ -1,0 +1,1 @@
+function e(e){return!e||!Array.isArray(e)?0:e.reduce((e,t)=>t.lunas===null?e:e+t.nominal,0)}function t(e){return!e||!Array.isArray(e)?0:e.reduce((e,t)=>t.lunas==null?e+t.nominal:e,0)}function n(e){return!e||!Array.isArray(e)?0:e.reduce((e,t)=>t.cetak==1?e+t.nominal:e,0)}function r(e){return!e||!Array.isArray(e)?0:e.reduce((e,t)=>e+t.nominal,0)}export{t as i,e as n,r,n as t};
