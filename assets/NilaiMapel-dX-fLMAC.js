@@ -1,0 +1,1 @@
+import{t as e}from"./ApiCrud-Cg3Dk8q1.js";var t=new class extends e{constructor(){super(`nilai-mapel`)}async rerata(e={}){return(await this._apiGet({endPoint:`${this._path}/rerata`,params:e})).data}async pivotByKelas(e,t){return(await this._apiGet({endPoint:`${this._path}/kelas/${e}`,params:{category:t}})).data}};export{t};
