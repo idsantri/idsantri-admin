@@ -1,0 +1,1 @@
+import{t as e}from"./ApiCrud-CnaFBPMu.js";var t=new class extends e{constructor(){super(`aparatur-quran`)}};export{t};
