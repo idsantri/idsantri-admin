@@ -28,6 +28,9 @@
 							{{ formatDateShort(item.dari_tgl) + ' | ' + formatHijri(masehiToHijri(item.dari_tgl)) }}
 							({{ item.durasi }} hari)
 						</q-item-label>
+						<q-item-label class="text-body2">
+							{{ item.pengajuan }}
+						</q-item-label>
 						<q-item-label overline>
 							{{ item.keperluan }} {{ item.keterangan ? '(' + item.keterangan + ')' : '' }}
 						</q-item-label>

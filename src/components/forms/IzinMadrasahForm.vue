@@ -22,6 +22,15 @@
 					disable=""
 					filled=""
 				/>
+				<q-select
+					label="Pengajuan"
+					v-model="inputs.pengajuan"
+					dense
+					outlined
+					class="q-my-sm"
+					:options="['Baru', 'Perpanjangan ke-1', 'Perpanjangan ke-2']"
+					ref="firstInput"
+				/>
 				<q-input
 					dense
 					:hint="isDate(inputs.dari_tgl) ? formatDateFull(inputs.dari_tgl) : ''"
@@ -32,7 +41,6 @@
 					type="date"
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					error-color="negative"
-					ref="firstInput"
 				/>
 				<q-input
 					dense
@@ -92,6 +100,7 @@ const { handleDelete, handleCreate, handleUpdate, loading } = useCrudForm(IzinMa
 const onSubmit = async () => {
 	const data = {
 		kelas_id: inputs.value.kelas_id,
+		pengajuan: inputs.value.pengajuan,
 		dari_tgl: inputs.value.dari_tgl,
 		durasi: inputs.value.durasi,
 		keperluan: inputs.value.keperluan,
