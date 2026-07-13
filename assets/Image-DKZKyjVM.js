@@ -1,0 +1,1 @@
+import{t as e}from"./Api-UcAsGYki.js";var t=new class extends e{constructor(){super(`images`)}async santri(e){return(await this._apiGet({endPoint:`${this._path}/santri/${e}`})).data}async user(e){return(await this._apiGet({endPoint:`${this._path}/users/${e}`})).data}async aparatur(e){return(await this._apiGet({endPoint:`${this._path}/aparatur/${e}`})).data}};export{t};
