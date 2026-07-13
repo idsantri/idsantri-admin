@@ -1,1 +1,0 @@
-import{t as e}from"./ApiCrud-CA3RBiEp.js";var t=new class extends e{constructor(){super(`apb/transactions`)}async listTahunAjaran(){return(await this._apiGet({endPoint:`${this._path}/lists/th-ajaran-h`})).data}async listTahunAjaranAccount(e){return(await this._apiGet({endPoint:`${this._path}/lists/th-ajaran-h`,params:{account_id:e}})).data}};export{t};
