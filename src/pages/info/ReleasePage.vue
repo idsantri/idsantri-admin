@@ -39,7 +39,7 @@ const releases = [
 		ver: '1.7.1',
 		date: 'Juli 2026',
 		release: {
-			Improve: ['Support field “Pengajuan” pada  Izin Madrasah'],
+			Improve: ['Support field “Pengajuan” pada  Izin Madrasah', 'NIK dan NKK santri harus diisi!'],
 		},
 	},
 	{
