@@ -36,6 +36,13 @@ import config from 'src/config';
 
 const releases = [
 	{
+		ver: '1.7.1',
+		date: 'Juli 2026',
+		release: {
+			Improve: ['Support field “Pengajuan” pada  Izin Madrasah'],
+		},
+	},
+	{
 		ver: '1.7.0',
 		date: 'Februari 2026',
 		release: {
