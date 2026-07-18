@@ -1,1 +1,0 @@
-import{t as e}from"./ApiCrud-lU-jZbgc.js";var t=new class extends e{constructor(){super(`indisipliner`)}async listThAjaran(){return(await this._apiGet({endPoint:`${this._path}/lists/th-ajaran-h`})).data||!0}};export{t};
