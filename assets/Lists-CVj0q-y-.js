@@ -1,0 +1,1 @@
+import{t as e}from"./ApiCrud-DMAPO6vA.js";var t=new class extends e{constructor(){super(`lists`)}async getByKey(e){return(await this._apiGet({endPoint:`${this._path}/${e}`})).data}};export{t};
