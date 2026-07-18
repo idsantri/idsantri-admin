@@ -1,5 +1,12 @@
 <template>
 	<div class="">
+		<q-btn
+			v-if="btnVerify"
+			class="full-width q-pa-sm q-mb-sm text-indigo-10 bg-info"
+			:label="verifiedData.resend.label"
+			no-caps
+			@click="resendEmail"
+		/>
 		<form @submit.prevent="submitLogin">
 			<div class="q-gutter-y-md column">
 				<q-input
@@ -13,8 +20,8 @@
 					autocomplete="off"
 					autocapitalize="none"
 					readonly
-					onfocus="this.removeAttribute('readonly');"
-					onblur="this.setAttribute('readonly','true');"
+					onfocus="this.removeAttribute('readonly')"
+					onblur="this.setAttribute('readonly', 'true')"
 					autocorrect="off"
 					ref="inputLogin"
 				/>
@@ -30,8 +37,8 @@
 					autocomplete="off"
 					autocapitalize="none"
 					readonly
-					onfocus="this.removeAttribute('readonly');"
-					onblur="this.setAttribute('readonly','true');"
+					onfocus="this.removeAttribute('readonly')"
+					onblur="this.setAttribute('readonly', 'true')"
 					hint="Password atau kata sandi"
 				>
 					<template v-slot:append>
@@ -71,14 +78,14 @@
 </template>
 
 <script setup>
-import { onMounted, onUpdated, ref, useTemplateRef, watch } from 'vue';
+import { onMounted, ref, useTemplateRef, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
-import api from 'src/api';
 import config from 'src/config';
 import { toArray } from 'src/utils/array-object';
-import { notifyAlert, notifySuccess } from 'src/utils/notify';
+import { notifyError, notifySuccess } from 'src/utils/notify';
 import useAuthStore from 'stores/auth-store';
+import Auth from 'src/models/Auth';
 
 const emit = defineEmits(['title', 'errors']);
 emit('title', 'Login');
@@ -95,6 +102,8 @@ const password = ref('');
 const showSpinner = ref(false);
 const isPwd = ref(true);
 const auth = useAuthStore();
+const verifiedData = ref(null);
+const btnVerify = ref(false);
 
 const submitLogin = async (e) => {
 	const formData = new FormData(e.target);
@@ -103,20 +112,47 @@ const submitLogin = async (e) => {
 	emit('errors', []);
 	try {
 		showSpinner.value = true;
-		const response = await api.post('login', formObject);
-		const responseData = response.data;
+
+		const responseData = await Auth.login(formObject);
 		const data = responseData.data;
+		const user = data.user;
 		auth.setUser(data);
 
-		notifySuccess(responseData.message);
-		const { user } = data;
+		notifySuccess(responseData?.message);
 		if (!user.confirmed_at) {
 			return router.push('/profile');
 		}
 
 		return router.push('/');
 	} catch (error) {
-		// console.log('e', error);
+		// console.log('e', error.response.data);
+		const data = error.response?.data;
+		if (data?.data?.code == 'EMAIL_NOT_VERIFIED' || data?.data?.verification_required) {
+			verifiedData.value = data?.data;
+			btnVerify.value = true;
+		}
+
+		emit('errors', toArray(data?.message || 'Terjadi sebuah kesalahan'));
+		firstInput.value.focus();
+	} finally {
+		showSpinner.value = false;
+	}
+};
+
+const resendEmail = async (_e) => {
+	const email = verifiedData.value?.resend?.payload?.email;
+	if (!email) {
+		notifyError('Email tidak ditemukan');
+		return;
+	}
+
+	emit('errors', []);
+	btnVerify.value = false;
+	showSpinner.value = true;
+	try {
+		const responseData = await Auth.resendVerification(email);
+		notifySuccess(responseData?.message);
+	} catch (error) {
 		emit('errors', toArray(error.response?.data?.message || 'Terjadi sebuah kesalahan'));
 		firstInput.value.focus();
 	} finally {
@@ -155,29 +191,6 @@ onMounted(() => {
 		showNotify();
 	}
 	firstInput.value.focus();
-});
-
-onUpdated(() => {
-	const resend = document.getElementById('resend-email');
-	// console.log(resend);
-	if (!resend) return;
-	resend.addEventListener('click', async (e) => {
-		// console.log('anchor clicked');
-		emit('errors', []);
-		e.preventDefault();
-		const href = resend.href.replace('%2540', '@');
-		// console.log(href);
-		try {
-			showSpinner.value = true;
-			const response = await api.get(href);
-			const notification = notifyAlert(response.data.message, 0);
-			await notification; // tunggu notifikasi ditutup
-		} catch (error) {
-			emit('errors', toArray(error.response?.data?.message || 'Terjadi sebuah kesalahan'));
-		} finally {
-			showSpinner.value = false;
-		}
-	});
 });
 </script>
 <style scoped lang="scss"></style>

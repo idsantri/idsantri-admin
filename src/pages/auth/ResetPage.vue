@@ -35,8 +35,8 @@
 					autocomplete="off"
 					autocorrect="off"
 					readonly
-					onfocus="this.removeAttribute('readonly');"
-					onblur="this.setAttribute('readonly','true');"
+					onfocus="this.removeAttribute('readonly')"
+					onblur="this.setAttribute('readonly', 'true')"
 				>
 					<template v-slot:append>
 						<q-icon
@@ -59,8 +59,8 @@
 					autocomplete="off"
 					autocorrect="off"
 					readonly
-					onfocus="this.removeAttribute('readonly');"
-					onblur="this.setAttribute('readonly','true');"
+					onfocus="this.removeAttribute('readonly')"
+					onblur="this.setAttribute('readonly', 'true')"
 				>
 					<template v-slot:append>
 						<q-icon
@@ -91,11 +91,11 @@
 </template>
 
 <script setup>
-import api from 'src/api';
 import { useRoute, useRouter } from 'vue-router';
 import { onMounted, ref, useTemplateRef } from 'vue';
 import { toArray } from 'src/utils/array-object';
 import { notifyAlert } from 'src/utils/notify';
+import Auth from 'src/models/Auth';
 
 const emit = defineEmits(['title', 'errors']);
 emit('title', 'Reset Password');
@@ -118,15 +118,18 @@ onMounted(() => {
 
 const reset = async () => {
 	emit('errors', []);
+	if (password.value !== password_confirmation.value) {
+		emit('errors', ['Password dan konfirmasi password tidak sama.']);
+		return;
+	}
 	try {
 		showSpinner.value = true;
-		const response = await api.post('reset-password', {
+		const responseData = await Auth.resetPassword({
 			token: token.value,
 			email: email.value,
 			password: password.value,
-			password_confirmation: password_confirmation.value,
 		});
-		const notification = notifyAlert(response.data.message, 0);
+		const notification = notifyAlert(responseData.message, 0);
 		await notification; // tunggu notifikasi ditutup
 		router.push({ name: 'Login' });
 	} catch (error) {
