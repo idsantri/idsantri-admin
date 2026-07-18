@@ -1,0 +1,1 @@
+import{t as e}from"./ApiCrud-DJuRsyOk.js";var t=new class extends e{constructor(){super(`iuran-paket`)}};export{t};
