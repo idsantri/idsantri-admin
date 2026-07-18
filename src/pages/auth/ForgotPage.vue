@@ -50,11 +50,11 @@
 </template>
 
 <script setup>
-import api from 'src/api';
 import { useRouter } from 'vue-router';
 import { onMounted, ref, useTemplateRef } from 'vue';
 import { toArray } from 'src/utils/array-object';
 import { notifyAlert } from 'src/utils/notify';
+import Auth from 'src/models/Auth';
 
 const emit = defineEmits(['title', 'errors']);
 emit('title', 'Lupa Kata Sandi?');
@@ -73,10 +73,13 @@ const reset = async () => {
 	emit('errors', []);
 	try {
 		showSpinner.value = true;
-		const response = await api.post('forgot-password', {
-			email: email.value,
-		});
-		const notification = notifyAlert(response.data.message, 0);
+
+		const responseData = await Auth.forgotPassword(email.value);
+
+		// const response = await api.post('forgot-password', {
+		// 	email: email.value,
+		// });
+		const notification = notifyAlert(responseData.message, 0);
 		await notification; // tunggu notifikasi ditutup
 		router.push('/reset-password');
 	} catch (error) {
