@@ -9,7 +9,7 @@ import authState from '../../stores/auth-store';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { notifyConfirm, notifySuccess } from 'src/utils/notify';
-import apiPost from 'src/api/apiPost';
+import Auth from 'src/models/Auth';
 
 const emit = defineEmits(['title', 'errors']);
 emit('title', 'Keluar');
@@ -20,18 +20,18 @@ const router = useRouter();
 
 onMounted(async () => {
 	const confirmed = await notifyConfirm('Keluar dari Aplikasi?', true);
-	if (confirmed) {
-		try {
-			const response = await apiPost({ endPoint: 'logout' });
-			notifySuccess(response.message);
-		} catch (error) {
-			console.error('Logout error:', error);
-		} finally {
-			authState().logout();
-			router.push('/login');
-		}
-	} else {
+	if (!confirmed) {
 		router.go(-1);
+		return;
+	}
+	try {
+		const responseData = await Auth.logout();
+		notifySuccess(responseData?.message || 'Logout berhasil');
+	} catch (error) {
+		console.error('Logout error:', error);
+	} finally {
+		authState().logout();
+		router.push('/login');
 	}
 });
 </script>

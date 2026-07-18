@@ -50,8 +50,8 @@
 					</q-card-section>
 
 					<q-banner v-if="errors.length > 0" id="error" class="q-mb-sm no-padding bg-red-2 text-red">
-						<ul class="q-my-xs">
-							<li v-for="(error, index) in errors" :key="index">
+						<ul class="tw:list-disc tw:pl-6 tw:pr-3 tw:py-2">
+							<li v-for="(error, index) in errors" :key="index" class="tw:text-justify">
 								<span v-html="error"></span>
 							</li>
 						</ul>
