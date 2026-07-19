@@ -1,9 +1,9 @@
 <template lang="">
-	<q-btn-dropdown color="green-11" no-caps class="text-green-10 q-px-md" dense :disable="loadingDownload">
+	<q-btn-dropdown color="green-11" no-caps class="text-green-10 q-px-sm" dense :disable="loadingDownload">
 		<template v-slot:label>
-			<q-spinner v-if="loadingDownload" class="q-mr-sm" />
-			<q-icon v-else name="print" class="q-mr-sm" />
-			Cetak / Unduh
+			<q-spinner v-if="loadingDownload" class="" />
+			<q-icon v-else name="print" class="" />
+			<span v-if="!$q.screen.lt.sm" class="q-ml-sm"> Cetak / Unduh </span>
 		</template>
 		<q-list>
 			<q-item v-close-popup>
