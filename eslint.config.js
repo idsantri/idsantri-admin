@@ -48,7 +48,6 @@ export default defineConfigWithVueTs(
 				{ prefer: 'type-imports' },
 			],
 			'@typescript-eslint/explicit-function-return-type': 'warn',
-			'@typescript-eslint/no-unused-vars': 'warn',
 		},
 	},
 

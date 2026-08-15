@@ -2,7 +2,9 @@
 	"singleQuote": true,
 	"semi": true,
 	"printWidth": 120,
+	"trailingComma": "all",
 	"tabWidth": 4,
 	"useTabs": true,
-	"endOfLine": "lf"
+	"endOfLine": "lf",
+	"vueIndentScriptAndStyle": false
 }
