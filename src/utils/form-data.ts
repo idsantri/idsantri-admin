@@ -45,7 +45,7 @@ function refToFormData<T extends Record<string, unknown>>(
 				}
 			} else {
 				// Fallback for other types (e.g., null, undefined, etc.)
-				form.append(key, String(value as string));
+				form.append(key, JSON.stringify(value));
 			}
 		}
 	});
