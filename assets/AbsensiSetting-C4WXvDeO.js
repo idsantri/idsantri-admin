@@ -1,1 +1,0 @@
-import{t as e}from"./ApiCrud--jtoO7A7.js";var t=new class extends e{constructor(){super(`absensi/settings`)}};export{t};

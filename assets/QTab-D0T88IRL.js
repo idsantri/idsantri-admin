@@ -1,0 +1,1 @@
+import{o as e}from"./render-Cg_C61bc.js";import{i as t,n,r}from"./QTabs-DnWegN2t.js";var i=e({name:`QTab`,props:t,emits:r,setup(e,{slots:t,emit:r}){let{renderTab:i}=n(e,t,r);return()=>i(`div`)}});export{i as t};
