@@ -10,11 +10,7 @@ import type { PostParams } from './api-interface';
  * @param {Object} options.params - Query parameters
  * @returns {Promise<Object >} Response data or false if an error occurs
  */
-async function apiPost({
-	endPoint,
-	data,
-	params,
-}: PostParams): Promise<object> {
+async function apiPost({ endPoint, data, params }: PostParams): Promise<object> {
 	try {
 		const response = await api.post(endPoint, data, { params });
 		return response.data;

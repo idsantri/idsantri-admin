@@ -2,10 +2,7 @@ import js from '@eslint/js';
 import globals from 'globals';
 import pluginVue from 'eslint-plugin-vue';
 import pluginQuasar from '@quasar/app-vite/eslint';
-import {
-	defineConfigWithVueTs,
-	vueTsConfigs,
-} from '@vue/eslint-config-typescript';
+import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript';
 
 // the following is optional, if you want prettier too:
 import prettierSkipFormatting from '@vue/eslint-config-prettier/skip-formatting';
@@ -43,10 +40,7 @@ export default defineConfigWithVueTs(
 	{
 		files: ['**/*.ts'],
 		rules: {
-			'@typescript-eslint/consistent-type-imports': [
-				'error',
-				{ prefer: 'type-imports' },
-			],
+			'@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
 			'@typescript-eslint/explicit-function-return-type': 'warn',
 		},
 	},
@@ -76,8 +70,7 @@ export default defineConfigWithVueTs(
 			// The core 'no-unused-vars' rules (in the eslint:recommended ruleset)
 			// does not work with type definitions
 			quotes: ['warn', 'single', { avoidEscape: true }],
-			'no-debugger':
-				process.env.NODE_ENV === 'production' ? 'error' : 'off', // allow debugger during development only
+			'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off', // allow debugger during development only
 
 			'vue/block-lang': 'off',
 			'no-unused-vars': [
@@ -91,6 +84,7 @@ export default defineConfigWithVueTs(
 			'prefer-promise-reject-errors': 'warn',
 			'prefer-const': 'warn',
 			'no-prototype-builtins': 'warn',
+			'no-useless-assignment': 'warn',
 
 			'@typescript-eslint/no-var-requires': 'warn', // in plain CommonJS modules, you can't use `import foo = require('foo')` to pass this rule, so it has to be disabled
 			'@typescript-eslint/restrict-plus-operands': 'warn',
@@ -113,7 +107,7 @@ export default defineConfigWithVueTs(
 	},
 
 	{
-		files: ['src-pwa/custom-service-worker.ts'],
+		files: ['src-pwa/sw/**/*.ts'],
 		languageOptions: {
 			globals: {
 				...globals.serviceworker,

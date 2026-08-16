@@ -6,13 +6,7 @@ import { notifySuccess } from 'src/utils/notify';
 /**
  * @deprecated Use apiGet from 'src/api/apiGet' instead
  */
-async function apiGet({
-	endPoint,
-	loading,
-	params,
-	notify = false,
-	config,
-}: GetParams): Promise<object | false> {
+async function apiGet({ endPoint, loading, params, notify = false, config }: GetParams): Promise<object | false> {
 	try {
 		if (loading && typeof loading.value === 'boolean') loading.value = true;
 
@@ -26,8 +20,7 @@ async function apiGet({
 		apiError(error);
 		return false;
 	} finally {
-		if (loading && typeof loading.value === 'boolean')
-			loading.value = false;
+		if (loading && typeof loading.value === 'boolean') loading.value = false;
 	}
 }
 

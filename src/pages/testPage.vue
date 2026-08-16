@@ -5,8 +5,7 @@
 		<q-separator spaced="" class="q-my-lg" />
 		<pre>
 	loading: {{ loading }}
-</pre
-		>
+</pre>
 		<pre>{{ options }}</pre>
 	</q-page>
 </template>

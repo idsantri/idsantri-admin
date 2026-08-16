@@ -73,6 +73,7 @@ export default defineConfig((/* ctx */) => {
 			vitePlugins: [
 				//   [ 'package-name', { ..pluginOptions.. }, { server: true, client: true } ]
 				['@tailwindcss/vite', {}],
+				['vite-plugin-vue-devtools', {}],
 			],
 		},
 

@@ -84,11 +84,7 @@ export default defineStore('alamat', {
 			if (provinsi_id) {
 				return this.provinsi.find((obj) => obj?.id == provinsi_id);
 			} else if (provinsi_name) {
-				return this.provinsi.find(
-					(obj) =>
-						obj?.provinsi.toLowerCase() ===
-						provinsi_name.toLowerCase(),
-				);
+				return this.provinsi.find((obj) => obj?.provinsi.toLowerCase() === provinsi_name.toLowerCase());
 			} else {
 				// throw new Error('Find Provinsi: Parameter tidak sesuai!');
 				console.error('Find Provinsi: Parameter tidak sesuai!');
@@ -110,11 +106,7 @@ export default defineStore('alamat', {
 				return prov.kabupaten.find((obj) => obj?.id == kabupaten_id);
 			}
 			if (kabupaten_name) {
-				return prov.kabupaten.find(
-					(obj) =>
-						obj.kabupaten.toLowerCase() ===
-						kabupaten_name.toLowerCase(),
-				);
+				return prov.kabupaten.find((obj) => obj.kabupaten.toLowerCase() === kabupaten_name.toLowerCase());
 			}
 
 			throw new Error('Find Kabupaten: Parameter tidak sesuai!');
@@ -125,9 +117,7 @@ export default defineStore('alamat', {
 			const kab = this._findKabupaten(alamat);
 
 			if (!kab || !kab.kecamatan?.length) {
-				console.error(
-					'Find Kecamatan: Provinsi 0 or Kabupaten 0 or Kecamatan 0!',
-				);
+				console.error('Find Kecamatan: Provinsi 0 or Kabupaten 0 or Kecamatan 0!');
 				return;
 				// throw new Error(
 				// 	'Find Kecamatan: Provinsi 0 or Kabupaten 0 or Kecamatan 0!',
@@ -138,11 +128,7 @@ export default defineStore('alamat', {
 				return kab.kecamatan.find((obj) => obj?.id == kecamatan_id);
 			}
 			if (kecamatan_name) {
-				return kab.kecamatan.find(
-					(obj) =>
-						obj.kecamatan.toLowerCase() ===
-						kecamatan_name.toLowerCase(),
-				);
+				return kab.kecamatan.find((obj) => obj.kecamatan.toLowerCase() === kecamatan_name.toLowerCase());
 			}
 
 			throw new Error('Find Kecamatan: Parameter tidak sesuai!');
@@ -153,20 +139,14 @@ export default defineStore('alamat', {
 			this.provinsi = arrProvinsi;
 		},
 
-		setKabupaten(
-			arrKabupaten: Kabupaten[],
-			dataProvinsi: DataProvinsi,
-		): void {
+		setKabupaten(arrKabupaten: Kabupaten[], dataProvinsi: DataProvinsi): void {
 			const pro = this._findProvinsi(dataProvinsi);
 			if (pro) {
 				pro.kabupaten = arrKabupaten;
 			}
 		},
 
-		setKecamatan(
-			arrKecamatan: Kecamatan[],
-			dataKabupaten: DataKabupaten,
-		): void {
+		setKecamatan(arrKecamatan: Kecamatan[], dataKabupaten: DataKabupaten): void {
 			const kab = this._findKabupaten(dataKabupaten);
 			if (kab) {
 				kab.kecamatan = arrKecamatan;

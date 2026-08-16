@@ -36,13 +36,7 @@
 					{{ col.value }}
 				</q-td>
 				<q-td class="text-center">
-					<q-btn
-						icon="edit"
-						dense
-						color="green-10"
-						outline
-						@click="$emit('onEdit', props.row)"
-					/>
+					<q-btn icon="edit" dense color="green-10" outline @click="$emit('onEdit', props.row)" />
 				</q-td>
 			</q-tr>
 		</template>

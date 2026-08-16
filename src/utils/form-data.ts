@@ -6,10 +6,7 @@ import type { Ref } from 'vue';
  * @param refInput - Vue ref object containing form data
  * @returns FormData object with combined data
  */
-function refToFormData<T extends Record<string, unknown>>(
-	eTarget: HTMLFormElement,
-	refInput: Ref<T>,
-): FormData {
+function refToFormData<T extends Record<string, unknown>>(eTarget: HTMLFormElement, refInput: Ref<T>): FormData {
 	const form = new FormData(eTarget);
 
 	Object.keys(refInput.value).forEach((key) => {
@@ -28,9 +25,7 @@ function refToFormData<T extends Record<string, unknown>>(
 				form.append(key, value.toISOString());
 			} else if (typeof value === 'string') {
 				// Handle strings, including input type 'date'
-				const inputElement = eTarget.elements.namedItem(
-					key,
-				) as HTMLInputElement | null;
+				const inputElement = eTarget.elements.namedItem(key) as HTMLInputElement | null;
 				if (inputElement?.type === 'date') {
 					// Convert date strings to ISO format
 					const date = new Date(value);

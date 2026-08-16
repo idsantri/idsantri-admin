@@ -1,4 +1,4 @@
-# .vscode/settings.json
+.vscode
 babel.config.js
 eslint.config.js
 package.json
@@ -14,3 +14,5 @@ coverage
 src-capacitor
 src-cordova
 src-pwa
+.quasar
+public

@@ -9,42 +9,32 @@ export default [
 		children: [
 			{
 				path: 'result',
-				component: (): Component =>
-					import(
-						'src/pages/makhadiyah/mutasi/result/ResultMutasi.vue'
-					),
+				component: (): Component => import('src/pages/makhadiyah/mutasi/result/ResultMutasi.vue'),
 			},
 			{
 				path: 'start',
-				component: (): Component =>
-					import(
-						'src/pages/makhadiyah/mutasi/proses/ProsesiIndex.vue'
-					),
+				component: (): Component => import('src/pages/makhadiyah/mutasi/proses/ProsesiIndex.vue'),
 			},
 		],
 	},
 	{
 		path: 'quran',
-		component: (): Component =>
-			import('src/pages/makhadiyah/quran/IndexPage.vue'),
+		component: (): Component => import('src/pages/makhadiyah/quran/IndexPage.vue'),
 		meta: { title: 'Makhadiyah: Quran' },
 		redirect: (to: RouteLocation): string => `${to.fullPath}/mutaallim`,
 
 		children: [
 			{
 				path: 'santri',
-				component: (): Component =>
-					import('src/pages/makhadiyah/quran/SantriPage.vue'),
+				component: (): Component => import('src/pages/makhadiyah/quran/SantriPage.vue'),
 			},
 			{
 				path: 'mutaallim',
-				component: (): Component =>
-					import('src/pages/makhadiyah/quran/MutaallimPage.vue'),
+				component: (): Component => import('src/pages/makhadiyah/quran/MutaallimPage.vue'),
 			},
 			{
 				path: 'muallim',
-				component: (): Component =>
-					import('src/pages/makhadiyah/quran/MuallimPage.vue'),
+				component: (): Component => import('src/pages/makhadiyah/quran/MuallimPage.vue'),
 			},
 		],
 	},
