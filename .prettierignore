@@ -1,4 +1,4 @@
-.vscode/settings.json
+.vscode
 babel.config.js
 eslint.config.js
 package.json
@@ -8,3 +8,11 @@ postcss.config.js
 quasar.config.ts
 README.md
 tsconfig.json
+dist
+node_modules
+coverage
+src-capacitor
+src-cordova
+src-pwa
+.quasar
+public

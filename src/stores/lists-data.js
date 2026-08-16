@@ -135,7 +135,7 @@ const data = [
 	{
 		url: 'iuran',
 		label: 'Iuran',
-		columns: ['Item', 'Nominal Default', 'ID'],
+		columns: ['Item', 'Nominal Default', 'ID (Kode)'],
 		protected: false,
 		sort: 'asc',
 	},

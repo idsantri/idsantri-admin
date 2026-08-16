@@ -3,17 +3,35 @@
 	"editor.guides.bracketPairs": true,
 	"editor.formatOnSave": true,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"editor.codeActionsOnSave": ["source.fixAll.eslint"],
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": "explicit"
+	},
 	"eslint.validate": ["javascript", "javascriptreact", "typescript", "vue"],
-	"typescript.tsdk": "node_modules/typescript/lib",
-	"html-css-class-completion.remoteStyleSheets": [
-		"https://cdn.jsdelivr.net/npm/quasar@2.17.0/dist/quasar.prod.css"
-	],
+	"eslint.format.enable": false,
+	"js/ts.tsdk.path": "node_modules/typescript/lib",
+	"html-css-class-completion.remoteStyleSheets": ["https://cdn.jsdelivr.net/npm/quasar@2.21.2/dist/quasar.prod.css"],
+	"editor.formatOnPaste": true,
 	"[vue]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[json]": {
+		"editor.quickSuggestions": { "strings": true },
+		"editor.suggest.insertMode": "replace",
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"cSpell.words": [
 		"autogrow",
+		"beforeinstallprompt",
+		"cordova",
 		"datatables",
 		"demangan",
 		"faslah",
