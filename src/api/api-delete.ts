@@ -31,8 +31,7 @@ async function apiDelete({
 		apiError(error);
 		return false;
 	} finally {
-		if (loading && typeof loading.value === 'boolean')
-			loading.value = false;
+		if (loading && typeof loading.value === 'boolean') loading.value = false;
 	}
 }
 

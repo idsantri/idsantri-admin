@@ -2,16 +2,8 @@
 	<q-card flat bordered class="">
 		<q-card-section class="bg-green-7 no-padding">
 			<q-toolbar class="no-padding no-margin">
-				<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11">
-					Jabatan
-				</q-toolbar-title>
-				<q-tabs
-					v-model="tab"
-					narrow-indicator
-					class="text-green-11"
-					no-caps
-					dense
-				>
+				<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11"> Jabatan </q-toolbar-title>
+				<q-tabs v-model="tab" narrow-indicator class="text-green-11" no-caps dense>
 					<q-tab name="madrasah" label="Madrasah" />
 					<q-tab name="quran" label="Quran" />
 				</q-tabs>

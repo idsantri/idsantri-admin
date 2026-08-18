@@ -36,6 +36,13 @@ import config from 'src/config';
 
 const releases = [
 	{
+		ver: '1.7.2',
+		date: 'Agustus 2026',
+		release: {
+			'Fitur Baru': ['Riwayat transaksi iuran via Payment Gateway (`/iuran/payments`)'],
+		},
+	},
+	{
 		ver: '1.7.1',
 		date: 'Juli 2026',
 		release: {

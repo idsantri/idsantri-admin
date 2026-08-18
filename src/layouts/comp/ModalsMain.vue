@@ -31,8 +31,7 @@ import WaliSearch from 'src/pages/search/WaliSearch.vue';
 
 import { toRefs, watchEffect } from 'vue';
 const dialog = dialogStore();
-const { searchSantri, crudSantri, searchOrtu, crudOrtu, searchWali, crudWali } =
-	toRefs(dialog);
+const { searchSantri, crudSantri, searchOrtu, crudOrtu, searchWali, crudWali } = toRefs(dialog);
 
 watchEffect(() => {
 	if (crudSantri.value) searchSantri.value = false;
