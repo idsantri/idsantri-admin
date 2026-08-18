@@ -44,8 +44,7 @@ defineProps({
 });
 
 const slot = ref(false);
-const checkSlotUsage = () =>
-	useSlots().default ? (slot.value = true) : (slot.value = false);
+const checkSlotUsage = () => (useSlots().default ? (slot.value = true) : (slot.value = false));
 
 onMounted(() => {
 	checkSlotUsage();

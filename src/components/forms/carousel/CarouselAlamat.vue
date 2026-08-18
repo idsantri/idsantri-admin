@@ -37,23 +37,9 @@
 		class="q-my-sm"
 	/>
 	<div class="row q-my-sm">
-		<q-input
-			dense
-			class="col q-mr-sm"
-			outlined
-			label="RT"
-			v-model="inputs.rt"
-			type="number"
-		/>
+		<q-input dense class="col q-mr-sm" outlined label="RT" v-model="inputs.rt" type="number" />
 
-		<q-input
-			dense
-			class="col q-ml-sm"
-			outlined
-			label="RW"
-			v-model="inputs.rw"
-			type="number"
-		/>
+		<q-input dense class="col q-ml-sm" outlined label="RW" v-model="inputs.rw" type="number" />
 	</div>
 
 	<q-input
@@ -73,10 +59,7 @@
 		outlined
 		label="Kode Pos"
 		v-model="inputs.kode_pos"
-		:rules="[
-			(val) =>
-				!val || (val?.length == 5 && !isNaN(val)) || '5 digit angka!',
-		]"
+		:rules="[(val) => !val || (val?.length == 5 && !isNaN(val)) || '5 digit angka!']"
 		error-color="negative"
 	/>
 </template>
@@ -107,16 +90,8 @@ onMounted(async () => {
 	if (inputs.value.provinsi && inputs.value.kabupaten) {
 		await checkKecamatan(inputs.value.provinsi, inputs.value.kabupaten);
 	}
-	if (
-		inputs.value.provinsi &&
-		inputs.value.kabupaten &&
-		inputs.value.kecamatan
-	) {
-		await checkDesa(
-			inputs.value.provinsi,
-			inputs.value.kabupaten,
-			inputs.value.kecamatan,
-		);
+	if (inputs.value.provinsi && inputs.value.kabupaten && inputs.value.kecamatan) {
+		await checkDesa(inputs.value.provinsi, inputs.value.kabupaten, inputs.value.kecamatan);
 	}
 });
 
@@ -127,9 +102,7 @@ function arrayAlamat(arr, alamat) {
 	const result = arr.map((i) => {
 		return i[alamat];
 	});
-	return result.sort((a, b) =>
-		a.toLowerCase().localeCompare(b.toLowerCase()),
-	);
+	return result.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 }
 
 async function fetchProvinsi() {
@@ -315,11 +288,7 @@ watch(
 	async (newValue, oldValue) => {
 		if (newValue != oldValue) {
 			inputs.value.desa = '';
-			await checkDesa(
-				inputs.value.provinsi,
-				inputs.value.kabupaten,
-				newValue,
-			);
+			await checkDesa(inputs.value.provinsi, inputs.value.kabupaten, newValue);
 		}
 	},
 );

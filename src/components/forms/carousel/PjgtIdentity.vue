@@ -16,23 +16,14 @@
 		outlined
 		label="Nama*"
 		v-model="inputs.nama"
-		:rules="[
-			(val) => !!val || 'Harus diisi!',
-			(val) => val?.length >= 5 || 'Setidaknya 5 huruf!',
-		]"
+		:rules="[(val) => !!val || 'Harus diisi!', (val) => val?.length >= 5 || 'Setidaknya 5 huruf!']"
 		error-color="negative"
 		autocapitalize="words"
 	/>
 
 	<q-select
 		dense
-		:hint="
-			inputs.sex == 'L'
-				? 'Laki-Laki'
-				: inputs.sex == 'P'
-					? 'Perempuan'
-					: ''
-		"
+		:hint="inputs.sex == 'L' ? 'Laki-Laki' : inputs.sex == 'P' ? 'Perempuan' : ''"
 		class="q-my-sm"
 		outlined
 		label="Jenis Kelamin"

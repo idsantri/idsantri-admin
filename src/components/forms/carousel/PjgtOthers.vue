@@ -1,13 +1,7 @@
 <template>
 	<div class="text-subtitle2">Lain-Lain</div>
 
-	<input-select-array
-		v-model="inputs.wilayah"
-		url="wilayah-ugt"
-		label="Wilayah PJGT"
-		class="q-my-sm"
-		hint=""
-	/>
+	<input-select-array v-model="inputs.wilayah" url="wilayah-ugt" label="Wilayah PJGT" class="q-my-sm" hint="" />
 
 	<q-input
 		dense
@@ -19,14 +13,7 @@
 		:rules="[(val) => !val || !isNaN(val) || 'Hanya angka!']"
 		error-color="negative"
 	/>
-	<q-input
-		dense
-		hint=""
-		class="q-my-sm"
-		outlined
-		label="Email"
-		v-model="inputs.email"
-	/>
+	<q-input dense hint="" class="q-my-sm" outlined label="Email" v-model="inputs.email" />
 </template>
 <script setup>
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';

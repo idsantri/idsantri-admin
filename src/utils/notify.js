@@ -41,11 +41,7 @@ const notifyAlert = (message, delay = 10) => {
 		});
 	});
 };
-async function notifyConfirm(
-	message,
-	persistent = false,
-	title = 'Konfirmasi',
-) {
+async function notifyConfirm(message, persistent = false, title = 'Konfirmasi') {
 	return new Promise((resolve) => {
 		Dialog.create({
 			title: title,
@@ -69,11 +65,4 @@ const notifyWarningExpired = () => {
 	notifyWarning('Sesi telah berakhir.');
 	notifyWarning('Anda perlu keluar lalu masuk lagi!');
 };
-export {
-	notifySuccess,
-	notifyError,
-	notifyWarning,
-	notifyAlert,
-	notifyConfirm,
-	notifyWarningExpired,
-};
+export { notifySuccess, notifyError, notifyWarning, notifyAlert, notifyConfirm, notifyWarningExpired };

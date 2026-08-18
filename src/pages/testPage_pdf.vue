@@ -4,12 +4,7 @@
 	<q-dialog v-model="showPdf">
 		<q-card style="width: 100%; height: 90%">
 			<q-card-section style="width: 100%; height: 100%" class="q-pa-sm">
-				<iframe
-					:src="srcPdf"
-					style="width: 100%; height: 100%"
-					loading="lazy"
-					scrolling="no"
-				></iframe>
+				<iframe :src="srcPdf" style="width: 100%; height: 100%" loading="lazy" scrolling="no"></iframe>
 			</q-card-section>
 		</q-card>
 	</q-dialog>

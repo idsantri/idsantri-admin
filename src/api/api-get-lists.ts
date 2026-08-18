@@ -5,13 +5,7 @@ import type { ListsCustomParams, ListsParams } from './api-interface';
 /**
  * @deprecated use Model instead
  */
-async function getLists({
-	loadingArray,
-	loading,
-	key,
-	sort = null,
-	url = '',
-}: ListsParams): Promise<object | false> {
+async function getLists({ loadingArray, loading, key, sort = null, url = '' }: ListsParams): Promise<object | false> {
 	if (loadingArray) loadingArray.value[key] = true;
 	if (loading && typeof loading.value === 'boolean') loading.value = true;
 
@@ -42,8 +36,7 @@ async function getLists({
 		return false;
 	} finally {
 		if (loadingArray) loadingArray.value[key] = false;
-		if (loading && typeof loading.value === 'boolean')
-			loading.value = false;
+		if (loading && typeof loading.value === 'boolean') loading.value = false;
 	}
 }
 
@@ -75,13 +68,9 @@ async function getListsCustom({
 		const result = data.data[key].filter((el: object) => el != null);
 		if (!hasObject(result)) {
 			if (sort === 'asc' || sort === true) {
-				result.sort((a: string, b: string) =>
-					a.localeCompare(b, undefined, { sensitivity: 'base' }),
-				);
+				result.sort((a: string, b: string) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
 			} else if (sort === 'desc' || sort === false) {
-				result.sort((a: string, b: string) =>
-					b.localeCompare(a, undefined, { sensitivity: 'base' }),
-				);
+				result.sort((a: string, b: string) => b.localeCompare(a, undefined, { sensitivity: 'base' }));
 			}
 		}
 		return result;
@@ -90,8 +79,7 @@ async function getListsCustom({
 		return false;
 	} finally {
 		if (loadingArray) loadingArray.value[key] = false;
-		if (loading && typeof loading.value === 'boolean')
-			loading.value = false;
+		if (loading && typeof loading.value === 'boolean') loading.value = false;
 	}
 }
 

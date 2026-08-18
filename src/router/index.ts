@@ -31,23 +31,24 @@ export default route(function (/* { store, ssrContext } */) {
 		history: createHistory(process.env.VUE_ROUTER_BASE),
 	});
 
-	Router.beforeEach((to, _from, next) => {
+	Router.beforeEach((to, _from) => {
 		if (to.fullPath == '/') {
-			return next('/home');
+			return '/home';
 		}
 
 		const store = authStore();
 		const isAuthenticate = store.isLoggedIn;
 
 		const authRoutes = ['Register', 'Login', 'Forgot', 'Reset', 'Verify'];
-		const toAuthRoutes = authRoutes.includes(to.name as string);
+		const toAuthRoutes = authRoutes.includes(to.name ?? '');
 
 		if (!toAuthRoutes && !isAuthenticate) {
-			next('/login');
+			return '/login';
 		} else if (toAuthRoutes && isAuthenticate) {
 			history.go(-1);
+			return false;
 		} else {
-			next();
+			return true;
 		}
 	});
 
