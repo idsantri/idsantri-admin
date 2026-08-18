@@ -1,0 +1,1 @@
+import{bt as e}from"./index-BUBQxkkM.js";import{o as t}from"./notify-DCr7M47z.js";import{t as n}from"./api-6W8GCPH0.js";var r=e(({app:e})=>{e.config.globalProperties.$axios=t,e.config.globalProperties.$api=n});export{n as api,r as default};
