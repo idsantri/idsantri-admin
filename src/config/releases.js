@@ -1,0 +1,175 @@
+export default [
+	{
+		ver: '1.7.2',
+		date: 'Agustus 2026',
+		release: {
+			'Fitur Baru': ['Riwayat transaksi iuran via Payment Gateway (`/iuran/payments`)'],
+		},
+	},
+	{
+		ver: '1.7.1',
+		date: 'Juli 2026',
+		release: {
+			Improve: [
+				'Support field “Pengajuan” pada  Izin Madrasah',
+				'NIK dan NKK santri harus diisi!',
+				'Labeling list input',
+			],
+		},
+	},
+	{
+		ver: '1.7.0',
+		date: 'Februari 2026',
+		release: {
+			'Fitur Baru': [
+				'Pulangan dan Liburan Santri',
+				'Input nilai mata pelajaran (mapel) per mata pelajaran dan murid',
+			],
+			Improve: ['Perbaikan dan peningkatan performa'],
+		},
+	},
+	{
+		ver: '1.6.0',
+		date: 'Januari 2026',
+		release: {
+			'Fitur Baru': ['Kebendaharaan'],
+			Kebendaharaan: ['Manajemen Akun', 'Manajemen Anggaran', 'Manajemen Transaksi Keuangan', 'Laporan Keuangan'],
+			Improve: ['Perbaikan dan peningkatan performa'],
+		},
+	},
+	{
+		ver: '1.5.2',
+		date: 'November 2025',
+		release: {
+			'Fitur Baru': [
+				'Statistik Izin Pesantren',
+				'Statistik Indisipliner',
+				'Manajemen Data Alumni (Integrasi dengan Aplikasi Alumni)',
+			],
+			Improve: [
+				'Perbaikan dan peningkatan performa',
+				'Update UI',
+				'Aplikasi dapat dibuka di beberapa tab tanpa login ulang',
+			],
+		},
+	},
+	{
+		ver: '1.5.1',
+		date: 'Oktober 2025',
+		release: {
+			Improve: ['Perbaikan dan peningkatan performa', 'Update UI'],
+		},
+	},
+	{
+		ver: '1.5.0',
+		date: 'Agustus 2025',
+		release: {
+			'Fitur Baru': ['Pendidikan al-Quran: Muallim', 'Statistik: Chart'],
+			Improve: ['Perbaikan dan peningkatan performa'],
+		},
+	},
+	{
+		ver: '1.4.0',
+		date: 'Juli 2025',
+		release: {
+			'Fitur Baru': ['Pendidikan al-Quran: Mutaallim'],
+			Improve: ['Show password on input password'],
+		},
+	},
+	{
+		ver: '1.3.2',
+		date: 'Juni 2025',
+		release: {
+			'Fitur Baru': ['Virtual Account (VA) untuk pembayaran iuran'],
+			Download: ['Detail status akhir santri'],
+		},
+	},
+	{
+		ver: '1.3.1',
+		date: 'Mei 2025',
+		release: {
+			'Fitur Baru': ['Upload stempel lembaga', 'Setting Aplikasi Wali Santri', 'Sertifikat GT'],
+		},
+	},
+	{
+		ver: '1.3.0',
+		date: 'April 2025',
+		release: {
+			Iuran: ['Fitur Tagihan', 'Item iuran/tagihan harus unik'],
+			Print: ['Cetak ID Card'],
+			Improve: [
+				'Add User Info to Main Layout',
+				'Perbaikan dan peningkatan performa',
+				'Perbaikan pada beberapa fitur',
+			],
+		},
+	},
+	{
+		ver: '1.2.4',
+		date: 'Desember 2024',
+		release: {
+			'Fitur Baru': ['Ekspor iuran pivot', 'Styling'],
+		},
+	},
+	{
+		ver: '1.2.3',
+		date: 'Oktober 2024',
+		release: {
+			'Fitur Baru': ['Cetak Rapor (MS Access)'],
+		},
+	},
+	{
+		ver: '1.2.2',
+		date: 'September 2024',
+		release: {
+			'Fitur Baru': ['Pembayaran paket iuran', 'Setting alamat'],
+			Improve: ['Local storage pada input alamat', 'Perbaikan dan peningkatan performa'],
+		},
+	},
+	{
+		ver: '1.2.1',
+		date: 'Agustus 2024',
+		release: {
+			'Fitur Baru': ['Upload tanda tangan pengurus'],
+			Improve: ['Beberapa perbaikan di sisi backend'],
+		},
+	},
+	{
+		ver: '1.2.0',
+		date: 'Juli 2024',
+		release: {
+			'Fitur Baru': ['Kenaikan Kelas', 'Mutasi Domisili'],
+			'Izin Pesantren': [
+				'Riwayat izin santri',
+				'Filter by ID Santri',
+				'Tambah field pengajuan (baru/perpanjangan)',
+			],
+			Indisipliner: ['Riwayat indisipliner santri', 'Filter by ID Santri'],
+			Improve: ['Nilai default pada input Wali'],
+		},
+	},
+	{
+		ver: '1.1.0',
+		date: 'Juni 2024',
+		release: {
+			'Fitur Baru': ['Nilai Mapel', 'Nilai Ahwal'],
+			Improve: ['Filter Madrasah: session storage', 'All Lists: local storage'],
+		},
+	},
+	{
+		ver: '1.0.1',
+		date: 'April 2024',
+		release: {
+			PJGT: ['Perbaikan input alamat PJGT'],
+			Absensi: ['Perbaikian dan penyempurnaan', 'Print absensi di arahkan ke MS Access'],
+			'Lists Auto Complete': ['Abaikan huruf besar kecil dalam sort'],
+		},
+	},
+	{
+		ver: '1.0.0',
+		date: 'Maret 2024',
+		release: {
+			'First Release': ['Semua fitur basic'],
+		},
+	},
+];

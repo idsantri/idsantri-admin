@@ -43,7 +43,7 @@
 		<modals-main />
 
 		<q-footer bordered class="bg-green-6 text-green-12">
-			<p class="text-center no-margin q-pa-xs">© by idsantri</p>
+			<p class="text-center no-margin q-pa-xs">&copy; by idsantri — v{{ releases[0].ver }}</p>
 		</q-footer>
 	</q-layout>
 </template>
@@ -54,6 +54,7 @@ import config from 'src/config';
 import SideBar from './comp/SideBar.vue';
 import ModalsMain from './comp/ModalsMain.vue';
 import ToolbarButton from './comp/ToolbarButton.vue';
+import releases from 'src/config/releases';
 
 const leftDrawerOpen = ref(false);
 const toggleLeftDrawer = () => (leftDrawerOpen.value = !leftDrawerOpen.value);

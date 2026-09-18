@@ -1,4 +1,4 @@
-import api from '.';
+import { api } from 'src/boot/axios';
 import apiError from './api-error';
 import type { PostParams } from './api-interface';
 
@@ -12,7 +12,8 @@ import type { PostParams } from './api-interface';
  */
 async function apiPost({ endPoint, data, params }: PostParams): Promise<object> {
 	try {
-		const response = await api.post(endPoint, data, { params });
+		const config = params !== undefined ? { params } : {};
+		const response = await api.post(endPoint, data, config);
 		return response.data;
 	} catch (error) {
 		apiError(error);
