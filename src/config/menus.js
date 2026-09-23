@@ -177,14 +177,6 @@ const menus = {
 			disable: false,
 			display: !!menu.setting.appWali,
 		},
-		{
-			to: '/settings/va',
-			icon: 'account_balance_wallet',
-			label: 'Virtual Account',
-			caption: 'Virtual Account Iuran',
-			disable: false,
-			display: !!menu.setting.virtualAccount,
-		},
 	],
 	info: [
 		{

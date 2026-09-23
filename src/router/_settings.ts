@@ -55,9 +55,4 @@ export default [
 		component: (): Component => import('src/pages/settings/app-wali/IndexPage.vue'),
 		meta: { title: 'Setting: App Wali' },
 	},
-	{
-		path: 'va',
-		component: (): Component => import('src/pages/settings/va/IndexPage.vue'),
-		meta: { title: 'Setting: Virtual Account' },
-	},
 ];
