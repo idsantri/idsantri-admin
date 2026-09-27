@@ -123,7 +123,7 @@ import InputSelectIuranPaket from 'src/components/inputs/InputSelectIuranPaket.v
 import { notifyError } from 'src/utils/notify';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import useAuthStore from 'src/stores/auth-store';
+import { useAuthStore } from 'src/stores/auth-store';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Kelas from 'src/models/Kelas';

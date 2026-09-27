@@ -22,7 +22,7 @@ import myUpload from 'vue-image-crop-upload';
 import { notifyError, notifySuccess } from 'src/utils/notify';
 import { onUpdated, ref, watch } from 'vue';
 import api from 'src/api';
-import useAuthStore from 'src/stores/auth-store';
+import { useAuthStore } from 'src/stores/auth-store';
 
 /**
  * communicate parents children

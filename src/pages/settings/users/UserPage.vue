@@ -38,7 +38,7 @@ const users = ref([]);
 async function loadData() {
 	try {
 		loading.value = true;
-		const data = await Users.getAll({ notifySuccess: true });
+		const data = await Users.getAll({ notifySuccess: false });
 		users.value = data.users;
 	} catch (_err) {
 		// console.error(_err);

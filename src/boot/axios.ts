@@ -3,7 +3,7 @@ import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 import config from 'src/config';
 import { notifyError } from 'src/utils/notify';
-import useAuthStore from 'src/stores/auth-store';
+import { useAuthStore } from 'src/stores/auth-store';
 import type { App } from 'vue';
 
 declare module '@vue/runtime-core' {

@@ -2,7 +2,7 @@ import { route } from 'quasar/wrappers';
 import { createMemoryHistory, createRouter, createWebHashHistory, createWebHistory } from 'vue-router';
 import routes from './routes';
 import { nextTick } from 'vue';
-import authStore from '../stores/auth-store';
+import { useAuthStore } from '../stores/auth-store';
 import config from 'src/config';
 
 /*
@@ -36,11 +36,11 @@ export default route(function (/* { store, ssrContext } */) {
 			return '/home';
 		}
 
-		const store = authStore();
+		const store = useAuthStore();
 		const isAuthenticate = store.isLoggedIn;
 
 		const authRoutes = ['Register', 'Login', 'Forgot', 'Reset', 'Verify'];
-		const toAuthRoutes = authRoutes.includes(to.name ?? '');
+		const toAuthRoutes = authRoutes.includes(String(to.name ?? ''));
 
 		if (!toAuthRoutes && !isAuthenticate) {
 			return '/login';
