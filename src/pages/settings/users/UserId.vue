@@ -78,7 +78,6 @@
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import Users from 'src/models/Users';
-import Image from 'src/models/Image';
 import UserGroups from 'src/components/User/UserGroups.vue';
 import UserData from 'src/components/User/UserData.vue';
 import UserImage from 'src/components/User/UserImage.vue';
@@ -94,26 +93,15 @@ async function confirmUser(val) {
 	const data = { confirm: val };
 
 	try {
-		await Users.confirm(user.value.id, data);
+		const res = await Users.confirm(user.value.id, data);
+		if (res) {
+			groups.value = res.groups;
+		}
 	} catch (_err) {
 		// console.log('error update user confirm ', _err);
 
 		// rollback
 		user.value.confirmed_at = !user.value.confirmed_at;
-	}
-}
-
-async function loadImage() {
-	if (user.value?.id) {
-		try {
-			loading.value = true;
-			const img = await Image.user(user.value.id);
-			user.value.image = img?.image_url ? img.image_url + `?t=${new Date().getTime()}` : '/user-default.png';
-		} catch (error) {
-			console.log('🚀 ~ loadImage ~ error:', error);
-		} finally {
-			loading.value = false;
-		}
 	}
 }
 
@@ -149,7 +137,6 @@ async function deleteUser() {
 
 onMounted(async () => {
 	await loadData();
-	await loadImage();
 });
 </script>
 <style lang=""></style>

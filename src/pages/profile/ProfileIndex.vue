@@ -1,15 +1,17 @@
 <template>
 	<CardPage>
-		<CardHeader title="Profil Pengguna" @onReload="loadData" />
+		<CardHeader title="Profil Pengguna" @onReload="loadUser" />
 		<q-card-section class="q-pa-sm">
 			<q-card class="" flat bordered style="max-width: 600px">
 				<q-card-section class="q-pa-sm">
 					<UserImage :user-id="user.id" :show-btn-upload="true" />
-					<q-banner inline-actions v-if="!user.confirmed_at" class="no-padding text-center q-mt-sm">
-						<div class="q-pa-md text-negative bg-red-1" style="border-radius: 10px">
-							<div>Akun Anda belum terkonfirmasi.</div>
-							<div>Silakan hubungi Admin!</div>
-						</div>
+					<q-banner
+						inline-actions
+						v-if="!user.confirmed_at"
+						class="text-center q-mt-sm bg-red-1 text-negative q-py-md"
+					>
+						<div>Akun Anda belum terkonfirmasi.</div>
+						<div>Silakan hubungi Admin!</div>
 					</q-banner>
 					<q-list bordered separator class="q-mt-sm">
 						<!-- User Data -->
@@ -50,12 +52,12 @@
 
 		<!-- MODAL -->
 		<q-dialog v-model="crudShow">
-			<UserForm :data="user" @success-submit="loadData" />
+			<UserForm :data="user" @success-submit="successSubmit" />
 		</q-dialog>
 	</CardPage>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { notifyAlert } from 'src/utils/notify';
 import UserForm from 'src/components/forms/UserForm.vue';
 import User from 'src/models/User';
@@ -63,12 +65,17 @@ import { useAuthStore } from 'src/stores/auth-store';
 import UserGroups from 'src/components/User/UserGroups.vue';
 import UserData from 'src/components/User/UserData.vue';
 import UserImage from 'src/components/User/UserImage.vue';
+import { storeToRefs } from 'pinia';
 
-const user = ref({});
-const groups = ref([]);
 const loading = ref(false);
 const crudShow = ref(false);
 const auth = useAuthStore();
+
+const { user, groups } = storeToRefs(auth);
+
+const successSubmit = (res) => {
+	user.value = res;
+};
 
 async function loadUser() {
 	try {
@@ -86,14 +93,6 @@ async function loadUser() {
 		loading.value = false;
 	}
 }
-
-async function loadData() {
-	await loadUser();
-}
-
-onMounted(async () => {
-	await loadData();
-});
 
 const changePassword = async () => {
 	await notifyAlert(
