@@ -4,7 +4,7 @@
 		<q-card-section class="q-pa-sm">
 			<q-card flat bordered style="max-width: 600px">
 				<q-card-section class="q-pa-sm">
-					<UserImage :user-id="user.id" :show-btn-upload="false" />
+					<UserImage :user-id="user.id" :image-url="user.image_url" :show-btn-upload="false" />
 
 					<q-list bordered separator class="q-mt-sm">
 						<!-- User Data -->

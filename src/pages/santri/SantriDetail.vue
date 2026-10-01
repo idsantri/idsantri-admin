@@ -76,7 +76,6 @@ import { storeToRefs } from 'pinia';
 import Santri from 'src/models/Santri';
 import CardListTabel from 'src/components/cards/CardListTabel.vue';
 import { formatAlamatLengkap } from 'src/utils/format-text';
-import Image from 'src/models/Image';
 
 const { santri } = storeToRefs(santriStore());
 const store = santriStore();
@@ -88,18 +87,6 @@ const { searchSantri, crudSantri } = toRefs(dialog);
 
 const loading = ref(false);
 const loadingImage = ref(false);
-
-async function loadImage() {
-	try {
-		loadingImage.value = true;
-		const img = await Image.santri(santriId);
-		store.setImage(img?.image_url || null);
-	} catch (_err) {
-		console.error('🚀 ~ loadImage ~ _err:', _err);
-	} finally {
-		loadingImage.value = false;
-	}
-}
 
 const umur = computed(() => {
 	if (!santri.value?.tgl_lahir) {
@@ -180,8 +167,9 @@ function editSantri() {
 const showUploader = ref(false);
 const updateUploader = (value) => (showUploader.value = value);
 
-async function successUpload() {
+async function successUpload(res) {
 	showUploader.value = false;
-	await loadImage();
+	// await loadImage();
+	store.setImage(res.image.image_url + `?t=${new Date().getTime()}`);
 }
 </script>

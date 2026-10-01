@@ -4,7 +4,12 @@
 		<q-card-section class="q-pa-sm">
 			<q-card class="" flat bordered style="max-width: 600px">
 				<q-card-section class="q-pa-sm">
-					<UserImage :user-id="user.id" :show-btn-upload="true" />
+					<UserImage
+						:user-id="user.id"
+						:show-btn-upload="true"
+						:image-url="user.image_url"
+						@image-uploaded="imageUploaded"
+					/>
 					<q-banner
 						inline-actions
 						v-if="!user.confirmed_at"
@@ -75,6 +80,10 @@ const { user, groups } = storeToRefs(auth);
 
 const successSubmit = (res) => {
 	user.value = res;
+};
+
+const imageUploaded = (image) => {
+	user.value.image_url = image.image_url;
 };
 
 async function loadUser() {

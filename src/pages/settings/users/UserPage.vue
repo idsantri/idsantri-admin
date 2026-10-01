@@ -7,7 +7,7 @@
 				flat
 				:rows="users"
 				:columns="columns"
-				row-key="name"
+				row-key="id"
 				:loading="loading"
 				:filter="filter"
 				@row-click="(evt, row, index) => $router.push(`/settings/users/${row.id}`)"
