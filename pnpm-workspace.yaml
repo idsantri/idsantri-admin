@@ -1,8 +1,13 @@
 allowBuilds:
   core-js: true
   esbuild: true
+  lightningcss: true
+  rolldown: true
+  unrs-resolver: true
 onlyBuiltDependencies:
   - '@parcel/watcher'
   - '@tailwindcss/oxide'
   - core-js
   - esbuild
+  - lightningcss
+  - rolldown

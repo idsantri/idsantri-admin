@@ -1,10 +1,10 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file
 
-import { defineConfig } from '#q-app/wrappers';
+import { defineConfig } from '#q-app';
 import config from './src/config';
 
-export default defineConfig((/* ctx */) => {
+export default defineConfig((ctx) => {
 	return {
 		// https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
 		// preFetch: true,
@@ -12,7 +12,7 @@ export default defineConfig((/* ctx */) => {
 		// app boot file (/src/boot)
 		// --> boot files are part of "main.js"
 		// https://v2.quasar.dev/quasar-cli-vite/boot-files
-		boot: ['axios', 'registerGlobalComponents','register-sw'],
+		boot: ['axios', 'registerGlobalComponents', 'register-sw'],
 
 		// https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#css
 		css: ['app.scss', 'tailwind.css'],
@@ -40,6 +40,17 @@ export default defineConfig((/* ctx */) => {
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
 		build: {
+			alias: {
+				src: ctx.appPaths.srcDir, // kompatibel dengan: import module from 'src/...'
+				app: ctx.appPaths.appDir, // kompatibel dengan: import module from 'app/...'
+				components: ctx.appPaths.resolve.src('components'), // kompatibel dengan: import module from 'components/...'
+				layouts: ctx.appPaths.resolve.src('layouts'), // kompatibel dengan: import module from 'layouts/...'
+				pages: ctx.appPaths.resolve.src('pages'), // kompatibel dengan: import module from 'pages/...'
+				assets: ctx.appPaths.resolve.src('assets'), // kompatibel dengan: import module from 'assets/...'
+				boot: ctx.appPaths.resolve.src('boot'), // kompatibel dengan: import module from 'boot/...'
+				stores: ctx.appPaths.resolve.src('stores'), // kompatibel dengan: import module from 'stores/...'
+			},
+
 			target: {
 				browser: ['es2022', 'firefox115', 'chrome115', 'safari14'],
 				node: 'node20',
@@ -109,17 +120,10 @@ export default defineConfig((/* ctx */) => {
 		animations: [],
 
 		// https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#sourcefiles
-		// sourceFiles: {
-		//   rootComponent: 'src/App.vue',
-		//   router: 'src/router/index',
-		//   store: 'src/store/index',
-		//   pwaRegisterServiceWorker: 'src-pwa/register-service-worker',
-		//   pwaServiceWorker: 'src-pwa/custom-service-worker',
-		//   pwaManifestFile: 'src-pwa/manifest.json',
-		//   electronMain: 'src-electron/electron-main',
-		//   electronPreload: 'src-electron/electron-preload'
-		//   bexManifestFile: 'src-bex/manifest.json
-		// },
+		sourceFiles: {
+			pwaRegisterServiceWorker: 'src-pwa/register-service-worker',
+			pwaServiceWorker: 'src-pwa/sw/custom-service-worker',
+		},
 
 		// https://v2.quasar.dev/quasar-cli-vite/developing-ssr/configuring-ssr
 		ssr: {
@@ -130,8 +134,8 @@ export default defineConfig((/* ctx */) => {
 				'render', // keep this as last one
 			],
 
-			// extendPackageJson (json) {},
-			// extendSSRWebserverConf (esbuildConf) {},
+			// extendSSRPackageJson (json) {},
+			// extendSSRWebserverConf (rolldownConf) {},
 
 			// manualStoreSerialization: true,
 			// manualStoreSsrContextInjection: true,
@@ -141,8 +145,8 @@ export default defineConfig((/* ctx */) => {
 			pwa: false,
 			// pwaOfflineHtmlFilename: 'offline.html', // do NOT use index.html as name!
 
-			// pwaExtendGenerateSWOptions (cfg) {},
-			// pwaExtendInjectManifestOptions (cfg) {}
+			// extendSSRGenerateSWOptions (cfg) {},
+			// extendSSRInjectManifestOptions (cfg) {}
 		},
 
 		// https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
@@ -150,18 +154,18 @@ export default defineConfig((/* ctx */) => {
 			workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
 			// swFilename: 'sw.js',
 			// manifestFilename: 'manifest.json',
-			extendManifestJson: (manifest): void => {
+			extendPWAManifestJson: (manifest): void => {
 				manifest.name = config.PWA_NAME;
 				manifest.short_name = config.PWA_SHORT_NAME;
 				manifest.description = config.PWA_DESCRIPTION;
 			},
 			// useCredentialsForManifestTag: true,
-			// injectPwaMetaTags: false,
-			// extendPWACustomSWConf (esbuildConf) {},
-			extendGenerateSWOptions: (cfg): void => {
+			// injectPWAMetaTags: false,
+			// extendPWACustomSWConf (rolldownConf) {},
+			extendPWAGenerateSWOptions: (cfg): void => {
 				cfg.maximumFileSizeToCacheInBytes = 5 * 1024 * 1024; // 5 MB
 			},
-			// extendInjectManifestOptions (cfg) {}
+			// extendPWAInjectManifestOptions (cfg) {}
 		},
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-cordova-apps/configuring-cordova
