@@ -125,6 +125,26 @@ import api from 'src/api';
 import { useAuthStore } from 'src/stores/auth-store';
 import { notifyError, notifySuccess } from 'src/utils/notify';
 
+/**
+ * ImageUploader.vue
+ *
+ * @deprecated This component is deprecated. Use ImageUploaderForm.vue instead.
+ *
+ * @description Component for uploading images with drag-and-drop, cropping, and preview functionality.
+ * @props
+ * - width: Number (default: 450) - The width of the output image.
+ * - height: Number (default: 600) - The height of the output image.
+ * - showUploader: Boolean (default: false) - Controls the visibility of the uploader dialog.
+ * - url: String (default: null) - The API endpoint to upload the image.
+ * - imgFormat: String (default: 'jpg') - The format of the output image ('jpg' or 'png').
+ * - fieldImage: String (default: 'image') - The field name for the image in the form data.
+ * @emits
+ * - updateUploader: Emitted when the uploader visibility changes.
+ * - successUpload: Emitted when the image is successfully uploaded.
+ * - update:showUploader: Emitted when the showUploader prop is updated.
+ * - update:modelValue: Emitted when the model value is updated.
+ */
+
 const props = defineProps({
 	width: { type: Number, default: 450 },
 	height: { type: Number, default: 600 },

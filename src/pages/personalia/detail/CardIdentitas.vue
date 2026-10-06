@@ -46,27 +46,31 @@
 
 		<CardLoading :showing="loading" />
 
+		<!-- modal -->
 		<q-dialog persistent="" v-model="crudShow">
 			<PersonaliaForm :data="aparatur" @success-submit="handleSubmit" @success-delete="$router.go(-1)" />
 		</q-dialog>
-		<!-- modal -->
-		<upload-image
-			:show-uploader="showUploader"
-			:url="`/images/aparatur/${route.params.id}`"
-			img-format="webp"
-			@update-uploader="updateUploader"
-			@success-upload="successUpload"
-		/>
+
+		<q-dialog v-model="showUploader" persistent>
+			<ImageUploaderForm
+				:owner-id="aparatur?.id"
+				owner-type="aparatur"
+				:image-url="aparatur?.image_url || '/user-default.png'"
+				@upload-success="successUpload"
+				@upload-error="null"
+				:aspect-ratio="3 / 4"
+			/>
+		</q-dialog>
 	</q-card>
 </template>
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { formatDateFull } from 'src/utils/format-date';
-import UploadImage from 'src/components/ImageUploader.vue';
 import PersonaliaForm from 'src/components/forms/PersonaliaForm.vue';
 import { formatAlamatLengkap } from 'src/utils/format-text';
 import Aparatur from 'src/models/Aparatur';
+import ImageUploaderForm from '@/components/forms/ImageUploaderForm.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -122,11 +126,9 @@ onMounted(async () => {
 
 // uploader
 const showUploader = ref(false);
-const updateUploader = (value) => (showUploader.value = value);
-
 async function successUpload(res) {
 	showUploader.value = false;
-	aparatur.value.image_url = res.image.image_url + `?t=${new Date().getTime()}`;
+	aparatur.value.image_url = res.image_url + `?t=${new Date().getTime()}`;
 }
 </script>
 <style lang=""></style>

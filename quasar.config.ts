@@ -65,7 +65,7 @@ export default defineConfig((ctx) => {
 			vueRouterMode: 'history', // available values: 'hash', 'history'
 			// vueRouterBase,
 			// vueDevtools,
-			// vueOptionsAPI: false,
+			vueOptionsAPI: true, // set to true, some libraries still use Options API, and it's compatible with Composition API
 
 			// rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
