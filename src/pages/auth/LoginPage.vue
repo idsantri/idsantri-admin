@@ -84,7 +84,7 @@ import { useQuasar } from 'quasar';
 import config from 'src/config';
 import { toArray } from 'src/utils/array-object';
 import { notifyError, notifySuccess } from 'src/utils/notify';
-import useAuthStore from 'stores/auth-store';
+import { useAuthStore } from 'stores/auth-store';
 import Auth from 'src/models/Auth';
 
 const emit = defineEmits(['title', 'errors']);

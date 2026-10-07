@@ -8,7 +8,7 @@ export default class ApiCrud extends Api {
 	 * @param {boolean} options.notifySuccess - Whether to show success notification
 	 * @returns {Promise<Object>} Response data
 	 */
-	async getAll({ params = {}, notifySuccess = true } = {}) {
+	async getAll({ params = {}, notifySuccess = false } = {}) {
 		const resData = await this._apiGet({
 			endPoint: this._path,
 			params,
@@ -29,7 +29,7 @@ export default class ApiCrud extends Api {
 	 * @param {boolean} options.notifySuccess - Whether to show success notification
 	 * @returns {Promise<Object>} Response data
 	 */
-	async getById({ id, params = {}, notifySuccess = true }) {
+	async getById({ id, params = {}, notifySuccess = false }) {
 		const resData = await this._apiGet({
 			endPoint: `${this._path}/${id}`,
 			params,

@@ -53,5 +53,5 @@
 import LogoCircle from 'src/components/LogoCircle.vue';
 import ExpansionItem from './ExpansionItem.vue';
 import MenuItem from './MenuItem.vue';
-import { sekretariat, makhadiyah, madrasah, keamanan, ugt, info, setting, apb } from './menus';
+import { sekretariat, makhadiyah, madrasah, keamanan, ugt, info, setting, apb } from '../../config/menus.js';
 </script>

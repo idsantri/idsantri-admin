@@ -3,9 +3,9 @@ import { defineStore } from 'pinia';
 const useAuthStore = defineStore('auth', {
 	state: () => ({
 		token: null,
-		user: null,
-		roles: null,
-		permissions: null,
+		user: {},
+		roles: [],
+		groups: [],
 		keepAliveInterval: null,
 		keepAliveDelay: 1 * 60 * 1000, // Update timestamp setiap 1 menit (saat aktif)
 		sessionTimeout: 2 * 60 * 1000, // Logout otomatis jika tidak aktif 2 menit
@@ -23,6 +23,9 @@ const useAuthStore = defineStore('auth', {
 			if (!state.token) return false;
 			// 2. Cek validitas waktu (apakah session expired?)
 			return state.checkSessionValidity();
+		},
+		isAdmin(state) {
+			return state.groups.some((group) => group.name === 'admin' && group.value == true);
 		},
 	},
 
@@ -73,17 +76,22 @@ const useAuthStore = defineStore('auth', {
 		 * setUser({
 		 *  user: {
 		 *    id: 1,
-		 *    nama: 'John Doe',
+		 *    name: 'John Doe',
 		 *    email: 'johndoe@example.com',
 		 *  },
 		 *  roles: ['admin', 'user'],
-		 *  permissions: ['read', 'write', 'delete'],
+		 *  groups: [{
+		 *    name: 'admin',
+		 *    label: Admin,
+		 *	  value:true,
+		 *    description: 'User has admin access',
+		 *  }],
 		 *  token: '1234567890abcdef',
 		 * })
 		 */
 		setUser(payload) {
 			if (payload.roles) this.roles = payload.roles;
-			if (payload.permissions) this.permissions = payload.permissions;
+			if (payload.groups) this.groups = payload.groups;
 			if (payload.user) this.user = payload.user;
 
 			if (payload.token) {
@@ -106,9 +114,9 @@ const useAuthStore = defineStore('auth', {
 		logout() {
 			// Reset state
 			this.token = null;
-			this.user = null;
-			this.roles = null;
-			this.permissions = null;
+			this.user = {};
+			this.roles = [];
+			this.groups = [];
 
 			// Hapus timestamp dari storage
 			localStorage.removeItem('authTimestamp');
@@ -188,8 +196,8 @@ const useAuthStore = defineStore('auth', {
 	persist: {
 		storage: localStorage,
 		// Kita hanya persist data user, interval & config tidak perlu
-		pick: ['token', 'user', 'roles', 'permissions'],
+		pick: ['token', 'user', 'roles', 'groups'],
 	},
 });
 
-export default useAuthStore;
+export { useAuthStore };

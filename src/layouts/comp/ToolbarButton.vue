@@ -35,7 +35,7 @@
 </template>
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import useAuthStore from 'src/stores/auth-store';
+import { useAuthStore } from 'src/stores/auth-store';
 const auth = useAuthStore();
 const user = auth.user;
 

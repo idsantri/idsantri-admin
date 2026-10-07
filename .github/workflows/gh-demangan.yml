@@ -1,44 +1,44 @@
 on:
-  push:
-    branches:
-      - demangan
+    push:
+        branches:
+            - demangan
 
 name: 🚀 Deploy website on push (Demangan)
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 24
 
-      - name: Install Corepack
-        run: npm i -g corepack
+            - name: Install Corepack
+              run: npm i -g corepack
 
-      - name: Enable Corepack & pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@10 --activate
+            - name: Enable Corepack & pnpm
+              run: |
+                  corepack enable
+                  corepack prepare pnpm@12 --activate
 
-      - name: Set pnpm config
-        run: pnpm config set minimumReleaseAge 0
+            - name: Set pnpm config
+              run: pnpm config set minimumReleaseAge 0
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
 
-      - name: Clean Config
-        run: pnpm exec quasar clean --qconf
+            - name: Clean Config
+              run: pnpm exec quasar clean --qconf
 
-      - name: Build PWA
-        run: pnpm exec quasar build -m pwa
+            - name: Build PWA
+              run: pnpm exec quasar build -m pwa
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: dist/pwa
-          clean: true
-          branch: gh-demangan
+            - name: Deploy to GitHub Pages
+              uses: JamesIves/github-pages-deploy-action@v4
+              with:
+                  folder: dist/pwa
+                  clean: true
+                  branch: gh-demangan

@@ -15,7 +15,7 @@
 </template>
 <script setup>
 import api from 'src/api';
-import useAuthStore from 'src/stores/auth-store';
+import { useAuthStore } from 'src/stores/auth-store';
 
 const props = defineProps({ url: String });
 const token = useAuthStore().token || '';
