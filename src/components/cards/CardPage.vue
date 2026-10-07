@@ -1,10 +1,6 @@
 <template>
-	<q-page class="q-pa-sm flex column">
-		<q-card
-			ref="cardRef"
-			class="card-page-container col column"
-			:style="cardStyle"
-		>
+	<q-page class="q-pa-sm">
+		<q-card ref="cardRef" class="card-page-container" :style="cardStyle">
 			<slot></slot>
 		</q-card>
 	</q-page>

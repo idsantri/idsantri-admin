@@ -7,9 +7,9 @@ export default () => {
 			registration.addEventListener('updatefound', () => {
 				const newWorker = registration.installing;
 				if (newWorker) {
-					newWorker.addEventListener('statechange', () => {
+					newWorker.addEventListener('statechange', async () => {
 						if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-							showUpdatePrompt();
+							await showUpdatePrompt();
 						}
 					});
 				}
@@ -22,9 +22,19 @@ export default () => {
 	}
 
 	async function showUpdatePrompt() {
-		const isConfirmed = await notifyConfirm('Update tersedia. Muat ulang sekarang?');
+		const isConfirmed = await notifyConfirm('Update tersedia. Muat ulang sekarang?', false, 'Update');
 		if (isConfirmed) {
 			window.location.reload();
 		}
+
+		// import { Dialog } from 'quasar';
+		// Dialog.create({
+		// 	title: 'Update tersedia',
+		// 	message: 'Versi baru tersedia. Muat ulang sekarang?',
+		// 	cancel: true,
+		// 	persistent: true,
+		// }).onOk(() => {
+		// 	window.location.reload();
+		// });
 	}
 };
