@@ -69,6 +69,9 @@
 							</transition>
 						</router-view>
 					</q-card-section>
+					<div class="text-center text-caption tw:absolute tw:bottom-0 tw:left-0 tw:right-0">
+						v{{ releases[0].ver }}
+					</div>
 				</q-card>
 			</q-page>
 
@@ -91,6 +94,7 @@ import config from 'src/config';
 import LogoCircle from 'components/LogoCircle.vue';
 import InfoIos from './comp/InfoIos.vue';
 import InfoLogin from './comp/InfoLogin.vue';
+import releases from 'src/config/releases';
 
 const title = ref('Autentikasi');
 const handleTitle = (value) => (title.value = value);
