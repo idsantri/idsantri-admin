@@ -1,13 +1,14 @@
 <template>
 	<q-dialog v-model="internalShowUploader" persistent @hide="onDialogHide">
-		<q-card style="width: 480px; max-width: 95vw" class="q-pa-md">
-			<q-card-section class="row items-center q-pb-none">
-				<div class="text-h6 text-weight-bold text-grey-9">Upload Foto / Gambar</div>
-				<q-space />
-				<q-btn icon="close" flat round dense v-close-popup :disable="uploading" />
+		<q-card style="width: 480px; max-width: 95vw" class="text-green-10">
+			<q-card-section class="bg-green-7 text-green-11 q-pa-sm">
+				<q-toolbar class="q-px-sm" style="min-height: 0">
+					<q-toolbar-title class="text-subtitle1"> Upload Foto / Gambar </q-toolbar-title>
+					<q-btn icon="close" flat round dense v-close-popup :disable="uploading" />
+				</q-toolbar>
 			</q-card-section>
 
-			<q-card-section class="q-pt-md">
+			<q-card-section class="q-pa-sm">
 				<!-- Step 1: Select File / Dropzone -->
 				<div
 					v-if="step === 1"
@@ -18,11 +19,11 @@
 					@drop.prevent="handleDrop"
 					@click="triggerFileInput"
 				>
-					<q-icon name="cloud_upload" size="56px" color="primary" class="q-mb-sm" />
-					<div class="text-subtitle1 text-weight-medium text-grey-9 text-center">
+					<q-icon name="cloud_upload" size="56px" color="green" class="q-mb-sm" />
+					<div class="text-subtitle1 text-weight-medium text-center">
 						Klik atau tarik file gambar ke sini untuk upload
 					</div>
-					<div class="text-caption text-grey-6 q-mt-xs">Format: JPG, PNG, GIF (Maks 10 MB)</div>
+					<div class="text-caption text-grey-6 q-mt-xs">Format: JPG, PNG, GIF (Maks 1 MB)</div>
 					<input type="file" ref="fileInputRef" accept="image/*" class="hidden" @change="handleFileSelect" />
 				</div>
 
@@ -94,21 +95,30 @@
 			</q-card-section>
 
 			<!-- Actions -->
-			<q-card-actions align="right" class="q-pt-sm">
-				<q-btn v-if="step === 1" label="Batal" flat color="grey-7" no-caps v-close-popup />
+			<q-card-actions align="right" class="bg-green-6 text-green-10">
+				<q-btn
+					v-if="step === 1"
+					label="Batal"
+					flat
+					class="bg-green-11"
+					no-caps
+					v-close-popup
+					icon="sym_o_close"
+				/>
 				<q-btn
 					v-if="step === 2"
 					label="Pilih Gambar Lain"
 					flat
-					color="grey-7"
+					class="bg-green-11"
 					no-caps
 					@click="step = 1"
 					:disable="uploading"
+					icon="sym_o_reset_image"
 				/>
 				<q-btn
 					v-if="step === 2"
 					label="Simpan & Upload"
-					color="primary"
+					class="bg-green-10 text-green-11"
 					no-caps
 					icon="cloud_upload"
 					:loading="uploading"
