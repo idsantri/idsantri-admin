@@ -52,13 +52,16 @@
 			</div>
 		</q-card-section>
 		<!-- modal -->
-		<upload-image
-			img-format="jpg"
-			:show-uploader="showUploader"
-			:url="`/images/santri/${santriId}`"
-			@update-uploader="updateUploader"
-			@success-upload="successUpload"
-		/>
+		<q-dialog v-model="showUploader" persistent>
+			<ImageUploaderForm
+				:owner-id="santri?.id"
+				owner-type="santri"
+				:image-url="santri?.image_url || '/user-default.png'"
+				@upload-success="successUpload"
+				@upload-error="null"
+				:aspect-ratio="3 / 4"
+			/>
+		</q-dialog>
 	</CardPage>
 </template>
 <script setup>
@@ -66,7 +69,6 @@ import { ref, toRefs, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { formatDateFull, getAge } from '../../utils/format-date';
 import CardIdentity from './CardIdentity.vue';
-import UploadImage from 'src/components/ImageUploader.vue';
 import santriStore from 'src/stores/santri-store';
 import { bacaHijri } from 'src/utils/hijri';
 import SantriRelations from 'src/pages/santri/SantriRelations.vue';
@@ -76,7 +78,7 @@ import { storeToRefs } from 'pinia';
 import Santri from 'src/models/Santri';
 import CardListTabel from 'src/components/cards/CardListTabel.vue';
 import { formatAlamatLengkap } from 'src/utils/format-text';
-import Image from 'src/models/Image';
+import ImageUploaderForm from '@/components/forms/ImageUploaderForm.vue';
 
 const { santri } = storeToRefs(santriStore());
 const store = santriStore();
@@ -88,18 +90,6 @@ const { searchSantri, crudSantri } = toRefs(dialog);
 
 const loading = ref(false);
 const loadingImage = ref(false);
-
-async function loadImage() {
-	try {
-		loadingImage.value = true;
-		const img = await Image.santri(santriId);
-		store.setImage(img?.image_url || null);
-	} catch (_err) {
-		console.error('🚀 ~ loadImage ~ _err:', _err);
-	} finally {
-		loadingImage.value = false;
-	}
-}
 
 const umur = computed(() => {
 	if (!santri.value?.tgl_lahir) {
@@ -178,10 +168,8 @@ function editSantri() {
 
 // uploader
 const showUploader = ref(false);
-const updateUploader = (value) => (showUploader.value = value);
-
-async function successUpload() {
+async function successUpload(res) {
 	showUploader.value = false;
-	await loadImage();
+	store.setImage(res.image_url + `?t=${new Date().getTime()}`);
 }
 </script>

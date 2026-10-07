@@ -13,7 +13,7 @@
 					<q-item v-for="item in data" :key="item.id" class="" clickable v-ripple :to="'/santri/' + item.id">
 						<q-item-section avatar>
 							<q-avatar square="">
-								<q-img :src="item?.image || '/user-default.png'" alt="santri" fit="cover" />
+								<q-img :src="item?.image_url || '/user-default.png'" alt="santri" fit="cover" />
 							</q-avatar>
 						</q-item-section>
 
