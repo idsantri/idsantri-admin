@@ -1,0 +1,1 @@
+import{t as e}from"./ApiCrud-vEQ-n2Qi.js";var t=new class extends e{constructor(){super(`status`)}async santri(e){return(await this._apiGet({endPoint:`${this._path}/santri/${e}`})).data}async lists(){return(await this._apiGet({endPoint:`${this._path}/lists`})).data}};export{t};
