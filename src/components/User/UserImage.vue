@@ -16,20 +16,21 @@
 				}"
 			/>
 		</div>
-		<upload-image
-			:show-uploader="showUploader"
-			:url="`/images/users/${userId}`"
-			:width="300"
-			:height="300"
-			img-format="webp"
-			@update-uploader="updateUploader"
-			@success-upload="successUpload"
-		/>
+		<q-dialog v-model="showUploader" persistent>
+			<ImageUploaderForm
+				:owner-id="userId"
+				owner-type="users"
+				:image-url="imageUrl || '/user-default.png'"
+				@upload-success="successUpload"
+				@upload-error="null"
+				:aspect-ratio="3 / 4"
+			/>
+		</q-dialog>
 	</q-banner>
 </template>
 <script setup>
 import { ref, watch } from 'vue';
-import UploadImage from 'src/components/ImageUploader.vue';
+import ImageUploaderForm from '@/components/forms/ImageUploaderForm.vue';
 
 const props = defineProps({
 	userId: { type: [String, Number] },
@@ -47,12 +48,11 @@ watch(
 	{ immediate: true },
 );
 
+// uploader
 const showUploader = ref(false);
-const updateUploader = (val) => (showUploader.value = val);
-
 async function successUpload(res) {
 	showUploader.value = false;
-	srcImage.value = res.image.image_url + `?t=${new Date().getTime()}`;
+	srcImage.value = res.image_url + `?t=${new Date().getTime()}`;
 	emit('image-uploaded', res.image);
 }
 </script>

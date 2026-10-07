@@ -1,4 +1,4 @@
-import { defineBoot } from '#q-app/wrappers';
+import { defineBoot } from '#q-app';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 import config from 'src/config';
@@ -13,7 +13,7 @@ declare module '@vue/runtime-core' {
 	}
 }
 
-const url = process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : config.BASE_API;
+const url = import.meta.env.DEV ? 'http://localhost:8000' : config.BASE_API;
 const api = axios.create({
 	baseURL: url + config.END_API,
 	withCredentials: true,
