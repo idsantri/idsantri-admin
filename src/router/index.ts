@@ -1,8 +1,8 @@
-import { route } from 'quasar/wrappers';
+import { defineRouter } from '#q-app';
 import { createMemoryHistory, createRouter, createWebHashHistory, createWebHistory } from 'vue-router';
 import routes from './routes';
 import { nextTick } from 'vue';
-import authStore from '../stores/auth-store';
+import { useAuthStore } from '../stores/auth-store';
 import config from 'src/config';
 
 /*
@@ -14,10 +14,10 @@ import config from 'src/config';
  * with the Router instance.
  */
 
-export default route(function (/* { store, ssrContext } */) {
-	const createHistory = process.env.SERVER
+export default defineRouter(function (/* { store, ssrContext } */) {
+	const createHistory = import.meta.env.QUASAR_SERVER
 		? createMemoryHistory
-		: process.env.VUE_ROUTER_MODE === 'history'
+		: import.meta.env.QUASAR_VUE_ROUTER_MODE === 'history'
 			? createWebHistory
 			: createWebHashHistory;
 
@@ -28,7 +28,7 @@ export default route(function (/* { store, ssrContext } */) {
 		// Leave this as is and make changes in quasar.conf.js instead!
 		// quasar.conf.js -> build -> vueRouterMode
 		// quasar.conf.js -> build -> publicPath
-		history: createHistory(process.env.VUE_ROUTER_BASE),
+		history: createHistory(import.meta.env.QUASAR_VUE_ROUTER_BASE),
 	});
 
 	Router.beforeEach((to, _from) => {
@@ -36,11 +36,11 @@ export default route(function (/* { store, ssrContext } */) {
 			return '/home';
 		}
 
-		const store = authStore();
+		const store = useAuthStore();
 		const isAuthenticate = store.isLoggedIn;
 
 		const authRoutes = ['Register', 'Login', 'Forgot', 'Reset', 'Verify'];
-		const toAuthRoutes = authRoutes.includes(to.name ?? '');
+		const toAuthRoutes = authRoutes.includes(String(to.name ?? ''));
 
 		if (!toAuthRoutes && !isAuthenticate) {
 			return '/login';

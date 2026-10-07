@@ -1,4 +1,4 @@
-import { defineBoot } from '#q-app/wrappers';
+import { defineBoot } from '#q-app';
 import CardHeader from 'src/components/cards/CardHeader.vue';
 import CardLoading from 'src/components/cards/CardLoading.vue';
 import CardPage from 'src/components/cards/CardPage.vue';

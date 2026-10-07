@@ -7,7 +7,7 @@
 				flat
 				:rows="users"
 				:columns="columns"
-				row-key="name"
+				row-key="id"
 				:loading="loading"
 				:filter="filter"
 				@row-click="(evt, row, index) => $router.push(`/settings/users/${row.id}`)"
@@ -38,7 +38,7 @@ const users = ref([]);
 async function loadData() {
 	try {
 		loading.value = true;
-		const data = await Users.getAll({ notifySuccess: true });
+		const data = await Users.getAll({ notifySuccess: false });
 		users.value = data.users;
 	} catch (_err) {
 		// console.error(_err);

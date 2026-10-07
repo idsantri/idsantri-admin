@@ -5,7 +5,7 @@
 	</div>
 </template>
 <script setup>
-import authState from '../../stores/auth-store';
+import { useAuthStore } from '../../stores/auth-store';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { notifyConfirm, notifySuccess } from 'src/utils/notify';
@@ -30,7 +30,7 @@ onMounted(async () => {
 	} catch (error) {
 		console.error('Logout error:', error);
 	} finally {
-		authState().logout();
+		useAuthStore().logout();
 		router.push('/login');
 	}
 });

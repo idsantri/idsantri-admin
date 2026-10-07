@@ -1,59 +1,78 @@
-<template lang="">
+<template>
 	<q-page class="q-pa-sm">
-		<q-card class="card-page-container" id="card-page-container">
+		<q-card ref="cardRef" class="card-page-container" :style="cardStyle">
 			<slot></slot>
 		</q-card>
 	</q-page>
 </template>
 
-<script>
-export default {
-	props: {
-		dynamicHeight: {
-			type: Boolean,
-			default: true, // default true
-		},
+<script setup>
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
+
+const props = defineProps({
+	dynamicHeight: {
+		type: Boolean,
+		default: true,
 	},
-	mounted() {
-		if (this.dynamicHeight) {
-			this.setDynamicHeight();
-		}
-	},
+});
 
-	methods: {
-		setDynamicHeight() {
-			// Get elements
-			const header = document.querySelector('header');
-			const main = document.querySelector('main');
-			const footer = document.querySelector('footer');
-			const card = document.getElementById('card-page-container');
+const cardRef = ref(null);
+const minHeightPx = ref(0);
 
-			if (!card) return;
+function calculateDynamicHeight() {
+	if (!props.dynamicHeight) {
+		minHeightPx.value = 0;
+		return;
+	}
 
-			// Get heights and padding
-			const headerHeight = header ? header.offsetHeight : 0;
-			const footerHeight = footer ? footer.offsetHeight : 0;
+	const header = document.querySelector('.q-header') || document.querySelector('header');
+	const footer = document.querySelector('.q-footer') || document.querySelector('footer');
 
-			// Get padding-top + padding-bottom dari main
-			const mainStyles = main ? getComputedStyle(main) : null;
-			const mainPaddingY = mainStyles
-				? parseFloat(mainStyles.paddingTop) + parseFloat(mainStyles.paddingBottom)
-				: 0;
+	const headerHeight = header ? header.offsetHeight : 0;
+	const footerHeight = footer ? footer.offsetHeight : 0;
 
-			// Calculate total offset
-			const totalOffset = headerHeight + footerHeight + mainPaddingY;
+	// q-pa-sm pada q-page memberi padding 8px atas + 8px bawah = 16px
+	const pagePaddingY = 16;
+	const offset = headerHeight + footerHeight + pagePaddingY;
 
-			// Set min-height
-			card.style.minHeight = `calc(100vh - ${totalOffset}px)`;
+	minHeightPx.value = Math.max(0, window.innerHeight - offset);
+}
 
-			// Debug
-			// console.log('Header:', headerHeight);
-			// console.log('Footer:', footerHeight);
-			// console.log('Main Padding Y:', mainPaddingY);
-			// console.log('Total Offset:', totalOffset);
-		},
-	},
-};
+const cardStyle = computed(() => {
+	if (!props.dynamicHeight || minHeightPx.value <= 0) {
+		return {};
+	}
+	return {
+		minHeight: `${minHeightPx.value}px`,
+	};
+});
+
+let resizeObserver = null;
+
+onMounted(() => {
+	nextTick(() => {
+		calculateDynamicHeight();
+		setTimeout(calculateDynamicHeight, 100);
+		setTimeout(calculateDynamicHeight, 300);
+	});
+
+	window.addEventListener('resize', calculateDynamicHeight);
+
+	if (typeof ResizeObserver !== 'undefined') {
+		resizeObserver = new ResizeObserver(() => {
+			calculateDynamicHeight();
+		});
+		const header = document.querySelector('.q-header') || document.querySelector('header');
+		if (header) resizeObserver.observe(header);
+	}
+});
+
+onUnmounted(() => {
+	window.removeEventListener('resize', calculateDynamicHeight);
+	if (resizeObserver) {
+		resizeObserver.disconnect();
+	}
+});
 </script>
 
 <style lang="scss" scoped>
