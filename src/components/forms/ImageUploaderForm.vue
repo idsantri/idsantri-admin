@@ -94,7 +94,13 @@
 				</div>
 			</q-card-section>
 
-			<FormActions :btn-delete="true" icon-delete="sync" label-delete="Batal" @on-delete="resetView" />
+			<FormActions
+				:btn-delete="true"
+				icon-delete="sync"
+				label-delete="Batal"
+				@on-delete="resetView"
+				:disable-submit="!imgCropper"
+			/>
 		</q-form>
 	</q-card>
 </template>

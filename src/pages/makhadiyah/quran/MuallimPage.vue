@@ -27,7 +27,6 @@
 						:selected="th_ajaran_h"
 					/>
 				</q-card-section>
-
 				<q-table
 					:rows="muallim"
 					:filter="filter"
@@ -64,7 +63,7 @@ async function onReload() {
 async function loadData(th_ajaran_h) {
 	try {
 		loading.value = true;
-		const data = AparaturQuran.getAll({ params: { th_ajaran_h: th_ajaran_h, jabatan: 'Muallim' } });
+		const data = await AparaturQuran.getAll({ params: { th_ajaran_h: th_ajaran_h, jabatan: 'Muallim' } });
 		muallim.value = data.aparatur_quran;
 	} catch (e) {
 		console.error('🚀 ~ loadData ~ e:', e);

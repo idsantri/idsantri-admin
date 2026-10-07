@@ -1,4 +1,4 @@
-import { Dialog } from 'quasar';
+import { notifyConfirm } from 'src/utils/notify';
 
 // src/boot/register-sw.js
 export default () => {
@@ -21,17 +21,10 @@ export default () => {
 		});
 	}
 
-	function showUpdatePrompt() {
-		// Contoh sederhana: pakai confirm()
-		// Atau gunakan Quasar Notify/Dialog untuk tampilan lebih elegan:
-		// import { Dialog } from 'quasar'
-		Dialog.create({
-			title: 'Update tersedia',
-			message: 'Versi baru tersedia. Muat ulang sekarang?',
-			cancel: true,
-			persistent: true,
-		}).onOk(() => {
+	async function showUpdatePrompt() {
+		const isConfirmed = await notifyConfirm('Update tersedia. Muat ulang sekarang?');
+		if (isConfirmed) {
 			window.location.reload();
-		});
+		}
 	}
 };

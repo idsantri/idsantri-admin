@@ -1,5 +1,18 @@
 export default [
 	{
+		ver: '1.7.3',
+		date: 'Oktober 2026',
+		release: {
+			'Fitur Baru': [
+				'Ekspor/download data aparatur madrasah',
+				'Upload gambar via kamera',
+				'Deskripsi role/group pengguna',
+			],
+			Improve: ['Perbaikan dan peningkatan performa', 'Fix bug pada fitur Pendidikan al-Quran: Muallim'],
+			Iuran: ['Hapus virtual account (VA) iuran'],
+		},
+	},
+	{
 		ver: '1.7.2',
 		date: 'Agustus 2026',
 		release: {
