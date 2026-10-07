@@ -5,7 +5,7 @@ package.json
 pnpm-lock.yaml
 pnpm-workspace.yaml
 postcss.config.js
-quasar.config.ts
+# quasar.config.ts
 README.md
 tsconfig.json
 dist
@@ -13,6 +13,6 @@ node_modules
 coverage
 src-capacitor
 src-cordova
-src-pwa
+#src-pwa
 .quasar
 public
