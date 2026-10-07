@@ -1,0 +1,1 @@
+import{t as e}from"./ApiCrud-DaIvK53f.js";var t=new class extends e{constructor(){super(`aparatur-madrasah`)}};export{t};
