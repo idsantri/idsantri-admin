@@ -164,6 +164,9 @@ export default defineConfig((ctx) => {
 			// extendPWACustomSWConf (rolldownConf) {},
 			extendPWAGenerateSWOptions: (cfg): void => {
 				cfg.maximumFileSizeToCacheInBytes = 5 * 1024 * 1024; // 5 MB
+
+				// ignoring "public/_redirects" from precache (PWA)
+				cfg.globIgnores = [...(cfg.globIgnores || []), '_redirects'];
 			},
 			// extendPWAInjectManifestOptions (cfg) {}
 		},
