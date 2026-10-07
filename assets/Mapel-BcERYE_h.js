@@ -1,0 +1,1 @@
+import{t as e}from"./ApiCrud-_fAW2ctq.js";var t=new class extends e{constructor(){super(`mapel`)}};export{t};
