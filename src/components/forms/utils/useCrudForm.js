@@ -35,12 +35,7 @@ import { ref } from 'vue';
  * await handleDelete(1);
  */
 export default function useCrudForm(model, options = {}) {
-	const {
-		closeButtonId = 'btn-close-form',
-		autoClose = true,
-		responseKey = null,
-		emit = () => {},
-	} = options;
+	const { closeButtonId = 'btn-close-form', autoClose = true, responseKey = null, emit = () => {} } = options;
 
 	/**
 	 * Loading state untuk operasi CRUD

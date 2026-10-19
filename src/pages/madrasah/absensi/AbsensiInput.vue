@@ -6,10 +6,14 @@
 			@data-filter="(v) => (textFilter = v)"
 		/>
 		<q-card class="q-mt-sm" flat bordered>
-			<q-card-section class="bg-green-7 text-green-1 text-subtitle1 q-px-sm q-py-xs">
+			<q-card-section class="bg-green-7 text-green-1 text-subtitle1 q-px-sm q-py-xs flex items-center">
 				<div class="text-subtitle1">
 					➡️ <strong> Absensi {{ titleCase(params.absensi) }} </strong>
 				</div>
+				<q-space />
+				<q-icon name="info" color="green-11" size="sm">
+					<q-tooltip class="bg-green-1 text-green-10">Untuk update ke kosong gunakan angka 0</q-tooltip>
+				</q-icon>
 			</q-card-section>
 			<q-card-section class="bg-green-3 text-green-10 text-subtitle1 q-pa-sm">
 				<div>
@@ -281,12 +285,15 @@ const model =
 			: null;
 
 async function deleteAbsensi() {
-	const kelas_id = absences.value.map((abs) => abs.kelas_id);
-	const bulan_ujian = params.bulan_ujian;
-
+	const config = {
+		th_ajaran_h: params.th_ajaran_h,
+		tingkat_id: params.tingkat_id,
+		kelas: params.kelas,
+		bulan_ujian: params.bulan_ujian,
+	};
 	try {
 		spinner.value = true;
-		await model.removeAbsensi({ bulan_ujian, kelas_id });
+		await model.removeAbsensi(config);
 		absences.value = [];
 		const url = `/madrasah/absensi/input/${params.absensi}/${params.th_ajaran_h}/${params.tingkat_id}/${params.kelas}`;
 		router.push(url);

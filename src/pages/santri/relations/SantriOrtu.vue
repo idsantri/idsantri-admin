@@ -1,9 +1,5 @@
 <template>
-	<temp-object
-		:data="dataObj"
-		:route="'/ortu/' + dataObj['ID Ortu']"
-		:spinner="spinner"
-	/>
+	<temp-object :data="dataObj" :route="'/ortu/' + dataObj['ID Ortu']" :spinner="spinner" />
 </template>
 
 <script setup>
@@ -38,9 +34,7 @@ const dataObj = computed(() => ({
 	'ID Ortu': ortu.value.id,
 	Ayah: ortu.value.ayah,
 	Ibu: ortu.value.ibu,
-	'Anak ke': `${ortu.value.anak_ke || '?'} dari ${
-		ortu.value.jumlah_anak || '?'
-	}  bersaudara`,
+	'Anak ke': `${ortu.value.anak_ke || '?'} dari ${ortu.value.jumlah_anak || '?'}  bersaudara`,
 }));
 
 onMounted(async () => {

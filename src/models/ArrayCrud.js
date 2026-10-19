@@ -1,18 +1,18 @@
-// ArrayCrud - IIFE Factory Function Pattern
-
+/**
+ * ArrayCrud Utility - Helper untuk manipulasi array of objects pada State Management.
+ * Pola: IIFE Factory Function (Immutable)
+ */
 const ArrayCrud = (() => {
-	// Private utility functions
+	// --- PRIVATE UTILITIES ---
 	const _validateObject = (obj) => {
 		if (!obj || typeof obj !== 'object') {
-			throw new Error('Parameter harus berupa object yang valid');
+			console.warn('ArrayCrud: Parameter bukan object yang valid');
+			return false;
 		}
+		return true;
 	};
 
-	const _validatePosition = (position) => {
-		if (position !== 'first' && position !== 'last') {
-			throw new Error('Position harus "first" atau "last"');
-		}
-	};
+	// --- CORE FUNCTIONS ---
 
 	/**
 	 * CREATE - Menambahkan object baru ke array
@@ -21,159 +21,139 @@ const ArrayCrud = (() => {
 	 * @param {string} position - Posisi penambahan ("first" atau "last")
 	 * @returns {Array} Array baru untuk update state
 	 */
-	function create(currentArray, newObject, position = 'last') {
-		_validateObject(newObject);
-		_validatePosition(position);
-
+	const create = (currentArray, newObject, position = 'last') => {
+		if (!_validateObject(newObject)) return currentArray;
 		const newArray = [...currentArray];
-
 		if (position === 'first') {
 			newArray.unshift(newObject);
 		} else {
 			newArray.push(newObject);
 		}
-
 		return newArray;
-	}
+	};
 
 	/**
 	 * UPDATE - Mengupdate object berdasarkan id
 	 * @param {Array} currentArray - Array saat ini (ref.value)
 	 * @param {number|string} objectId - ID object yang akan diupdate
-	 * @param {Object} updatedData - Data baru untuk update
+	 * @param {Object} updateData - Data baru untuk update
+	 * @param {string} key - Key pencarian (default: 'id')
 	 * @returns {Array} Array baru untuk update state
 	 */
-	function update(currentArray, objectId, updatedData, key = 'id') {
-		_validateObject(updatedData);
+	const update = (currentArray, objectId, updateData, key = 'id') => {
+		if (!_validateObject(updateData)) return currentArray;
 
-		const newArray = currentArray.map((item) => {
-			if (item[key] === objectId) {
-				return { ...item, ...updatedData };
-			}
-			return item;
-		});
-
-		return newArray;
-	}
+		return currentArray.map((item) => (item[key] == objectId ? { ...item, ...updateData } : item));
+	};
 
 	/**
 	 * UPDATE OR CREATE (UPSERT) - Update jika ada, create jika tidak ada
-	 * @param {Array} currentArray - Array saat ini
+	 * @param {Array} currentArray - Array saat ini (ref.value)
 	 * @param {Object} data - Data yang akan dimasukkan/diupdate
 	 * @param {string} key - Key pencarian (default: 'id')
 	 * @param {string} position - Posisi jika create ("first" atau "last" default)
 	 * @returns {Array} Array baru untuk update state
 	 */
-	function updateOrCreate(currentArray, data, key = 'id', position = 'last') {
-		_validateObject(data);
+	const updateOrCreate = (currentArray, data, key = 'id', position = 'last') => {
 		const objectId = data[key];
+		return exists(currentArray, objectId, key)
+			? update(currentArray, objectId, data, key)
+			: create(currentArray, data, position);
+	};
 
-		if (exists(currentArray, objectId)) {
-			// Jika data ada, gunakan fungsi update yang sudah ada
-			return update(currentArray, objectId, data, key);
-		} else {
-			// Jika data tidak ada, gunakan fungsi create yang sudah ada
-			return create(currentArray, data, position);
-		}
-	}
+	/**
+	 * Toggle - Mengubah nilai boolean dari targetKey berdasarkan objectId
+	 * @param {Array} currentArray - Array saat ini (ref.value)
+	 * @param {number|string} objectId - ID object yang akan di-toggle
+	 * @param {string} targetKey - Key yang akan di-toggle
+	 * @param {string} key - Key pencarian (default: 'id')
+	 * @returns {Array} Array baru untuk update state
+	 */
+	const toggle = (currentArray, objectId, targetKey, key = 'id') => {
+		return currentArray.map((item) => (item[key] == objectId ? { ...item, [targetKey]: !item[targetKey] } : item));
+	};
 
 	/**
 	 * DELETE - Menghapus object berdasarkan id
 	 * @param {Array} currentArray - Array saat ini (ref.value)
 	 * @param {number|string} objectId - ID object yang akan dihapus
+	 * @param {string} key - Key pencarian (default: 'id')
 	 * @returns {Array} Array baru untuk update state
 	 */
-	function remove(currentArray, objectId, key = 'id') {
-		return currentArray.filter((item) => item[key] !== objectId);
-	}
+	const remove = (currentArray, objectId, key = 'id') => {
+		return currentArray.filter((item) => item[key] != objectId);
+	};
 
-	/**
-	 * FIND - Mencari object berdasarkan id
-	 * @param {Array} currentArray - Array saat ini
-	 * @param {number|string} objectId - ID object yang dicari
-	 * @returns {Object|null} Object yang ditemukan atau null
-	 */
-	function findById(currentArray, objectId) {
-		return currentArray.find((item) => item.id === objectId) || null;
-	}
+	// --- SEARCH & FILTER ---
 
-	/**
-	 * EXISTS - Mengecek apakah object dengan id tertentu ada
-	 * @param {Array} currentArray - Array saat ini
-	 * @param {number|string} objectId - ID object yang dicari
-	 * @returns {boolean} true jika ada, false jika tidak
-	 */
-	function exists(currentArray, objectId) {
-		return currentArray.some((item) => item.id === objectId);
-	}
+	const findById = (currentArray, objectId, key = 'id') => {
+		return currentArray.find((item) => item[key] == objectId) || null;
+	};
 
-	/**
-	 * FILTER - Filter array berdasarkan callback
-	 * @param {Array} currentArray - Array saat ini
-	 * @param {Function} callback - Function untuk filter
-	 * @returns {Array} Array hasil filter
-	 */
-	function filter(currentArray, callback) {
-		if (typeof callback !== 'function') {
-			throw new Error('Parameter callback harus berupa function');
-		}
-		return currentArray.filter(callback);
-	}
+	const exists = (currentArray, objectId, key = 'id') => {
+		return currentArray.some((item) => item[key] == objectId);
+	};
 
-	/**
-	 * SORT - Mengurutkan array
-	 * @param {Array} currentArray - Array saat ini
-	 * @param {Function|string} sortBy - Function atau key untuk sort
-	 * @param {string} order - "asc" atau "desc"
-	 * @param {boolean} nullsFirst - true jika null harus ditempatkan di awal
-	 * @returns {Array} Array yang sudah diurutkan
-	 */
-	function sort(currentArray, sortBy, order = 'asc', nullsFirst = true) {
+	const search = (currentArray, query) => {
+		if (!query) return currentArray;
+		const lowerQuery = query.toLowerCase();
+		return currentArray.filter((item) =>
+			Object.values(item).some((val) => String(val).toLowerCase().includes(lowerQuery)),
+		);
+	};
+
+	// --- TRANSFORMATION & GROUPING ---
+
+	const groupBy = (currentArray, iteratee) => {
+		return currentArray.reduce((acc, item) => {
+			const groupKey = typeof iteratee === 'function' ? iteratee(item) : item[iteratee];
+			if (!acc[groupKey]) acc[groupKey] = [];
+			acc[groupKey].push(item);
+			return acc;
+		}, {});
+	};
+
+	const paginate = (currentArray, page = 1, perPage = 10) => {
+		const offset = (page - 1) * perPage;
+		return currentArray.slice(offset, offset + perPage);
+	};
+
+	const flattenNestedKey = (arrObj, key, connector = '_') => {
+		return arrObj.map((item) => {
+			// Buat salinan object tanpa nested key
+			const { [key]: nestedObj, ...rest } = item;
+
+			// Jika nested object tidak ada, kembalikan item asli
+			if (!nestedObj) return item;
+
+			// Flatten nested object dengan menambahkan prefix key
+			const flattened = {};
+			for (const [nestedKey, value] of Object.entries(nestedObj)) {
+				flattened[`${key}${connector}${nestedKey}`] = value;
+			}
+
+			// Gabungkan dengan rest of properties
+			return { ...rest, ...flattened };
+		});
+	};
+
+	// --- SORTING ---
+
+	const sort = (currentArray, sortBy, order = 'asc') => {
 		const newArray = [...currentArray];
-
-		if (typeof sortBy === 'string') {
-			newArray.sort((a, b) => {
-				let aVal = a[sortBy];
-				let bVal = b[sortBy];
-
-				// Pengecekan nilai null atau string kosong
-				const nullishA = aVal === null || aVal === undefined || aVal === '';
-				const nullishB = bVal === null || bVal === undefined || bVal === '';
-
-				// Jika salah satu nilai kosong, tentukan posisinya
-				if (nullishA && nullishB) return 0;
-				if (nullishA) return nullsFirst ? -1 : 1;
-				if (nullishB) return nullsFirst ? 1 : -1;
-
-				// Tambahkan pengecekan dan konversi untuk string agar case-insensitive
-				if (typeof aVal === 'string' && typeof bVal === 'string') {
-					aVal = aVal.toLowerCase();
-					bVal = bVal.toLowerCase();
-				}
-
-				// Aturan perbandingan
-				if (aVal < bVal) {
-					return order === 'asc' ? -1 : 1;
-				}
-				if (aVal > bVal) {
-					return order === 'asc' ? 1 : -1;
-				}
-				return 0; // Kedua nilai sama
+		newArray.sort((a, b) => {
+			const aVal = a[sortBy];
+			const bVal = b[sortBy];
+			const comparison = String(aVal).localeCompare(String(bVal), undefined, {
+				numeric: true,
+				sensitivity: 'base',
 			});
-		} else if (typeof sortBy === 'function') {
-			// Sort by function (tetap menggunakan fungsi kustom yang disediakan)
-			newArray.sort(sortBy);
-		}
+			return order === 'asc' ? comparison : -comparison;
+		});
 		return newArray;
-	}
-	/**
-	 * Mengurutkan array string secara case-insensitive (mengabaikan huruf besar/kecil).
-	 *
-	 * @param {string[]} dataArray - Array string primitif yang akan diurutkan.
-	 * @param {string} [order='asc'] - Urutan pengurutan: 'asc' (ascending) atau 'desc' (descending).
-	 * @returns {string[]} Array yang sudah diurutkan.
-	 */
-	function sortPrimitiveArray(dataArray, order = 'asc') {
+	};
+
+	const sortPrimitiveArray = (dataArray, order = 'asc') => {
 		// Buat salinan array agar fungsi tidak memodifikasi array asli (immutable)
 		const sortedData = [...dataArray];
 
@@ -196,18 +176,37 @@ const ArrayCrud = (() => {
 		});
 
 		return sortedData;
-	}
+	};
+
+	// --- ANALYSIS ---
+
+	const findMax = (arr, key = 'id') => {
+		if (!arr.length) return null;
+		return arr.reduce((max, obj) => (obj[key] > max[key] ? obj : max), arr[0]);
+	};
+
+	const findMin = (arr, key = 'id') => {
+		if (!arr.length) return null;
+		return arr.reduce((min, obj) => (obj[key] < min[key] ? obj : min), arr[0]);
+	};
 
 	return {
 		create,
 		update,
 		updateOrCreate,
+		toggle,
 		remove,
 		findById,
 		exists,
-		filter,
+		search,
 		sort,
 		sortPrimitiveArray,
+		groupBy,
+		paginate,
+		flattenNestedKey,
+		findMax,
+		findMin,
 	};
 })();
+
 export default ArrayCrud;

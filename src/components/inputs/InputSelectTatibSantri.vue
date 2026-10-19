@@ -14,19 +14,32 @@
 		v-model="input"
 	>
 		<template v-slot:after>
-			<drop-down-after route-to="tatib-santri" @reload="fetchList" />
+			<drop-down-after route-to="tatib-santri" @reload="reload" />
 		</template>
 	</q-select>
 </template>
 <script setup>
-import listsStore from 'src/stores/lists-store';
-import { computed, onMounted, ref } from 'vue';
+import { useListsStore } from 'src/stores/lists-store';
+import { computed, onMounted } from 'vue';
 import DropDownAfter from './DropDownAfter.vue';
-import Lists from 'src/models/Lists';
+import { storeToRefs } from 'pinia';
 
 const input = defineModel();
 
-const hint = computed(() => extractData(input.value));
+const store = useListsStore();
+const storeRef = storeToRefs(store);
+const { loading } = storeRef;
+const url = 'tatib-santri';
+const key = url.replace(/-/g, '_');
+
+const options = computed(() => {
+	const data = store.getStateByKey(key);
+	let result = [];
+	if (data.length) {
+		result = data.filter((d) => d.val0.length != 1).map((d) => `[${d.val0}] ${d.val1}`);
+	}
+	return result;
+});
 
 function extractData(inputValue) {
 	try {
@@ -59,42 +72,16 @@ function extractData(inputValue) {
 		return '';
 	}
 }
+const hint = computed(() => extractData(input.value));
 
-const loading = ref(false);
-const options = ref([]);
-const store = listsStore();
-const url = 'tatib-santri';
-const key = url.replace(/-/g, '_');
-
-function mapData(data) {
-	let result = [];
-	if (data.length) {
-		result = data.filter((d) => d.val0.length != 1).map((d) => `[${d.val0}] ${d.val1}`);
-	}
-	return result;
+async function reload() {
+	await store.fetchList(url);
 }
 
 onMounted(async () => {
-	const data = store.getStateByKey(key);
-	if (data.length) {
-		options.value = mapData(data);
-	} else {
-		await fetchList();
-		const result = store.getStateByKey(key);
-		options.value = mapData(result);
+	if (!options.value || options.value.length == 0) {
+		await reload();
 	}
 });
-
-async function fetchList() {
-	try {
-		loading.value = true;
-		const data = await Lists.getByKey(url);
-		store.$patch({ [key]: data[key] });
-	} catch (error) {
-		console.log('error get list ', error);
-	} finally {
-		loading.value = false;
-	}
-}
 </script>
 <style lang=""></style>

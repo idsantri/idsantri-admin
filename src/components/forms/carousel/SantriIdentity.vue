@@ -23,18 +23,26 @@
 		dense
 		class="q-my-sm"
 		outlined
-		label="Nomor Kartu Keluarga"
+		label="Nomor Kartu Keluarga*"
 		v-model="inputs.nkk"
-		:rules="[(val) => !val || (val?.length == 16 && !isNaN(val)) || '16 digit angka!']"
+		:rules="[
+			(val) => !!val || 'Harus diisi!',
+			(val) => (val && val.length === 16) || 'Harus 16 karakter!',
+			(val) => (val && /^\d+$/.test(val)) || 'Hanya angka!',
+		]"
 		error-color="negative"
 	/>
 	<q-input
 		dense
 		class="q-my-sm"
 		outlined
-		label="Nomor Induk Kependudukan"
+		label="Nomor Induk Kependudukan*"
 		v-model="inputs.nik"
-		:rules="[(val) => !val || (val?.length == 16 && !isNaN(val)) || '16 digit angka!']"
+		:rules="[
+			(val) => !!val || 'Harus diisi!',
+			(val) => (val && val.length === 16) || 'Harus 16 karakter!',
+			(val) => (val && /^\d+$/.test(val)) || 'Hanya angka!',
+		]"
 		error-color="negative"
 	/>
 	<input-select-kota-lahir v-model="inputs.tmp_lahir" />
@@ -42,7 +50,9 @@
 	<q-input
 		dense
 		:hint="
-			isDate(inputs.tgl_lahir) ? formatDateFull(inputs.tgl_lahir) + ' | ' + bacaHijri(m2h(inputs.tgl_lahir)) : ''
+			isDate(inputs.tgl_lahir)
+				? formatDateFull(inputs.tgl_lahir) + ' | ' + bacaHijri(masehiToHijri(inputs.tgl_lahir))
+				: ''
 		"
 		class="q-my-sm"
 		outlined
@@ -66,7 +76,7 @@
 	/>
 </template>
 <script setup>
-import { m2h, bacaHijri } from 'src/utils/hijri';
+import { masehiToHijri, bacaHijri } from 'src/utils/hijri';
 import { isDate, formatDateFull } from 'src/utils/format-date';
 import InputSelectKotaLahir from 'src/components/inputs/InputSelectKotaLahir.vue';
 

@@ -18,15 +18,15 @@
 			{{ hint }}
 		</template>
 		<template v-slot:after>
-			<drop-down-after v-if="btnSetting" route-to="" @reload="fetchList" :disableRoute="true" />
+			<drop-down-after v-if="btnSetting" route-to="" @reload="reload" :disableRoute="true" />
 		</template>
 	</q-select>
 </template>
 <script setup>
-import listsStore from 'src/stores/lists-store';
-import { computed, onMounted, ref } from 'vue';
+import { useListsStore } from 'src/stores/lists-store';
+import { computed, onMounted } from 'vue';
 import DropDownAfter from './DropDownAfter.vue';
-import Lists from 'src/models/Lists';
+import { storeToRefs } from 'pinia';
 
 const input = defineModel();
 defineProps({
@@ -40,11 +40,15 @@ defineProps({
 	},
 });
 
-const loading = ref(false);
-const options = ref([]);
-const store = listsStore();
+const store = useListsStore();
+const storeRef = storeToRefs(store);
+const { loading } = storeRef;
 const url = 'tingkat-pendidikan';
 const key = url.replace(/-/g, '_');
+
+const options = computed(() => {
+	return store.getStateByKey(key);
+});
 
 const hint = computed(() => {
 	if (input.value) {
@@ -55,26 +59,14 @@ const hint = computed(() => {
 	}
 });
 
+async function reload() {
+	await store.fetchList(url);
+}
+
 onMounted(async () => {
-	const data = store.getStateByKey(key);
-	if (data.length) {
-		options.value = data;
-	} else {
-		await fetchList();
-		options.value = store.getStateByKey(key);
+	if (!options.value || options.value.length == 0) {
+		await reload();
 	}
 });
-
-async function fetchList() {
-	try {
-		loading.value = true;
-		const data = await Lists.getByKey(url);
-		store.$patch({ [key]: data[key] });
-	} catch (error) {
-		console.log('error get list ', error);
-	} finally {
-		loading.value = false;
-	}
-}
 </script>
 <style lang=""></style>

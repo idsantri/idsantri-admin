@@ -54,13 +54,7 @@
 			/>
 		</q-card-section>
 		<q-card-actions align="right" class="bg-green-6">
-			<q-btn
-				label="Tutup"
-				color="green-11"
-				no-caps
-				outline
-				v-close-popup
-			/>
+			<q-btn label="Tutup" color="green-11" no-caps outline v-close-popup />
 		</q-card-actions>
 	</q-card>
 </template>

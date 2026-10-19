@@ -4,20 +4,13 @@
  */
 
 function hijriToThAjaranH(dateHijri: string | number): string {
-	const dateHijriStr =
-		typeof dateHijri === 'number' ? String(dateHijri) : dateHijri;
+	const dateHijriStr = typeof dateHijri === 'number' ? String(dateHijri) : dateHijri;
 	const bulan = dateHijriStr.slice(4, 6);
 	const tahun = dateHijriStr.slice(0, 4);
-	let tahun1 = 0;
-	let tahun2 = 0;
+	let tahun1: number;
+	let tahun2: number;
 
-	if (
-		dateHijriStr.length !== 8 ||
-		!/^\d+$/.test(dateHijriStr) ||
-		+bulan === 0 ||
-		+tahun === 0 ||
-		+bulan > 12
-	) {
+	if (dateHijriStr.length !== 8 || !/^\d+$/.test(dateHijriStr) || +bulan === 0 || +tahun === 0 || +bulan > 12) {
 		return '';
 	}
 

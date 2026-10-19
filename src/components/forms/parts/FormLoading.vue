@@ -2,8 +2,8 @@
 	<div
 		class="tw:absolute tw:inset-0 tw:z-10 tw:flex tw:flex-col tw:items-center tw:justify-center tw:backdrop-blur-[1px] tw:bg-orange-100/25"
 	>
-		<q-spinner-tail color="green-14" size="4em" />
-		<div class="text-subtitle2 text-green-10">Memproses data …</div>
+		<q-spinner-tail color="green-14" size="6em" />
+		<!-- <div class="text-subtitle2 text-green-10">Memproses data …</div> -->
 	</div>
 
 	<!-- inner loading must be on the end -->

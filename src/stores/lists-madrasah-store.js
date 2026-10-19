@@ -69,10 +69,7 @@ export default defineStore('lists-madrasah', {
 				.map((th) => th.tingkat) // map to get all tingkat arrays
 				.filter((t) => t) // filter out undefined entries
 				.reduce((acc, val) => acc.concat(val), []) // flatten the array
-				.filter(
-					(v, i, a) =>
-						a.findIndex((t) => t.tingkat_id === v.tingkat_id) === i,
-				); // filter out duplicates
+				.filter((v, i, a) => a.findIndex((t) => t.tingkat_id === v.tingkat_id) === i); // filter out duplicates
 			return result || [];
 		},
 
@@ -96,9 +93,7 @@ export default defineStore('lists-madrasah', {
 				if (
 					!this.bulanUjianList.some(
 						(item) =>
-							item.th_ajaran_h == bu.th_ajaran_h &&
-							item.tingkat_id == bu.tingkat_id &&
-							item.bu == bu.bu,
+							item.th_ajaran_h == bu.th_ajaran_h && item.tingkat_id == bu.tingkat_id && item.bu == bu.bu,
 					)
 				) {
 					this.bulanUjianList.push(bu);

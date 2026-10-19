@@ -35,9 +35,21 @@
 					<!-- input -->
 					<q-item clickable v-close-popup to="/iuran/tagihan">
 						<q-item-section avatar>
+							<q-icon color="green" name="sym_o_list_alt_add" />
+						</q-item-section>
+						<q-item-section>
+							<q-item-label>Buat Tagihan </q-item-label>
+							<q-item-label caption>Massal </q-item-label>
+						</q-item-section>
+					</q-item>
+					<q-item clickable v-close-popup to="/iuran/payments">
+						<q-item-section avatar>
 							<q-icon color="green" name="receipt_long" />
 						</q-item-section>
-						<q-item-section> Buat Tagihan </q-item-section>
+						<q-item-section>
+							<q-item-label> Catatan Transaksi</q-item-label>
+							<q-item-label caption>via Payment Gateway</q-item-label>
+						</q-item-section>
 					</q-item>
 				</q-list>
 			</template>

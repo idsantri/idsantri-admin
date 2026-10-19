@@ -1,13 +1,13 @@
 <template lang="">
-	<q-card flat bordered>
-		<q-btn-dropdown flat dropdown-icon="more_vert" class="q-px-sm" color="">
+	<q-card flat bordered class="bg-transparent">
+		<q-btn-dropdown flat dropdown-icon="more_vert" class="q-px-xs flex" color="">
 			<q-btn
 				no-caps
 				label="Reload"
 				flat
 				icon="sync"
 				v-close-popup
-				class="block"
+				class="block full-width"
 				@click="$emit('reload')"
 				:disable="disableReload"
 			/>
@@ -19,7 +19,7 @@
 				icon="toc"
 				:to="'/settings/lists/' + routeTo"
 				v-close-popup
-				class="block"
+				class="block full-width"
 				:disable="disableRoute"
 				v-if="routeTo"
 			/>

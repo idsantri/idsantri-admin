@@ -45,7 +45,7 @@ import dialogStore from 'src/stores/dialog-store';
 import santriStore from 'src/stores/santri-store';
 import { notifyError, notifySuccess } from 'src/utils/notify';
 import { toArray } from 'src/utils/array-object';
-import useAuthStore from 'src/stores/auth-store';
+import { useAuthStore } from 'src/stores/auth-store';
 
 const dialog = dialogStore();
 const { searchSantri, crudSantri } = toRefs(dialog);

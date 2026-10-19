@@ -130,7 +130,7 @@ async function onUpdate(banner) {
 	const i = newBanners.findIndex((ban) => ban.id === banner.id);
 	try {
 		loading.value = true;
-		await ConfigApp.setAppWali({ banners: newBanners }, 'bannersa');
+		await ConfigApp.setAppWali({ banners: newBanners }, 'banners');
 		banners.value = newBanners;
 		errorUpdate.value = false;
 		cardRef.value[i].setNotEdit();

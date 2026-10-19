@@ -18,7 +18,7 @@
 		<q-card-section class="q-pa-sm">
 			<div class="row">
 				<div class="col-4 q-pr-sm">
-					<q-img :src="aparatur?.image || '/user-default.png'" :ratio="3 / 4" alt="aparatur" />
+					<q-img :src="aparatur?.image_url || '/user-default.png'" :ratio="3 / 4" alt="aparatur" />
 					<q-btn
 						class="q-mt-sm full-width"
 						icon="upload"
@@ -46,28 +46,31 @@
 
 		<CardLoading :showing="loading" />
 
+		<!-- modal -->
 		<q-dialog persistent="" v-model="crudShow">
 			<PersonaliaForm :data="aparatur" @success-submit="handleSubmit" @success-delete="$router.go(-1)" />
 		</q-dialog>
-		<!-- modal -->
-		<upload-image
-			:show-uploader="showUploader"
-			:url="`/images/aparatur/${route.params.id}`"
-			img-format="webp"
-			@update-uploader="updateUploader"
-			@success-upload="successUpload"
-		/>
+
+		<q-dialog v-model="showUploader" persistent>
+			<ImageUploaderForm
+				:owner-id="aparatur?.id"
+				owner-type="aparatur"
+				:image-url="aparatur?.image_url || '/user-default.png'"
+				@upload-success="successUpload"
+				@upload-error="null"
+				:aspect-ratio="3 / 4"
+			/>
+		</q-dialog>
 	</q-card>
 </template>
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { formatDateFull } from 'src/utils/format-date';
-import UploadImage from 'src/components/ImageUploader.vue';
 import PersonaliaForm from 'src/components/forms/PersonaliaForm.vue';
 import { formatAlamatLengkap } from 'src/utils/format-text';
 import Aparatur from 'src/models/Aparatur';
-import Image from 'src/models/Image';
+import ImageUploaderForm from '@/components/forms/ImageUploaderForm.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -90,21 +93,11 @@ async function loadData() {
 		loading.value = true;
 		const data = await Aparatur.getById({ id: route.params.id });
 		aparatur.value = data.aparatur;
-		await loadImage();
 		emits('on-load', aparatur.value);
 	} catch (e) {
 		console.error('🚀 ~ loadData ~ e:', e);
 	} finally {
 		loading.value = false;
-	}
-}
-
-async function loadImage() {
-	try {
-		const img = await Image.aparatur(aparatur.value.id);
-		aparatur.value.image = img?.image_url ? img.image_url + `?t=${new Date().getTime()}` : '/user-default.png';
-	} catch (error) {
-		console.log('🚀 ~ loadImage ~ error:', error);
 	}
 }
 
@@ -133,11 +126,9 @@ onMounted(async () => {
 
 // uploader
 const showUploader = ref(false);
-const updateUploader = (value) => (showUploader.value = value);
-
-async function successUpload() {
+async function successUpload(res) {
 	showUploader.value = false;
-	await loadImage();
+	aparatur.value.image_url = res.image_url + `?t=${new Date().getTime()}`;
 }
 </script>
 <style lang=""></style>

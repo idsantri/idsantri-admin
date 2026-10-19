@@ -5,24 +5,9 @@
 <script setup>
 import { computed } from 'vue';
 import { Bar } from 'vue-chartjs';
-import {
-	Chart as ChartJS,
-	Title,
-	Tooltip,
-	Legend,
-	BarElement,
-	CategoryScale,
-	LinearScale,
-} from 'chart.js';
+import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js';
 
-ChartJS.register(
-	Title,
-	Tooltip,
-	Legend,
-	BarElement,
-	CategoryScale,
-	LinearScale,
-);
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 const props = defineProps({
 	kamar: Array,

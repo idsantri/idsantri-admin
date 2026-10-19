@@ -2,13 +2,7 @@
 	<q-card-section class="q-pa-sm bg-green-11">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center text-green-10">
-				<q-btn
-					dense
-					icon="sync"
-					flat
-					@click="$emit('onReload')"
-					class="q-px-sm q-mr-sm"
-				/>
+				<q-btn dense icon="sync" flat @click="$emit('onReload')" class="q-px-sm q-mr-sm" />
 				<div class="text-subtitle2">
 					{{ title }}
 				</div>

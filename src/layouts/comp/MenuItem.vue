@@ -1,11 +1,5 @@
 <template>
-	<q-item
-		:clickable="!item.disable"
-		v-ripple
-		:to="item.to"
-		:disable="item.disable"
-		active-class="text-green-13"
-	>
+	<q-item :clickable="!item.disable" v-ripple :to="item.to" :disable="item.disable" active-class="text-green-13">
 		<q-item-section avatar>
 			<q-icon color="green-1" :name="item.icon" />
 		</q-item-section>

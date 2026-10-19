@@ -1,4 +1,4 @@
-import api from '.';
+import { api } from 'src/boot/axios';
 import apiError from './api-error';
 import type { DownloadParams } from './api-interface';
 
@@ -11,7 +11,7 @@ async function apiGetBlob({ endPoint, params, contentType = 'application/pdf' }:
 			headers: {
 				'Content-Type': contentType,
 			},
-			params,
+			params: params !== undefined ? params : {},
 		});
 		return response;
 	} catch (error) {

@@ -12,7 +12,7 @@
 					color="green-11"
 					title="Muat ulang"
 				/>
-				<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11"> Riwayat Indisipliner </q-toolbar-title>
+				<q-toolbar-title class="text-subtitle1 text-green-11 q-px-none"> Riwayat Indisipliner </q-toolbar-title>
 				<q-btn
 					color="green-11"
 					outline
@@ -45,7 +45,7 @@
 											{{
 												formatDateShort(indisipliner.tgl_sidang) +
 												' | ' +
-												m2hFormat(indisipliner.tgl_sidang)
+												formatHijri(masehiToHijri(indisipliner.tgl_sidang))
 											}}
 											<q-space />
 											{{ indisipliner.th_ajaran_h }}
@@ -99,7 +99,7 @@
 </template>
 <script setup>
 import { formatDateShort } from 'src/utils/format-date';
-import { m2hFormat } from 'src/utils/hijri';
+import { masehiToHijri, formatHijri } from 'src/utils/hijri';
 import { onMounted, onUpdated, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import IndisiplinerForm from 'src/components/forms/IndisiplinerForm.vue';

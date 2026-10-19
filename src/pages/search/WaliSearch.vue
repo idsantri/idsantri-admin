@@ -47,7 +47,7 @@ import santriStore from 'src/stores/santri-store';
 import waliStore from 'src/stores/wali-store';
 import { notifyError, notifySuccess } from 'src/utils/notify';
 import { toArray } from 'src/utils/array-object';
-import useAuthStore from 'src/stores/auth-store';
+import { useAuthStore } from 'src/stores/auth-store';
 
 const dialog = dialogStore();
 const { searchWali, crudWali, crudSantri } = toRefs(dialog);

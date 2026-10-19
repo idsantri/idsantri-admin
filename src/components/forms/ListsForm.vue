@@ -5,35 +5,34 @@
 			<FormLoading v-if="loading" />
 			<q-card-section>
 				<q-input
-					label="text1"
+					:label="selected.columns[0] || 'Text 1'"
 					dense
 					class="q-my-sm"
 					outlined
 					v-model="inputs.val0"
 					autogrow=""
 					:loading="loading"
-					v-if="showInput.val0"
 					ref="firstInput"
 				/>
 				<q-input
-					label="text2"
+					:label="selected.columns[1] || 'Text 2'"
 					dense
 					class="q-my-sm"
 					outlined
 					v-model="inputs.val1"
 					autogrow=""
 					:loading="loading"
-					v-if="showInput.val1"
+					v-if="selected.columns.length >= 2"
 				/>
 				<q-input
-					label="text3"
+					:label="selected.columns[2] || 'Text 3'"
 					dense
 					class="q-my-sm"
 					outlined
 					v-model="inputs.val2"
 					autogrow=""
 					:loading="loading"
-					v-if="showInput.val2"
+					v-if="selected.columns.length >= 3"
 				/>
 			</q-card-section>
 			<FormActions :btn-delete="!isNew" @on-delete="onDelete" />
@@ -51,7 +50,7 @@ const props = defineProps({
 		type: Object,
 		required: true,
 	},
-	showInput: {
+	selected: {
 		type: Object,
 		required: true,
 	},

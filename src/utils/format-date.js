@@ -105,7 +105,7 @@ function formatDateTimeHtmlToSql(inputHtmlDateTime) {
 	return sqlDateTime;
 }
 function hari(inputDay) {
-	let day = '';
+	let day;
 	const caseDay = parseInt(inputDay);
 	switch (caseDay) {
 		case 0:
@@ -136,7 +136,7 @@ function hari(inputDay) {
 }
 
 function bulanMasehi(inputMonth) {
-	let month = '';
+	let month;
 	const caseMonth = parseInt(inputMonth);
 	switch (caseMonth) {
 		case 1:

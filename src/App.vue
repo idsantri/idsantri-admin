@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import 'src/utils/rupiah';
 import { onMounted, onUnmounted } from 'vue';
-import useAuthStore from 'stores/auth-store';
+import { useAuthStore } from 'stores/auth-store';
 import { useRouter } from 'vue-router';
 
 defineOptions({

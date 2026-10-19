@@ -25,6 +25,14 @@ const menus = {
 			disable: false,
 			display: !!menu.sekretariat.alumni,
 		},
+		{
+			to: '/pulangan',
+			icon: 'sym_o_flights_and_hotels',
+			label: 'Pulangan',
+			caption: 'Liburan Santri',
+			disable: false,
+			display: !!menu.sekretariat.pulangan,
+		},
 	],
 	makhadiyah: [
 		{
@@ -168,14 +176,6 @@ const menus = {
 			caption: 'Aplikasi Wali Santri',
 			disable: false,
 			display: !!menu.setting.appWali,
-		},
-		{
-			to: '/settings/va',
-			icon: 'account_balance_wallet',
-			label: 'Virtual Account',
-			caption: 'Virtual Account Iuran',
-			disable: false,
-			display: !!menu.setting.virtualAccount,
 		},
 	],
 	info: [

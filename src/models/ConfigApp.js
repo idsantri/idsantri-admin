@@ -23,15 +23,17 @@ class ConfigApp extends Api {
 	}
 
 	async getReport(end_point = null) {
+		const subPath = end_point && end_point.trim() ? `/${end_point.trim()}` : '';
 		const resData = await this._apiGet({
-			endPoint: `${this._path}/reports/${end_point ?? ''}`,
+			endPoint: `${this._path}/reports${subPath}`,
 		});
 		return resData.data;
 	}
 
 	async setReport(data, end_point = null) {
+		const subPath = end_point && end_point.trim() ? `/${end_point.trim()}` : '';
 		const resData = await this._apiPost({
-			endPoint: `${this._path}/reports/${end_point ?? ''}`,
+			endPoint: `${this._path}/reports${subPath}`,
 			data,
 		});
 
@@ -40,15 +42,17 @@ class ConfigApp extends Api {
 	}
 
 	async getProfile(end_point = null) {
+		const subPath = end_point && end_point.trim() ? `/${end_point.trim()}` : '';
 		const resData = await this._apiGet({
-			endPoint: `${this._path}/profiles/${end_point ?? ''}`,
+			endPoint: `${this._path}/profiles${subPath}`,
 		});
 		return resData.data;
 	}
 
 	async setProfile(data, end_point = null) {
+		const subPath = end_point && end_point.trim() ? `/${end_point.trim()}` : '';
 		const resData = await this._apiPost({
-			endPoint: `${this._path}/profiles/${end_point ?? ''}`,
+			endPoint: `${this._path}/profiles${subPath}`,
 			data,
 		});
 
@@ -57,15 +61,17 @@ class ConfigApp extends Api {
 	}
 
 	async getAppWali(end_point = null) {
+		const subPath = end_point && end_point.trim() ? `/${end_point.trim()}` : '';
 		const resData = await this._apiGet({
-			endPoint: `${this._path}/app-wali/${end_point ?? ''}`,
+			endPoint: `${this._path}/app-wali${subPath}`,
 		});
 		return resData.data;
 	}
 
 	async setAppWali(data, end_point = null) {
+		const subPath = end_point && end_point.trim() ? `/${end_point.trim()}` : '';
 		const resData = await this._apiPost({
-			endPoint: `${this._path}/app-wali/${end_point ?? ''}`,
+			endPoint: `${this._path}/app-wali${subPath}`,
 			data,
 		});
 

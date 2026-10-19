@@ -51,16 +51,11 @@ const chartOptions = computed(() => ({
 
 					return labels.map((label, i) => {
 						const value = data[i];
-						const percentage = (
-							(value / props.total) *
-							100
-						).toFixed(2);
+						const percentage = ((value / props.total) * 100).toFixed(2);
 						return {
 							text: `${label}: ${value} (${percentage}%)`,
 							fillStyle: datasets[0].backgroundColor[i],
-							strokeStyle:
-								datasets[0].borderColor?.[i] ||
-								datasets[0].backgroundColor[i],
+							strokeStyle: datasets[0].borderColor?.[i] || datasets[0].backgroundColor[i],
 							lineWidth: 1,
 							hidden: chart.getDatasetMeta(0).data[i].hidden,
 							index: i,

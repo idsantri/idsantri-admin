@@ -1,41 +1,44 @@
 on:
-  push:
-    branches:
-      - demo
+    push:
+        branches:
+            - demo
 
 name: 🚀 Deploy website on push (Demo)
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: 24
 
-      - name: Install Corepack
-        run: npm i -g corepack
+            - name: Install Corepack
+              run: npm i -g corepack
 
-      - name: Enable Corepack & pnpm
-        run: |
-          corepack enable
-          corepack prepare pnpm@latest --activate
+            - name: Enable Corepack & pnpm
+              run: |
+                  corepack enable
+                  corepack prepare pnpm@12 --activate
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+            - name: Set pnpm config
+              run: pnpm config set minimumReleaseAge 0
 
-      - name: Clean Config
-        run: pnpm exec quasar clean --qconf
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
 
-      - name: Build PWA
-        run: pnpm exec quasar build -m pwa
+            - name: Clean Config
+              run: pnpm exec quasar clean --qconf
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: dist/pwa
-          clean: true
-          branch: gh-demo
+            - name: Build PWA
+              run: pnpm exec quasar build -m pwa
+
+            - name: Deploy to GitHub Pages
+              uses: JamesIves/github-pages-deploy-action@v4
+              with:
+                  folder: dist/pwa
+                  clean: true
+                  branch: gh-demo

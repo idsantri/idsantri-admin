@@ -5,23 +5,24 @@ class Image extends Api {
 		super('images');
 	}
 
-	async santri(id) {
+	async get(source, id) {
 		const resData = await this._apiGet({
-			endPoint: `${this._path}/santri/${id}`,
+			endPoint: `${this._path}/${source}/${id}`,
 		});
 		return resData.data;
 	}
 
-	async user(id) {
-		const resData = await this._apiGet({
-			endPoint: `${this._path}/users/${id}`,
+	async create(source, id, formData) {
+		const resData = await this._apiPost({
+			endPoint: `${this._path}/${source}/${id}`,
+			data: formData,
 		});
 		return resData.data;
 	}
 
-	async aparatur(id) {
-		const resData = await this._apiGet({
-			endPoint: `${this._path}/aparatur/${id}`,
+	async remove(source, id) {
+		const resData = await this._apiDelete({
+			endPoint: `${this._path}/${source}/${id}`,
 		});
 		return resData.data;
 	}

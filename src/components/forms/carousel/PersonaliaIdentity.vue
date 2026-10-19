@@ -17,10 +17,7 @@
 		outlined
 		label="Nama*"
 		v-model="inputs.nama"
-		:rules="[
-			(val) => !!val || 'Harus diisi!',
-			(val) => val?.length >= 3 || 'Setidaknya 3 huruf!',
-		]"
+		:rules="[(val) => !!val || 'Harus diisi!', (val) => val?.length >= 3 || 'Setidaknya 3 huruf!']"
 		error-color="negative"
 		autocapitalize="words"
 	/>
@@ -32,10 +29,7 @@
 		outlined
 		label="Nomor Induk Kependudukan"
 		v-model="inputs.nik"
-		:rules="[
-			(val) =>
-				!val || (val?.length == 16 && !isNaN(val)) || '16 digit angka!',
-		]"
+		:rules="[(val) => !val || (val?.length == 16 && !isNaN(val)) || '16 digit angka!']"
 		error-color="negative"
 	/>
 	<input-select-kota-lahir v-model="inputs.tmp_lahir" class="q-my-sm" />
@@ -44,9 +38,7 @@
 		dense
 		:hint="
 			isDate(inputs.tgl_lahir)
-				? formatDateFull(inputs.tgl_lahir) +
-					' | ' +
-					bacaHijri(m2h(inputs.tgl_lahir))
+				? formatDateFull(inputs.tgl_lahir) + ' | ' + bacaHijri(masehiToHijri(inputs.tgl_lahir))
 				: ''
 		"
 		class="q-my-sm"
@@ -58,13 +50,7 @@
 
 	<q-select
 		dense
-		:hint="
-			inputs.sex == 'L'
-				? 'Laki-Laki'
-				: inputs.sex == 'P'
-					? 'Perempuan'
-					: ''
-		"
+		:hint="inputs.sex == 'L' ? 'Laki-Laki' : inputs.sex == 'P' ? 'Perempuan' : ''"
 		class="q-my-sm"
 		outlined
 		label="Jenis Kelamin"
@@ -77,7 +63,7 @@
 	/>
 </template>
 <script setup>
-import { m2h, bacaHijri } from 'src/utils/hijri';
+import { masehiToHijri, bacaHijri } from 'src/utils/hijri';
 import { isDate, formatDateFull } from 'src/utils/format-date';
 import InputSelectKotaLahir from 'src/components/inputs/InputSelectKotaLahir.vue';
 

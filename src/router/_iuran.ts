@@ -22,6 +22,10 @@ export default [
 		component: (): Component => import('src/pages/iuran/paket/PageIndex.vue'),
 	},
 	{
+		path: 'payments',
+		component: (): Component => import('src/pages/iuran/payments/PaymentIndex.vue'),
+	},
+	{
 		path: 'download',
 		component: (): Component => import('src/pages/iuran/tagihan/DownloadData.vue'),
 	},

@@ -1,8 +1,6 @@
 <template lang="">
 	<q-card style="min-width: 300px">
-		<q-card-section class="q-pa-sm bg-green-6 text-green-11 text-subtitle1">
-			Info Login
-		</q-card-section>
+		<q-card-section class="q-pa-sm bg-green-6 text-green-11 text-subtitle1"> Info Login </q-card-section>
 		<q-card-section class="q-pa-sm">
 			<q-markup-table flat bordered separator="horizontal">
 				<thead>
@@ -34,15 +32,7 @@
 		</q-card-section>
 
 		<q-card-actions align="right" class="bg-green-5">
-			<q-btn
-				outline
-				no-caps
-				label="Tutup"
-				color="green-11"
-				class="bg-green-6"
-				glossy
-				v-close-popup
-			/>
+			<q-btn outline no-caps label="Tutup" color="green-11" class="bg-green-6" glossy v-close-popup />
 		</q-card-actions>
 	</q-card>
 </template>
@@ -52,6 +42,11 @@ const login = [
 		password: '112233',
 		username: 'sekretariat',
 		description: 'Akses kesekretariatan',
+	},
+	{
+		password: '112233',
+		username: 'bendahara',
+		description: 'Akses kebendaharaan (all)',
 	},
 	{
 		password: '112233',

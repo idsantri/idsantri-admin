@@ -40,9 +40,7 @@ onMounted(async () => {
 });
 
 function removeBottomRow() {
-	const el = document.querySelectorAll(
-		'div.q-field__bottom.row.items-start.q-field__bottom',
-	);
+	const el = document.querySelectorAll('div.q-field__bottom.row.items-start.q-field__bottom');
 	// console.log(el);
 	el.forEach((e) => e.remove());
 }

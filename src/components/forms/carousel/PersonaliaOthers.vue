@@ -25,14 +25,7 @@
 		:rules="[(val) => !val || !isNaN(val) || 'Hanya angka!']"
 		error-color="negative"
 	/>
-	<q-input
-		dense
-		hint=""
-		class="q-my-sm"
-		outlined
-		label="Email"
-		v-model="inputs.email"
-	/>
+	<q-input dense hint="" class="q-my-sm" outlined label="Email" v-model="inputs.email" />
 </template>
 <script setup>
 import InputSelectArray from 'src/components/inputs/InputSelectArray.vue';

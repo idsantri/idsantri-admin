@@ -47,7 +47,7 @@ import santriStore from 'src/stores/santri-store';
 import ortuStore from 'src/stores/ortu-store';
 import { notifyError, notifySuccess } from 'src/utils/notify';
 import { toArray } from 'src/utils/array-object';
-import useAuthStore from 'src/stores/auth-store';
+import { useAuthStore } from 'src/stores/auth-store';
 
 const dialog = dialogStore();
 const { searchOrtu, crudOrtu, crudSantri } = toRefs(dialog);

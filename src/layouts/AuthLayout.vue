@@ -50,8 +50,8 @@
 					</q-card-section>
 
 					<q-banner v-if="errors.length > 0" id="error" class="q-mb-sm no-padding bg-red-2 text-red">
-						<ul class="q-my-xs">
-							<li v-for="(error, index) in errors" :key="index">
+						<ul class="tw:list-disc tw:pl-6 tw:pr-3 tw:py-2">
+							<li v-for="(error, index) in errors" :key="index" class="tw:text-justify">
 								<span v-html="error"></span>
 							</li>
 						</ul>
@@ -69,6 +69,9 @@
 							</transition>
 						</router-view>
 					</q-card-section>
+					<div class="text-center text-caption tw:absolute tw:bottom-0 tw:left-0 tw:right-0">
+						v{{ releases[0].ver }}
+					</div>
 				</q-card>
 			</q-page>
 
@@ -91,6 +94,7 @@ import config from 'src/config';
 import LogoCircle from 'components/LogoCircle.vue';
 import InfoIos from './comp/InfoIos.vue';
 import InfoLogin from './comp/InfoLogin.vue';
+import releases from 'src/config/releases';
 
 const title = ref('Autentikasi');
 const handleTitle = (value) => (title.value = value);

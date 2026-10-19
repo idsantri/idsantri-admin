@@ -1,5 +1,5 @@
-import { numbersOnly } from './format-number.js';
-import { isDate } from './format-date.js';
+import { numbersOnly } from 'src/utils/format-number';
+import { isDate } from 'src/utils/format-date';
 
 /**
  * @deprecated
@@ -11,8 +11,11 @@ function m2h(inputMasehi, koreksi = 0) {
 	if (!isDate(inputMasehi)) return;
 
 	const mData = new Date(inputMasehi);
+	// eslint-disable-next-line no-useless-assignment
 	let mThn = mData.getFullYear();
+	// eslint-disable-next-line no-useless-assignment
 	let mBln = mData.getMonth() + 1;
+	// eslint-disable-next-line no-useless-assignment
 	let mTgl = mData.getDate();
 	let okt15th1582;
 	let hThn;

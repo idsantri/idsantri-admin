@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Data Personalia" @onReload="loadData" :show-add="true" @onAdd="crudShow = true" />
 		<q-card-section class="q-pa-sm">

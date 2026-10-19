@@ -11,6 +11,7 @@ const config = {
 	MENU: {
 		sekretariat: {
 			alumni: true,
+			pulangan: true,
 		},
 		makhadiyah: {
 			mutasi: true,
@@ -24,7 +25,6 @@ const config = {
 		apb: true,
 		setting: {
 			appWali: true,
-			virtualAccount: true,
 		},
 	},
 };

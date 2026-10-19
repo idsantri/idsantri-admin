@@ -15,9 +15,7 @@ class User extends Api {
 
 	async update(data, confirm = false) {
 		if (confirm) {
-			const isConfirmed = await this._notifyConfirm(
-				'Update profil Anda?',
-			);
+			const isConfirmed = await this._notifyConfirm('Update profil Anda?');
 			if (!isConfirmed) {
 				return false;
 			}

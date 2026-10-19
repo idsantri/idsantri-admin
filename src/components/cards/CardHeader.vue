@@ -2,7 +2,7 @@
 	<q-card-section class="bg-green-8 text-green-11 q-pa-sm">
 		<div class="tw:flex tw:flex-wrap tw:justify-between tw:items-center tw:gap-2 tw:w-full">
 			<!-- child 1 -->
-			<div class="tw:flex-shrink-0">
+			<div class="tw:shrink-0">
 				<div class="tw:flex tw:items-center justify-start">
 					<q-btn
 						v-if="showReload"
