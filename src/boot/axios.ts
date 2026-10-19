@@ -6,7 +6,7 @@ import { notifyError } from 'src/utils/notify';
 import { useAuthStore } from 'src/stores/auth-store';
 import type { App } from 'vue';
 
-declare module '@vue/runtime-core' {
+declare module 'vue' {
 	interface ComponentCustomProperties {
 		$axios: AxiosInstance;
 		$api: AxiosInstance;
