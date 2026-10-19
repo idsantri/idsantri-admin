@@ -27,14 +27,14 @@ jobs:
             - name: Set pnpm config
               run: pnpm config set minimumReleaseAge 0
 
+            - name: 🏷️ Setup Brand demo
+              run: node scripts/setup-brand.js demo
+
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
 
             - name: Clean Config
               run: pnpm exec quasar clean --qconf
-
-            - name: 🏷️ Setup Brand demo
-              run: node scripts/setup-brand.js demo
 
             - name: Build PWA
               run: pnpm exec quasar build -m pwa
