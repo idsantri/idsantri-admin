@@ -12,6 +12,13 @@
 		"test": "echo \"No test specified\" && exit 0",
 		"dev": "quasar dev",
 		"build": "quasar build",
+		"setup": "node scripts/setup-brand.js",
+		"dev:demo": "node scripts/setup-brand.js demo && quasar dev",
+		"dev:demangan": "node scripts/setup-brand.js demangan && quasar dev",
+		"dev:syaichona": "node scripts/setup-brand.js syaichona && quasar dev",
+		"build:demo": "node scripts/setup-brand.js demo && quasar build -m pwa",
+		"build:demangan": "node scripts/setup-brand.js demangan && quasar build -m pwa",
+		"build:syaichona": "node scripts/setup-brand.js syaichona && quasar build -m pwa",
 		"postinstall": "quasar prepare"
 	},
 	"dependencies": {
