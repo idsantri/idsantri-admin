@@ -2,13 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 // import { pathToFileURL } from 'node:url'
 
-const brand = process.argv[2]
-
-if (!brand) {
-  console.error('\n❌ Mohon cantumkan nama brand!')
-  console.error('👉 Contoh: node scripts/setup-brand.js demo\n')
-  process.exit(1)
-}
+const brand = process.argv[2] || process.env.BRAND || 'demo'
 
 const rootDir = process.cwd()
 const brandDir = path.resolve(rootDir, 'brands', brand)

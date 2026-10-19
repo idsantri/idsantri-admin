@@ -19,7 +19,7 @@
 		"build:demo": "node scripts/setup-brand.js demo && quasar build -m pwa",
 		"build:demangan": "node scripts/setup-brand.js demangan && quasar build -m pwa",
 		"build:syaichona": "node scripts/setup-brand.js syaichona && quasar build -m pwa",
-		"postinstall": "quasar prepare"
+		"postinstall": "node scripts/setup-brand.js && quasar prepare"
 	},
 	"dependencies": {
 		"@quasar/cli": "^5.0.9",
