@@ -35,6 +35,6 @@ yarn-error.log*
 # dynamic assets
 src/config/index.*
 src/assets/*
-public/*
+public/icons
 
 !**/.gitkeep
