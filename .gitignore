@@ -36,5 +36,6 @@ yarn-error.log*
 src/config/index.*
 src/assets/*
 public/icons
+public/favicon.ico
 
 !**/.gitkeep
