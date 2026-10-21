@@ -42,6 +42,7 @@
 		"Persistedstate",
 		"pinia",
 		"swipeable",
-		"themify"
+		"themify",
+		"vueuse"
 	]
 }

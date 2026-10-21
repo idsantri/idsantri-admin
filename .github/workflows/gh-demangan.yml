@@ -4,9 +4,19 @@ on:
             - demangan
 
 name: 🚀 Deploy website on push (Demangan)
+
+concurrency:
+    group: 'pages-demangan'
+    cancel-in-progress: true
+
+permissions:
+    contents: write
+
 jobs:
     build:
         runs-on: ubuntu-latest
+        env:
+            BRAND: demangan
         steps:
             - name: Checkout repository
               uses: actions/checkout@v6

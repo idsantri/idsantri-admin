@@ -12,6 +12,7 @@ const config = {
 		sekretariat: {
 			alumni: true,
 			pulangan: true,
+			emaal: true,
 		},
 		makhadiyah: {
 			mutasi: true,
