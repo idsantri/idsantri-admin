@@ -20,7 +20,7 @@
 							<q-item-label caption>
 								<ul class="no-margin" style="padding-inline-start: 16px; list-style-type: disc">
 									<li v-for="(it, id) in item" :key="id">
-										{{ it }}
+										<span v-html="it"></span>
 									</li>
 								</ul>
 							</q-item-label>
