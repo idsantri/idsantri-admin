@@ -1,1 +1,0 @@
-import{zt as e}from"./index-D1ZCW2g8.js";function t(){if(window.getSelection!==void 0){let t=window.getSelection();t.empty===void 0?t.removeAllRanges!==void 0&&(t.removeAllRanges(),e.is.mobile||t.addRange(document.createRange())):t.empty()}else document.selection!==void 0&&document.selection.empty()}export{t};
