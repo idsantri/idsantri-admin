@@ -9,7 +9,8 @@ import releases from 'src/config/releases';
 function showUpdatePrompt(): void {
 	Dialog.create({
 		title: `Update`,
-		message: `Versi baru aplikasi sudah tersedia. Muat ulang sekarang untuk memperbarui? <br/><small>v${releases[0]?.ver}</small>`,
+		message: `Versi baru aplikasi sudah tersedia. Muat ulang sekarang untuk memperbarui?
+			      <br/><br/><small><em>&mdash;v${releases[0]?.ver}</em></small>`,
 		cancel: true,
 		persistent: true,
 		html: true,

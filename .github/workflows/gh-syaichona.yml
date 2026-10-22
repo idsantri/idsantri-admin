@@ -4,9 +4,19 @@ on:
             - syaichona
 
 name: 🚀 Deploy website on push (Syaichona)
+
+concurrency:
+    group: "pages-syaichona"
+    cancel-in-progress: true
+
+permissions:
+    contents: write
+
 jobs:
     build:
         runs-on: ubuntu-latest
+        env:
+            BRAND: syaichona
         steps:
             - name: Checkout repository
               uses: actions/checkout@v6

@@ -15,6 +15,7 @@ import _iuran from './_iuran';
 import _alumni from './_alumni';
 import _apb from './_apb';
 import _pulangan from './_pulangan';
+import _emaal from './_emaal';
 
 const routes: RouteRecordRaw[] = [
 	// layout auth
@@ -40,6 +41,11 @@ const routes: RouteRecordRaw[] = [
 				path: 'santri',
 				meta: { title: 'Detail Santri' },
 				children: _santri,
+			},
+			{
+				path: 'emaal',
+				meta: { title: 'Dompet Santri' },
+				children: _emaal,
 			},
 			{
 				path: 'alumni',

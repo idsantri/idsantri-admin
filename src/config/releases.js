@@ -6,9 +6,13 @@ export default [
 			'Fitur Baru': [
 				'Ekspor/download data aparatur madrasah',
 				'Upload gambar via kamera',
+				'<strong>EMaal</strong> (E-Wallet) &mdash; dompet santri',
+			],
+			Improve: [
+				'Perbaikan dan peningkatan performa',
+				'Fix bug pada fitur Pendidikan al-Quran: Muallim',
 				'Deskripsi role/group pengguna',
 			],
-			Improve: ['Perbaikan dan peningkatan performa', 'Fix bug pada fitur Pendidikan al-Quran: Muallim'],
 			Iuran: ['Hapus virtual account (VA) iuran'],
 		},
 	},
@@ -16,7 +20,7 @@ export default [
 		ver: '1.7.2',
 		date: 'Agustus 2026',
 		release: {
-			'Fitur Baru': ['Riwayat transaksi iuran via Payment Gateway (`/iuran/payments`)'],
+			'Fitur Baru': ['Riwayat transaksi iuran via Payment Gateway (<code>`/iuran/payments`</code>)'],
 		},
 	},
 	{
