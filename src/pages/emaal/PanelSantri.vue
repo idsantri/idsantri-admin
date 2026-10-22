@@ -2,7 +2,7 @@
 	<div class="">
 		<FilterSantriQuery :active-only="true" bg-color="green-11" @data-filter="(v) => (data = v)" />
 		<q-card bordered flat class="q-mt-sm">
-			<q-card-section class="q-pa-sm bg-green-7 text-green-11 flex items-center justify-between">
+			<q-card-section class="q-pa-sm bg-green-7 text-green-11 flex items-center justify-between tw:gap-2">
 				<div class="flex items-center">
 					<q-btn
 						icon="sync"
@@ -15,9 +15,18 @@
 						:disable="!data?.santri?.id"
 						@click="getEmaalBySantri"
 					/>
-					<span v-html="data.display"></span>
+					<span v-html="data.display" class=""></span>
 				</div>
-				<q-btn class="q-px-sm" dense outline glossy icon="add" label="Tambah" no-caps @click="addEmaal" />
+				<q-btn
+					class="q-px-sm tw:ml-auto"
+					dense
+					outline
+					glossy
+					icon="add"
+					label="Tambah"
+					no-caps
+					@click="addEmaal"
+				/>
 			</q-card-section>
 			<q-card-section class="q-pa-sm">
 				<q-inner-loading :showing="loading">
@@ -28,11 +37,11 @@
 						<q-item
 							v-for="item in emaal"
 							:key="item.id"
-							:class="(item.aktif ? ' bg-green-12' : '') + ' rounded-borders q-card--bordered'"
+							:class="(item.aktif ? ' bg-green-1' : '') + ' rounded-borders q-card--bordered'"
 						>
 							<q-item-section>
-								<q-item-label overline>
-									{{ item.no_emaal }}
+								<q-item-label :class="(item.aktif ? 'tw:font-semibold' : '') + ' tw:text-lg'">
+									<code class="tw:tracking-widest"> {{ item.no_emaal }} </code>
 								</q-item-label>
 								<q-item-label caption>
 									{{ item.keterangan ?? '-' }}
