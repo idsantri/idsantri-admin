@@ -68,7 +68,12 @@
 			</q-card-section>
 		</q-card>
 		<q-dialog v-model="formShow">
-			<EmaalForm :data="formData" @success-create="getEmaalBySantri" @success-update="getEmaalBySantri" />
+			<EmaalForm
+				:data="formData"
+				@success-create="getEmaalBySantri"
+				@success-update="getEmaalBySantri"
+				@success-delete="handleDelete"
+			/>
 		</q-dialog>
 	</div>
 </template>
@@ -77,6 +82,7 @@ import FilterSantriQuery from 'src/components/filters/FilterSantriQuery.vue';
 import Emaal from 'src/models/Emaal';
 import { onMounted, ref, watchEffect } from 'vue';
 import EmaalForm from 'src/components/forms/EmaalForm.vue';
+import ArrayCrud from 'src/models/ArrayCrud';
 
 const data = ref({});
 const emaal = ref([]);
@@ -143,5 +149,9 @@ async function toggleActive(val, evt, item) {
 		console.error('error update emaal', error);
 	}
 }
+
+const handleDelete = (id) => {
+	emaal.value = ArrayCrud.remove(emaal.value, id);
+};
 </script>
 <style lang=""></style>
