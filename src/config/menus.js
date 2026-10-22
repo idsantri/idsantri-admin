@@ -18,6 +18,14 @@ const menus = {
 			display: true,
 		},
 		{
+			to: '/emaal',
+			icon: 'sym_o_account_balance_wallet',
+			label: 'Emaal',
+			caption: 'Dompet Santri (E-Wallet)',
+			disable: false,
+			display: !!menu.sekretariat.emaal,
+		},
+		{
 			to: '/alumni',
 			icon: 'sym_o_school',
 			label: 'Alumni',
