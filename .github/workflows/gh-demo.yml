@@ -4,9 +4,19 @@ on:
             - demo
 
 name: 🚀 Deploy website on push (Demo)
+
+concurrency:
+    group: 'pages-demo'
+    cancel-in-progress: true
+
+permissions:
+    contents: write
+
 jobs:
     build:
         runs-on: ubuntu-latest
+        env:
+            BRAND: demo
         steps:
             - name: Checkout repository
               uses: actions/checkout@v6

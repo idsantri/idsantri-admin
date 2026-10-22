@@ -31,3 +31,11 @@ yarn-error.log*
 
 # local .env files
 .env.local*
+
+# dynamic assets
+src/config/index.*
+src/assets/*
+public/icons
+public/favicon.ico
+
+!**/.gitkeep
