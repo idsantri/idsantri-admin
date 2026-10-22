@@ -16,16 +16,17 @@ const config = {
 		},
 		makhadiyah: {
 			mutasi: true,
-			quran: true,
+			quran: false,
 		},
 		keamanan: {
 			izin_pesantren: true,
-			indisipliner: true,
+			indisipliner: false,
 		},
-		ugt: true,
+		ugt: false,
 		apb: true,
 		setting: {
-			appWali: true,
+			appWali: false,
+			virtualAccount: false,
 		},
 	},
 };
