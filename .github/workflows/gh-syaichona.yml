@@ -6,7 +6,7 @@ on:
 name: 🚀 Deploy website on push (Syaichona)
 
 concurrency:
-    group: 'pages-demo'
+    group: "pages-syaichona"
     cancel-in-progress: true
 
 permissions:
