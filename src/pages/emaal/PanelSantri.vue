@@ -47,7 +47,7 @@
 										checked-icon="task_alt"
 										unchecked-icon="clear"
 										:disable="loading"
-										@update:model-value="(val, evt) => updateEmaal(val, evt, item)"
+										@update:model-value="(val, evt) => toggleActive(val, evt, item)"
 										dense
 									/>
 									<q-btn
@@ -57,7 +57,7 @@
 										outline
 										glossy
 										:color="item.aktif ? 'green-10' : 'gray-9'"
-										@click="editEmaal(item)"
+										@click="updateEmaal(item)"
 									/>
 								</div>
 							</q-item-section>
@@ -67,16 +67,23 @@
 				<div v-else class="text-negative text-overline text-center">Tidak ada data untuk ditampilkan</div>
 			</q-card-section>
 		</q-card>
+		<q-dialog v-model="formShow">
+			<EmaalForm :data="formData" @success-create="getEmaalBySantri" @success-update="getEmaalBySantri" />
+		</q-dialog>
 	</div>
 </template>
 <script setup>
 import FilterSantriQuery from 'src/components/filters/FilterSantriQuery.vue';
 import Emaal from 'src/models/Emaal';
 import { onMounted, ref, watchEffect } from 'vue';
+import EmaalForm from 'src/components/forms/EmaalForm.vue';
 
 const data = ref({});
 const emaal = ref([]);
 const loading = ref(false);
+const formShow = ref(false);
+const formData = ref({});
+
 onMounted(() => {
 	// console.log('mounted');
 });
@@ -103,9 +110,20 @@ async function getEmaalBySantri() {
 	}
 }
 
-async function addEmaal() {}
+async function addEmaal() {
+	// console.log(data.value);
+	formData.value = {
+		nama: data.value.santri.nama,
+		santri_id: data.value.santri.id,
+	};
+	formShow.value = true;
+}
+async function updateEmaal(item) {
+	formData.value = { nama: data.value.santri.nama, ...item };
+	formShow.value = true;
+}
 
-async function updateEmaal(val, evt, item) {
+async function toggleActive(val, evt, item) {
 	const previousAktif = emaal.value.map((i) => ({ id: i.id, aktif: i.aktif }));
 
 	emaal.value = emaal.value.map((i) => {

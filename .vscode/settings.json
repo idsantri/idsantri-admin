@@ -6,10 +6,17 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": "explicit"
 	},
-	"eslint.validate": ["javascript", "javascriptreact", "typescript", "vue"],
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"vue"
+	],
 	"eslint.format.enable": false,
 	"js/ts.tsdk.path": "node_modules/typescript/lib",
-	"html-css-class-completion.remoteStyleSheets": ["https://cdn.jsdelivr.net/npm/quasar@2.21.2/dist/quasar.prod.css"],
+	"html-css-class-completion.remoteStyleSheets": [
+		"https://cdn.jsdelivr.net/npm/quasar@2.21.2/dist/quasar.prod.css"
+	],
 	"editor.formatOnPaste": true,
 	"[vue]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -24,7 +31,9 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[json]": {
-		"editor.quickSuggestions": { "strings": true },
+		"editor.quickSuggestions": {
+			"strings": true
+		},
 		"editor.suggest.insertMode": "replace",
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
@@ -34,6 +43,7 @@
 		"cordova",
 		"datatables",
 		"demangan",
+		"emaal",
 		"faslah",
 		"fontawesome",
 		"Marhalah",
