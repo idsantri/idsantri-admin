@@ -25,6 +25,7 @@
 		"@quasar/cli": "^5.0.9",
 		"@quasar/extras": "^2.0.3",
 		"@tailwindcss/vite": "^4.3.3",
+		"@vueuse/router": "^15.0.0",
 		"axios": "^1.19.0",
 		"chart.js": "^4.5.1",
 		"core-js": "^3.46.0",
