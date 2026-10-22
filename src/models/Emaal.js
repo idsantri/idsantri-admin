@@ -12,5 +12,15 @@ class Emaal extends ApiCrud {
 
 		return resData.data;
 	}
+
+	async setAktif(id, value) {
+		const resData = await this._apiUpdate({
+			endPoint: `${this._path}/${id}/set-active`,
+			data: { aktif: value },
+		});
+
+		this._showSuccess(resData.message);
+		return resData.data;
+	}
 }
 export default new Emaal();

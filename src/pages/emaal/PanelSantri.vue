@@ -41,7 +41,7 @@
 							<q-item-section side>
 								<div class="tw:flex tw:items-center tw:gap-4">
 									<q-toggle
-										v-model="item.aktif"
+										:model-value="item.aktif"
 										color="green-8"
 										keep-color
 										checked-icon="task_alt"
@@ -106,15 +106,24 @@ async function getEmaalBySantri() {
 async function addEmaal() {}
 
 async function updateEmaal(val, evt, item) {
-	// console.log('v', val);
-	// console.log('e', evt);
-	// console.log('i', item);
+	const previousAktif = emaal.value.map((i) => ({ id: i.id, aktif: i.aktif }));
+
 	emaal.value = emaal.value.map((i) => {
-		if (val) {
-			if (i.id != item.id) i.aktif = false;
-		}
-		return i;
+		return {
+			...i,
+			aktif: i.id === item.id ? val : val ? false : i.aktif,
+		};
 	});
+
+	try {
+		await Emaal.setAktif(item.id, val);
+	} catch (error) {
+		emaal.value = emaal.value.map((i) => {
+			const previous = previousAktif.find((status) => status.id === i.id);
+			return previous ? { ...i, aktif: previous.aktif } : i;
+		});
+		console.error('error update emaal', error);
+	}
 }
 </script>
 <style lang=""></style>
