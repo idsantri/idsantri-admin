@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-select
 		dense
 		outlined
@@ -10,6 +10,7 @@
 		clearable
 		v-model="input"
 		ref="selectRef"
+		popup-content-style="width: 300px; max-width: 100%;"
 	>
 		<template v-slot:after>
 			<drop-down-after v-if="btnSetting" :route-to="url" @reload="reload" />
