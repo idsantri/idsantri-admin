@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card>
 		<q-card-section class="q-pa-sm bg-green-7 text-green-11 text-subtitle1 flex flex-center">
 			Desa/Kelurahan
@@ -125,4 +125,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

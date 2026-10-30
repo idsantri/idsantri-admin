@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-item clickable v-close-popup to="/apb/accounts">
 		<q-item-section avatar class="text-positive">
 			<q-icon name="sym_o_account_balance" />
@@ -12,4 +12,4 @@
 <script>
 export default {};
 </script>
-<style lang=""></style>
+<style></style>

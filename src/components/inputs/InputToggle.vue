@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-field
 		outlined
 		:dense="dense"
@@ -42,4 +42,4 @@ defineProps({
 	toggleClass: { type: String, default: '' },
 });
 </script>
-<style lang=""></style>
+<style></style>

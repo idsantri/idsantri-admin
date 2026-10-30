@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Data Santri Indisipliner" :show-reload="false" :show-add="true" @on-add="crudShow = true">
 			<template #more v-if="$q.screen.lt.sm">
@@ -43,4 +43,4 @@ import { ref } from 'vue';
 
 const crudShow = ref(false);
 </script>
-<style lang=""></style>
+<style></style>

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div>
 		<HeadFilterSantri
 			start-url="/iuran/santri"
@@ -83,4 +83,4 @@ const onCreate = (res) => {
 	router.push(`/iuran/santri/${res.santri_id}/${res.th_ajaran_h}`);
 };
 </script>
-<style lang=""></style>
+<style></style>

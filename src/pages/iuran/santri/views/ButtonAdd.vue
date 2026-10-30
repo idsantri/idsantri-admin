@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-btn-dropdown
 		split
 		dense
@@ -33,4 +33,4 @@
 	</q-btn-dropdown>
 </template>
 <script setup></script>
-<style lang=""></style>
+<style></style>

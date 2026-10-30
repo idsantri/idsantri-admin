@@ -91,4 +91,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

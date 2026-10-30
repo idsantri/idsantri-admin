@@ -163,4 +163,4 @@ const handleDelete = (id) => {
 	emaal.value = ArrayCrud.remove(emaal.value, id);
 };
 </script>
-<style lang=""></style>
+<style></style>

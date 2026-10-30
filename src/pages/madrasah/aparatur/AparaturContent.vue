@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-table
 		flat
 		:rows="aparatur"
@@ -196,4 +196,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

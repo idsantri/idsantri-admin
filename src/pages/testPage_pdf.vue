@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-btn label="show" @click="showPdf = true"></q-btn>
 
 	<q-dialog v-model="showPdf">
@@ -15,4 +15,4 @@ import { ref } from 'vue';
 const showPdf = ref(false);
 const srcPdf = api.defaults.baseURL + '/reports/santri/registrasi/view?id=8000';
 </script>
-<style lang=""></style>
+<style></style>

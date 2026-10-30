@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card flat class="">
 		<q-card-section class="no-padding">
 			<q-card flat bordered>
@@ -98,4 +98,4 @@ const columns = [
 	{ name: 'ruang', label: 'Ruang', align: 'left', field: 'ruang' },
 ];
 </script>
-<style lang=""></style>
+<style></style>

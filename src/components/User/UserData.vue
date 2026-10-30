@@ -29,4 +29,4 @@
 <script setup>
 defineProps({ user: Object });
 </script>
-<style lang=""></style>
+<style></style>

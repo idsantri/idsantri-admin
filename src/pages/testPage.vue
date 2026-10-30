@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-page>
 		<q-btn @click="reload">load</q-btn>
 
@@ -27,4 +27,4 @@ onMounted(async () => {
 	console.log(options.value);
 });
 </script>
-<style lang=""></style>
+<style></style>

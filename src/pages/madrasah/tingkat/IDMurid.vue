@@ -1,7 +1,7 @@
-<template lang="">
+<template>
 	<div>id murid</div>
 </template>
 <script>
 export default {};
 </script>
-<style lang=""></style>
+<style></style>

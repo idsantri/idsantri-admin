@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card flat bordered>
 		<q-card-section class="q-px-sm q-py-sm bg-green-11">
 			<q-toolbar class="no-padding" style="min-height: 0">
@@ -102,4 +102,4 @@ watch(endDate, (newValue, oldValue) => {
 	}
 });
 </script>
-<style lang=""></style>
+<style></style>

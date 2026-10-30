@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card-actions class="flex items-center bg-green-6">
 		<slot name="left1"></slot>
 		<q-btn
@@ -44,4 +44,4 @@ defineProps({
 	disableClose: { type: Boolean, default: false },
 });
 </script>
-<style lang=""></style>
+<style></style>

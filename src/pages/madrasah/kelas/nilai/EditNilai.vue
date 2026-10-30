@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div>
 		<CardLoading :showing="loading" />
 		<div class="q-pa-none">
@@ -143,4 +143,4 @@ const saveNilaiMapel = async () => {
 	}
 };
 </script>
-<style lang=""></style>
+<style></style>

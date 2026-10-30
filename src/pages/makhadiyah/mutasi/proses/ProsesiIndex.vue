@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Modul Mutasi Domisili" :showReload="false">
 			<template v-slot:buttons>
@@ -34,4 +34,4 @@ onMounted(() => {
 	if (toggle) toggle.click();
 });
 </script>
-<style lang=""></style>
+<style></style>

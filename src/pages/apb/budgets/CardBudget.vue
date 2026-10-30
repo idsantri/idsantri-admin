@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-list class="" bordered>
 		<CardLoading :showing="loading" />
 		<q-item>
@@ -88,4 +88,4 @@ defineProps({
 	},
 });
 </script>
-<style lang=""></style>
+<style></style>

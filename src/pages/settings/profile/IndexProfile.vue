@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Pengaturan Profil Lembaga" @onReload="loadData" />
 
@@ -218,4 +218,4 @@ const uploadRoutes = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div class="relative-position">
 		<div v-if="iuran?.length > 0" class="row">
 			<div class="col bg-green-1" style="max-width: 90px">
@@ -60,4 +60,4 @@ onMounted(async () => {
 	}
 });
 </script>
-<style lang=""></style>
+<style></style>

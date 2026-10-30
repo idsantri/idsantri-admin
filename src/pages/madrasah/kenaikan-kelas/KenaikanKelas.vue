@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Modul Kenaikan Kelas" :show-reload="false" />
 
@@ -25,4 +25,4 @@ onMounted(() => {
 	if (toggle) toggle.click();
 });
 </script>
-<style lang=""></style>
+<style></style>

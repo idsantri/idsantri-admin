@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-list class="tw:bg-green-100/25" style="min-width: 200px">
 		<CardLoading :showing="loading" message="" />
 		<q-item
@@ -55,4 +55,4 @@ onMounted(async () => {
 	}
 });
 </script>
-<style lang=""></style>
+<style></style>

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Data Pulangan" @onReload="reload" :show-add="true" @on-add="showForm = true" />
 		<q-card-section v-show="!realtime" class="bg-warning q-pa-xs text-black">
@@ -85,4 +85,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

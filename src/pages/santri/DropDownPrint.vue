@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-btn-dropdown color="green-10" no-caps dense outline class="q-px-sm text-green-11" :disable="loadingDownload">
 		<template v-slot:label>
 			<q-spinner v-if="loadingDownload" class="q-mr-sm" />
@@ -164,4 +164,4 @@ function printKeterangan() {
 	showViewer.value = true;
 }
 </script>
-<style lang=""></style>
+<style></style>

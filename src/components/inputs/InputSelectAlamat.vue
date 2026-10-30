@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-select
 		dense
 		outlined
@@ -56,4 +56,4 @@ defineProps({
 	},
 });
 </script>
-<style lang=""></style>
+<style></style>

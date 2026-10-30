@@ -594,4 +594,4 @@ const murid = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

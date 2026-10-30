@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader :title="'Input List ' + kebabToTitleCase(data?.key || '')" :is-new="isNew" />
@@ -86,4 +86,4 @@ async function onDelete() {
 	return await handleDelete(props.data.id);
 }
 </script>
-<style lang=""></style>
+<style></style>

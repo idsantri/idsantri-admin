@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Data Penanggung Jawab Guru Tugas" @on-reload="loadData" />
 		<div class="row" style="max-width: 1200px">

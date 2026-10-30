@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Modul Pendidikan Tajwid al-Quran" :showReload="false" />
 		<q-card-section class="q-pa-sm">
@@ -66,4 +66,4 @@ async function download() {
 	}
 }
 </script>
-<style lang=""></style>
+<style></style>

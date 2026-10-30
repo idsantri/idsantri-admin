@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader :showReload="false" title="Download" />
 		<q-card-section>
@@ -13,4 +13,4 @@
 	</CardPage>
 </template>
 <script setup></script>
-<style lang=""></style>
+<style></style>

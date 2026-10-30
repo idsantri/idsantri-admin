@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader
 			title="Data Penanggung Jawab Guru Tugas"
@@ -164,4 +164,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

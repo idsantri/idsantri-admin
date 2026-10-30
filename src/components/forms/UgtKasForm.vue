@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Kas UGT" :is-new="isNew" />
@@ -144,4 +144,4 @@ watch(
 	{ immediate: true },
 );
 </script>
-<style lang=""></style>
+<style></style>

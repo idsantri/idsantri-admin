@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-select
 		dense
 		outlined
@@ -84,4 +84,4 @@ defineExpose({
 	},
 });
 </script>
-<style lang=""></style>
+<style></style>

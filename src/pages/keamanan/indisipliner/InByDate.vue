@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div>
 		<FilterTanggal start-url="/keamanan/indisipliner/tanggal" @dataFilter="dataEmit">
 			<RouterPage />
@@ -52,4 +52,4 @@ onMounted(async () => {
 	}
 });
 </script>
-<style lang=""></style>
+<style></style>

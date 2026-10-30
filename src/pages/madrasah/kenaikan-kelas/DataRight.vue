@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card class="" flat bordered>
 		<q-card-section class="q-pa-sm bg-green-7">
 			<q-toolbar class="no-padding text-green-11" style="min-height: 0">
@@ -176,4 +176,4 @@ async function onSubmit() {
 	}
 }
 </script>
-<style lang=""></style>
+<style></style>

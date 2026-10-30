@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div :class="$q.screen.lt.sm ? 'hidden' : '' + 'text-green-11 q-px-sm'">
 		<span>{{ user?.name }} </span>
 		{{ ' ' }}
@@ -70,4 +70,4 @@ const installApp = async () => {
 	}
 };
 </script>
-<style lang=""></style>
+<style></style>

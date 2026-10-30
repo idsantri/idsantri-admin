@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div class="flex justify-between items-center">
 		<div>
 			<div class="text-italic text-weight-light">Nomor WA Customer Service:</div>
@@ -95,4 +95,4 @@ const onEdit = () => {
 	isEdit.value = !isEdit.value;
 };
 </script>
-<style lang=""></style>
+<style></style>

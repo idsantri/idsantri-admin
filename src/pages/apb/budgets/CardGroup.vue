@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-list>
 		<q-item class="bg-green-1 q-py-none">
 			<q-item-section class="">
@@ -197,4 +197,4 @@ watch(
 	{ immediate: true, deep: true },
 );
 </script>
-<style lang=""></style>
+<style></style>

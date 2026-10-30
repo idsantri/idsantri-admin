@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Pengaturan Aplikasi Wali Santri" :showReload="false" />
 		<q-card-section class="q-pa-sm">
@@ -48,4 +48,4 @@ import PanelBanner from './PanelBanner.vue';
 
 const tab = ref('banner');
 </script>
-<style lang=""></style>
+<style></style>

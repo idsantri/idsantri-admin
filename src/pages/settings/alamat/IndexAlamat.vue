@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Pengaturan Alamat" :showReload="false" />
 		<q-card-section class="no-padding full-width row no-wrap justify-start items-start content-start scroll">
@@ -52,4 +52,4 @@ function selectKecamatan(v) {
 	kecamatan_id.value = v?.id ?? '';
 }
 </script>
-<style lang=""></style>
+<style></style>

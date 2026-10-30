@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Upload Nilai" :show-reload="false">
 			<template #buttons>

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-select
 		dense
 		outlined
@@ -60,4 +60,4 @@ watch(ujian_ke, (newValue, oldValue) => {
 	}
 });
 </script>
-<style lang=""></style>
+<style></style>

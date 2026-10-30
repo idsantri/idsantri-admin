@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Data Domisili Baru" :is-new="false" />
@@ -94,4 +94,4 @@ async function onDelete() {
 	return await handleDelete(props.data.id);
 }
 </script>
-<style lang=""></style>
+<style></style>

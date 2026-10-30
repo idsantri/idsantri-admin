@@ -253,4 +253,4 @@ function sortMapIuran(data) {
 		}));
 }
 </script>
-<style lang=""></style>
+<style></style>

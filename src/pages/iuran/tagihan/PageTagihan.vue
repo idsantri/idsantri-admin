@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader :show-reload="false" title="Modul Tagihan" />
 		<q-card-section class="q-pa-sm">
@@ -245,4 +245,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

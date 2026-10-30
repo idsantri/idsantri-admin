@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div>
 		<filter-kelas
 			:show-list-bulan-ujian="true"

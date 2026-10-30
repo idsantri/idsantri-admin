@@ -106,4 +106,4 @@ const columns = [
 	{ name: 'santri_data_akhir', label: 'Data Akhir', align: 'left', field: 'santri_data_akhir', sortable: true },
 ];
 </script>
-<style lang=""></style>
+<style></style>

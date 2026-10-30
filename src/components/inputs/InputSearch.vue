@@ -22,4 +22,4 @@ defineProps({
 	color: { type: String, default: 'green-10' },
 });
 </script>
-<style lang=""></style>
+<style></style>

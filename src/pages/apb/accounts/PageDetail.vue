@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Detail Akun" @onReload="reload" :show-edit="true" @onEdit="showForm = true">
 			<template #more>

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card style="min-width: 300px">
 		<q-card-section class="q-py-sm q-px-md bg-green-6 text-green-11 text-subtitle1">
 			Instal Aplikasi
@@ -26,4 +26,4 @@
 <script>
 export default {};
 </script>
-<style lang=""></style>
+<style></style>

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div>
 		<q-select
 			:model-value="filter.th_ajaran_h"
@@ -12,7 +12,7 @@
 			class=""
 			label="Tahun Ajaran"
 			hide-bottom-space
-                behavior="menu"
+			behavior="menu"
 		/>
 		<q-select
 			:model-value="filter.tingkat_id"
@@ -25,7 +25,7 @@
 			dense
 			class="q-mt-sm"
 			label="Tingkat"
-                behavior="menu"
+			behavior="menu"
 		/>
 		<q-select
 			v-model="filter.kelas"
@@ -35,7 +35,7 @@
 			dense
 			class="q-mt-sm"
 			label="Kelas"
-                behavior="menu"
+			behavior="menu"
 		/>
 	</div>
 </template>
@@ -192,4 +192,4 @@ watch(
 	{ deep: true },
 );
 </script>
-<style lang=""></style>
+<style></style>

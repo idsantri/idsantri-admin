@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card bordered flat>
 		<q-card-section class="bg-green-2 text-subtitle2 q-pa-sm flex items-center">
 			<q-btn flat dense icon="sync" @click="getKelas(santri_id)" />
@@ -104,4 +104,4 @@ watch(
 	{ immediate: true },
 );
 </script>
-<style lang=""></style>
+<style></style>

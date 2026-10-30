@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Rapor (Printed)" @onReload="loadData" />
 		<q-card-section class="q-pa-sm">
@@ -140,4 +140,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

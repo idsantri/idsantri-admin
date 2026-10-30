@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card flat bordered>
 		<q-card-section class="q-pa-sm">
 			<div class="tw:flex tw:items-center tw:flex-wrap tw:justify-between tw:gap-x-4 tw:gap-y-2">
@@ -48,4 +48,4 @@ defineProps({
 	account: { type: Object, required: true },
 });
 </script>
-<style lang=""></style>
+<style></style>

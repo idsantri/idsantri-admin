@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card class="bg-green-1">
 		<q-card-section class="q-pa-sm bg-green-8 text-green-11 flex items-center justify-between">
 			<div class="text-subtitle1">Perhatian</div>

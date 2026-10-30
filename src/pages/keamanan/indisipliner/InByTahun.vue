@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div>
 		<FilterTahunAjaran :showBulanUjian="true" start-url="/keamanan/indisipliner/th-ajaran" @dataFilter="dataEmit">
 			<RouterPage />
@@ -51,4 +51,4 @@ onMounted(async () => {
 	}
 });
 </script>
-<style lang=""></style>
+<style></style>

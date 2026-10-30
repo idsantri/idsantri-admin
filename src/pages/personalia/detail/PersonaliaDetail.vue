@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Detail Personalia" :showReload="false">
 			<template v-slot:buttons>
@@ -31,4 +31,4 @@ import { provide, ref } from 'vue';
 const aparatur = ref({});
 provide('aparatur', aparatur);
 </script>
-<style lang=""></style>
+<style></style>

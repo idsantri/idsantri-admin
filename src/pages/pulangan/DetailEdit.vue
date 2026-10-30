@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Detail Pulangan" :show-reload="false" />
 		<q-card-section class="tw:grid tw:grid-cols-1 tw:sm:flex tw:sm:justify-between tw:gap-2 q-pa-sm">
@@ -118,4 +118,4 @@ watch(
 	},
 );
 </script>
-<style lang=""></style>
+<style></style>

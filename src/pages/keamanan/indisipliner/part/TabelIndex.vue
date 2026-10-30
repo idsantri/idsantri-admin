@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-table
 		class="dt q-pa-sm"
 		:rows="indisipliner"
@@ -85,4 +85,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

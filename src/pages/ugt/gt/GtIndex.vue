@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Data Guru Tugas" @on-reload="loadData" :show-add="true" @on-add="crudShow = true" />
 

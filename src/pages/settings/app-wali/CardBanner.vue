@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card class="q-mt-sm" flat bordered>
 		<q-card-section class="q-pa-sm bg-green-1 flex justify-between items-center">
 			<div class="text-weight-bold">Banner {{ index + 1 }}</div>
@@ -110,4 +110,4 @@ defineExpose({
 	setNotEdit,
 });
 </script>
-<style lang=""></style>
+<style></style>

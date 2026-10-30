@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Daftar Transaksi" @on-reload="reload" :show-add="true" @on-add="crudShow = true" />
 
@@ -202,4 +202,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

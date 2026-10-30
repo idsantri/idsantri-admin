@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Pengaturan Report (Print Out)" @onReload="loadData" />
 		<q-card-section class="q-pa-sm">
@@ -100,4 +100,4 @@ onMounted(async () => {
 	loadData();
 });
 </script>
-<style lang=""></style>
+<style></style>

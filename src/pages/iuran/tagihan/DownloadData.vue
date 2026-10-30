@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Download Data Tagihan (VA)" @onReload="loadData" />
 		<q-card-section class="q-pa-sm">
@@ -91,4 +91,4 @@ async function onDownload() {
 	}
 }
 </script>
-<style lang=""></style>
+<style></style>

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-select
 		dense
 		hint="Kota kelahiran"
@@ -61,4 +61,4 @@ async function filterFunction(val, update, abort) {
 	);
 }
 </script>
-<style lang=""></style>
+<style></style>

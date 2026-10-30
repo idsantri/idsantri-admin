@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div
 		class="container-logo"
 		:style="{

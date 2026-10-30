@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card flat bordered class="bg-green-1">
 		<q-tabs v-if="!modeEdit" no-caps outside-arrows mobile-arrows class="bg-green-2 text-green-10" v-model="tab">
 			<q-tab name="harian" label="Harian" />

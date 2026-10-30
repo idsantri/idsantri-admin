@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-table
 		class="dt q-pa-sm"
 		:rows="izin"
@@ -122,4 +122,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

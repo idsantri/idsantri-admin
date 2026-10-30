@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div>
 		<InputSelectArray
 			v-model="filter.th_ajaran_h"
@@ -45,4 +45,4 @@ function removeBottomRow() {
 	el.forEach((e) => e.remove());
 }
 </script>
-<style lang=""></style>
+<style></style>

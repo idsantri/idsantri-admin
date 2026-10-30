@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form>
 			<q-card-section class="bg-green-7 text-green-11 q-pa-sm">
@@ -88,4 +88,4 @@ onMounted(() => {
 	input.value = props.data;
 });
 </script>
-<style lang=""></style>
+<style></style>

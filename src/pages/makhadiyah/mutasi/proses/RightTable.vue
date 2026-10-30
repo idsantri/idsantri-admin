@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-markup-table flat bordered style="height: 530px">
 		<thead>
 			<tr>
@@ -99,4 +99,4 @@ function edit(item) {
 	showEdit.value = true;
 }
 </script>
-<style lang=""></style>
+<style></style>

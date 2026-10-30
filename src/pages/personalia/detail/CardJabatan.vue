@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card flat bordered class="">
 		<q-card-section class="bg-green-7 no-padding">
 			<q-toolbar class="no-padding no-margin">
@@ -26,4 +26,4 @@ import CardJabatanMadrasah from './CardJabatanMadrasah.vue';
 import CardJabatanQuran from './CardJabatanQuran.vue';
 const tab = ref('madrasah');
 </script>
-<style lang=""></style>
+<style></style>

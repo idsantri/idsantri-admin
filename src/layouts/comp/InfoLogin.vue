@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card style="min-width: 300px">
 		<q-card-section class="q-pa-sm bg-green-6 text-green-11 text-subtitle1"> Info Login </q-card-section>
 		<q-card-section class="q-pa-sm">
@@ -90,4 +90,4 @@ const login = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>
