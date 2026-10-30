@@ -46,7 +46,7 @@
 				<q-select
 					dense
 					v-model="inputs.kategori"
-					class="q-my-sm"
+					class="q-my-sm tw:gap-x-2"
 					outlined
 					label="Kategori*"
 					:options="categoryOptions"
@@ -58,7 +58,7 @@
 				>
 					<template v-slot:after>
 						<q-rating
-							class=""
+							class="tw:gap-x-1"
 							name="kategori"
 							v-model="inputs.kategori"
 							max="5"
@@ -69,11 +69,7 @@
 						/>
 					</template>
 				</q-select>
-				<input-select-tatib-santri
-					class="q-my-sm"
-					v-model="inputs.pasal"
-					:rules="[(val) => !!val || 'Harus diisi!']"
-				/>
+				<input-select-tatib-santri class="q-my-sm" v-model="inputs.pasal_array" />
 				<q-input dense class="q-my-sm" outlined label="Deskripsi" v-model="inputs.deskripsi" autogrow="" />
 				<q-input
 					dense
@@ -134,13 +130,15 @@ async function onSubmit() {
 		tgl_kasus: inputs.value.tgl_kasus,
 		tgl_sidang: inputs.value.tgl_sidang,
 		kategori: inputs.value.kategori,
-		pasal: inputs.value.pasal?.join('; '),
+		pasal_array: JSON.parse(JSON.stringify(inputs.value.pasal_array)),
 		deskripsi: inputs.value.deskripsi,
 		eksekutor: inputs.value.eksekutor,
 		saksi: inputs.value.saksi,
 		takzir: inputs.value.takzir?.join('; '),
 		keterangan: inputs.value.keterangan,
 	};
+	// console.log('data', data);
+	// return;
 	if (isNew) {
 		return await handleCreate(data, true);
 	} else {

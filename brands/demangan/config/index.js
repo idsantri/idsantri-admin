@@ -26,7 +26,6 @@ const config = {
 		apb: true,
 		setting: {
 			appWali: false,
-			virtualAccount: false,
 		},
 	},
 };
