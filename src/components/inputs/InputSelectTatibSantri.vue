@@ -1,18 +1,36 @@
-<template lang="">
+<template>
 	<q-select
 		dense
 		outlined
 		label="Pasal dilanggar"
 		emit-value
 		map-options
+		option-label="nomor"
 		:options="options"
 		:loading="loading"
 		behavior="menu"
 		clearable
 		multiple
-		:hint="hint"
 		v-model="input"
+		:rules="[(val) => !!val || 'Harus diisi!']"
+		popup-content-style="width: 300px; max-width: 100%;"
 	>
+		<template #option="scope">
+			<q-item v-bind="scope.itemProps" :class="{ 'bg-green-11 text-green-10': scope.selected }">
+				<q-item-section>
+					<q-item-label overline :class="{ 'text-black tw:font-bold': scope.selected }">
+						{{ scope.opt.nomor }}
+					</q-item-label>
+					<q-item-label
+						caption
+						style="white-space: normal; text-wrap: wrap"
+						:class="{ 'text-italic text-green-10': scope.selected }"
+					>
+						{{ scope.opt.text }}
+					</q-item-label>
+				</q-item-section>
+			</q-item>
+		</template>
 		<template v-slot:after>
 			<drop-down-after route-to="tatib-santri" @reload="reload" />
 		</template>
@@ -36,43 +54,18 @@ const options = computed(() => {
 	const data = store.getStateByKey(key);
 	let result = [];
 	if (data.length) {
-		result = data.filter((d) => d.val0.length != 1).map((d) => `[${d.val0}] ${d.val1}`);
+		result = data
+			.filter((d) => d.val0.length != 1)
+			.map((d) => {
+				return {
+					nomor: d.val0,
+					text: d.val1,
+				};
+			});
 	}
+	// console.log('result', result);
 	return result;
 });
-
-function extractData(inputValue) {
-	try {
-		// Jika input kosong/null/undefined, kembalikan string ...
-		if (!inputValue) {
-			return 'Pilih pasal dilanggar';
-		}
-
-		// Normalisasi ke array
-		const values = Array.isArray(inputValue) ? inputValue : [inputValue];
-
-		// Gabungkan menjadi satu string dengan pemisah
-		const joined = values.join('; ');
-
-		// Ekstraksi konten di dalam tanda kurung []
-		const regex = /\[(.*?)\]/g;
-		const matches = joined.match(regex);
-
-		// Jika tidak ada match, kembalikan string kosong
-		if (!matches) {
-			return '';
-		}
-
-		// Bersihkan tanda kurung [] dan gabungkan hasilnya
-		const extractedData = matches.map((match) => match.slice(1, -1)).join(', ');
-		return '[' + extractedData + ']';
-	} catch (error) {
-		// Tangani error secara aman
-		console.error(error);
-		return '';
-	}
-}
-const hint = computed(() => extractData(input.value));
 
 async function reload() {
 	await store.fetchList(url);
@@ -84,4 +77,4 @@ onMounted(async () => {
 	}
 });
 </script>
-<style lang=""></style>
+<style lang="scss" scoped></style>

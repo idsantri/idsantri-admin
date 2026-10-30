@@ -54,7 +54,7 @@
 
 									<tr>
 										<td class="label">Pasal</td>
-										<td>{{ indisipliner.no_pasal }}</td>
+										<td>{{ indisipliner.pasal_nomor }}</td>
 									</tr>
 									<tr>
 										<td class="label">Kategori</td>

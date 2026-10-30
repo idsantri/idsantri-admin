@@ -62,10 +62,10 @@ const columns = [
 		sortable: true,
 	},
 	{
-		name: 'no_pasal',
+		name: 'pasal_nomor',
 		label: 'Pasal',
 		align: 'left',
-		field: 'no_pasal',
+		field: 'pasal_nomor',
 		sortable: true,
 	},
 	{
