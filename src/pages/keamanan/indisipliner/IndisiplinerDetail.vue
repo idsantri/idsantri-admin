@@ -90,10 +90,17 @@
 									</tr>
 									<tr>
 										<td class="">Pasal:</td>
+										<td></td>
+									</tr>
+									<tr v-for="ind in indisipliner.pasal_array" :key="ind.nomor">
+										<td class="q-pl-lg">
+											&mdash; <strong>{{ ind.nomor }}</strong>
+										</td>
 										<td>
-											{{ indisipliner.pasal }}
+											{{ ind.text }}
 										</td>
 									</tr>
+
 									<tr>
 										<td class="">Deskripsi:</td>
 										<td>
@@ -179,7 +186,7 @@ td {
 	vertical-align: top;
 }
 tr td:first-child {
-	width: 120px;
+	width: 100px;
 	font-style: italic;
 }
 </style>
