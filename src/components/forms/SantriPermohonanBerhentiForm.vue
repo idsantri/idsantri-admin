@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Permohonan Berhenti" :is-new="true" />
@@ -124,4 +124,4 @@ async function onSubmit() {
 	document.getElementById('btn-close-form')?.click();
 }
 </script>
-<style lang=""></style>
+<style></style>

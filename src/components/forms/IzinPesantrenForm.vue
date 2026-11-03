@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Izin Santri" :is-new="isNew" />
@@ -124,4 +124,4 @@ const onDelete = async () => {
 	return await handleDelete(props.data.id);
 };
 </script>
-<style lang=""></style>
+<style></style>

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Download Nilai" :show-reload="false">
 			<template #buttons>
@@ -236,4 +236,4 @@ watch(
 	},
 );
 </script>
-<style lang=""></style>
+<style></style>

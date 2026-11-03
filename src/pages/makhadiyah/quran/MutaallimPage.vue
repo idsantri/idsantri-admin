@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div class="flex items-start q-gutter-sm">
 		<div class="col-grow">
 			<q-card flat bordered>

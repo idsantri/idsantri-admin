@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Download Data Tagihan (VA)" @onReload="loadData" />
 		<q-card-section class="q-pa-sm">
@@ -15,7 +15,7 @@
 						<q-list v-else bordered separator>
 							<q-item tag="label" v-for="(item, index) in trx" :key="index">
 								<q-item-section>
-									<q-item-label>{{ item.va_group }}</q-item-label>
+									<q-item-label>{{ item.in_group }}</q-item-label>
 									<q-item-label caption> {{ item.count }} item </q-item-label>
 								</q-item-section>
 								<q-item-section avatar>
@@ -31,8 +31,8 @@
 					</q-scroll-area>
 					<!-- <pre>{{ trx }}</pre> -->
 				</q-card-section>
-				<q-card-actions class="flex items-center justify-between q-pa-sm bg-green-7">
-					<q-btn no-caps outline glossy color="green-11" label="Atur VA" icon="settings" to="/settings/va" />
+				<q-card-actions class="q-pa-sm bg-green-7" align="right">
+					<!-- <q-btn no-caps outline glossy color="green-11" label="Atur VA" icon="settings" to="/settings/va" /> -->
 					<q-btn
 						no-caps
 						color="green-11"
@@ -61,8 +61,8 @@ const loadingDownload = ref(false);
 async function loadData() {
 	try {
 		loading.value = true;
-		const data = await Iuran.vaGroup();
-		trx.value = data.va_group.map((item) => ({ ...item, selected: false }));
+		const data = await Iuran.inGroup();
+		trx.value = data.in_group.map((item) => ({ ...item, selected: false }));
 	} catch (error) {
 		console.error('🚀 ~ loadData ~ error:', error);
 	} finally {
@@ -75,7 +75,10 @@ onMounted(async () => {
 });
 
 async function onDownload() {
-	const selectedItems = trx.value.filter((item) => item.selected).map((item) => item.va_group);
+	notifyError('Fitur ini dalam perbaikan. Hubungi admin untuk mengunduh data tagihan');
+	return;
+
+	const selectedItems = trx.value.filter((item) => item.selected).map((item) => item.in_group);
 	if (selectedItems.length === 0) {
 		notifyError('Pilih minimal satu VA Group untuk diunduh');
 		return;
@@ -83,7 +86,7 @@ async function onDownload() {
 
 	try {
 		loadingDownload.value = true;
-		await DownloadUrl.iuranVA({ va_group: selectedItems });
+		await DownloadUrl.iuranVA({ in_group: selectedItems });
 	} catch (e) {
 		console.error('🚀 ~ onDownload ~ e:', e);
 	} finally {
@@ -91,4 +94,4 @@ async function onDownload() {
 	}
 }
 </script>
-<style lang=""></style>
+<style></style>

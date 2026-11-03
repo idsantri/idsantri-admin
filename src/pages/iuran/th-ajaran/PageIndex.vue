@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div>
 		<FilterThAjaran start-url="/iuran/th-ajaran" @data-filter="(val) => (dataFilter = val)" bordered flat />
 		<q-card class="q-mt-sm" bordered flat>
@@ -158,4 +158,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

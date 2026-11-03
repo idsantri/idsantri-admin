@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card flat bordered class="">
 		<q-card-section class="bg-green-7 no-padding">
 			<q-toolbar class="no-padding no-margin">
@@ -131,4 +131,4 @@ async function successUpload(res) {
 	aparatur.value.image_url = res.image_url + `?t=${new Date().getTime()}`;
 }
 </script>
-<style lang=""></style>
+<style></style>

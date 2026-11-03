@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Data Izin Santri" :show-reload="false" :show-add="true" @on-add="crudShow = true">
 			<template #more v-if="$q.screen.lt.sm">
@@ -42,4 +42,4 @@ import IzinPesantrenForm from 'src/components/forms/IzinPesantrenForm.vue';
 import { ref } from 'vue';
 const crudShow = ref(false);
 </script>
-<style lang=""></style>
+<style></style>

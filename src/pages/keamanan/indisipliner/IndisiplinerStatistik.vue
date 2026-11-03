@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Statistik Santri Indisipliner" :show-reload="false" />
 
@@ -109,4 +109,4 @@ const filteredKamar = computed(() => {
 	return kamar.value.filter((item) => item.asrama.toUpperCase() === filterAsrama.value.toUpperCase());
 });
 </script>
-<style lang=""></style>
+<style></style>

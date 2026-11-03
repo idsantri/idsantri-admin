@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div>
 		<filter-kelas start-url="/madrasah/absensi/penomoran" @data-filter="(v) => (textFilter = v)" />
 		<q-card class="q-mt-sm" flat bordered>

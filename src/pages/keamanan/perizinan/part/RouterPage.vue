@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div class="q-card--bordered rounded-borders">
 		<q-tabs
 			shrink
@@ -33,4 +33,4 @@
 <script>
 export default {};
 </script>
-<style lang=""></style>
+<style></style>

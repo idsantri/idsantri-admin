@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card style="width: 100%; height: 90%">
 		<q-card-section style="width: 100%; height: 100%" class="q-pa-sm">
 			<iframe
@@ -20,4 +20,4 @@ import { useAuthStore } from 'src/stores/auth-store';
 const props = defineProps({ url: String });
 const token = useAuthStore().token || '';
 </script>
-<style lang=""></style>
+<style></style>

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card flat bordered class="">
 		<q-card-section class="bg-green-7 no-padding">
 			<q-toolbar class="no-padding no-margin">

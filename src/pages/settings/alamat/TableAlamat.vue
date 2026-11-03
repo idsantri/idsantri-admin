@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-table
 		flat
 		bordered
@@ -53,4 +53,4 @@ defineProps({
 });
 const selected = ref([]);
 </script>
-<style lang=""></style>
+<style></style>

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div class="q-card--bordered">
 		<div class="q-px-md">
 			<q-toolbar class="no-padding no-margin">
@@ -93,4 +93,4 @@ const handleEdit = (id) => {
 	crudShow.value = true;
 };
 </script>
-<style lang=""></style>
+<style></style>

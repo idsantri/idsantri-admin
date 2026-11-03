@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-select
 		label="Pilih paket"
 		dense
@@ -100,4 +100,4 @@ function calculateTotal() {
 	return calc;
 }
 </script>
-<style lang=""></style>
+<style></style>

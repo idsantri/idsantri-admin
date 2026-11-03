@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Data Guru Tugas" @on-reload="loadData" />
 		<div class="row" style="max-width: 1200px">

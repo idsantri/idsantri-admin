@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader
 			title="Daftar Mata Pelajaran"
@@ -113,4 +113,4 @@ function addNew() {
 	crudShow.value = true;
 }
 </script>
-<style lang=""></style>
+<style></style>

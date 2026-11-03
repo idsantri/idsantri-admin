@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-markup-table flat bordered style="height: 530px">
 		<thead>
 			<tr>
@@ -82,4 +82,4 @@ function trueAll() {
 }
 </script>
 
-<style lang=""></style>
+<style></style>

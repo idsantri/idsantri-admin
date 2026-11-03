@@ -139,4 +139,4 @@ onMounted(async () => {
 	await loadData();
 });
 </script>
-<style lang=""></style>
+<style></style>

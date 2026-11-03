@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Data Murid" @onReload="loadData" />
 
@@ -165,4 +165,4 @@ onMounted(async () => {
 	await loadData();
 });
 </script>
-<style lang=""></style>
+<style></style>
