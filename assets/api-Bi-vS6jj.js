@@ -1,0 +1,1 @@
+import{t as e}from"./axios-C8i3ABgH.js";var t=e;export{t};
