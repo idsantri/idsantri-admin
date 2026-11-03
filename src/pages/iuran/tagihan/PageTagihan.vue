@@ -1,6 +1,19 @@
 <template>
 	<CardPage>
-		<CardHeader :show-reload="false" title="Modul Tagihan" />
+		<CardHeader :show-reload="false" title="Modul Tagihan">
+			<template v-slot:buttons>
+				<q-btn
+					dense
+					no-caps
+					color="green-11"
+					outline
+					class="q-px-sm"
+					label="Data Tagihan"
+					icon="download"
+					to="/iuran/download"
+				/>
+			</template>
+		</CardHeader>
 		<q-card-section class="q-pa-sm">
 			<FilterKelas
 				bordered
@@ -66,17 +79,9 @@
 										</td>
 									</tr>
 									<tr class="vertical-top">
-										<td class="text-no-wrap text-italic q-pr-md">VA Group</td>
+										<td class="text-no-wrap text-italic q-pr-md">Input Group</td>
 										<td class="">
-											<q-toggle
-												dense
-												v-model="withVA"
-												color="green"
-												:label="va_group"
-												@update:model-value="
-													(v) => (v ? (va_group = va_text) : (va_group = ''))
-												"
-											/>
+											<q-toggle dense v-model="withGroup" color="green" :label="groupLabel" />
 										</td>
 									</tr>
 								</tbody>
@@ -85,10 +90,11 @@
 						<q-card-section class="q-pa-sm">
 							<q-input label="Tahun Ajaran" outlined dense v-model="input.th_ajaran_h" disable />
 							<InputSelectIuranPaket class="q-mt-sm" @on-input="iuranPaket = $event" />
+							<!-- {{ iuranPaket }} -->
 						</q-card-section>
 						<q-card-actions class="q-pa-sm bg-green-6 absolute-bottom">
 							<q-btn
-								label="Unduh Data"
+								label="Data Tagihan"
 								glossy
 								color="green-9"
 								class="text-green-11"
@@ -121,32 +127,32 @@
 import FilterKelas from 'src/components/filters/FilterKelas.vue';
 import InputSelectIuranPaket from 'src/components/inputs/InputSelectIuranPaket.vue';
 import { notifyError } from 'src/utils/notify';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useAuthStore } from 'src/stores/auth-store';
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
 import Kelas from 'src/models/Kelas';
 import Iuran from 'src/models/Iuran';
 
-const auth = useAuthStore();
-const { email } = auth.user;
-const withVA = ref(false);
+const withGroup = ref(true);
 const textFilter = ref('');
 const loading = ref(false);
-const { params } = useRoute();
+const route = useRoute();
+const { params } = route;
 const murid = ref([]);
 const selected = ref([]);
 const iuranPaket = ref([]);
 const loadingPaket = ref(false);
 const input = ref({ th_ajaran_h: params.th_ajaran_h || '' });
-const va_text =
-	format(new Date(), 'yyyy-MM-dd HH:mm:ss', {
-		locale: id,
-	}) +
+
+const groupLabel = computed(
+	() =>
+		(route.params.th_ajaran_h ?? '') +
 		' ~ ' +
-		email || '';
-const va_group = ref('');
+		(route.params.tingkat_id ?? '') +
+		' ~ ' +
+		(route.params.kelas ?? '') +
+		' ~ Paket ' +
+		(iuranPaket.value.length ? iuranPaket.value[0].paket : '?'),
+);
 
 async function loadData() {
 	try {
@@ -183,7 +189,7 @@ async function onSubmit() {
 	}
 	const data = {
 		th_ajaran_h: input.value.th_ajaran_h,
-		va_group: va_group.value,
+		in_group: withGroup.value ? groupLabel.value : null,
 		santri_id: selected.value.map((s) => s.santri_id),
 		paket: iuranPaket.value.map((i) => {
 			return { item: i.item, nominal: i.nominal };

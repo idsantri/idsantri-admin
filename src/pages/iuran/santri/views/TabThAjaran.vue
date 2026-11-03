@@ -44,7 +44,7 @@ const arrThAjaran = ref([]);
 async function loadData() {
 	try {
 		loading.value = true;
-		const data = await Iuran.bySantri(params.id);
+		const data = await Iuran.summary(params.id);
 		iuran.value = data.iuran ?? [];
 		arrThAjaran.value = iuran.value.map((v) => v.th_ajaran_h);
 	} catch (error) {
