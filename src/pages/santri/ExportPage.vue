@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Ekspor Data Santri" @on-reload="loadData" />
 		<q-card-section class="q-pa-sm">
@@ -67,4 +67,4 @@ async function download() {
 	}
 }
 </script>
-<style lang=""></style>
+<style></style>

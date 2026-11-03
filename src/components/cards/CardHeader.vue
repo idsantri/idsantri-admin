@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card-section class="bg-green-8 text-green-11 q-pa-sm">
 		<div class="tw:flex tw:flex-wrap tw:justify-between tw:items-center tw:gap-2 tw:w-full">
 			<!-- child 1 -->
@@ -96,4 +96,4 @@ defineProps({
 const slots = useSlots();
 const slotMore = !!slots.more;
 </script>
-<style lang=""></style>
+<style></style>

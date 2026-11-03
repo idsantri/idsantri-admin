@@ -56,4 +56,4 @@ async function successUpload(res) {
 	emit('image-uploaded', res.image);
 }
 </script>
-<style lang=""></style>
+<style></style>

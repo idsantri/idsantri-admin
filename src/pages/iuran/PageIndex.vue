@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Modul Iuran" :show-reload="false">
 			<template #buttons>

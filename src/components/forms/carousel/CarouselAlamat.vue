@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div class="text-subtitle2">Data Alamat</div>
 	<InputSelectAlamat
 		@sync-click="fetchProvinsi()"
@@ -294,4 +294,4 @@ watch(
 );
 </script>
 
-<style lang=""></style>
+<style></style>

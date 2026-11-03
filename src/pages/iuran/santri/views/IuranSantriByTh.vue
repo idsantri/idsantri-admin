@@ -68,8 +68,8 @@
 											v-model="item.cetak"
 											checked-icon="check"
 											unchecked-icon="clear"
-											:true-value="1"
-											:false-value="0"
+											:true-value="true"
+											:false-value="false"
 											@update:model-value="(val, evt) => toggleCetak(val, evt, item, index)"
 										/>
 									</div>
@@ -177,7 +177,12 @@ async function loadData() {
 	if (thAjaranH.value && santriId.value) {
 		try {
 			loading.value = true;
-			const data = await Iuran.bySantriByThAjaran(santriId.value, thAjaranH.value);
+			const data = await Iuran.getAll({
+				params: {
+					santri_id: santriId.value,
+					th_ajaran_h: thAjaranH.value,
+				},
+			});
 			iuran.value = sortMapIuran(data.iuran);
 		} catch (error) {
 			console.error('🚀 ~ loadData ~ error:', error);
@@ -193,7 +198,7 @@ async function toggleCetak(val, evt, item, index) {
 	try {
 		await Iuran.toggleCetak(item.id);
 	} catch (error) {
-		iuran.value[index].cetak = val == 1 ? 0 : 1;
+		iuran.value[index].cetak = val == true ? false : true;
 		console.error('🚀 ~ toggleCetak ~ error:', error);
 	}
 }
@@ -253,4 +258,4 @@ function sortMapIuran(data) {
 		}));
 }
 </script>
-<style lang=""></style>
+<style></style>

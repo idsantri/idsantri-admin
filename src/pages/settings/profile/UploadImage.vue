@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader :title="`Upload ${selected.label}`" :showReload="false" :showBack="true" />
 		<q-card-section class="q-pa-sm">
@@ -112,4 +112,4 @@ async function successUpload() {
 	timestamp.value = Date.now();
 }
 </script>
-<style lang=""></style>
+<style></style>

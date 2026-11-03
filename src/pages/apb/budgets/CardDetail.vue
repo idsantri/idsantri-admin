@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card bordered flat class="">
 		<q-card-section class="bg-green-7 text-green-11 q-pa-sm flex justify-between items-center">
 			<div>

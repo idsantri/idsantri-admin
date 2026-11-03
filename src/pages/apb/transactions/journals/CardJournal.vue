@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card bordered flat class="">
 		<q-card-section class="q-pa-sm bg-green-7 text-green-11 flex justify-between items-center">
 			<div>
@@ -194,4 +194,4 @@ async function saveJournals() {
 	}
 }
 </script>
-<style lang=""></style>
+<style></style>

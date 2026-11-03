@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Detail Izin Pesantren" :show-reload="false" />
 

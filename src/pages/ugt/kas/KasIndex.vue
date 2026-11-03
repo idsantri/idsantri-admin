@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Kas UGT" @on-reload="loadData" :show-add="true" @on-add="addKas" />
 

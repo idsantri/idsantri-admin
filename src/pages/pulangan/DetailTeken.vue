@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card-section class="q-pa-sm">
 		<q-card bordered flat style="max-width: 600px">
 			<q-card-section horizontal>
@@ -71,4 +71,4 @@ async function successUpload(v) {
 	store.update(props.id, { p_tt_url: v.pulangan.p_tt_url });
 }
 </script>
-<style lang=""></style>
+<style></style>

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card class="" flat bordered>
 		<q-card-section class="q-pa-sm">
 			<q-select
@@ -130,4 +130,4 @@ async function filterFunction(val, update, abort) {
 	);
 }
 </script>
-<style lang=""></style>
+<style></style>

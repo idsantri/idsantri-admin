@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card-section class="bg-green-7 text-green-11 q-pa-sm">
 		<q-toolbar class="q-px-sm" style="min-height: 0">
 			<q-toolbar-title class="text-subtitle1">

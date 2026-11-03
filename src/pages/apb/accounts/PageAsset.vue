@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Saldo Aktiva" @on-reload="reload" :show-add="false">
 			<template #more>
@@ -72,4 +72,4 @@ onMounted(async () => {
 	await reload();
 });
 </script>
-<style lang=""></style>
+<style></style>

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
 			<FormHeader title="Input Santri Indisipliner" :is-new="isNew" />
@@ -167,4 +167,4 @@ const categoryOptions = [
 	{ value: 5, label: 'Sangat Berat' },
 ];
 </script>
-<style lang=""></style>
+<style></style>

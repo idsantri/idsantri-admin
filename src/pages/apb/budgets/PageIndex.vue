@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader
 			title="Daftar Anggaran"
@@ -300,4 +300,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

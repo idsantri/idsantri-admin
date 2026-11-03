@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-select
 		label="Grup Akun"
 		dense
@@ -67,4 +67,4 @@ onMounted(async () => {
 	}
 });
 </script>
-<style lang=""></style>
+<style></style>

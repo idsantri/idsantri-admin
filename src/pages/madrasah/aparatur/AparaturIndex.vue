@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Data Aparatur Madrasah" :show-reload="false">
 			<template #buttons>
@@ -45,4 +45,4 @@ import FilterKelas from 'src/components/filters/FilterKelas.vue';
 
 const textFilter = ref('');
 </script>
-<style lang=""></style>
+<style></style>

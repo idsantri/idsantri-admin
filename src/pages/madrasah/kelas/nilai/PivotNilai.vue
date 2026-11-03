@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div>
 		<CardLoading :showing="loading" />
 		<div v-if="nilai?.length == 0">
@@ -148,4 +148,4 @@ watch(
 	},
 );
 </script>
-<style lang=""></style>
+<style></style>

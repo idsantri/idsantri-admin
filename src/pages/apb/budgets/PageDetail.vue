@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Detail Anggaran" :show-reload="true" @on-reload="reload" :show-edit="false">
 			<template #more>

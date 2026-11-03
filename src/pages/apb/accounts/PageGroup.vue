@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Daftar Grup Akun" @on-reload="reload" :show-add="true" @on-add="onAdd">
 			<template #more>
@@ -209,4 +209,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

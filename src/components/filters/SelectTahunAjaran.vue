@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-select
 		dense
 		outlined
@@ -69,4 +69,4 @@ watch(th_ajaran_h, (newValue, oldValue) => {
 	}
 });
 </script>
-<style lang=""></style>
+<style></style>

@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div :class="[$attrs.class]">
 		<div class="tw:flex tw:gap-2 tw:items-center tw:justify-between tw:gap-x-4 q-mb-sm">
 			<div class="text-italic text-caption">Kategori</div>
@@ -117,4 +117,4 @@ onMounted(async () => {
 	}
 });
 </script>
-<style lang=""></style>
+<style></style>

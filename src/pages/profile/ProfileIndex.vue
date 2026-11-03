@@ -110,4 +110,4 @@ const changePassword = async () => {
 	);
 };
 </script>
-<style lang=""></style>
+<style></style>

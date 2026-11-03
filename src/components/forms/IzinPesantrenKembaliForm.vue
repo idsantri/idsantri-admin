@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="setBack">
 			<FormHeader title="Tetapkan Tanggal Kembali" :is-new="false" />
@@ -90,4 +90,4 @@ watch(
 	},
 );
 </script>
-<style lang=""></style>
+<style></style>

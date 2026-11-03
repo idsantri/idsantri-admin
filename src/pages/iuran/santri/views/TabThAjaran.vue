@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div class="relative-position">
 		<div v-if="iuran?.length > 0" class="row">
 			<div class="col bg-green-1" style="max-width: 90px">
@@ -44,7 +44,7 @@ const arrThAjaran = ref([]);
 async function loadData() {
 	try {
 		loading.value = true;
-		const data = await Iuran.bySantri(params.id);
+		const data = await Iuran.summary(params.id);
 		iuran.value = data.iuran ?? [];
 		arrThAjaran.value = iuran.value.map((v) => v.th_ajaran_h);
 	} catch (error) {
@@ -60,4 +60,4 @@ onMounted(async () => {
 	}
 });
 </script>
-<style lang=""></style>
+<style></style>

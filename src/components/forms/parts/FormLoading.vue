@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div
 		class="tw:absolute tw:inset-0 tw:z-10 tw:flex tw:flex-col tw:items-center tw:justify-center tw:backdrop-blur-[1px] tw:bg-orange-100/25"
 	>
@@ -20,4 +20,4 @@
 <script>
 export default {};
 </script>
-<style lang=""></style>
+<style></style>

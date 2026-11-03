@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Data Alumni" @onReload="loadData"> </CardHeader>
 		<q-card-section class="bg-green-12 q-pa-xs text-caption">
@@ -210,4 +210,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>
