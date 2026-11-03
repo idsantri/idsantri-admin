@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card flat bordered class="" style="width: 350px">
 		<q-card-section class="bg-green-7 text-green-11 q-pa-sm flex items-center justify-between">
 			<div>Riwayat Mutaallim</div>
@@ -120,4 +120,4 @@ const handleEdit = (id) => {
 	crudShow.value = true;
 };
 </script>
-<style lang=""></style>
+<style></style>

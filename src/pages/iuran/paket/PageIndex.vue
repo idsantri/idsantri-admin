@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Pengaturan Paket Iuran" @onReload="getData" />
 
@@ -145,4 +145,4 @@ function editPaket(paket) {
 	crudShow.value = true;
 }
 </script>
-<style lang=""></style>
+<style></style>

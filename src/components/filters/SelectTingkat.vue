@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-select
 		dense
 		outlined
@@ -73,4 +73,4 @@ watch(tingkat_id, (newValue, oldValue) => {
 	}
 });
 </script>
-<style lang=""></style>
+<style></style>

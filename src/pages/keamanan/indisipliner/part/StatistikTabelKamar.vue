@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div>
 		<div class="bg-green-1 text-green-10 text-overline text-center">Tabel Kamar (Total)</div>
 		<q-markup-table flat bordered class="q-my-sm">
@@ -50,4 +50,4 @@ const rowClick = (item) => {
 	emit('rowClick', item);
 };
 </script>
-<style lang=""></style>
+<style></style>

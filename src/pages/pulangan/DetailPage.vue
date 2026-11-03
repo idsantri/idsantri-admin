@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Detail Pulangan" @on-reload="reload" :show-edit="true" @on-edit="showForm = true" />
 		<q-card-section class="q-pa-sm">

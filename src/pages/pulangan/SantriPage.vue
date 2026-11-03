@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader :show-reload="true" title="Data Santri Pulang" @on-reload="reload">
 			<template #more>
@@ -257,4 +257,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

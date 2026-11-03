@@ -57,6 +57,9 @@ class Iuran extends ApiCrud {
 		});
 
 		this._showSuccess(resData.message);
+		if (resData.data?.warning_message) {
+			this._showWarning(resData.data.warning_message);
+		}
 
 		return resData.data || true;
 	}
@@ -74,30 +77,25 @@ class Iuran extends ApiCrud {
 		});
 
 		this._showSuccess(resData.message);
+		if (resData.data?.warning_message) {
+			this._showWarning(resData.data.warning_message);
+		}
 
 		return resData.data || true;
 	}
 
-	async bySantri(santriId) {
+	async summary(santri_id) {
 		const resData = await this._apiGet({
-			endPoint: `${this._path}/santri/${santriId}`,
+			endPoint: `${this._path}/summary`,
+			params: { santri_id },
 		});
 
 		return resData.data;
 	}
 
-	async bySantriByThAjaran(id, th_ajaran_h) {
+	async inGroup() {
 		const resData = await this._apiGet({
-			endPoint: `${this._path}/santri/${id}`,
-			params: { th_ajaran_h },
-		});
-
-		return resData.data;
-	}
-
-	async vaGroup() {
-		const resData = await this._apiGet({
-			endPoint: `${this._path}/va-group`,
+			endPoint: `${this._path}/list/in-group`,
 		});
 
 		return resData.data;

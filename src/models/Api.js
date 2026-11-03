@@ -1,4 +1,4 @@
-import { notifyConfirm, notifyError, notifySuccess } from 'src/utils/notify.js';
+import { notifyConfirm, notifyError, notifySuccess, notifyWarning } from 'src/utils/notify.js';
 import apiGet from 'src/api/apiGet';
 import apiPost from 'src/api/apiPost';
 import apiUpdate from 'src/api/apiUpdate';
@@ -17,6 +17,10 @@ export default class Api {
 
 	_showSuccess(message) {
 		notifySuccess(message);
+	}
+
+	_showWarning(message) {
+		notifyWarning(message);
 	}
 
 	_showError(message) {

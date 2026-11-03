@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage>
 		<CardHeader title="Daftar Akun" @on-reload="reload" :show-add="true" @on-add="showForm = true">
 			<template #more>
@@ -196,4 +196,4 @@ const columns = [
 	},
 ];
 </script>
-<style lang=""></style>
+<style></style>

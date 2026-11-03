@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div>
 		<div class="flex justify-between items-center q-mb-sm">
 			<div>
@@ -179,4 +179,4 @@ async function onSubmit() {
 	}
 }
 </script>
-<style lang=""></style>
+<style></style>

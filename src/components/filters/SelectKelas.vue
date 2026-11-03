@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-select
 		dense
 		outlined
@@ -83,4 +83,4 @@ watch(kelas, (newValue, oldValue) => {
 	}
 });
 </script>
-<style lang=""></style>
+<style></style>

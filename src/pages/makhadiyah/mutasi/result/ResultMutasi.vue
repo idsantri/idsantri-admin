@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<CardPage :dynamic-height="false">
 		<CardHeader title="Data Mutasi Domisili" @on-reload="loadData">
 			<template v-slot:buttons>
@@ -195,4 +195,4 @@ async function downloadMutasi() {
 	}
 }
 </script>
-<style lang=""></style>
+<style></style>

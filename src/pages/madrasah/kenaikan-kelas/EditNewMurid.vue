@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-card-section class="bg-green-7 text-green-11 q-pa-sm">
 			<q-toolbar class="q-px-sm" style="min-height: 0">
@@ -71,4 +71,4 @@ const props = defineProps({
 });
 const input = ref(props.data);
 </script>
-<style lang=""></style>
+<style></style>

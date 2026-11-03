@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card-section class="q-pa-sm bg-green-7 text-green-11"> Riwayat Transaksi </q-card-section>
 
 	<q-card-section class="q-pa-sm">

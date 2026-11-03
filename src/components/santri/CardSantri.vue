@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<q-card flat bordered>
 		<q-card-section class="q-pa-sm bg-green-1 flex items-center justify-between">
 			<div class="text-subtitle2">Identitas Santri</div>
@@ -168,4 +168,4 @@ watchEffect(async () => {
 	}
 });
 </script>
-<style lang=""></style>
+<style></style>

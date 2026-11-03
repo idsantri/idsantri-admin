@@ -1,4 +1,4 @@
-<template lang="">
+<template>
 	<div>
 		<FilterSantri start-url="/keamanan/izin-pesantren/santri" @dataFilter="dataEmit">
 			<RouterPage />
@@ -50,4 +50,4 @@ onMounted(async () => {
 	}
 });
 </script>
-<style lang=""></style>
+<style></style>

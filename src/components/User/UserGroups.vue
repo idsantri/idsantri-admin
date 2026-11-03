@@ -76,4 +76,4 @@ async function updateRole(group, index, newRole) {
 	}
 }
 </script>
-<style lang=""></style>
+<style></style>
