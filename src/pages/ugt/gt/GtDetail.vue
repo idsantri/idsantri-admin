@@ -174,7 +174,7 @@
 								<tr>
 									<td>Alamat</td>
 									<td>
-										{{ gt.pjgt_alamat }}
+										{{ gt.pjgt_alamat_pendek }}
 									</td>
 								</tr>
 								<tr>
@@ -183,15 +183,7 @@
 								</tr>
 								<tr>
 									<td>Lembaga</td>
-									<td>{{ gt.pjgt_lembaga }}</td>
-								</tr>
-								<tr>
-									<td>Administrasi</td>
-									<td>
-										Rp{{ digitSeparator(gt.administrasi_nominal || 0) }} ({{
-											gt.administrasi_count || 0
-										}}x)
-									</td>
+									<td>{{ gt.pjgt_jenis_lembaga }} {{ gt.pjgt_nama_lembaga }}</td>
 								</tr>
 							</tbody>
 						</q-markup-table>
@@ -211,7 +203,6 @@
 	</CardPage>
 </template>
 <script setup>
-import { digitSeparator } from 'src/utils/format-number';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import UgtGtForm from 'src/components/forms/UgtGtForm.vue';

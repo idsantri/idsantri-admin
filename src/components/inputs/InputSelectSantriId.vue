@@ -1,6 +1,7 @@
 <template>
 	<q-card class="" flat bordered>
 		<q-card-section class="q-pa-sm">
+			<div class="text-caption">Data Santri</div>
 			<q-select
 				dense
 				:hint="$props.activeOnly ? 'Hanya menampilkan santri aktif' : 'Ketikkan ID Santri'"
