@@ -11,48 +11,53 @@
 					class="q-my-sm"
 					:ref="!inputs.santri_id ? 'firstInput' : null"
 				/>
-				<q-select
-					class="q-my-sm"
-					dense
-					outlined
-					label="PJGT ID*"
-					v-model="inputs.pjgt_id"
-					:options="pjgtList"
-					emit-value
-					map-options
-					option-value="id"
-					option-label="id"
-					error-color="negative"
-					:loading="pjgtLoading"
-					use-input
-					clearable=""
-					@update:model-value="onInputPjgt"
-					behavior="menu"
-					:rules="[(val) => !!val || 'Harus diisi!']"
-					:ref="inputs.santri_id ? 'firstInput' : null"
-				>
-					<template v-slot:option="scope">
-						<q-item v-bind="scope.itemProps">
-							<q-item-section>
-								<q-item-label
-									>{{ scope.opt.id }} &mdash;
-									{{ scope.opt.nama }}
-								</q-item-label>
-								<q-item-label caption>{{ scope.opt.wilayah }}</q-item-label>
-							</q-item-section>
-						</q-item>
-					</template>
-				</q-select>
-				<q-input
-					dense
-					:hint="inputs.pjgt_wilayah"
-					class="q-my-sm"
-					outlined
-					label="Nama PJGT"
-					v-model="inputs.pjgt_nama"
-					disable
-					filled
-				/>
+				<q-card class="q-my-sm" flat bordered>
+					<q-card-section class="q-pa-sm">
+						<div class="text-caption">Data PJGT</div>
+						<q-select
+							class="q-my-sm"
+							dense
+							outlined
+							label="PJGT ID*"
+							v-model="inputs.pjgt_id"
+							:options="pjgtList"
+							emit-value
+							map-options
+							option-value="id"
+							option-label="id"
+							error-color="negative"
+							:loading="pjgtLoading"
+							use-input
+							clearable=""
+							@update:model-value="onInputPjgt"
+							behavior="menu"
+							:rules="[(val) => !!val || 'Harus diisi!']"
+							:ref="inputs.santri_id ? 'firstInput' : null"
+						>
+							<template v-slot:option="scope">
+								<q-item v-bind="scope.itemProps">
+									<q-item-section>
+										<q-item-label
+											>{{ scope.opt.id }} &mdash;
+											{{ scope.opt.nama }}
+										</q-item-label>
+										<q-item-label caption>{{ scope.opt.wilayah }}</q-item-label>
+									</q-item-section>
+								</q-item>
+							</template>
+						</q-select>
+						<q-input
+							dense
+							:hint="inputs.pjgt_wilayah"
+							class="q-my-sm"
+							outlined
+							label="Nama PJGT"
+							v-model="inputs.pjgt_nama"
+							disable
+							filled
+						/>
+					</q-card-section>
+				</q-card>
 				<InputSelectTahunAjaran
 					v-model="inputs.th_ajaran_h"
 					:rules="[(val) => !!val || 'Harus diisi!']"

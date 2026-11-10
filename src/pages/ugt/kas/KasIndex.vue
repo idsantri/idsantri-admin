@@ -30,11 +30,15 @@
 						<q-td key="id" :props="props">
 							{{ props.row.id }}
 						</q-td>
-						<q-td key="tgl_m" :props="props" title="format tanggal dd/mm/yyyy">
-							{{ formatDate(props.row.tgl_m, 'dd/MM/yyyy') }}
+						<q-td key="created_at" :props="props" title="format tanggal dd/mm/yyyy">
+							{{ formatDate(props.row.created_at, 'dd/MM/yyyy') }}
 						</q-td>
 						<q-td key="keperluan" :props="props">
-							{{ props.row.gt_id ? `${props.row.keperluan} (${props.row.gt_id})` : props.row.keperluan }}
+							{{
+								props.row.pjgt_id
+									? `${props.row.keperluan} (${props.row.pjgt_id})`
+									: props.row.keperluan
+							}}
 						</q-td>
 						<q-td key="keterangan" :props="props">
 							{{ props.row.keterangan }}
@@ -48,8 +52,8 @@
 						<q-td key="saldo" :props="props">
 							{{ digitSeparator(props.row.saldo) }}
 						</q-td>
-						<q-td key="cr_by" :props="props">
-							{{ props.row.cr_by }}
+						<q-td key="created_by" :props="props">
+							{{ props.row.created_by }}
 						</q-td>
 						<q-td key="edit" :props="props">
 							<div class="q-gutter-sm">
@@ -70,7 +74,7 @@
 									dense
 									class="q-px-md"
 									@click="print(props.row)"
-									:disable="props.row.gt_id ? false : true"
+									:disable="props.row.pjgt_id ? false : true"
 								/>
 							</div>
 						</q-td>
@@ -131,7 +135,7 @@ function editKas(row) {
 
 	const data = {
 		id: row.id,
-		gt_id: row.gt_id,
+		pjgt_id: row.pjgt_id,
 		keperluan: row.keperluan,
 		keterangan: row.keterangan,
 		flag: flag,
@@ -154,10 +158,10 @@ const columns = [
 		sortable: true,
 	},
 	{
-		name: 'tgl_m',
+		name: 'created_at',
 		label: 'Tanggal',
 		align: 'left',
-		field: 'tgl_m',
+		field: 'created_at',
 		sortable: true,
 	},
 	{
@@ -196,10 +200,10 @@ const columns = [
 		sortable: true,
 	},
 	{
-		name: 'cr_by',
+		name: 'created_by',
 		label: 'By',
 		align: 'left',
-		field: 'cr_by',
+		field: 'created_by',
 		sortable: true,
 	},
 	{
