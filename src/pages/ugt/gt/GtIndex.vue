@@ -165,7 +165,7 @@ const columns = [
 		name: 'pjgt_lembaga',
 		label: 'Lembaga',
 		align: 'left',
-		field: 'pjgt_lembaga',
+		field: (row) => row.pjgt_jenis_lembaga + ' ' + row.pjgt_nama_lembaga,
 		sortable: true,
 		style: 'white-space: normal; word-wrap: break-word;',
 	},
