@@ -16,13 +16,13 @@
 				/>
 				<q-card class="q-my-sm" flat bordered>
 					<q-card-section class="q-pa-sm">
-						<div class="text-caption">Jika terkait dengan administrasi GT</div>
+						<div class="text-caption">Jika terkait dengan administrasi PJGT</div>
 						<q-input
 							dense
 							class="q-my-sm"
 							outlined
-							label="GT ID"
-							v-model="inputs.gt_id"
+							label="PJGT ID"
+							v-model="inputs.pjgt_id"
 							clearable
 							debounce="500"
 							ref="firstInput"
@@ -31,18 +31,8 @@
 							dense
 							class="q-my-sm"
 							outlined
-							label="Nama GT"
-							v-model="gt.nama"
-							disable
-							filled
-							:loading="loadingGt"
-						/>
-						<q-input
-							dense
-							class="q-my-sm"
-							outlined
 							label="Nama PJGT"
-							v-model="gt.pjgt_nama"
+							v-model="pjgt.nama"
 							disable
 							filled
 							:loading="loadingGt"
@@ -77,7 +67,7 @@ import { nextTick, onMounted, ref, useTemplateRef, watch } from 'vue';
 import InputCurrency from 'src/components/inputs/InputCurrency.vue';
 import useCrudForm from './utils/useCrudForm';
 import UgtKas from 'src/models/UgtKas';
-import UgtGt from 'src/models/UgtGt';
+import UgtPjgt from 'src/models/UgtPjgt';
 
 const props = defineProps({
 	data: Object,
@@ -92,7 +82,7 @@ const inputs = ref({
 	...props.data,
 });
 const loadingGt = ref(false);
-const gt = ref({});
+const pjgt = ref({});
 const isNew = !props.data?.id;
 const firstInput = useTemplateRef('firstInput');
 
@@ -118,14 +108,13 @@ const onDelete = async () => {
 	return await handleDelete(props.data.id);
 };
 
-async function getGt(id) {
+async function getPjgt(id) {
 	try {
 		loadingGt.value = true;
-		const response = await UgtGt.getById({ id, notifySuccess: false });
-		gt.value = response.gt;
+		const response = await UgtPjgt.getById({ id, notifySuccess: false });
+		pjgt.value = response.pjgt;
 	} catch (_err) {
-		gt.value.nama = 'Data tidak ditemukan';
-		gt.value.pjgt_nama = 'Data tidak ditemukan';
+		pjgt.value.nama = 'Data tidak ditemukan';
 		// console.error('err ', _err);
 	} finally {
 		loadingGt.value = false;
@@ -133,12 +122,12 @@ async function getGt(id) {
 }
 
 watch(
-	() => inputs.value.gt_id,
+	() => inputs.value.pjgt_id,
 	async (newValue, oldValue) => {
-		gt.value.nama = '';
-		gt.value.pjgt_nama = '';
+		pjgt.value.nama = '';
+		pjgt.value.pjgt_nama = '';
 		if (newValue != oldValue) {
-			await getGt(newValue);
+			await getPjgt(newValue);
 		}
 	},
 	{ immediate: true },
