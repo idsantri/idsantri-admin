@@ -1,6 +1,6 @@
 <template>
 	<CardPage>
-		<CardHeader title="Jadwal Laporan" @on-reload="loadData" :show-add="true" @on-add="handleAdd" />
+		<CardHeader title="Jadwal Laporan" @on-reload="loadData(thAjaranH)" :show-add="true" @on-add="handleAdd" />
 		<q-card-section class="q-pt-sm q-px-sm q-pb-none">
 			<q-card flat bordered class="">
 				<q-card-actions align="right" class="">
@@ -39,10 +39,18 @@
 				</template>
 			</q-table>
 		</q-card-section>
-		<q-card-section class="q-pa-sm">
-			<pre>config:{{ configs }}</pre>
-			<pre>th_ajaran_h:{{ thAjaranH }}</pre>
-		</q-card-section>
+		<q-dialog persistent="" v-model="showForm">
+			<UgtConfigLaporanForm
+				:data="{ th_ajaran_h: thAjaranH, ...config }"
+				@success-submit="
+					(res) => {
+						thAjaranH = res.th_ajaran_h;
+						loadData(res.th_ajaran_h);
+					}
+				"
+				@success-delete="loadData(thAjaranH)"
+			/>
+		</q-dialog>
 	</CardPage>
 </template>
 <script setup>
@@ -50,12 +58,16 @@ import InputSelectTahunAjaran from 'src/components/inputs/InputSelectTahunAjaran
 import UgtConfig from 'src/models/UgtConfig';
 import { formatDate } from 'src/utils/format-date';
 import { formatHijri } from 'src/utils/hijri';
-import { onMounted, ref } from 'vue';
+import { useRouteQuery } from '@vueuse/router';
+import { ref, watch } from 'vue';
+import UgtConfigLaporanForm from 'src/components/forms/UgtConfigLaporanForm.vue';
 
 const configs = ref([]);
 const config = ref({});
 const loading = ref(false);
-const thAjaranH = ref('');
+const thAjaranH = useRouteQuery('th_ajaran_h', '');
+const showForm = ref(false);
+
 async function loadData(th_ajaran_h) {
 	try {
 		loading.value = true;
@@ -66,11 +78,18 @@ async function loadData(th_ajaran_h) {
 		loading.value = false;
 	}
 }
-onMounted(async () => {
-	if (thAjaranH.value) {
-		await loadData(thAjaranH.value);
-	}
-});
+
+watch(
+	thAjaranH,
+	(value) => {
+		if (value) {
+			loadData(value);
+		} else {
+			configs.value = [];
+		}
+	},
+	{ immediate: true },
+);
 
 const getById = async (id) => {
 	try {
@@ -84,12 +103,17 @@ const getById = async (id) => {
 	}
 };
 
-const handleAdd = () => {};
 const handleEdit = async (id) => {
+	config.value = {};
 	await getById(id);
-	if (config.value) {
-		console.log(config.value);
+	if (config.value.id) {
+		showForm.value = true;
 	}
+};
+const handleAdd = async () => {
+	config.value = {};
+	config.value.th_ajaran_h = thAjaranH.value;
+	showForm.value = true;
 };
 
 const columns = [

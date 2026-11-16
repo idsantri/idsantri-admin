@@ -1,5 +1,12 @@
 export default [
 	{
+		ver: '1.8.0',
+		date: 'November 2026',
+		release: {
+			'Fitur Baru': ['Manajemen Laporan Guru Tugas'],
+		},
+	},
+	{
 		ver: '1.7.3',
 		date: 'Oktober 2026',
 		release: {
