@@ -3,6 +3,8 @@
 		dense
 		outlined
 		emit-value
+		option-value="val0"
+		option-label="val1"
 		map-options
 		:options="options"
 		:loading="loading"
@@ -37,6 +39,10 @@ const props = defineProps({
 		type: Boolean,
 		default: true,
 	},
+	inputObject: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 const store = useListsStore();
@@ -45,7 +51,7 @@ const { loading } = storeRef;
 const key = props.url.replace(/-/g, '_');
 
 const options = computed(() => {
-	return store.getStateByKey(key, props.sort, true);
+	return store.getStateByKey(key, props.sort, !props.inputObject);
 });
 
 async function reload() {

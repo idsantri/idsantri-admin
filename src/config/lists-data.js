@@ -133,6 +133,13 @@ const data = [
 		sort: 'desc',
 	},
 	{
+		url: 'bulan-hijri',
+		label: 'Bulan Hijriah',
+		columns: ['Nomor', 'Bulan', 'Part'],
+		protected: false,
+		sort: 'asc',
+	},
+	{
 		url: 'iuran',
 		label: 'Iuran',
 		columns: ['Item', 'Nominal Default', 'ID (Kode)'],
