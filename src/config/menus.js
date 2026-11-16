@@ -140,6 +140,14 @@ const menus = {
 			disable: false,
 			display: !!menu.ugt,
 		},
+		{
+			to: '/ugt/config',
+			icon: 'event',
+			label: 'Pengaturan',
+			caption: 'Jadwal Laporan',
+			disable: false,
+			display: !!menu.ugt,
+		},
 	],
 	setting: [
 		{
