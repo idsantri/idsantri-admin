@@ -68,6 +68,10 @@
 									<td>Email</td>
 									<td>{{ gt.email }}</td>
 								</tr>
+								<tr v-if="!!isDev">
+									<td>OTP</td>
+									<td>{{ gt.otp }}</td>
+								</tr>
 							</tbody>
 						</q-markup-table>
 						<CardLoading :showing="loading" />
@@ -218,6 +222,8 @@ const crudShow = ref(false);
 const urlReport = ref('');
 const loadingSurat = ref(false);
 const loadingSertifikat = ref(false);
+
+const isDev = import.meta.env.DEV;
 
 async function loadData() {
 	try {

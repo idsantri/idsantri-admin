@@ -73,7 +73,6 @@ async function loadData(th_ajaran_h) {
 		loading.value = true;
 		const response = await UgtConfig.getAll({ params: { th_ajaran_h } });
 		if (response) configs.value = response.configs;
-	} catch (_error) {
 	} finally {
 		loading.value = false;
 	}
