@@ -25,4 +25,8 @@ export default [
 		path: 'kas',
 		component: (): Component => import('src/pages/ugt/kas/KasIndex.vue'),
 	},
+	{
+		path: 'config',
+		component: (): Component => import('src/pages/ugt/config/PageIndex.vue'),
+	},
 ];

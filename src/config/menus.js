@@ -140,6 +140,14 @@ const menus = {
 			disable: false,
 			display: !!menu.ugt,
 		},
+		{
+			to: '/ugt/config',
+			icon: 'sym_o_article_person',
+			label: 'Laporan',
+			caption: 'Laporan Guru Tugas',
+			disable: false,
+			display: !!menu.ugt,
+		},
 	],
 	setting: [
 		{
