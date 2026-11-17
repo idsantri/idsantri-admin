@@ -1,4 +1,5 @@
 const config = {
+	BRAND: 'demo',
 	INS_DESC: 'Demo Aplikasi',
 	INS_NAME: 'Madrasah dan Pondok Pesantren',
 	INS_SHORT: 'Demo Aplikasi',
