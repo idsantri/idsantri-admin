@@ -59,7 +59,7 @@
 	</q-card>
 </template>
 <script setup>
-import { nextTick, onMounted, ref, useTemplateRef, watch } from 'vue';
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
 import useCrudForm from 'src/components/forms/utils/useCrudForm';
 import InputSelectTahunAjaran from '../inputs/InputSelectTahunAjaran.vue';
 import { masehiToHijri, bacaHijri } from 'src/utils/hijri';
