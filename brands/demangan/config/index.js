@@ -1,4 +1,5 @@
 const config = {
+	BRAND: 'demangan',
 	INS_DESC: 'Pondok Pesantren',
 	INS_NAME: 'Syaichona Moh Cholil (Demangan)',
 	INS_SHORT: 'Demangan',

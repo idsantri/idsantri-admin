@@ -213,6 +213,7 @@ import UgtGtForm from 'src/components/forms/UgtGtForm.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
 import UgtGt from 'src/models/UgtGt';
 import DownloadFile from 'src/models/DownloadFile';
+import config from 'src/config';
 
 const route = useRoute();
 const id = route.params.id;
@@ -222,8 +223,7 @@ const crudShow = ref(false);
 const urlReport = ref('');
 const loadingSurat = ref(false);
 const loadingSertifikat = ref(false);
-
-const isDev = import.meta.env.DEV;
+const isDev = config.BRAND == 'demo';
 
 async function loadData() {
 	try {

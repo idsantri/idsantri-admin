@@ -1,4 +1,5 @@
 const config = {
+	BRAND: 'syaichona',
 	INS_DESC: 'Pondok Pesantren',
 	INS_NAME: 'Syaichona Moh Cholil',
 	INS_SHORT: 'Syaichona',
