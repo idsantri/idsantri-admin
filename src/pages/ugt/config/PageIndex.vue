@@ -55,7 +55,7 @@
 </template>
 <script setup>
 import InputSelectTahunAjaran from 'src/components/inputs/InputSelectTahunAjaran.vue';
-import UgtConfig from 'src/models/UgtConfig';
+import UgtConfig from 'src/models/UgtLaporanConfig';
 import { formatDate } from 'src/utils/format-date';
 import { formatHijri } from 'src/utils/hijri';
 import { useRouteQuery } from '@vueuse/router';
@@ -96,7 +96,6 @@ const getById = async (id) => {
 		loading.value = true;
 		const response = await UgtConfig.getById({ id });
 		if (response) config.value = response.config;
-	} catch (_error) {
 	} finally {
 		loading.value = false;
 	}

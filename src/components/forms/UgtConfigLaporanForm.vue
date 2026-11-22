@@ -65,7 +65,7 @@ import InputSelectTahunAjaran from '../inputs/InputSelectTahunAjaran.vue';
 import { masehiToHijri, bacaHijri } from 'src/utils/hijri';
 import { isDate, formatDate } from 'src/utils/format-date';
 import InputSelectArray from '../inputs/InputSelectArray.vue';
-import UgtConfig from 'src/models/UgtConfig.js';
+import UgtConfig from 'src/models/UgtLaporanConfig.js';
 const props = defineProps({
 	data: { type: Object, required: true },
 });
