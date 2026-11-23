@@ -1,4 +1,5 @@
 import type { Component } from 'vue';
+import type { RouteLocation } from 'vue-router';
 
 export default [
 	{
@@ -26,7 +27,22 @@ export default [
 		component: (): Component => import('src/pages/ugt/kas/KasIndex.vue'),
 	},
 	{
-		path: 'config',
-		component: (): Component => import('src/pages/ugt/config/PageIndex.vue'),
+		path: 'laporan',
+		component: (): Component => import('src/pages/ugt/laporan/IndexPage.vue'),
+		redirect: (to: RouteLocation): string => to.fullPath + '/config',
+		children: [
+			{
+				path: 'gt',
+				component: (): Component => import('src/pages/ugt/laporan/gt/LaporanPage.vue'),
+			},
+			{
+				path: 'gt/:id',
+				component: (): Component => import('src/pages/ugt/laporan/gt/LaporanById..vue'),
+			},
+			{
+				path: 'config',
+				component: (): Component => import('src/pages/ugt/laporan/config/ConfigPage.vue'),
+			},
+		],
 	},
 ];

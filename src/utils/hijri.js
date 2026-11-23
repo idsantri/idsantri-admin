@@ -190,6 +190,12 @@ function m2hFormat(input) {
 	return hijri.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
 }
 
+function masehiToHijriFormat(input) {
+	if (!input) return '-';
+	const hijri = masehiToHijri(input);
+	return hijri.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+}
+
 function m2hBacaHijri(input) {
 	if (!input) return '-';
 	const hijri = m2h(input);
@@ -264,4 +270,4 @@ function masehiToHijri(tanggalMasehi, koreksiHari = 0) {
 
 	return `${tahunStr}${bulanStr}${hariStr}`;
 }
-export { m2h, bacaHijri, m2hFormat, m2hBacaHijri, formatHijri, listBulanHijri, masehiToHijri };
+export { m2h, bacaHijri, m2hFormat, m2hBacaHijri, formatHijri, listBulanHijri, masehiToHijri, masehiToHijriFormat };
