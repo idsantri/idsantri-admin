@@ -1,7 +1,7 @@
 <template>
 	<q-card class="full-width" style="max-width: 425px">
 		<q-form @submit.prevent="onSubmit">
-			<FormHeader title="Input Pulangan" :is-new="isNew" />
+			<FormHeader title="Input Setting Laporan" :is-new="isNew" />
 			<FormLoading v-if="loading" />
 			<q-card-section>
 				<InputSelectTahunAjaran
@@ -18,7 +18,15 @@
 					:rules="[(val) => !!val || 'Harus diisi!']"
 					:input-object="true"
 				/>
-				<q-input dense class="q-my-sm" outlined label="Nomor Urut" v-model="inputs.urut" type="number" />
+				<q-input
+					dense
+					class="q-my-sm"
+					outlined
+					label="Laporan Ke"
+					v-model="inputs.laporan_ke"
+					type="number"
+					:rules="[(val) => !!val || 'Harus diisi!']"
+				/>
 				<q-input
 					dense
 					:hint="
@@ -65,7 +73,7 @@ import InputSelectTahunAjaran from '../inputs/InputSelectTahunAjaran.vue';
 import { masehiToHijri, bacaHijri } from 'src/utils/hijri';
 import { isDate, formatDate } from 'src/utils/format-date';
 import InputSelectArray from '../inputs/InputSelectArray.vue';
-import UgtConfig from 'src/models/UgtConfig.js';
+import UgtConfig from 'src/models/UgtLaporanConfig.js';
 const props = defineProps({
 	data: { type: Object, required: true },
 });
@@ -90,7 +98,7 @@ const onSubmit = async () => {
 	const data = {
 		th_ajaran_h: inputs.value.th_ajaran_h,
 		bulan: parseInt(inputs.value.bulan), // inputs.value.bulan,
-		urut: inputs.value.urut,
+		laporan_ke: inputs.value.laporan_ke,
 		start: inputs.value.start,
 		end: inputs.value.end,
 	};

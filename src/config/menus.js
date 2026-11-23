@@ -141,7 +141,7 @@ const menus = {
 			display: !!menu.ugt,
 		},
 		{
-			to: '/ugt/config',
+			to: '/ugt/laporan',
 			icon: 'sym_o_article_person',
 			label: 'Laporan',
 			caption: 'Laporan Guru Tugas',
