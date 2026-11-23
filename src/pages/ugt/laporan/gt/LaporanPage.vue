@@ -1,8 +1,29 @@
 <template>
-	<q-card flat bordered class="bg-green-1">
+	<q-card flat bordered class="bg-green-11">
 		<q-card-section class="q-pa-sm">
-			Config ID: {{ config.id }}; Bulan: {{ config.bulan_hijri }}; Laporan: ke-{{ config.laporan_ke }}; Jumlah GT:
-			{{ config.count_gt }}; Jumlah Pelapor: {{ config.count_gt_lapor }}
+			<q-markup-table flat dense class="bg-transparent">
+				<tbody class="">
+					<tr>
+						<td class="text-italic text-caption">ID</td>
+						<td>{{ config.id }}</td>
+						<td class="text-italic text-caption">Laporan</td>
+						<td>ke-{{ config.laporan_ke }} ({{ config.bulan_hijri }})</td>
+					</tr>
+					<tr>
+						<td class="text-italic text-caption">Melapor</td>
+						<td>{{ config.count_gt_lapor }}/{{ config.count_gt }}</td>
+						<td class="text-italic text-caption">Status</td>
+						<td>
+							{{ config.locked ? 'Terkunci' : 'Terbuka' }}
+							<q-icon
+								:name="config.locked ? 'sym_o_lock' : 'sym_o_lock_open'"
+								class="q-ml-sm"
+								:color="config.locked ? 'negative' : 'positive'"
+							/>
+						</td>
+					</tr>
+				</tbody>
+			</q-markup-table>
 		</q-card-section>
 	</q-card>
 	<q-table

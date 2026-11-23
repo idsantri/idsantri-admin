@@ -36,13 +36,13 @@ export default [
 				component: (): Component => import('src/pages/ugt/laporan/gt/LaporanPage.vue'),
 			},
 			{
-				path: 'gt/:id',
-				component: (): Component => import('src/pages/ugt/laporan/gt/LaporanById..vue'),
-			},
-			{
 				path: 'config',
 				component: (): Component => import('src/pages/ugt/laporan/config/ConfigPage.vue'),
 			},
 		],
+	},
+	{
+		path: 'laporan/gt/:id',
+		component: (): Component => import('src/pages/ugt/laporan/gt/LaporanById..vue'),
 	},
 ];
