@@ -1,201 +1,121 @@
 <template>
 	<CardPage>
 		<CardHeader title="Data Guru Tugas" @on-reload="loadData" />
-		<div class="row" style="max-width: 1200px">
-			<div class="col-12 col-md-6 q-my-sm">
-				<!-- GT -->
-				<q-card class="q-mx-sm" flat bordered>
-					<q-card-section class="bg-green-7 no-padding">
-						<q-toolbar class="no-padding no-margin">
-							<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11">
-								Identitas GT
-							</q-toolbar-title>
-							<q-btn
-								dense
-								class="q-px-md q-mr-sm text-green-10"
-								label="Edit"
-								no-caps=""
-								icon="edit"
-								color="green-2"
-								@click="crudShow = true"
-							/>
-						</q-toolbar>
-					</q-card-section>
-					<q-card-section class="q-pa-sm">
-						<q-markup-table flat class="text-green-10">
-							<tbody>
-								<tr>
-									<td>ID</td>
-									<td>{{ gt.id }}</td>
-								</tr>
-								<tr>
-									<td>Tahun Ajaran</td>
-									<td>{{ gt.th_ajaran_h }}</td>
-								</tr>
-								<tr>
-									<td>Santri ID</td>
-									<td>
-										<div class="flex flex-center">
-											<div>
-												{{ gt.santri_id }}
-											</div>
+		<q-card-section
+			class="tw:flex tw:flex-col tw:sm:flex-row tw:sm:justify-between tw:gap-2 q-pa-sm"
+			style="max-width: 1200px"
+		>
+			<!-- GT -->
+			<q-card class="tw:w-full" flat bordered>
+				<q-card-section class="bg-green-7 no-padding">
+					<q-toolbar class="no-padding no-margin">
+						<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11"> Identitas GT </q-toolbar-title>
+						<q-btn
+							dense
+							class="q-px-md q-mr-sm text-green-10"
+							label="Edit"
+							no-caps=""
+							icon="edit"
+							color="green-2"
+							@click="crudShow = true"
+						/>
+					</q-toolbar>
+				</q-card-section>
+				<SectionGt :gt="gt" :loading="loading" />
+				<q-card-actions class="bg-green-7 flex items-center justify-between q-pt-none q-gutter-y-sm">
+					<div class="flex q-gutter-x-sm">
+						<q-btn
+							dense
+							no-caps
+							color="green-11"
+							class="q-px-md text-green-10"
+							@click="downloadSertifikat"
+							title="Cetak Sertifikat"
+							:disable="loadingSertifikat"
+						>
+							<template v-slot:default v-if="loadingSertifikat">
+								<q-spinner />
+								Sertifikat
+							</template>
+							<template v-slot:default v-else>
+								<q-icon name="download" />
+								Sertifikat
+							</template>
+						</q-btn>
+						<q-btn
+							dense
+							no-caps
+							color="green-11"
+							class="q-px-md text-green-10"
+							@click="downloadSuratTugas"
+							title="Cetak Surat Tugas"
+							:disable="loadingSurat"
+						>
+							<template v-slot:default v-if="loadingSurat">
+								<q-spinner />
+								Surat Tugas
+							</template>
+							<template v-slot:default v-else>
+								<q-icon name="download" />
+								Surat Tugas
+							</template>
+						</q-btn>
+					</div>
+					<div class="flex q-gutter-x-sm">
+						<q-btn
+							label="Sertifikat"
+							dense
+							no-caps
+							icon="print"
+							color="green-11"
+							class="q-px-md text-green-10"
+							@click="viewSertifikat"
+							title="Cetak Sertifikat"
+						/>
+						<q-btn
+							label="Surat Tugas"
+							dense
+							no-caps
+							icon="print"
+							color="green-11"
+							class="q-px-md text-green-10"
+							@click="viewSuratTugas"
+							title="Cetak Surat Tugas"
+						/>
+					</div>
+				</q-card-actions>
+			</q-card>
 
-											<q-space />
-											<q-btn
-												class="bg-green-11"
-												icon="info"
-												glossy
-												round
-												dense
-												:to="`/santri/${gt.santri_id}`"
-											/>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>Nama</td>
-									<td>{{ gt.nama }}</td>
-								</tr>
-								<tr>
-									<td>Data Akhir</td>
-									<td>{{ gt.data_akhir }}</td>
-								</tr>
-								<tr>
-									<td>No Telepon</td>
-									<td>{{ gt.telepon }}</td>
-								</tr>
-								<tr>
-									<td>Email</td>
-									<td>{{ gt.email }}</td>
-								</tr>
-								<tr v-if="!!isDev">
-									<td>OTP</td>
-									<td>{{ gt.otp }}</td>
-								</tr>
-							</tbody>
-						</q-markup-table>
-						<CardLoading :showing="loading" />
-					</q-card-section>
-					<q-card-actions class="bg-green-7 flex items-center justify-between q-pt-none q-gutter-y-sm">
-						<div class="flex q-gutter-x-sm">
-							<q-btn
-								dense
-								no-caps
-								color="green-11"
-								class="q-px-md text-green-10"
-								@click="downloadSertifikat"
-								title="Cetak Sertifikat"
-								:disable="loadingSertifikat"
-							>
-								<template v-slot:default v-if="loadingSertifikat">
-									<q-spinner />
-									Sertifikat
-								</template>
-								<template v-slot:default v-else>
-									<q-icon name="download" />
-									Sertifikat
-								</template>
-							</q-btn>
-							<q-btn
-								dense
-								no-caps
-								color="green-11"
-								class="q-px-md text-green-10"
-								@click="downloadSuratTugas"
-								title="Cetak Surat Tugas"
-								:disable="loadingSurat"
-							>
-								<template v-slot:default v-if="loadingSurat">
-									<q-spinner />
-									Surat Tugas
-								</template>
-								<template v-slot:default v-else>
-									<q-icon name="download" />
-									Surat Tugas
-								</template>
-							</q-btn>
-						</div>
-						<div class="flex q-gutter-x-sm">
-							<q-btn
-								label="Sertifikat"
-								dense
-								no-caps
-								icon="print"
-								color="green-11"
-								class="q-px-md text-green-10"
-								@click="viewSertifikat"
-								title="Cetak Sertifikat"
+			<!-- TABS -->
+			<q-card class="tw:w-full" flat bordered>
+				<q-card-section class="bg-green-7 no-padding">
+					<q-toolbar class="no-padding no-margin">
+						<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11"> Data PJGT </q-toolbar-title>
+						<q-tabs no-caps class="bg-green-9 text-green-11" v-model="tab">
+							<q-route-tab name="pjgt" :to="{ query: { tab: 'pjgt' } }" exact replace label="PJGT" />
+							<q-route-tab
+								name="laporan"
+								:to="{ query: { tab: 'laporan' } }"
+								exact
+								replace
+								label="Laporan"
 							/>
-							<q-btn
-								label="Surat Tugas"
-								dense
-								no-caps
-								icon="print"
-								color="green-11"
-								class="q-px-md text-green-10"
-								@click="viewSuratTugas"
-								title="Cetak Surat Tugas"
-							/>
-						</div>
-					</q-card-actions>
-				</q-card>
-			</div>
-			<div class="col-12 col-md-6 q-my-sm">
-				<!-- pjgt -->
-				<q-card class="q-mx-sm" flat bordered>
-					<q-card-section class="bg-green-7 no-padding">
-						<q-toolbar class="no-padding no-margin">
-							<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11"> Data PJGT </q-toolbar-title>
-						</q-toolbar>
-					</q-card-section>
-					<q-card-section class="q-pa-sm">
-						<q-markup-table flat class="text-green-10">
-							<tbody>
-								<tr>
-									<td>PJGT ID</td>
-									<td>
-										<div class="flex flex-center">
-											<div>
-												{{ gt.pjgt_id }}
-											</div>
+						</q-tabs>
+					</q-toolbar>
+				</q-card-section>
+				<q-card-section class="q-pa-sm">
+					<q-tab-panels v-model="tab" animated>
+						<q-tab-panel name="pjgt" class="no-padding">
+							<TabPjgt :gt="gt" :loading="loading" />
+						</q-tab-panel>
 
-											<q-space />
-											<q-btn
-												class="bg-green-11"
-												icon="info"
-												glossy
-												round
-												dense
-												:to="`/ugt/pjgt/${gt.pjgt_id}`"
-											/>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>Nama</td>
-									<td>{{ gt.pjgt_nama }}</td>
-								</tr>
-								<tr>
-									<td>Alamat</td>
-									<td>
-										{{ gt.pjgt_alamat_pendek }}
-									</td>
-								</tr>
-								<tr>
-									<td>Wilayah</td>
-									<td>{{ gt.pjgt_wilayah }}</td>
-								</tr>
-								<tr>
-									<td>Lembaga</td>
-									<td>{{ gt.pjgt_jenis_lembaga }} {{ gt.pjgt_nama_lembaga }}</td>
-								</tr>
-							</tbody>
-						</q-markup-table>
-						<CardLoading :showing="loading" />
-					</q-card-section>
-				</q-card>
-			</div>
-		</div>
+						<q-tab-panel name="laporan" class="no-padding">
+							<TabLaporan :gt-id="id" />
+						</q-tab-panel>
+					</q-tab-panels>
+				</q-card-section>
+			</q-card>
+		</q-card-section>
 
 		<q-dialog persistent="" v-model="crudShow">
 			<UgtGtForm :data="gt" @success-submit="loadData()" @success-delete="$router.go(-1)" />
@@ -213,7 +133,10 @@ import UgtGtForm from 'src/components/forms/UgtGtForm.vue';
 import ReportViewer from 'src/components/ReportViewer.vue';
 import UgtGt from 'src/models/UgtGt';
 import DownloadFile from 'src/models/DownloadFile';
-import config from 'src/config';
+import { useRouteQuery } from '@vueuse/router';
+import TabPjgt from './TabPjgt.vue';
+import TabLaporan from './TabLaporan.vue';
+import SectionGt from './SectionGt.vue';
 
 const route = useRoute();
 const id = route.params.id;
@@ -223,13 +146,15 @@ const crudShow = ref(false);
 const urlReport = ref('');
 const loadingSurat = ref(false);
 const loadingSertifikat = ref(false);
-const isDev = config.BRAND == 'demo';
+const tab = useRouteQuery('tab', null);
 
 async function loadData() {
 	try {
 		loading.value = true;
 		const data = await UgtGt.getById({ id, notifySuccess: true });
-		gt.value = data.gt;
+		if (data) {
+			gt.value = data.gt;
+		}
 	} catch (_err) {
 		// console.error(_err);
 		console.log('error get gt');
@@ -239,6 +164,9 @@ async function loadData() {
 }
 
 onMounted(async () => {
+	if (!tab.value) {
+		tab.value = 'pjgt';
+	}
 	await loadData();
 });
 
