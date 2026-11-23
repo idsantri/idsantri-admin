@@ -1,5 +1,6 @@
 <template>
 	<q-card flat bordered class="bg-green-11">
+		<CardLoading :showing="loading" />
 		<q-card-section class="q-pa-sm">
 			<q-markup-table flat dense class="bg-transparent">
 				<tbody class="">
