@@ -1,0 +1,1 @@
+import{t as e}from"./ApiCrud-BnYv-NZt.js";var t=new class extends e{constructor(){super(`ugt/laporan-gt`)}async getAllByGt(e){return this.getAll({params:{gt_id:e}})}async getAllByConfig(e){return this.getAll({params:{config_id:e}})}};export{t};
