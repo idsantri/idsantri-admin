@@ -13,9 +13,8 @@ declare module 'vue' {
 	}
 }
 
-const url = import.meta.env.DEV ? 'http://localhost:8000' : config.BASE_API;
 const api = axios.create({
-	baseURL: url + config.END_API,
+	baseURL: config.BASE_API + config.END_API,
 	withCredentials: true,
 });
 
