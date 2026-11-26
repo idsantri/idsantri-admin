@@ -79,7 +79,10 @@
 								Menjadi Wali Kelas:
 								<ul class="">
 									<li v-for="(w, i) in laporan.wali_kelas" :key="i" class="api-value">
-										&mdash; {{ w.tingkat }}, kelas {{ w.kelas }}
+										&mdash;
+										<span class="text-italic text-caption">Tingkat:</span> {{ w.tingkat }},
+										<span class="text-italic text-caption">Kelas:</span> {{ w.kelas }},
+										<span class="text-italic text-caption">Murid:</span> {{ w.sex_murid }}
 									</li>
 								</ul>
 							</li>
@@ -87,42 +90,50 @@
 								Menjadi Guru Fan:
 								<ul class="">
 									<li v-for="(w, i) in laporan.guru_fan" :key="i" class="api-value">
-										&mdash; {{ w.tingkat }}, kelas {{ w.kelas }}
+										&mdash;
+										<span class="text-italic text-caption">Tingkat:</span> {{ w.tingkat }},
+										<span class="text-italic text-caption">Kelas:</span> {{ w.kelas }},
+										<span class="text-italic text-caption">Murid:</span> {{ w.sex_murid }}
 									</li>
 								</ul>
-							</li>
-							<li>
-								Jenis kelamin murid: <span class="api-value">{{ laporan.sex_murid }}</span>
 							</li>
 							<li>
 								Absen (Ketidakhadiran):
 								<ul class="">
 									<li v-for="(w, i) in laporan.absen" :key="i" class="api-value">
-										&mdash; {{ i }}: {{ w }}
+										&mdash; {{ snakeToTitleCase(i) }}: {{ w }} hari
 									</li>
 								</ul>
 							</li>
 							<li>
-								Kegiatan:
+								Kegiatan Tambahan (non-madrasah):
 								<ul class="">
 									<li v-for="(w, i) in laporan.kegiatan" :key="i" class="api-value">
-										&mdash; {{ i }}: {{ w }}
+										&mdash; {{ snakeToTitleCase(i) }}: {{ w }}
 									</li>
 								</ul>
 							</li>
 							<li>
-								Hubungan:
+								Hubungan dengan:
 								<ul class="">
 									<li v-for="(w, i) in laporan.hubungan" :key="i" class="api-value">
-										&mdash; dengan {{ i }}: {{ w }}
+										&mdash; {{ snakeToTitleCase(i).toUpperCase() }}: {{ w }}
 									</li>
 								</ul>
 							</li>
 							<li>
 								Bisyarah:
 								<ul class="">
-									<li v-for="(w, i) in laporan.bisyarah" :key="i" class="api-value">
-										&mdash; {{ i }}: {{ w }}
+									<li class="api-value">
+										&mdash; Nominal: {{ laporan?.bisyarah?.nominal?.toRupiah() }}
+									</li>
+									<li class="api-value">
+										&mdash; Tepat Waktu: {{ laporan?.bisyarah?.tepat_waktu ? 'Ya' : 'Tidak' }}
+									</li>
+									<li class="api-value">
+										&mdash; Tanggal Terima:
+										{{ formatDate(laporan?.bisyarah?.tgl_terima, 'dd MMMM yyyy') }} |
+										{{ bacaHijri(masehiToHijri(laporan?.bisyarah?.tgl_terima)) }}
 									</li>
 								</ul>
 							</li>
@@ -142,6 +153,7 @@
 <script setup>
 import UgtLaporanGt from 'src/models/UgtLaporanGt';
 import { formatDate } from 'src/utils/format-date';
+import { snakeToTitleCase } from 'src/utils/format-text';
 import { bacaHijri, masehiToHijri } from 'src/utils/hijri';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
