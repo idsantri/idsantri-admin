@@ -8,8 +8,8 @@
 			<!-- GT -->
 			<q-card class="tw:w-full" flat bordered>
 				<q-card-section class="bg-green-7 no-padding">
-					<q-toolbar class="no-padding no-margin">
-						<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11"> Identitas GT </q-toolbar-title>
+					<q-toolbar class="">
+						<q-toolbar-title class="text-subtitle1 text-green-11"> Identitas GT </q-toolbar-title>
 						<q-btn
 							:disable="loading"
 							dense
@@ -36,9 +36,9 @@
 			<!-- TABS -->
 			<q-card class="tw:w-full" flat bordered>
 				<q-card-section class="bg-green-7 no-padding">
-					<q-toolbar class="no-padding no-margin">
-						<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11"> Data PJGT </q-toolbar-title>
-						<q-tabs no-caps class="bg-green-9 text-green-11" v-model="tab">
+					<q-toolbar class="">
+						<q-toolbar-title class="text-subtitle1 text-green-11"> Data PJGT </q-toolbar-title>
+						<q-tabs no-caps class="bg-green-9 text-green-11" v-model="tab" dense>
 							<q-route-tab name="pjgt" :to="{ query: { tab: 'pjgt' } }" exact replace label="PJGT" />
 							<q-route-tab
 								name="laporan"

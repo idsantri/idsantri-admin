@@ -1,5 +1,5 @@
 <template>
-	<q-btn-dropdown color="green-11" outline label="Cetak" class="q-mr-sm q-px-sm" dense no-caps aria-haspopup="menu">
+	<q-btn-dropdown color="green-11" outline label="Cetak" class="q-px-sm" dense no-caps aria-haspopup="menu">
 		<q-list role="menu">
 			<q-item v-close-popup @click="$emit('viewSuratTugas')" clickable dense>
 				<q-item-section avatar>
