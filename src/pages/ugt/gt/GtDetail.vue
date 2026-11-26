@@ -11,6 +11,7 @@
 					<q-toolbar class="no-padding no-margin">
 						<q-toolbar-title class="text-subtitle1 q-ml-sm text-green-11"> Identitas GT </q-toolbar-title>
 						<q-btn
+							:disable="loading"
 							dense
 							class="q-px-md q-mr-sm text-green-10"
 							label="Edit"
@@ -19,71 +20,17 @@
 							color="green-2"
 							@click="crudShow = true"
 						/>
+						<DropDown
+							:gt="gt"
+							:disable="loading"
+							@download-surat-tugas="downloadSuratTugas"
+							@view-surat-tugas="viewSuratTugas"
+							@download-sertifikat="downloadSertifikat"
+							@view-sertifikat="viewSertifikat"
+						/>
 					</q-toolbar>
 				</q-card-section>
 				<SectionGt :gt="gt" :loading="loading" />
-				<q-card-actions class="bg-green-7 flex items-center justify-between q-pt-none q-gutter-y-sm">
-					<div class="flex q-gutter-x-sm">
-						<q-btn
-							dense
-							no-caps
-							color="green-11"
-							class="q-px-md text-green-10"
-							@click="downloadSertifikat"
-							title="Cetak Sertifikat"
-							:disable="loadingSertifikat"
-						>
-							<template v-slot:default v-if="loadingSertifikat">
-								<q-spinner />
-								Sertifikat
-							</template>
-							<template v-slot:default v-else>
-								<q-icon name="download" />
-								Sertifikat
-							</template>
-						</q-btn>
-						<q-btn
-							dense
-							no-caps
-							color="green-11"
-							class="q-px-md text-green-10"
-							@click="downloadSuratTugas"
-							title="Cetak Surat Tugas"
-							:disable="loadingSurat"
-						>
-							<template v-slot:default v-if="loadingSurat">
-								<q-spinner />
-								Surat Tugas
-							</template>
-							<template v-slot:default v-else>
-								<q-icon name="download" />
-								Surat Tugas
-							</template>
-						</q-btn>
-					</div>
-					<div class="flex q-gutter-x-sm">
-						<q-btn
-							label="Sertifikat"
-							dense
-							no-caps
-							icon="print"
-							color="green-11"
-							class="q-px-md text-green-10"
-							@click="viewSertifikat"
-							title="Cetak Sertifikat"
-						/>
-						<q-btn
-							label="Surat Tugas"
-							dense
-							no-caps
-							icon="print"
-							color="green-11"
-							class="q-px-md text-green-10"
-							@click="viewSuratTugas"
-							title="Cetak Surat Tugas"
-						/>
-					</div>
-				</q-card-actions>
 			</q-card>
 
 			<!-- TABS -->
@@ -137,6 +84,7 @@ import { useRouteQuery } from '@vueuse/router';
 import TabPjgt from './TabPjgt.vue';
 import TabLaporan from './TabLaporan.vue';
 import SectionGt from './SectionGt.vue';
+import DropDown from './DropDown.vue';
 
 const route = useRoute();
 const id = route.params.id;
@@ -144,8 +92,6 @@ const loading = ref(false);
 const gt = ref({});
 const crudShow = ref(false);
 const urlReport = ref('');
-const loadingSurat = ref(false);
-const loadingSertifikat = ref(false);
 const tab = useRouteQuery('tab', null);
 
 async function loadData() {
@@ -183,23 +129,23 @@ async function viewSertifikat() {
 
 async function downloadSuratTugas() {
 	try {
-		loadingSurat.value = true;
+		loading.value = true;
 		await DownloadFile.GtSuratTugas(gt.value.id, 'gt-surat-tugas-' + gt.value.id + '.pdf');
 	} catch (error) {
 		console.error('Error downloading surat tugas:', error);
 	} finally {
-		loadingSurat.value = false;
+		loading.value = false;
 	}
 }
 
 async function downloadSertifikat() {
 	try {
-		loadingSertifikat.value = true;
+		loading.value = true;
 		await DownloadFile.GtSertifikat(gt.value.id, 'gt-sertifikat-' + gt.value.id + '.pdf');
 	} catch (error) {
 		console.error('Error downloading sertifikat:', error);
 	} finally {
-		loadingSertifikat.value = false;
+		loading.value = false;
 	}
 }
 </script>
